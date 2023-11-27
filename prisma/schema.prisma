@@ -6,3 +6,30 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Pin {
+  id     String  @id @default(uuid())
+  name   String
+  code   String?
+  manu   PinManu
+  year   Int
+  type   PinType
+  active Boolean @default(true)
+}
+
+enum PinType {
+  EM
+  EE
+  DMD
+  LCD
+}
+
+enum PinManu {
+  Bally
+  DataEast
+  Gottlieb
+  Sega
+  Stern
+  Williams
+  Zaccaria
+}
