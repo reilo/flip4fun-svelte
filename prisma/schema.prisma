@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Pin {
-  id     String  @id @default(uuid())
+  id     String   @id @default(uuid())
   name   String
   code   String?
   manu   PinManu
   year   Int
   type   PinType
-  active Boolean @default(true)
+  owner  String[]
+  active Boolean  @default(true)
 }
 
 enum PinType {
