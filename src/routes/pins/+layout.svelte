@@ -1,9 +1,9 @@
 <script>
-    export let data;
-</script>
+	import { Heading, P, A } from 'flowbite-svelte';
+  </script>
 
 <div>
-    <h2>Flipperliste</h2>
-    <p>{JSON.stringify(data)}</p>
+    <Heading tag="h2" class="mb-4">Flipperliste</Heading>
+
     <slot />
 </div>
