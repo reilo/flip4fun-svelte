@@ -1,26 +1,25 @@
-<svelte:head>
-	<title>About</title>
-	<meta name="description" content="About this app" />
-</svelte:head>
+<script>
+	import { Heading, P, A } from 'flowbite-svelte';
+  </script>
+  
+<div class="flex max-w-3xl flex-col justify-center m-0">
+	<Heading tag="h2" class="mb-4">About this app</Heading>
 
-<div class="text-column">
-	<h1>About this app</h1>
-
-	<p>
-		This is a <a href="https://kit.svelte.dev">SvelteKit</a> app. You can make your own by typing the
+	<P>
+		This is a <A href="https://kit.svelte.dev">SvelteKit</A> app. You can make your own by typing the
 		following into your command line and following the prompts:
-	</p>
+	</P>
 
 	<pre>npm create svelte@latest</pre>
 
-	<p>
+	<P>
 		The page you're looking at is purely static HTML, with no client-side interactivity needed.
 		Because of that, we don't need to load any JavaScript. Try viewing the page's source, or opening
 		the devtools network panel and reloading.
-	</p>
+	</P>
 
-	<p>
+	<P>
 		The <a href="/sverdle">Sverdle</a> page illustrates SvelteKit's data loading and form handling. Try
 		using it with JavaScript disabled!
-	</p>
+	</P>
 </div>

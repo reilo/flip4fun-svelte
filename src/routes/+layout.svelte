@@ -1,7 +1,7 @@
 <script>
 	import Header from './Header.svelte';
-	import './styles.css';
 	import "../app.css";
+	import { A } from 'flowbite-svelte';
 </script>
 
 <div class="flex flex-col min-h-screen">
@@ -12,7 +12,7 @@
 	</main>
 
 	<footer class="flex flex-col justify-center items-center p-12 md:py-4 md:px-0">
-		<p>visit <a class="font-bold" href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
+		<p>visit <A href="https://kit.svelte.dev">kit.svelte.dev</A> to learn SvelteKit</p>
 	</footer>
 </div>
 
