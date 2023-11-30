@@ -9,22 +9,41 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 ```
 
-## svelte.config.js
+## Update configuration files
+
+### svelte.config.js
+
+Add the following statements to svelte.config.js:
 
 ```bash
 import { vitePreprocess } from '@sveltejs/kit/vite';
 ```
 ```bash
-preprocess: vitePreprocess()
+const config = {
+  ...
+  preprocess: vitePreprocess()
+};
 ```
 
-## tailwind.config.js
+### tailwind.config.js
+
+Add the following statement to tailwind.config.js:
 
 ```bash
-content: ['./src/**/*.{html,js,svelte,ts}'],
+export default {
+  content: [
+    './src/**/*.{html,js,svelte,ts}',
+    ...
+  ],
+  ...
+}
 ```
 
-## app.css
+## Update application files
+
+### app.css
+
+Add the following statements to app.css:
 
 ```bash
 @tailwind base;
@@ -32,7 +51,9 @@ content: ['./src/**/*.{html,js,svelte,ts}'],
 @tailwind utilities;
 ```
 
-## +layout.svelte
+### +layout.svelte
+
+Add the following statement to your layout file:
 
 ```bash
 import "../app.css";
