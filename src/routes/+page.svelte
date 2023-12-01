@@ -8,10 +8,8 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<div class="flex flex-col justify-center content-center">
-
-	<div class="grid grid-flow-row grid-cols-2 gap-3">
-
+<div class="flex flex-row justify-center content-center gap-3">
+	<div>
 		<Card>
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Lostrommel 2.0
@@ -23,7 +21,8 @@
 				Weiter<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 			</Button>
 		</Card>
-
+	</div>
+	<div>
 		<Card>
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Flipperliste
@@ -35,6 +34,5 @@
 				Weiter<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 			</Button>
 		</Card>
-		
 	</div>
 </div>
