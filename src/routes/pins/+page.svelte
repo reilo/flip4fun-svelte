@@ -29,6 +29,16 @@
 </script>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
+	<caption
+		class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+	>
+		Flipperliste
+		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+			Nur die als "Aktiv" markierten Geräte sind derzeit spielbar.<br />
+			Benutze das Suchfeld oben, um die Liste nach Flippernamen zu filtern. <br />
+			Klicke auf eine Zeile, um mehr Informationen über einen Flipper zu erhalten.
+		</p>
+	</caption>
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Hersteller</TableHeadCell>

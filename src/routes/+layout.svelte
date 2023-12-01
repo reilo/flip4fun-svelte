@@ -1,7 +1,7 @@
 <script>
 	import Header from './Header.svelte';
 	import "../app.css";
-	import { A } from 'flowbite-svelte';
+	import { A, Footer, FooterCopyright, FooterLinkGroup, FooterLink } from 'flowbite-svelte';
 </script>
 
 <div class="flex flex-col min-h-screen">
@@ -11,8 +11,13 @@
 		<slot />
 	</main>
 
-	<footer class="flex flex-col justify-center items-center p-12 md:py-4 md:px-0">
-		<p>visit <A href="https://kit.svelte.dev">kit.svelte.dev</A> to learn SvelteKit</p>
-	</footer>
+	<Footer>
+		<FooterCopyright href="/" by="Reinhard Loch." year={2023} />
+		<FooterLinkGroup class="flex flex-wrap justify-center text-sm text-gray-500 dark:text-gray-400">
+			<FooterLink href="/info">Info</FooterLink>
+			<FooterLink href="/">Lizenz</FooterLink>
+			<FooterLink href="/">Komtakt</FooterLink>
+		  </FooterLinkGroup>
+	</Footer>
 </div>
 
