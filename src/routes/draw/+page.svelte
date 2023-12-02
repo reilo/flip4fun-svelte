@@ -1,5 +1,5 @@
 <script>
-	import { Toggle, Button, P } from 'flowbite-svelte';
+	import { Toggle, Button, P, Heading } from 'flowbite-svelte';
 
 	export let data;
 
@@ -36,15 +36,19 @@
 
 <br />
 
-<div class="grid grid-flow-row grid-cols-1 gap-3">
+<div class="grid grid-flow-row gap-3">
 	<Toggle checked={em} on:change={() => (em = !em)}>Elektromechanisch</Toggle>
 	<Toggle checked={ee} on:change={() => (ee = !ee)}>Early Electronic</Toggle>
 	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD Flipper</Toggle>
 	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>Spike2-Flipper</Toggle>
 	<div>
+		<br />
 		<Button size="xl" on:click={selectPin}>Starten</Button>
 	</div>
-	<P>
-		{selectedPin}
-	</P>
+	<div>
+		<br />
+		<Heading tag="h4">
+			{selectedPin}
+		</Heading>
+	</div>
 </div>
