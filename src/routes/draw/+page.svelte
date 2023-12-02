@@ -1,5 +1,6 @@
 <script>
-	import { Toggle, Button, P, Heading } from 'flowbite-svelte';
+	import { Toggle, Button, P, Heading, Spinner } from 'flowbite-svelte';
+	import { SearchSolid } from 'flowbite-svelte-icons';
 
 	export let data;
 
@@ -10,7 +11,11 @@
 
 	let selectedPin = '?';
 
+	let progressHidden = true;
+
 	function selectPin() {
+		progressHidden = false;
+		let newPin;
 		let items = data.pins.filter(
 			(pin) =>
 				pin.active &&
@@ -21,29 +26,41 @@
 		);
 		if (items.length > 0) {
 			let num = Math.floor(Math.random() * items.length);
-			selectedPin = items[num].name;
+			newPin = items[num].name;
 		} else {
-			selectedPin = '?';
+			newPin = '?';
 		}
+		setTimeout(() => {
+			progressHidden = true;
+			selectedPin = newPin;
+		}, 1500);
 	}
 </script>
 
-<P>Klicke Start, um nach dem Zufallsprinzip einen Flipper auszulosen.</P>
+<Heading tag="h5">
+	Flipper losen
+</Heading>
+
+<P>Klicke auf Start, um einen Flipper auszulosen.</P>
 <P>
-	Willst du deine Auswahl auf bestimmte Flippertypen einschränken, aktiviere bzw. deaktiviere die
+	Um deine Auswahl auf bestimmte Flippertypen einzuschränken, aktiviere bzw. deaktiviere die
 	entsprechenden Optionen.
 </P>
 
 <br />
 
-<div class="grid grid-flow-row gap-3">
+<div class="grid grid-flow-row gap-1 sm:gap-3">
 	<Toggle checked={em} on:change={() => (em = !em)}>Elektromechanisch</Toggle>
 	<Toggle checked={ee} on:change={() => (ee = !ee)}>Early Electronic</Toggle>
 	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD Flipper</Toggle>
 	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>Spike2-Flipper</Toggle>
 	<div>
 		<br />
-		<Button size="xl" on:click={selectPin}>Starten</Button>
+		<Button size="xl" on:click={selectPin}>
+			<Spinner class="mr-3 {progressHidden ? 'hidden' : ''}" size="4" />
+			<SearchSolid class="w-3.5 h-3.5 mr-2 {progressHidden ? '' : 'hidden'}" />
+			Starten
+		</Button>
 	</div>
 	<div>
 		<br />
