@@ -8,7 +8,7 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-<div class="flex flex-row justify-center content-center gap-3">
+<div class="flex flex-col sm:flex-row justify-center content-center gap-3">
 	<div>
 		<Card>
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Liga</h5>

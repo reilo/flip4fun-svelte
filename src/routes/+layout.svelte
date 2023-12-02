@@ -13,7 +13,7 @@
 
 	<Footer>
 		<FooterCopyright href="/" by="Reinhard Loch." year={2023} />
-		<FooterLinkGroup class="flex flex-wrap justify-center text-sm text-gray-500 dark:text-gray-400">
+		<FooterLinkGroup class="flex flex-wrap align-left sm:justify-center text-sm text-gray-500 dark:text-gray-400">
 			<FooterLink href="/about">Info</FooterLink>
 			<FooterLink href="/about">Lizenz</FooterLink>
 			<FooterLink href="/about">Komtakt</FooterLink>
