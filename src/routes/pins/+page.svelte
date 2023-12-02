@@ -2,7 +2,6 @@
 	export let data;
 
 	import {
-		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
@@ -62,7 +61,7 @@
 				</TableBodyCell>
 			</TableBodyRow>
 			{#if openRow === i}
-				<TableBodyRow class="bg-sky-50" on:dblclick={() => (details = pin)}>
+				<TableBodyRow class="bg-sky-50" on:click={() => (details = pin)}>
 					<TableBodyCell colspan="5" class="italic indent-4 py-2">
 						Eigentümer: {pin.owner}
 					</TableBodyCell>
