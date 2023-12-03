@@ -1,12 +1,12 @@
 <script>
-	import { P } from 'flowbite-svelte';
-    import login from "../login"
+	import { Heading, P } from 'flowbite-svelte';
+	import login from '../login';
 </script>
 
-<P >
-    {#if login.state == 2}
-    Hier kommen irgendwann die Admin-Seiten hin: Flipperverwaltung, Spielerverwaltung, etc.
-    {:else}
-    Keine Admin-Berechtigung.
-    {/if}
-</P>
+<Heading tag="h5">
+	{#if login.state == 2}
+		Hier kommen irgendwann die Admin-Seiten hin: Flipperverwaltung, Spielerverwaltung, etc.
+	{:else}
+		Du hast hier keine Berechtigung. Logge dich bitte als Administrator ein.
+	{/if}
+</Heading>

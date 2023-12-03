@@ -71,8 +71,6 @@
 			<Spinner color="blue" />
 			<Spinner color="gray" />
 			<Spinner color="green" />
-			<Spinner color="red" />
-			<Spinner color="yellow" />
 			<Spinner color="purple" />
 		</div>
 	</div>

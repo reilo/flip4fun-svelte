@@ -1,7 +1,5 @@
 <script>
-	import { P } from 'flowbite-svelte';
+	import { Heading, P } from 'flowbite-svelte';
 </script>
 
-<P>
-    Hier kommen irgendwann die Liga-Seiten hin.
-</P>
+<Heading tag="h5">Zur Zeit ist kein Liga-Turnier aktiv.</Heading>
