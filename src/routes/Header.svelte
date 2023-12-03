@@ -4,13 +4,12 @@
 	import { HomeSolid, LockSolid, LockTimeSolid, LockOpenSolid } from 'flowbite-svelte-icons';
 	import { DarkMode } from 'flowbite-svelte';
 
-	import login from "./login"
+	import login from './login';
 
 	let formModal = false;
 	let password = '';
 
 	function adminClicked() {
-		
 		if (login.state >= 2 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
 			login.state = 2;
 			password = '';
@@ -37,12 +36,10 @@
 	}
 </script>
 
-<header class="flex justify-between p-4 w-full max-w-5xl mx-auto">
+<header class="flex justify-between p-4 w-full max-w-full sm:max-w-5xl mx-auto">
 	<Navbar let:hidden let:toggle class="bg-sky-50">
 		<NavBrand href="/">
-			<HomeSolid
-				class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500"
-			/>
+			<HomeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 		</NavBrand>
 		<NavHamburger on:click={toggle} />
 		<NavUl {hidden}>
