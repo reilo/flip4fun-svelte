@@ -9,13 +9,14 @@
 	let dmd = true;
 	let lcd = true;
 
-	let selectedPin = '?';
+	let selectedPin = '';
 
-	let progressHidden = true;
+	let progress = false;
 
 	function selectPin() {
-		progressHidden = false;
+		progress = true;
 		let newPin;
+		let timeout = 1500;
 		let items = data.pins.filter(
 			(pin) =>
 				pin.active &&
@@ -28,18 +29,17 @@
 			let num = Math.floor(Math.random() * items.length);
 			newPin = items[num].name;
 		} else {
-			newPin = '?';
+			newPin = 'Kein Flipper verfügbar';
+			timeout = 0;
 		}
 		setTimeout(() => {
-			progressHidden = true;
+			progress = false;
 			selectedPin = newPin;
-		}, 1500);
+		}, timeout);
 	}
 </script>
 
-<Heading tag="h5">
-	Flipper losen
-</Heading>
+<Heading tag="h5">Flipper losen</Heading>
 
 <P>Klicke auf Start, um einen Flipper auszulosen.</P>
 <P>
@@ -57,15 +57,23 @@
 	<div>
 		<br />
 		<Button size="xl" on:click={selectPin}>
-			<Spinner class="mr-3 {progressHidden ? 'hidden' : ''}" size="4" />
-			<SearchSolid class="w-3.5 h-3.5 mr-2 {progressHidden ? '' : 'hidden'}" />
+			<Spinner class="mr-3 {progress ? '' : 'hidden'}" size="4" />
+			<SearchSolid class="w-3.5 h-3.5 mr-2 {progress ? 'hidden' : ''}" />
 			Starten
 		</Button>
 	</div>
 	<div>
 		<br />
-		<Heading tag="h4">
+		<Heading tag="h4" class={progress ? 'hidden' : ''}>
 			{selectedPin}
 		</Heading>
+		<div class={progress ? '' : 'hidden'}>
+			<Spinner color="blue" />
+			<Spinner color="gray" />
+			<Spinner color="green" />
+			<Spinner color="red" />
+			<Spinner color="yellow" />
+			<Spinner color="purple" />
+		</div>
 	</div>
 </div>
