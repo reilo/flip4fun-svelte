@@ -41,8 +41,8 @@
 	}
 </script>
 
-<header class="flex justify-between p-4 w-full max-w-full sm:max-w-5xl mx-auto">
-	<Navbar let:hidden let:toggle class="bg-sky-50">
+<header class="flex justify-between p-4 w-full max-w-full sm:max-w-7xl mx-auto">
+	<Navbar let:hidden let:toggle class="bg-gray-50 dark:bg-gray-800">
 		<NavBrand href="/">
 			<HomeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 		</NavBrand>
@@ -54,7 +54,7 @@
 			<NavLi href="/admin">Administration</NavLi>
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
-		<Button color="bg-sky-50" class="!p-0" on:click={() => (formModal = true)}>
+		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
 			{#if loginValue == 0}
 				<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 			{:else if loginValue == 1}

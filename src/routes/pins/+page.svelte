@@ -58,11 +58,11 @@
 				</TableBodyCell>
 			</TableBodyRow>
 			{#if openRow === i}
-				<TableBodyRow class="bg-sky-50" on:click={() => (details = pin)}>
+				<!--TableBodyRow class="bg-sky-50" on:click={() => (details = pin)}>
 					<TableBodyCell colspan="5" class="italic indent-4 py-2">
 						Eigentümer: {pin.owner.length > 0 ? pin.owner : 'N. N.'}
 					</TableBodyCell>
-				</TableBodyRow>
+				</TableBodyRow-->
 			{/if}
 		{/each}
 	</TableBody>
