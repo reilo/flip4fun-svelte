@@ -4,14 +4,19 @@
 	import { HomeSolid, LockSolid, LockTimeSolid, LockOpenSolid } from 'flowbite-svelte-icons';
 	import { DarkMode } from 'flowbite-svelte';
 
-	import login from './login';
+	import { login } from '../stores.js';
+
+	let loginValue = 0;
+	login.subscribe((value) => {
+		loginValue = value;
+	});
 
 	let formModal = false;
 	let password = '';
 
 	function adminClicked() {
-		if (login.state >= 2 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			login.state = 2;
+		if (loginValue >= 2 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+			login.set(2);
 			password = '';
 			formModal = false;
 		} else {
@@ -20,8 +25,8 @@
 	}
 
 	function ligaClicked() {
-		if (login.state >= 1 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			login.state = 1;
+		if (loginValue >= 1 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+			login.set(1);
 			password = '';
 			formModal = false;
 		} else {
@@ -30,7 +35,7 @@
 	}
 
 	function guestClicked() {
-		login.state = 0;
+		login.set(0);
 		password = '';
 		formModal = false;
 	}
@@ -50,9 +55,9 @@
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
 		<Button color="bg-sky-50" class="!p-0" on:click={() => (formModal = true)}>
-			{#if login.state == 0}
+			{#if loginValue == 0}
 				<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
-			{:else if login.state == 1}
+			{:else if loginValue == 1}
 				<LockTimeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 			{:else}
 				<LockOpenSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
@@ -64,13 +69,13 @@
 					<span>Passwort</span>
 					<Input type="password" name="password" bind:value={password} placeholder="•••••" />
 				</Label>
-				<Button color={login.state == 2 ? 'primary' : 'alternative'} on:click={adminClicked}
+				<Button color={loginValue == 2 ? 'primary' : 'alternative'} on:click={adminClicked}
 					>Administrator</Button
 				>
-				<Button color={login.state == 1 ? 'primary' : 'alternative'} on:click={ligaClicked}
+				<Button color={loginValue == 1 ? 'primary' : 'alternative'} on:click={ligaClicked}
 					>Liga-Eingabe</Button
 				>
-				<Button color={login.state == 0 ? 'primary' : 'alternative'} on:click={guestClicked}
+				<Button color={loginValue == 0 ? 'primary' : 'alternative'} on:click={guestClicked}
 					>Nur lesen</Button
 				>
 			</form>
