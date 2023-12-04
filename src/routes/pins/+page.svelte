@@ -11,7 +11,6 @@
 		Checkbox
 	} from 'flowbite-svelte';
 
-	let items;
 	let searchTerm = '';
 	let openRow;
 	let details;
@@ -20,11 +19,9 @@
 		openRow = openRow === i ? null : i;
 	};
 
-	$: {
-		items = data.pins.filter(
-			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-		);
-	}
+	$: items = data.pins.filter(
+		(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+	);
 </script>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
@@ -63,7 +60,7 @@
 			{#if openRow === i}
 				<TableBodyRow class="bg-sky-50" on:click={() => (details = pin)}>
 					<TableBodyCell colspan="5" class="italic indent-4 py-2">
-						Eigentümer: {pin.owner.length > 0 ? pin.owner : "N. N."}
+						Eigentümer: {pin.owner.length > 0 ? pin.owner : 'N. N.'}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/if}
