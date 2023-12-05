@@ -1,4 +1,6 @@
-Admin: Flipper aktivieren/deaktivieren
+Spieler-Management
+
+Bei gleichen Pins Besitzer einblenden
 
 Liga/Turnier-Framework
 

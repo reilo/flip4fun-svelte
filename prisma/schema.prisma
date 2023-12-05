@@ -18,6 +18,25 @@ model Pin {
   active Boolean  @default(true)
 }
 
+model Player {
+  id        String   @id @default(uuid())  
+  forename  String
+  surname   String
+  shortname String?
+}
+
+model Tournament {
+  id        String   @id @default(uuid())  
+  name      String
+  type      TournamentType
+  startDate DateTime
+  endDate   DateTime
+  players   String[]
+  arenas    String[]
+  settings  Json 
+  results   Json
+}
+
 enum PinType {
   EM
   EE
@@ -33,4 +52,9 @@ enum PinManu {
   Stern
   Williams
   Zaccaria
+}
+
+enum TournamentType {
+  FlipLiga
+  FlipFinal
 }

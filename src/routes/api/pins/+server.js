@@ -7,29 +7,17 @@ export const GET = async () => {
             orderBy: [{ name: 'asc' }, { owner: 'asc' }]
         });
         return new Response(
-            JSON.stringify(
-                {
-                    pins: pins
-                }),
+            JSON.stringify({ pins: pins }),
             {
-                status: 200,
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                status: 200, headers: { "Content-Type": "application/json" }
             }
         );
     }
     catch (e) {
         return new Response(
-            JSON.stringify({
-                message: "Flipperliste konnte nicht gelesen werden",
-                error: e
-            }),
+            JSON.stringify({ message: "Flipperliste konnte nicht gelesen werden", error: e }),
             {
-                status: 500,
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                status: 500, headers: { "Content-Type": "application/json" }
             }
         )
     }
