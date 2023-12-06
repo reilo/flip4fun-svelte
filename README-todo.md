@@ -1,5 +1,7 @@
 
-Spieler-Management
+Spieler-Management, aktiv schalten
+
+API: pins --> pin
 
 Liga/Turnier-Framework
 
