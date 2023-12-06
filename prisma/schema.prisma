@@ -23,6 +23,7 @@ model Player {
   forename  String
   surname   String
   shortname String?
+  photo     String?
 }
 
 model Tournament {

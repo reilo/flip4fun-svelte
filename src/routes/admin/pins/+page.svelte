@@ -36,7 +36,7 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
 		</TableHead>
-		<TableBody class="divide-y">
+		<TableBody tableBodyClass="divide-y">
 			{#each data.pins as pin, i}
 				<TableBodyRow>
 					{#if i > 0 && pin.name == data.pins[i - 1].name}

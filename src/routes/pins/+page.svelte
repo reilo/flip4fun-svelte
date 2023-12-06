@@ -50,7 +50,7 @@
 		{/if}
 		<TableHeadCell>Aktiv</TableHeadCell>
 	</TableHead>
-	<TableBody class="divide-y">
+	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
 			<TableBodyRow on:click={() => toggleRow(i)}>
 				<TableBodyCell>{pin.name}</TableBodyCell>
