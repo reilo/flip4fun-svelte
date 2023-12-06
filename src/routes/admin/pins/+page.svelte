@@ -39,7 +39,13 @@
 		<TableBody class="divide-y">
 			{#each data.pins as pin, i}
 				<TableBodyRow>
-					<TableBodyCell>{pin.name}</TableBodyCell>
+					{#if i > 0 && pin.name == data.pins[i - 1].name}
+						<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+					{:else if i < data.pins.length - 1 && pin.name == data.pins[i + 1].name}
+						<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+					{:else}
+						<TableBodyCell>{pin.name}</TableBodyCell>
+					{/if}
 					<TableBodyCell>
 						{#if pin.active == true}
 							<Checkbox checked on:change={() => updatePin(pin.id, !pin.active)} />
