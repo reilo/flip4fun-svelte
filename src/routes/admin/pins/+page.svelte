@@ -40,9 +40,17 @@
 			{#each data.pins as pin, i}
 				<TableBodyRow>
 					{#if i > 0 && pin.name == data.pins[i - 1].name}
-						<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+						{#if pin.manu != data.pins[i - 1].manu}
+							<TableBodyCell>{pin.name} ({pin.manu})</TableBodyCell>
+						{:else}
+							<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+						{/if}
 					{:else if i < data.pins.length - 1 && pin.name == data.pins[i + 1].name}
-						<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+						{#if pin.manu != data.pins[i + 1].manu}
+							<TableBodyCell>{pin.name} ({pin.manu})</TableBodyCell>
+						{:else}
+							<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+						{/if}
 					{:else}
 						<TableBodyCell>{pin.name}</TableBodyCell>
 					{/if}
