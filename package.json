@@ -32,6 +32,7 @@
 		"flowbite": "^2.2.0",
 		"flowbite-svelte": "^0.44.20",
 		"flowbite-svelte-icons": "^0.4.5",
+		"svelte-device-info": "^1.0.0",
 		"tailwind-merge": "^2.0.0"
 	}
 }
