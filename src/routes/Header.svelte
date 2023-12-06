@@ -4,19 +4,19 @@
 	import { HomeSolid, LockSolid, LockTimeSolid, LockOpenSolid } from 'flowbite-svelte-icons';
 	import { DarkMode } from 'flowbite-svelte';
 
-	import { login } from '../stores.js';
+	import { access, ReadAccess, ContributeAccess, AdminAccess } from '../stores.js';
 
-	let loginValue = 0;
-	login.subscribe((value) => {
-		loginValue = value;
+	let accessValue = ReadAccess;
+	access.subscribe((value) => {
+		accessValue = value;
 	});
 
 	let formModal = false;
 	let password = '';
 
 	function adminClicked() {
-		if (loginValue >= 2 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			login.set(2);
+		if (accessValue >= AdminAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+			access.set(AdminAccess);
 			password = '';
 			formModal = false;
 		} else {
@@ -25,8 +25,8 @@
 	}
 
 	function ligaClicked() {
-		if (loginValue >= 1 || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			login.set(1);
+		if (accessValue >= ContributeAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+			access.set(ContributeAccess);
 			password = '';
 			formModal = false;
 		} else {
@@ -35,7 +35,7 @@
 	}
 
 	function guestClicked() {
-		login.set(0);
+		access.set(ReadAccess);
 		password = '';
 		formModal = false;
 	}
@@ -55,9 +55,9 @@
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
 		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
-			{#if loginValue == 0}
+			{#if accessValue == ReadAccess}
 				<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
-			{:else if loginValue == 1}
+			{:else if accessValue == ContributeAccess}
 				<LockTimeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 			{:else}
 				<LockOpenSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
@@ -69,13 +69,13 @@
 					<span>Passwort</span>
 					<Input type="password" name="password" bind:value={password} placeholder="•••••" />
 				</Label>
-				<Button color={loginValue == 2 ? 'primary' : 'alternative'} on:click={adminClicked}
+				<Button color={accessValue == AdminAccess ? 'primary' : 'alternative'} on:click={adminClicked}
 					>Administrator</Button
 				>
-				<Button color={loginValue == 1 ? 'primary' : 'alternative'} on:click={ligaClicked}
+				<Button color={accessValue == ContributeAccess ? 'primary' : 'alternative'} on:click={ligaClicked}
 					>Liga-Eingabe</Button
 				>
-				<Button color={loginValue == 0 ? 'primary' : 'alternative'} on:click={guestClicked}
+				<Button color={accessValue == ReadAccess ? 'primary' : 'alternative'} on:click={guestClicked}
 					>Nur lesen</Button
 				>
 			</form>
