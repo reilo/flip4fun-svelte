@@ -1,5 +1,5 @@
 export async function load({fetch}) {
-    const pinsResponse = await fetch("/api/pins", {
+    const pinsResponse = await fetch("/api/pin", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
