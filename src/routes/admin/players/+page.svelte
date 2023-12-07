@@ -11,6 +11,19 @@
 	} from 'flowbite-svelte';
 
 	export let data;
+
+	async function updatePlayer(id, active) {
+		const url = '/api/player/' + id + '?active=' + active.toString();
+		const response = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const player = await response.json();
+		return player;
+	}
 </script>
 
 <div>
@@ -36,9 +49,9 @@
 					>
 					<TableBodyCell>
 						{#if player.active == true}
-							<Checkbox checked />
+							<Checkbox checked on:change={() => updatePlayer(player.id, !player.active)} />
 						{:else}
-							<Checkbox />
+							<Checkbox on:change={() => updatePlayer(player.id, !player.active)} />
 						{/if}
 					</TableBodyCell>
 				</TableBodyRow>

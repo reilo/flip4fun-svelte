@@ -24,12 +24,15 @@ model Player {
   surname   String
   shortname String?
   photo     String?
+  active    Boolean  @default(true)
 }
 
 model Tournament {
   id        String   @id @default(uuid())  
   name      String
   type      TournamentType
+  status    TournamentStatus @default(Planned)
+  testMode  Boolean @default(true)
   startDate DateTime
   endDate   DateTime
   players   String[]
@@ -58,4 +61,13 @@ enum PinManu {
 enum TournamentType {
   FlipLiga
   FlipFinal
+}
+
+enum TournamentStatus {
+  Planned
+  Active
+  Paused
+  Stopped
+  Completed
+  Archived
 }

@@ -13,7 +13,7 @@
 	export let data;
 
 	async function updatePin(id, active) {
-		const url = '/api/pins/' + id + '?active=' + active.toString();
+		const url = '/api/pin/' + id + '?active=' + active.toString();
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
