@@ -17,13 +17,40 @@
 	let openRow;
 	let details;
 
+	let sortKey = 'name';
+	let sortDirection = 1; // ascending
+	let items = data.pins.slice();
+
 	const toggleRow = (i) => {
 		openRow = openRow === i ? null : i;
 	};
 
-	$: items = data.pins.filter(
-		(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-	);
+	const sortTable = (key) => {
+		if (sortKey === key) {
+			sortDirection *= -1;
+		} else {
+			sortKey = key;
+			sortDirection = 1;
+		}
+	};
+
+	$: {
+		items = data.pins.slice();
+		const filtered = items.filter(
+			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+		);
+		const sorted = filtered.sort((a, b) => {
+			const aVal = a[sortKey];
+			const bVal = b[sortKey];
+			if (aVal < bVal) {
+				return -sortDirection;
+			} else if (aVal > bVal) {
+				return sortDirection;
+			}
+			return 0;
+		});
+		items = sorted;
+	}
 </script>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
@@ -36,19 +63,19 @@
 			<br />
 			Benutze das Suchfeld oben, um die Liste nach Flippernamen zu filtern.
 			{#if Device.isPhone}
-			<br />
-			Klicke auf eine Zeile, um mehr Informationen über einen Flipper zu erhalten.
+				<br />
+				Klicke auf eine Zeile, um mehr Informationen über einen Flipper zu erhalten.
 			{/if}
 		</p>
 	</caption>
 	<TableHead>
-		<TableHeadCell>Name</TableHeadCell>
+		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>
 		{#if !Device.isPhone}
-			<TableHeadCell>Hersteller</TableHeadCell>
-			<TableHeadCell>Jahr</TableHeadCell>
-			<TableHeadCell>Typ</TableHeadCell>
+			<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
+			<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
+			<TableHeadCell on:click={() => sortTable('type')}>Typ</TableHeadCell>
 		{/if}
-		<TableHeadCell>Aktiv</TableHeadCell>
+		<TableHeadCell on:click={() => sortTable('active')}>Aktiv</TableHeadCell>
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}

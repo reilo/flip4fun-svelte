@@ -50,10 +50,10 @@
 <br />
 
 <div class="grid grid-flow-row gap-1 sm:gap-3">
-	<Toggle checked={em} on:change={() => (em = !em)}>Elektromechanisch</Toggle>
+	<Toggle checked={em} on:change={() => (em = !em)}>Electromechanical</Toggle>
 	<Toggle checked={ee} on:change={() => (ee = !ee)}>Early Electronic</Toggle>
-	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD Flipper</Toggle>
-	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>Spike2-Flipper</Toggle>
+	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD-Flipper</Toggle>
+	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>LCD-Flipper</Toggle>
 	<div>
 		<br />
 		<Button size="xl" on:click={selectPin}>
