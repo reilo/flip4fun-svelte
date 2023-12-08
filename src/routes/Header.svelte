@@ -4,6 +4,7 @@
 	import { HomeSolid, LockSolid, LockTimeSolid, LockOpenSolid } from 'flowbite-svelte-icons';
 	import { DarkMode } from 'flowbite-svelte';
 
+	import { page } from '$app/stores';
 	import { access, ReadAccess, ContributeAccess, AdminAccess } from '../stores.js';
 
 	let accessValue = ReadAccess;
@@ -39,6 +40,8 @@
 		password = '';
 		formModal = false;
 	}
+
+	$: activeUrl = $page.url.pathname;
 </script>
 
 <header class="flex justify-between p-4 w-full max-w-full sm:max-w-7xl mx-auto">
@@ -47,10 +50,10 @@
 			<HomeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 		</NavBrand>
 		<NavHamburger on:click={toggle} />
-		<NavUl {hidden}>
+		<NavUl {hidden} {activeUrl}>
 			<NavLi href="/pins">Flipperliste</NavLi>
 			<NavLi href="/draw">Lostrommel</NavLi>
-			<NavLi href="/liga">Liga</NavLi>
+			<NavLi href="/liga">Liga/Turnier</NavLi>
 			<NavLi href="/admin">Administration</NavLi>
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>

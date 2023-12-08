@@ -15,7 +15,7 @@ export const GET = async () => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Flipperliste konnte nicht gelesen werden", error: e }),
+            JSON.stringify({ message: "Flipperliste konnte nicht geladen werden", error: e }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

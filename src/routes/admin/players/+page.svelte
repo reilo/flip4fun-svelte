@@ -28,7 +28,7 @@
 
 <div>
 	<Heading tag="h5">Spieler aktiv oder inaktiv schalten</Heading>
-	<P>Jede Änderung wird sofort gespeichert!</P>
+	<P>Jeder Klick wird sofort gespeichert!</P>
 	<br />
 
 	<Table hoverable={true}>

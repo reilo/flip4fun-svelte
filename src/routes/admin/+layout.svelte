@@ -10,7 +10,7 @@
 
 {#if accessValue >= AdminAccess}
 	<div class="flex flex-col sm:flex-row gap-3">
-		<Sidebar />
+		<!--Sidebar /-->
 		<slot />
 	</div>
 {:else}

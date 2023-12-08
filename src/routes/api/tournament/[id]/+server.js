@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const GET = async ({ params }) => {
     try {
-        const players = await prisma.player.findMany({
-            orderBy: [{ forename: 'asc' }, { surname: 'asc' }]
+        const tournament = await prisma.tournament.findUniqueOrThrow({
+            where: { id: params.id }
         });
         return new Response(
-            JSON.stringify({ players: players }),
+            JSON.stringify({ tournament: tournament }),
             {
                 status: 200, headers: { "Content-Type": "application/json" }
             }
@@ -15,7 +15,7 @@ export const GET = async () => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Spielerliste konnte nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Turnier konnte nicht geladen werden", error: e }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

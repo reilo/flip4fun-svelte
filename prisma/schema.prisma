@@ -30,7 +30,7 @@ model Player {
 model Tournament {
   id        String   @id @default(uuid())  
   name      String
-  type      TournamentType
+  type      String
   status    TournamentStatus @default(Planned)
   testMode  Boolean @default(true)
   startDate DateTime
@@ -58,16 +58,10 @@ enum PinManu {
   Zaccaria
 }
 
-enum TournamentType {
-  FlipLiga
-  FlipFinal
-}
-
 enum TournamentStatus {
   Planned
+  Ready
   Active
-  Paused
   Stopped
   Completed
-  Archived
 }
