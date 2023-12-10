@@ -8,6 +8,12 @@
 	import { NumberInput } from 'flowbite-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
 
+	import { access, ReadAccess, AdminAccess } from '../../stores.js';
+	let accessValue = ReadAccess;
+	access.subscribe((value) => {
+		accessValue = value;
+	});
+
 	async function updateAppointment(a) {
 		const url =
 			'/api/appointment/' + a.id + '?guests=' + a.guests.join() + '&counts=' + a.counts.join();
@@ -84,20 +90,26 @@
 	>
 		Gästeliste
 		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-			für den Loungeabend am {MapDate(appointment.date)} - insgesamt {totalCount} Gäste.
+			für {MapDate(appointment.date)}, insgesamt {totalCount} Gäste.
 		</p>
 	</caption>
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Anzahl</TableHeadCell>
-		<TableHeadCell></TableHeadCell>
+		{#if accessValue >= AdminAccess}
+			<TableHeadCell></TableHeadCell>
+		{/if}
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each appointment.guests as guestID, i}
 			<TableBodyRow>
-				<TableBodyCell>{allGuests.find((guest) => guest.id == guestID).name}</TableBodyCell>
-				<TableBodyCell>
+				<TableBodyCell tdClass="py-2 px-2"
+					>{allGuests.find((guest) => guest.id == guestID).name}</TableBodyCell
+				>
+				<TableBodyCell tdClass="py-2 px-2">
 					<NumberInput
+						disabled={accessValue < AdminAccess}
+						size="sm"
 						id={'numberInput_' + i}
 						value={appointment.counts[i]}
 						min="1"
@@ -105,40 +117,44 @@
 						on:input={() => countChanged(i)}
 					/>
 				</TableBodyCell>
-				<TableBodyCell>
-					<Button outline on:click={() => removeGuest(guestID)}>Löschen</Button>
-				</TableBodyCell>
+				{#if accessValue >= AdminAccess}
+					<TableBodyCell tdClass="py-2 px-2">
+						<Button outline size="sm" on:click={() => removeGuest(guestID)}>Löschen</Button>
+					</TableBodyCell>
+				{/if}
 			</TableBodyRow>
 		{/each}
 	</TableBody>
 </Table>
 <br />
-<div class="flex flex-col sm:flex-row content-center gap-3">
-	<div>
-		<Button on:click={() => (formModal = true)}
-			><ArrowRightSolid class="w-3.5 h-3.5 me-2" />Gast hinzufügen</Button
-		>
-		<Modal title="Gast hinzufügen" bind:open={formModal} autoclose={false} class="max-w-sm">
-			<form class="flex flex-col space-y-6" action="#">
-				<Select
-					class="w-44 p-3 space-y-3 text-sm"
-					items={data.guestMap.filter((item) => !appointment.guests.includes(item.value))}
-					bind:value={selectedGuest}
-					placeholder="Auswählen..."
-				></Select>
-				<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
-				<Button color="primary" on:click={() => (formModal = false)}>Abbrechen</Button>
-			</form>
-		</Modal>
+{#if accessValue >= AdminAccess}
+	<div class="flex flex-col sm:flex-row content-center gap-3">
+		<div>
+			<Button on:click={() => (formModal = true)}
+				><ArrowRightSolid class="w-3.5 h-3.5 me-2" />Gast hinzufügen</Button
+			>
+			<Modal title="Gast hinzufügen" bind:open={formModal} autoclose={false} class="max-w-sm">
+				<form class="flex flex-col space-y-6" action="#">
+					<Select
+						class="w-44 p-3 space-y-3 text-sm"
+						items={data.guestMap.filter((item) => !appointment.guests.includes(item.value))}
+						bind:value={selectedGuest}
+						placeholder="Auswählen..."
+					></Select>
+					<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
+					<Button color="primary" on:click={() => (formModal = false)}>Abbrechen</Button>
+				</form>
+			</Modal>
+		</div>
+		<div>
+			<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
+				<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
+			</Button>
+		</div>
+		<div>
+			<Button>
+				<RedoOutline class="w-3.5 h-3.5 me-2" />Zurücksetzen
+			</Button>
+		</div>
 	</div>
-	<div>
-		<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
-			<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
-		</Button>
-	</div>
-	<div>
-		<Button>
-			<RedoOutline class="w-3.5 h-3.5 me-2" />Zurücksetzen
-		</Button>
-	</div>
-</div>
+{/if}

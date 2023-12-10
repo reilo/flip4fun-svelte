@@ -1,6 +1,5 @@
 Gästeliste
 - Zurücksetzen, Datum PUT
-- Admin zum bearbeiten
 - (Historie)
 
 Liga/Turnier-Framework
