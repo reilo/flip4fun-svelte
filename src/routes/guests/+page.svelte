@@ -4,9 +4,29 @@
 	import { MapDate } from '$lib/utils';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { Modal, Select, Button } from 'flowbite-svelte';
+	import { P, Modal, Select, Button } from 'flowbite-svelte';
 	import { NumberInput } from 'flowbite-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
+
+	async function updateAppointment(item) {
+		const url =
+			'/api/appointment/' +
+			item.id +
+			'?guests=' +
+			item.guests.join() +
+			'&counts=' +
+			item.counts.join();
+		const response = await fetch(url, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const appointment = await response.json();
+		saveEnabled = false;
+		return appointment;
+	}
 
 	function addGuest() {
 		guests = [...guests, selectedGuest];
@@ -15,7 +35,8 @@
 		saveEnabled = true;
 	}
 
-	function removeGuest(i) {
+	function removeGuest(id) {
+		const i = guests.indexOf(id);
 		guests.splice(i, 1);
 		guests = guests;
 		counts.splice(i, 1);
@@ -25,6 +46,7 @@
 	let formModal = false;
 	let appointment = data.appointments[0];
 	let guests = appointment.guests.slice();
+	let allGuests = data.guests;
 	let counts = appointment.counts.slice();
 	let selectedGuest;
 	let saveEnabled = false;
@@ -52,12 +74,12 @@
 	<TableBody tableBodyClass="divide-y">
 		{#each appointment.guests as guestID, i}
 			<TableBodyRow>
-				<TableBodyCell>{data.guests.find((guest) => guest.id == guestID).name}</TableBodyCell>
+				<TableBodyCell>{allGuests.find((guest) => guest.id == guestID).name}</TableBodyCell>
 				<TableBodyCell>
 					<NumberInput value={appointment.counts[i]} min="1" max="10" />
 				</TableBodyCell>
 				<TableBodyCell>
-					<Button outline on:click={() => removeGuest('i')}>Löschen</Button>
+					<Button outline on:click={() => removeGuest(guestID)}>Löschen</Button>
 				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
@@ -73,18 +95,17 @@
 			<form class="flex flex-col space-y-6" action="#">
 				<Select
 					class="w-44 p-3 space-y-3 text-sm"
-					items={data.guestMap}
+					items={data.guestMap.filter((item) => !appointment.guests.includes(item.value))}
 					bind:value={selectedGuest}
 					placeholder="Auswählen..."
 				></Select>
-
 				<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
 				<Button color="primary" on:click={() => (formModal = false)}>Abbrechen</Button>
 			</form>
 		</Modal>
 	</div>
 	<div>
-		<Button disabled={!saveEnabled}>
+		<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
 			<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
 		</Button>
 	</div>
