@@ -37,3 +37,8 @@ export function MapBoolean(value) {
     }
     return mapped;
 }
+
+export function MapDate(value) {
+    let date = new Date(value);
+    return date.toLocaleDateString("de-DE");
+}

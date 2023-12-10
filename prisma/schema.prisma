@@ -19,26 +19,39 @@ model Pin {
 }
 
 model Player {
-  id        String   @id @default(uuid())  
+  id        String  @id @default(uuid())
   forename  String
   surname   String
   shortname String?
   photo     String?
-  active    Boolean  @default(true)
+  active    Boolean @default(true)
 }
 
 model Tournament {
-  id        String   @id @default(uuid())  
+  id        String           @id @default(uuid())
   name      String
   type      String
   status    TournamentStatus @default(Planned)
-  testMode  Boolean @default(true)
+  testMode  Boolean          @default(true)
   startDate DateTime
   endDate   DateTime
   players   String[]
   arenas    String[]
-  settings  Json 
+  settings  Json
   results   Json
+}
+
+model Guest {
+  id   String  @id @default(uuid())
+  name String
+  vip  Boolean @default(false)
+}
+
+model Appointment {
+  id     String   @id @default(uuid())
+  date   DateTime
+  guests String[]
+  counts Int[]
 }
 
 enum PinType {

@@ -53,8 +53,9 @@
 		<NavUl {hidden} {activeUrl}>
 			<NavLi href="/pins">Flipperliste</NavLi>
 			<NavLi href="/draw">Lostrommel</NavLi>
-			<NavLi href="/liga">Liga/Turnier</NavLi>
+			<NavLi href="/liga">Liga</NavLi>
 			<NavLi href="/admin">Administration</NavLi>
+			<NavLi href="/guests">Gästeliste</NavLi>
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
 		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
