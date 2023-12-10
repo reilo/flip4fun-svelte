@@ -1,9 +1,7 @@
 Gästeliste
-- Anzahl abgreifen und speichern
-- Zurücksetzen bzw. neu anlegen
-- alphabetisch sortieren
-- Datum PUT
+- Zurücksetzen, Datum PUT
 - Admin zum bearbeiten
+- (Historie)
 
 Liga/Turnier-Framework
 

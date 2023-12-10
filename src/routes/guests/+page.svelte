@@ -8,14 +8,9 @@
 	import { NumberInput } from 'flowbite-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
 
-	async function updateAppointment(item) {
+	async function updateAppointment(a) {
 		const url =
-			'/api/appointment/' +
-			item.id +
-			'?guests=' +
-			item.guests.join() +
-			'&counts=' +
-			item.counts.join();
+			'/api/appointment/' + a.id + '?guests=' + a.guests.join() + '&counts=' + a.counts.join();
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
@@ -41,6 +36,13 @@
 		guests = guests;
 		counts.splice(i, 1);
 		counts = counts;
+		saveEnabled = true;
+	}
+
+	function countChanged(i) {
+		const input = document.getElementById('numberInput_' + i).value;
+		counts[i] = parseInt(input);
+		saveEnabled = true;
 	}
 
 	let formModal = false;
@@ -50,10 +52,29 @@
 	let counts = appointment.counts.slice();
 	let selectedGuest;
 	let saveEnabled = false;
+	let totalCount = 0;
 
 	$: {
+		let objs = [];
+		for (let i = 0; i < guests.length; i++) {
+			objs.push({
+				id: guests[i],
+				cnt: counts[i],
+				name: allGuests.find((guest) => guest.id == guests[i]).name
+			});
+		}
+		objs.sort((a, b) => {
+			return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+		});
+		guests = [];
+		counts = [];
+		objs.forEach((obj) => {
+			guests.push(obj.id);
+			counts.push(obj.cnt);
+		});
 		appointment.guests = guests.slice();
 		appointment.counts = counts.slice();
+		totalCount = counts.reduce((partialSum, a) => partialSum + a, 0);
 	}
 </script>
 
@@ -63,7 +84,7 @@
 	>
 		Gästeliste
 		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-			für den Loungeabend am {MapDate(appointment.date)}.
+			für den Loungeabend am {MapDate(appointment.date)} - insgesamt {totalCount} Gäste.
 		</p>
 	</caption>
 	<TableHead>
@@ -76,7 +97,13 @@
 			<TableBodyRow>
 				<TableBodyCell>{allGuests.find((guest) => guest.id == guestID).name}</TableBodyCell>
 				<TableBodyCell>
-					<NumberInput value={appointment.counts[i]} min="1" max="10" />
+					<NumberInput
+						id={'numberInput_' + i}
+						value={appointment.counts[i]}
+						min="1"
+						max="10"
+						on:input={() => countChanged(i)}
+					/>
 				</TableBodyCell>
 				<TableBodyCell>
 					<Button outline on:click={() => removeGuest(guestID)}>Löschen</Button>
