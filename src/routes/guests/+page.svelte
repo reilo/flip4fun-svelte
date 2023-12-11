@@ -4,8 +4,9 @@
 	import { MapDate } from '$lib/utils';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { P, Modal, Select, Button } from 'flowbite-svelte';
+	import { P, Modal, Select, Button, Checkbox } from 'flowbite-svelte';
 	import { NumberInput } from 'flowbite-svelte';
+	import { DatePicker } from 'date-picker-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
 
 	import { access, ReadAccess, AdminAccess } from '../../stores.js';
@@ -14,9 +15,16 @@
 		accessValue = value;
 	});
 
-	async function updateAppointment(a) {
+	async function updateAppointment(appointment) {
 		const url =
-			'/api/appointment/' + a.id + '?guests=' + a.guests.join() + '&counts=' + a.counts.join();
+			'/api/appointment/' +
+			appointment.id +
+			'?guests=' +
+			appointment.guests.join() +
+			'&counts=' +
+			appointment.counts.join() +
+			'&date=' +
+			appointment.date;
 		const response = await fetch(url, {
 			method: 'PUT',
 			headers: {
@@ -24,15 +32,14 @@
 				Accept: 'application/json'
 			}
 		});
-		const appointment = await response.json();
+		await response.json();
 		saveEnabled = false;
-		return appointment;
 	}
 
 	function addGuest() {
 		guests = [...guests, selectedGuest];
 		counts = [...counts, 1];
-		formModal = false;
+		addModal = false;
 		saveEnabled = true;
 	}
 
@@ -51,7 +58,13 @@
 		saveEnabled = true;
 	}
 
-	let formModal = false;
+	function resetList() {
+		saveEnabled = true;
+		resetModal = false;
+	}
+
+	let addModal = false;
+	let resetModal = false;
 	let appointment = data.appointments[0];
 	let guests = appointment.guests.slice();
 	let allGuests = data.guests;
@@ -130,10 +143,10 @@
 {#if accessValue >= AdminAccess}
 	<div class="flex flex-col sm:flex-row content-center gap-3">
 		<div>
-			<Button on:click={() => (formModal = true)}
+			<Button on:click={() => (addModal = true)}
 				><ArrowRightSolid class="w-3.5 h-3.5 me-2" />Gast hinzufügen</Button
 			>
-			<Modal title="Gast hinzufügen" bind:open={formModal} autoclose={false} class="max-w-sm">
+			<Modal title="Gast hinzufügen" bind:open={addModal} autoclose={false} class="max-w-sm">
 				<form class="flex flex-col space-y-6" action="#">
 					<Select
 						class="w-44 p-3 space-y-3 text-sm"
@@ -142,7 +155,7 @@
 						placeholder="Auswählen..."
 					></Select>
 					<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
-					<Button color="primary" on:click={() => (formModal = false)}>Abbrechen</Button>
+					<Button color="primary" on:click={() => (addModal = false)}>Abbrechen</Button>
 				</form>
 			</Modal>
 		</div>
@@ -152,9 +165,17 @@
 			</Button>
 		</div>
 		<div>
-			<Button>
+			<Button on:click={() => (resetModal = true)}>
 				<RedoOutline class="w-3.5 h-3.5 me-2" />Zurücksetzen
 			</Button>
+			<Modal title="Liste zurücksetzen" bind:open={resetModal} autoclose={false} class="max-w-sm">
+				<form class="flex flex-col space-y-6" action="#">
+					<DatePicker>Datum</DatePicker>
+					<Checkbox checked>VIPs sofort hinzufügen</Checkbox>
+					<Button color="alternative" on:click={resetList}>Bestätigen</Button>
+					<Button color="primary" on:click={() => (resetModal = false)}>Abbrechen</Button>
+				</form>
+			</Modal>
 		</div>
 	</div>
 {/if}

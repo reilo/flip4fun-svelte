@@ -40,6 +40,11 @@ export const PUT = async ({ params, url }) => {
             counts.forEach(count => data.counts.push(Number(count)));
         }
 
+        const dateParam = aUrl.searchParams.get("date");
+        if (dateParam != null) {
+            data.date = dateParam;
+        }
+
         const updatedAppointment = await prisma.appointment.update({
             where: { id: params.id }, data: data
         });
