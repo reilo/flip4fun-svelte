@@ -15,6 +15,8 @@
 		accessValue = value;
 	});
 
+	const allGuests = data.guests;
+
 	async function updateAppointment(appointment) {
 		const url =
 			'/api/appointment/' +
@@ -59,6 +61,18 @@
 	}
 
 	function resetList() {
+		let newGuests = [];
+		let newCounts = [];
+		if (vip) {
+			allGuests.forEach((guest) => {
+				if (guest.vip) {
+					newGuests.push(guest.id);
+					newCounts.push(1);
+				}
+			});
+		}
+		guests = newGuests;
+		counts = newCounts;
 		saveEnabled = true;
 		resetModal = false;
 	}
@@ -67,11 +81,12 @@
 	let resetModal = false;
 	let appointment = data.appointments[0];
 	let guests = appointment.guests.slice();
-	let allGuests = data.guests;
 	let counts = appointment.counts.slice();
 	let selectedGuest;
 	let saveEnabled = false;
 	let totalCount = 0;
+	let newDate = new Date(appointment.date);
+	let vip = true;
 
 	$: {
 		let objs = [];
@@ -93,11 +108,12 @@
 		});
 		appointment.guests = guests.slice();
 		appointment.counts = counts.slice();
+		appointment.date = newDate.toISOString();
 		totalCount = counts.reduce((partialSum, a) => partialSum + a, 0);
 	}
 </script>
 
-<Table hoverable={true}>
+<Table hoverable={true} class="max-w-fit">
 	<caption
 		class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
 	>
@@ -170,8 +186,9 @@
 			</Button>
 			<Modal title="Liste zurücksetzen" bind:open={resetModal} autoclose={false} class="max-w-sm">
 				<form class="flex flex-col space-y-6" action="#">
-					<DatePicker>Datum</DatePicker>
-					<Checkbox checked>VIPs sofort hinzufügen</Checkbox>
+					<P>Nächster Termin:</P>
+					<DatePicker bind:value={newDate} />
+					<Checkbox bind:checked={vip}>VIPs sofort hinzufügen</Checkbox>
 					<Button color="alternative" on:click={resetList}>Bestätigen</Button>
 					<Button color="primary" on:click={() => (resetModal = false)}>Abbrechen</Button>
 				</form>

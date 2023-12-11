@@ -1,11 +1,10 @@
-Gästeliste
-- Zurücksetzen, Datum PUT
-- (Historie)
+Essentiell:
+- Liga/Turnier-Framework!!!
 
-Liga/Turnier-Framework
+Nice to have:
+- CRUD-Funktionen Pins/Spieler/Gäste!
 
-
-CRUD-Funktionen Pins/Spieler/Gäste
-
-Flipperliste mehr Funktionen
-Mehr Pin-Details: Auflage, Designer, Art Designer
+ferner (falls Zeit ist):
+- Gästeliste Historie
+- Flipperliste mehr Funktionen
+- Mehr Pin-Details: Auflage, Designer, Art Designer
