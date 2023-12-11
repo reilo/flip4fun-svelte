@@ -5,7 +5,7 @@
 	import { DarkMode } from 'flowbite-svelte';
 
 	import { page } from '$app/stores';
-	import { access, ReadAccess, ContributeAccess, AdminAccess } from '../stores.js';
+	import { access, ReadAccess, ContributeAccess, AdminAccess } from '../../stores.js';
 
 	let accessValue = ReadAccess;
 	access.subscribe((value) => {
