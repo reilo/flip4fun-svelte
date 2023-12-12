@@ -9,12 +9,6 @@
 	import { DatePicker } from 'date-picker-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
 
-	import { access, ReadAccess, AdminAccess } from '../../stores.js';
-	let accessValue = ReadAccess;
-	access.subscribe((value) => {
-		accessValue = value;
-	});
-
 	const allGuests = data.guests;
 
 	async function updateAppointment(appointment) {
@@ -125,9 +119,7 @@
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Anzahl</TableHeadCell>
-		{#if accessValue >= AdminAccess}
 			<TableHeadCell></TableHeadCell>
-		{/if}
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each appointment.guests as guestID, i}
@@ -137,7 +129,7 @@
 				>
 				<TableBodyCell tdClass="py-2 px-2">
 					<NumberInput
-						disabled={accessValue < AdminAccess}
+						disabled=false
 						size="sm"
 						id={'numberInput_' + i}
 						value={appointment.counts[i]}
@@ -146,17 +138,14 @@
 						on:input={() => countChanged(i)}
 					/>
 				</TableBodyCell>
-				{#if accessValue >= AdminAccess}
 					<TableBodyCell tdClass="py-2 px-2">
 						<Button outline size="sm" on:click={() => removeGuest(guestID)}>Löschen</Button>
 					</TableBodyCell>
-				{/if}
 			</TableBodyRow>
 		{/each}
 	</TableBody>
 </Table>
 <br />
-{#if accessValue >= AdminAccess}
 	<div class="flex flex-col sm:flex-row content-center gap-3">
 		<div>
 			<Button on:click={() => (addModal = true)}
@@ -195,4 +184,3 @@
 			</Modal>
 		</div>
 	</div>
-{/if}

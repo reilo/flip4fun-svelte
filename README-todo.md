@@ -1,3 +1,6 @@
+Flipper Kategorien anpassen
+Spieler/Gäste zusammenfassen
+
 Code kommentieren, insbes. Component Parameter
 Strings lokalisieren
 Tabellen IDs überarbeiten
