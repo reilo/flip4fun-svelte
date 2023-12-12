@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Pin {
-  id     String   @id @default(uuid())
+  id     String   @id
   name   String
   code   String?
   manu   PinManu
@@ -19,7 +19,7 @@ model Pin {
 }
 
 model Player {
-  id        String  @id @default(uuid())
+  id        String  @id
   forename  String
   surname   String
   shortname String?
@@ -42,13 +42,13 @@ model Tournament {
 }
 
 model Guest {
-  id   String  @id @default(uuid())
+  id   String  @id
   name String
   vip  Boolean @default(false)
 }
 
 model Appointment {
-  id     String   @id @default(uuid())
+  id     String   @id
   date   DateTime
   guests String[]
   counts Int[]

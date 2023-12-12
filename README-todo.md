@@ -1,3 +1,8 @@
+Code kommentieren, insbes. Component Parameter
+Strings lokalisieren
+Tabellen IDs überarbeiten
+Fehlerbehandlung
+
 Essentiell:
 - Liga/Turnier-Framework!!!
 
