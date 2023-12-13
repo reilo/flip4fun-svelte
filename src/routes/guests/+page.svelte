@@ -129,7 +129,6 @@
 				>
 				<TableBodyCell tdClass="py-2 px-2">
 					<NumberInput
-						disabled=false
 						size="sm"
 						id={'numberInput_' + i}
 						value={appointment.counts[i]}

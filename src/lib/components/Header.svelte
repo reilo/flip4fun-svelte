@@ -54,8 +54,10 @@
 			<NavLi href="/pins">Flipperliste</NavLi>
 			<NavLi href="/draw">Lostrommel</NavLi>
 			<NavLi href="/liga">Liga</NavLi>
-			<NavLi href="/admin">Administration</NavLi>
-			<NavLi href="/guests">Gästeliste</NavLi>
+			{#if accessValue >= AdminAccess}
+				<NavLi href="/admin">Administration</NavLi>
+				<NavLi href="/guests">Gästeliste</NavLi>
+			{/if}
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
 		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
@@ -73,14 +75,17 @@
 					<span>Passwort</span>
 					<Input type="password" name="password" bind:value={password} placeholder="•••••" />
 				</Label>
-				<Button color={accessValue == AdminAccess ? 'primary' : 'alternative'} on:click={adminClicked}
-					>Administrator</Button
+				<Button
+					color={accessValue == AdminAccess ? 'primary' : 'alternative'}
+					on:click={adminClicked}>Administrator</Button
 				>
-				<Button color={accessValue == ContributeAccess ? 'primary' : 'alternative'} on:click={ligaClicked}
-					>Liga-Eingabe</Button
+				<Button
+					color={accessValue == ContributeAccess ? 'primary' : 'alternative'}
+					on:click={ligaClicked}>Liga-Eingabe</Button
 				>
-				<Button color={accessValue == ReadAccess ? 'primary' : 'alternative'} on:click={guestClicked}
-					>Nur lesen</Button
+				<Button
+					color={accessValue == ReadAccess ? 'primary' : 'alternative'}
+					on:click={guestClicked}>Nur lesen</Button
 				>
 			</form>
 		</Modal>
