@@ -2,7 +2,7 @@ export async function load({ fetch }) {
 
     const[guestsResponse, appointmentsResponse] = 
     await Promise.all([
-        fetch("api/guest", {
+        fetch("api/player", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -21,11 +21,11 @@ export async function load({ fetch }) {
     const guestData = await guestsResponse.json();
     const appointmentData = await appointmentsResponse.json();
 
-    const guests = guestData.guests;
+    const guests = guestData.players;
     const appointments = appointmentData.appointments;
 
     let guestMap = [];
-    guests.map((item) => guestMap.push({ name: item.name, value: item.id }));
+    guests.map((item) => guestMap.push({ name: item.forename + " " + item.surname, value: item.id }));
 
     return {guests, appointments, guestMap};
   

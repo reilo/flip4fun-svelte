@@ -71,11 +71,20 @@
 		resetModal = false;
 	}
 
+	function getGuestNameFromId(id) {
+		let guest = allGuests.find((guest) => guest.id == id);
+		return guest.forename + ' ' + guest.surname;
+	}
+
 	let addModal = false;
 	let resetModal = false;
 	let appointment = data.appointments[0];
 	let guests = appointment.guests.slice();
 	let counts = appointment.counts.slice();
+	if (guests.length == 1 && guests[0] == "") {
+		guests = [];
+		counts = [];
+	}
 	let selectedGuest;
 	let saveEnabled = false;
 	let totalCount = 0;
@@ -88,7 +97,7 @@
 			objs.push({
 				id: guests[i],
 				cnt: counts[i],
-				name: allGuests.find((guest) => guest.id == guests[i]).name
+				name: getGuestNameFromId(guests[i])
 			});
 		}
 		objs.sort((a, b) => {
@@ -119,14 +128,12 @@
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Anzahl</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
+		<TableHeadCell></TableHeadCell>
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each appointment.guests as guestID, i}
 			<TableBodyRow>
-				<TableBodyCell tdClass="py-2 px-2"
-					>{allGuests.find((guest) => guest.id == guestID).name}</TableBodyCell
-				>
+				<TableBodyCell tdClass="py-2 px-2">{getGuestNameFromId(guestID)}</TableBodyCell>
 				<TableBodyCell tdClass="py-2 px-2">
 					<NumberInput
 						size="sm"
@@ -137,49 +144,49 @@
 						on:input={() => countChanged(i)}
 					/>
 				</TableBodyCell>
-					<TableBodyCell tdClass="py-2 px-2">
-						<Button outline size="sm" on:click={() => removeGuest(guestID)}>Löschen</Button>
-					</TableBodyCell>
+				<TableBodyCell tdClass="py-2 px-2">
+					<Button outline size="sm" on:click={() => removeGuest(guestID)}>Löschen</Button>
+				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 	</TableBody>
 </Table>
 <br />
-	<div class="flex flex-col sm:flex-row content-center gap-3">
-		<div>
-			<Button on:click={() => (addModal = true)}
-				><ArrowRightSolid class="w-3.5 h-3.5 me-2" />Gast hinzufügen</Button
-			>
-			<Modal title="Gast hinzufügen" bind:open={addModal} autoclose={false} class="max-w-sm">
-				<form class="flex flex-col space-y-6" action="#">
-					<Select
-						class="w-44 p-3 space-y-3 text-sm"
-						items={data.guestMap.filter((item) => !appointment.guests.includes(item.value))}
-						bind:value={selectedGuest}
-						placeholder="Auswählen..."
-					></Select>
-					<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
-					<Button color="primary" on:click={() => (addModal = false)}>Abbrechen</Button>
-				</form>
-			</Modal>
-		</div>
-		<div>
-			<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
-				<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
-			</Button>
-		</div>
-		<div>
-			<Button on:click={() => (resetModal = true)}>
-				<RedoOutline class="w-3.5 h-3.5 me-2" />Zurücksetzen
-			</Button>
-			<Modal title="Liste zurücksetzen" bind:open={resetModal} autoclose={false} class="max-w-sm">
-				<form class="flex flex-col space-y-6" action="#">
-					<P>Nächster Termin:</P>
-					<DatePicker bind:value={newDate} />
-					<Checkbox bind:checked={vip}>VIPs sofort hinzufügen</Checkbox>
-					<Button color="alternative" on:click={resetList}>Bestätigen</Button>
-					<Button color="primary" on:click={() => (resetModal = false)}>Abbrechen</Button>
-				</form>
-			</Modal>
-		</div>
+<div class="flex flex-col sm:flex-row content-center gap-3">
+	<div>
+		<Button on:click={() => (addModal = true)}
+			><ArrowRightSolid class="w-3.5 h-3.5 me-2" />Gast hinzufügen</Button
+		>
+		<Modal title="Gast hinzufügen" bind:open={addModal} autoclose={false} class="max-w-sm">
+			<form class="flex flex-col space-y-6" action="#">
+				<Select
+					class="w-44 p-3 space-y-3 text-sm"
+					items={data.guestMap.filter((item) => !appointment.guests.includes(item.value))}
+					bind:value={selectedGuest}
+					placeholder="Auswählen..."
+				></Select>
+				<Button color="alternative" on:click={addGuest}>Bestätigen</Button>
+				<Button color="primary" on:click={() => (addModal = false)}>Abbrechen</Button>
+			</form>
+		</Modal>
 	</div>
+	<div>
+		<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
+			<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
+		</Button>
+	</div>
+	<div>
+		<Button on:click={() => (resetModal = true)}>
+			<RedoOutline class="w-3.5 h-3.5 me-2" />Zurücksetzen
+		</Button>
+		<Modal title="Liste zurücksetzen" bind:open={resetModal} autoclose={false} class="max-w-sm">
+			<form class="flex flex-col space-y-6" action="#">
+				<P>Nächster Termin:</P>
+				<DatePicker bind:value={newDate} />
+				<Checkbox bind:checked={vip}>VIPs sofort hinzufügen</Checkbox>
+				<Button color="alternative" on:click={resetList}>Bestätigen</Button>
+				<Button color="primary" on:click={() => (resetModal = false)}>Abbrechen</Button>
+			</form>
+		</Modal>
+	</div>
+</div>

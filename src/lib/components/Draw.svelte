@@ -50,10 +50,10 @@
 <br />
 
 <div class="grid grid-flow-row gap-2 sm:gap-3">
-	<Toggle checked={em} on:change={() => (em = !em)}>Electromechanical</Toggle>
-	<Toggle checked={ee} on:change={() => (ee = !ee)}>Early Electronic</Toggle>
-	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD-Flipper</Toggle>
-	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>LCD-Flipper</Toggle>
+	<Toggle checked={em} on:change={() => (em = !em)}>EM und very EE (bis Ende 70er)</Toggle>
+	<Toggle checked={ee} on:change={() => (ee = !ee)}>Early Electronic (bis Ende 80er, Sys11)</Toggle>
+	<Toggle checked={dmd} on:change={() => (dmd = !dmd)}>DMD-Flipper (bis 2005, WPC)</Toggle>
+	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>Moderne Flipper (SAM, Spike)</Toggle>
 	<div>
 		<br />
 		<Button size="xl" on:click={selectPin}>

@@ -25,6 +25,7 @@ model Player {
   shortname String?
   photo     String?
   active    Boolean @default(true)
+  vip       Boolean @default(false)
 }
 
 model Tournament {
@@ -52,6 +53,7 @@ model Appointment {
   date   DateTime
   guests String[]
   counts Int[]
+  checks Boolean[]
 }
 
 enum PinType {
