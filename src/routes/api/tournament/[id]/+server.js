@@ -22,3 +22,11 @@ export const GET = async ({ params }) => {
         )
     }
 }
+
+export const POST = async () => {
+
+}
+
+export const PUT = async () => {
+
+}

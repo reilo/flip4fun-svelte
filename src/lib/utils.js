@@ -22,6 +22,28 @@ export function MapTourStatus(status) {
     return mapped;
 }
 
+export function MapTourType(ttype) {
+    let mapped;
+    switch (ttype) {
+        case "flipliga":
+            mapped = "FLIP-Liga";
+            break;
+        case "flipfinal":
+            mapped = "FLIP-Finale";
+            break;
+        default:
+            mapped = "Unbekannt";
+    }
+    return mapped;
+}
+
+export function GetTourTypeMap() {
+    return [
+        { 'name': 'FLIP-Liga', 'value': 'flipliga' },
+        { 'name': 'FLIP-Finale', 'value': 'flipfinal' },
+    ]
+}
+
 export function MapBoolean(value) {
     let mapped;
     switch (value) {
@@ -32,8 +54,9 @@ export function MapBoolean(value) {
         case false:
         case "false":
             mapped = "nein";
+            break;
         default:
-            "jein";
+            mapped = "jein";
     }
     return mapped;
 }

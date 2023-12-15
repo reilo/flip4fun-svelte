@@ -1,6 +1,5 @@
 Code kommentieren, insbes. Component Parameter
 Strings lokalisieren
-Tabellen IDs überarbeiten
 Fehlerbehandlung
 
 Gäste Checklist, Summe noch fehlender Gäste

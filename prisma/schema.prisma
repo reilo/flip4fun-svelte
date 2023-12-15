@@ -42,12 +42,6 @@ model Tournament {
   results   Json
 }
 
-model Guest {
-  id   String  @id
-  name String
-  vip  Boolean @default(false)
-}
-
 model Appointment {
   id     String   @id
   date   DateTime
