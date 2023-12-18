@@ -3,15 +3,36 @@
 	import { Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { MapBoolean, MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
+	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
+	import { DateInput } from 'date-picker-svelte';
 
 	export let data;
 
-	function createTour() {}
+	async function createTour() {
+		const url = '/api/tournament';
+		const response = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify({
+				name: newTourName,
+				type: newTourType,
+				startDate: newTourStartDate.toISOString(),
+				endDate: newTourEndDate.toISOString()
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		let result = await response.json();
+		data.tournaments = [...data.tournaments, result.tournament];
+		newForm = false;
+	}
 
 	let newForm = false;
 	let newTourName = '';
 	let newTourType = '';
+	let newTourStartDate = new Date();
+	let newTourEndDate = new Date();
 </script>
 
 <div>
@@ -74,15 +95,31 @@
 		<form class="flex flex-col space-y-6" action="#">
 			<Label class="space-y-2">
 				<span></span>
-				<Input bind:value={newTourName} placeholder="Name des neuen Turniers" />
+				<Input bind:value={newTourName} placeholder="Turnier-Name" />
 			</Label>
 			<Select
-			class="w-44 p-3 space-y-3 text-sm"
-			items={GetTourTypeMap()}
-			bind:value={newTourType}
-			placeholder="Typ des neuen Turniers"
-		></Select>
-	<Button color="alternative" on:click={createTour}>Anlegen</Button>
+				class="w-44 p-3 space-y-3 text-sm"
+				items={GetTourTypeMap()}
+				bind:value={newTourType}
+				placeholder="Turnier-Typ"
+			></Select>
+			<Label class="space-y-2">
+				<span>Turnier-Beginn</span>
+				<DateInput
+					bind:value={newTourStartDate}
+					format="dd.MM.yyyy"
+					placeholder={new Date().toLocaleDateString()}
+				/>
+			</Label>
+			<Label class="space-y-2">
+				<span>Turnier-Ende</span>
+				<DateInput
+					bind:value={newTourEndDate}
+					format="dd.MM.yyyy"
+					placeholder={new Date().toLocaleDateString()}
+				/>
+			</Label>
+			<Button color="alternative" on:click={createTour}>Anlegen</Button>
 			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
 		</form>
 	</Modal>

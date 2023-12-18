@@ -2,7 +2,6 @@ Code kommentieren, insbes. Component Parameter
 Strings lokalisieren
 Fehlerbehandlung
 
-Gäste Checklist, Summe noch fehlender Gäste
 
 Essentiell:
 - Liga/Turnier-Framework!!!
