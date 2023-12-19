@@ -21,8 +21,10 @@
 				Accept: 'application/json'
 			}
 		});
-		const player = await response.json();
-		return player;
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 </script>
 

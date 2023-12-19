@@ -21,8 +21,10 @@
 				Accept: 'application/json'
 			}
 		});
-		const pin = await response.json();
-		return pin;
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 </script>
 

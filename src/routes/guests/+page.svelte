@@ -28,8 +28,12 @@
 				Accept: 'application/json'
 			}
 		});
-		await response.json();
-		saveEnabled = false;
+		let result = await response.json();
+		if (response.status === 200) {
+			saveEnabled = false;
+		} else {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	function addGuest() {
@@ -81,7 +85,7 @@
 	let appointment = data.appointments[0];
 	let guests = appointment.guests.slice();
 	let counts = appointment.counts.slice();
-	if (guests.length == 1 && guests[0] == "") {
+	if (guests.length == 1 && guests[0] == '') {
 		guests = [];
 		counts = [];
 	}
