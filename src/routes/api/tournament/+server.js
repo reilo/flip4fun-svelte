@@ -1,3 +1,4 @@
+import { IsValidDate } from "$lib/utils.js";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -35,11 +36,38 @@ export const GET = async () => {
 export const POST = async ({ request }) => {
     try {
         const body = await request.json();
+
+        if (body.name === undefined) {
+            throw "name is undefined";
+        } else if (body.name === "") {
+            throw "name is empty";
+        }
+
+        if (body.type === undefined) {
+            throw "type is undefined";
+        } else if (body.type === "") {
+            throw "type is empty";
+        } else if (body.type !== "flipfinal" && body.type !== "flipliga") {
+            throw "type " + body.type + " is unknown";
+        }
+
+        let startDate, endDate;
+        if (body.startDate !== undefined) {
+            startDate = body.startDate;
+        } else {
+            startDate = (new Date()).toISOString();
+        }
+        if (body.endDate !== undefined) {
+            endDate = body.endDate;
+        } else {
+            endDate = (new Date()).toISOString();
+        }
+
         const data = {
             name: body.name,
             type: body.type,
-            startDate: body.startDate,
-            endDate: body.endDate,
+            startDate: startDate,
+            endDate: endDate,
             players: [],
             arenas: [],
             settings: {},

@@ -9,14 +9,13 @@
 	export let data;
 
 	async function createTour() {
-		const url = '/api/tournament';
-		const response = await fetch(url, {
+		const response = await fetch('/api/tournament', {
 			method: 'POST',
 			body: JSON.stringify({
 				name: newTourName,
 				type: newTourType,
 				startDate: newTourStartDate.toISOString(),
-				endDate: newTourEndDate.toISOString()
+				endDate: newTourEndDate.toISOString(),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -24,8 +23,12 @@
 			}
 		});
 		let result = await response.json();
-		data.tournaments = [...data.tournaments, result.tournament];
-		newForm = false;
+		if (response.status === 200) {
+			data.tournaments = [...data.tournaments, result.tournament];
+			newForm = false;
+		} else {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	let newForm = false;
@@ -33,6 +36,7 @@
 	let newTourType = '';
 	let newTourStartDate = new Date();
 	let newTourEndDate = new Date();
+
 </script>
 
 <div>
