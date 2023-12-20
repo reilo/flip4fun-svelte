@@ -6,7 +6,6 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { P, Modal, Select, Button, Checkbox } from 'flowbite-svelte';
 	import { NumberInput } from 'flowbite-svelte';
-	import { DatePicker } from 'date-picker-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
 
 	const allGuests = data.guests;
@@ -82,7 +81,7 @@
 
 	let addModal = false;
 	let resetModal = false;
-	let appointment = data.appointments[0];
+	let appointment = data.appointment;
 	let guests = appointment.guests.slice();
 	let counts = appointment.counts.slice();
 	if (guests.length == 1 && guests[0] == '') {
@@ -93,9 +92,11 @@
 	let saveEnabled = false;
 	let totalCount = 0;
 	let newDate = new Date(appointment.date);
+	let newDateAsStrg = newDate.toString();
 	let vip = true;
 
 	$: {
+		newDate = new Date(newDateAsStrg);
 		let objs = [];
 		for (let i = 0; i < guests.length; i++) {
 			objs.push({
@@ -186,7 +187,7 @@
 		<Modal title="Liste zurücksetzen" bind:open={resetModal} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
 				<P>Nächster Termin:</P>
-				<DatePicker bind:value={newDate} />
+				<input type="date" bind:value={newDateAsStrg} />
 				<Checkbox bind:checked={vip}>VIPs sofort hinzufügen</Checkbox>
 				<Button color="alternative" on:click={resetList}>Bestätigen</Button>
 				<Button color="primary" on:click={() => (resetModal = false)}>Abbrechen</Button>

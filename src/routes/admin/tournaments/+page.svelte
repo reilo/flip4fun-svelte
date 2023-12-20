@@ -4,7 +4,6 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
-	import { DateInput } from 'date-picker-svelte';
 
 	export let data;
 
@@ -36,7 +35,13 @@
 	let newTourType = '';
 	let newTourStartDate = new Date();
 	let newTourEndDate = new Date();
+	let newTourStartDateAsStrg = newTourStartDate.toString();
+	let newTourEndDateAsStrg = newTourEndDate.toString();
 
+	$: {
+		newTourStartDate = new Date(newTourStartDateAsStrg);
+		newTourEndDate = new Date(newTourEndDateAsStrg);
+	}
 </script>
 
 <div>
@@ -108,20 +113,12 @@
 				placeholder="Turnier-Typ"
 			></Select>
 			<Label class="space-y-2">
-				<span>Turnier-Beginn</span>
-				<DateInput
-					bind:value={newTourStartDate}
-					format="dd.MM.yyyy"
-					placeholder={new Date().toLocaleDateString()}
-				/>
+				<span>Turnier-Beginn</span><br />
+				<input type="date" bind:value={newTourStartDateAsStrg} />
 			</Label>
 			<Label class="space-y-2">
-				<span>Turnier-Ende</span>
-				<DateInput
-					bind:value={newTourEndDate}
-					format="dd.MM.yyyy"
-					placeholder={new Date().toLocaleDateString()}
-				/>
+				<span>Turnier-Ende</span><br />
+				<input type="date" bind:value={newTourEndDateAsStrg} />
 			</Label>
 			<Button color="alternative" on:click={createTour}>Anlegen</Button>
 			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>

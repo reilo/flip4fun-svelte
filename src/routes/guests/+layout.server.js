@@ -22,11 +22,11 @@ export async function load({ fetch }) {
     const appointmentData = await appointmentsResponse.json();
 
     const guests = guestData.players;
-    const appointments = appointmentData.appointments;
+    const appointment = appointmentData.appointments[0];
 
     let guestMap = [];
     guests.map((item) => guestMap.push({ name: item.forename + " " + item.surname, value: item.id }));
 
-    return {guests, appointments, guestMap};
+    return {guests, appointment, guestMap};
   
 }
