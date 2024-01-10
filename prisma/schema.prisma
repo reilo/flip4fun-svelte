@@ -47,7 +47,7 @@ model Appointment {
   date   DateTime
   guests String[]
   counts Int[]
-  checks Boolean[]
+  active Boolean  @default(true)
 }
 
 enum PinType {

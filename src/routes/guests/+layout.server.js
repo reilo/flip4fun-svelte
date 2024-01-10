@@ -22,7 +22,9 @@ export async function load({ fetch }) {
     const appointmentData = await appointmentsResponse.json();
 
     const guests = guestData.players;
-    const appointment = appointmentData.appointments[0];
+    const appointments = appointmentData.appointments.filter((a) => { return a.active } );
+    // todo: add error handling
+    const appointment = appointments[0];
 
     let guestMap = [];
     guests.map((item) => guestMap.push({ name: item.forename + " " + item.surname, value: item.id }));
