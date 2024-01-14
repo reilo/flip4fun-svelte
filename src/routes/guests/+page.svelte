@@ -10,7 +10,7 @@
 
 	const allGuests = data.guests;
 
-	async function updateAppointment(appointment) {
+	async function updateAppointment() {
 		const url =
 			'/api/appointment/' +
 			appointment.id +
@@ -176,7 +176,7 @@
 		</Modal>
 	</div>
 	<div>
-		<Button disabled={!saveEnabled} on:click={() => updateAppointment(appointment)}>
+		<Button disabled={!saveEnabled} on:click={() => updateAppointment()}>
 			<CheckSolid class="w-3.5 h-3.5 me-2" />Speichern
 		</Button>
 	</div>
