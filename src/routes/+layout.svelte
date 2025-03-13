@@ -12,7 +12,7 @@
 	</main>
 
 	<Footer>
-		<FooterCopyright href="/" by="Reinhard Loch." year={2023} />
+		<FooterCopyright href="/" by="Reinhard Loch." year={'2023-2025'} />
 		<!--FooterLinkGroup class="flex flex-wrap justify-center text-sm text-gray-500 dark:text-gray-400">
 			<FooterLink href="/about">Info</FooterLink>
 			<FooterLink href="/about">Lizenz</FooterLink>

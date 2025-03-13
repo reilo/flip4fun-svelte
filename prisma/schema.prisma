@@ -8,14 +8,14 @@ datasource db {
 }
 
 model Pin {
-  id     String   @id
-  name   String
-  code   String?
-  manu   PinManu
-  year   Int
-  type   PinType
-  owner  String[]
-  active Boolean  @default(true)
+  id      String   @id
+  name    String
+  code    String?
+  manu    PinManu
+  year    Int
+  type    PinType
+  active  Boolean  @default(true)
+  deleted Boolean  @default(false)
 }
 
 model Player {
@@ -25,7 +25,6 @@ model Player {
   shortname String?
   photo     String?
   active    Boolean @default(true)
-  vip       Boolean @default(false)
 }
 
 model Tournament {
@@ -33,28 +32,23 @@ model Tournament {
   name      String
   type      String
   status    TournamentStatus @default(Planned)
-  testMode  Boolean          @default(true)
-  startDate DateTime
-  endDate   DateTime
   players   String[]
-  arenas    String[]
   settings  Json
   results   Json
 }
 
-model Appointment {
-  id     String   @id
-  date   DateTime
-  guests String[]
-  counts Int[]
-  active Boolean  @default(true)
-}
-
 enum PinType {
+  DataEast
   EM
   EE
-  DMD
-  LCD
+  Gottlieb
+  Pin2000
+  SAM
+  Spike
+  Sys11
+  WPC
+  WPC95
+  Whitestar
 }
 
 enum PinManu {
@@ -71,6 +65,5 @@ enum TournamentStatus {
   Planned
   Ready
   Active
-  Stopped
   Completed
 }

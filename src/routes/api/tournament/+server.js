@@ -10,9 +10,6 @@ export const GET = async () => {
                 name: true,
                 type: true,
                 status: true,
-                testMode: true,
-                startDate: true,
-                endDate: true
             }
         });
         return new Response(

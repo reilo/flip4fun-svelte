@@ -5,7 +5,7 @@
 	import { DarkMode } from 'flowbite-svelte';
 
 	import { page } from '$app/stores';
-	import { access, ReadAccess, ContributeAccess, AdminAccess } from '../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '../../stores.js';
 
 	let accessValue = ReadAccess;
 	access.subscribe((value) => {
@@ -18,16 +18,6 @@
 	function adminClicked() {
 		if (accessValue >= AdminAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
 			access.set(AdminAccess);
-			password = '';
-			formModal = false;
-		} else {
-			alert('Bitte gültiges Password eingeben!');
-		}
-	}
-
-	function ligaClicked() {
-		if (accessValue >= ContributeAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			access.set(ContributeAccess);
 			password = '';
 			formModal = false;
 		} else {
@@ -55,14 +45,11 @@
 			<NavLi href="/draw">Lostrommel</NavLi>
 			<NavLi href="/liga">Liga</NavLi>
 			<NavLi href="/admin">Administration</NavLi>
-			<NavLi href="/guests">Gästeliste</NavLi>
 			<NavLi href="/about">Info</NavLi>
 		</NavUl>
 		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
 			{#if accessValue == ReadAccess}
 				<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
-			{:else if accessValue == ContributeAccess}
-				<LockTimeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 			{:else}
 				<LockOpenSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
 			{/if}
@@ -76,10 +63,6 @@
 				<Button
 					color={accessValue == AdminAccess ? 'primary' : 'alternative'}
 					on:click={adminClicked}>Administrator</Button
-				>
-				<Button
-					color={accessValue == ContributeAccess ? 'primary' : 'alternative'}
-					on:click={ligaClicked}>Liga-Eingabe</Button
 				>
 				<Button
 					color={accessValue == ReadAccess ? 'primary' : 'alternative'}

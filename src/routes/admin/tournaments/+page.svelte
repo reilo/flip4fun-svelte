@@ -13,8 +13,6 @@
 			body: JSON.stringify({
 				name: newTourName,
 				type: newTourType,
-				startDate: newTourStartDate.toISOString(),
-				endDate: newTourEndDate.toISOString(),
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -33,15 +31,7 @@
 	let newForm = false;
 	let newTourName = '';
 	let newTourType = '';
-	let newTourStartDate = new Date();
-	let newTourEndDate = new Date();
-	let newTourStartDateAsStrg = newTourStartDate.toString();
-	let newTourEndDateAsStrg = newTourEndDate.toString();
 
-	$: {
-		newTourStartDate = new Date(newTourStartDateAsStrg);
-		newTourEndDate = new Date(newTourEndDateAsStrg);
-	}
 </script>
 
 <div>
@@ -53,7 +43,6 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>
 			<TableHeadCell>Status</TableHeadCell>
-			<TableHeadCell>Test</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
@@ -112,14 +101,6 @@
 				bind:value={newTourType}
 				placeholder="Turnier-Typ"
 			></Select>
-			<Label class="space-y-2">
-				<span>Turnier-Beginn</span><br />
-				<input type="date" bind:value={newTourStartDateAsStrg} />
-			</Label>
-			<Label class="space-y-2">
-				<span>Turnier-Ende</span><br />
-				<input type="date" bind:value={newTourEndDateAsStrg} />
-			</Label>
 			<Button color="alternative" on:click={createTour}>Anlegen</Button>
 			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
 		</form>

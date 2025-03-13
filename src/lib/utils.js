@@ -10,9 +10,6 @@ export function MapTourStatus(status) {
         case "Active":
             mapped = "Aktiv";
             break;
-        case "Stopped":
-            mapped = "Abgebrochen";
-            break;
         case "Completed":
             mapped = "Beendet";
             break;
@@ -25,6 +22,9 @@ export function MapTourStatus(status) {
 export function MapTourType(ttype) {
     let mapped;
     switch (ttype) {
+        case "fliptwin":
+            mapped = "TwinPin";
+            break;
         case "flipliga":
             mapped = "FLIP-Liga";
             break;
@@ -39,6 +39,7 @@ export function MapTourType(ttype) {
 
 export function GetTourTypeMap() {
     return [
+        { 'name': 'TwinPin', 'value': 'fliptwin' },
         { 'name': 'FLIP-Liga', 'value': 'flipliga' },
         { 'name': 'FLIP-Finale', 'value': 'flipfinal' },
     ]

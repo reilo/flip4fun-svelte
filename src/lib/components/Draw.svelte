@@ -20,10 +20,10 @@
 		let items = myData.pins.filter(
 			(pin) =>
 				pin.active &&
-				((em ? pin.type === 'EM' : false) ||
-					(ee ? pin.type === 'EE' : false) ||
-					(dmd ? pin.type === 'DMD' : false) ||
-					(lcd ? pin.type === 'LCD' : false))
+				((em ? ["EM"].includes(pin.type) : false) ||
+					(ee ? ["EE","Sys11"].includes(pin.type) : false) ||
+					(dmd ? ["DataEast","Gottlieb","Pin2000","Whitestar","WPC","WPC95"].includes(pin.type) : false) ||
+					(lcd ? ["SAM","Spike"].includes(pin.type) : false))
 		);
 		if (items.length > 0) {
 			let num = Math.floor(Math.random() * items.length);
