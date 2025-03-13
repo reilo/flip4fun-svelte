@@ -1,6 +1,6 @@
 <script>
 	import { P } from 'flowbite-svelte';
-	import { access, ReadAccess, AdminAccess } from '../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '../../../stores.js';
 	let accessValue = ReadAccess;
 	access.subscribe((value) => {
 		accessValue = value;
