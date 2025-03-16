@@ -1,10 +1,20 @@
+Benutzer-Dokumentation
+- Wo Datenbank? Wie Daten bearbeiten? Backup erstellen.
+- Wie lokal starten?
+
 Code kommentieren, insbes. Component Parameter
 Strings lokalisieren
 Fehlerbehandlung
 
 
-Essentiell:
-- Liga/Turnier-Framework!!!
+Essentiell: Liga/Turnier-Framework
+- Flipliga: Übersichtsseite mit Smart Links
+- Spieler-Fotos
+- Spielstärken
+- Pyramide
+- Spieler-Statistik (Gesamt)
+- Spieltag starten/beenden
+- Matcheingabe
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!

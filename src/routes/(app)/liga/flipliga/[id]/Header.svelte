@@ -33,7 +33,9 @@
 
 	$: activeUrl = $page.url.pathname;
 
-	let id = 123; // test!
+	const parts = $page.url.pathname.split("/");
+	let id = parts[parts.length - 2];
+	
 </script>
 
 <header class="flex justify-between p-4 w-full max-w-full sm:max-w-7xl mx-auto">
@@ -43,7 +45,9 @@
 		</NavBrand>
 		<NavHamburger on:click={toggle} />
 		<NavUl {hidden} {activeUrl}>
-			<NavLi href=/liga/flipliga/{id}/draw>Flipper losen</NavLi>
+			<NavLi href="/liga/flipliga/{id}/ranking">Ranking</NavLi>
+			<NavLi href="/liga/flipliga/{id}/matches">Matches</NavLi>
+			<NavLi href="/liga/flipliga/{id}/draw">Flipper losen</NavLi>
 		</NavUl>
 		<Modal title="Berechtigung wählen" bind:open={formModal} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
