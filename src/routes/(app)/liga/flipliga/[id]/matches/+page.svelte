@@ -4,7 +4,8 @@
     import { Table, TableHead, TableBody, TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { MapTourStatus } from '$lib/utils';
 
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
     let tournament = data.tournament;
     let players = data.players;
     let pins = data.pins;

@@ -1,6 +1,7 @@
 <script>
 	import Draw from '$lib/components/Draw.svelte';
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
 </script>
 
 <Draw myData={data} />

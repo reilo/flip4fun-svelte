@@ -5,7 +5,9 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
 
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
+	let tournaments = $state(data.tournaments);
 
 	async function createTour() {
 		const response = await fetch('/api/tournament', {
@@ -21,16 +23,16 @@
 		});
 		let result = await response.json();
 		if (response.status === 200) {
-			data.tournaments = [...data.tournaments, result.tournament];
+			tournaments = [...tournaments, result.tournament];
 			newForm = false;
 		} else {
 			alert(JSON.stringify(result));
 		}
 	}
 
-	let newForm = false;
-	let newTourName = '';
-	let newTourType = '';
+	let newForm = $state(false);
+	let newTourName = $state('');
+	let newTourType = $state('');
 
 </script>
 
@@ -48,7 +50,7 @@
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each data.tournaments as tournament, i}
+			{#each tournaments as tournament, i}
 				<TableBodyRow>
 					<TableBodyCell>
 						{tournament.name}

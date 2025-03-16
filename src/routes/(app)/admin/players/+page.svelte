@@ -10,7 +10,8 @@
 		Checkbox
 	} from 'flowbite-svelte';
 
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
 
 	async function updatePlayer(id, active) {
 		const url = '/api/player/' + id + '?active=' + active.toString();

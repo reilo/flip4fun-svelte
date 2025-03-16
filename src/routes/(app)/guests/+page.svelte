@@ -1,5 +1,6 @@
 <script>
-	export let data;
+	import { run } from 'svelte/legacy';
+
 
 	import { MapDate } from '$lib/utils';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
@@ -7,6 +8,8 @@
 	import { P, Modal, Select, Button, Checkbox } from 'flowbite-svelte';
 	import { NumberInput } from 'flowbite-svelte';
 	import { ArrowRightSolid, CheckSolid, RedoOutline } from 'flowbite-svelte-icons';
+	/** @type {{data: any}} */
+	let { data } = $props();
 
 	const allGuests = data.guests;
 
@@ -79,23 +82,23 @@
 		return guest.forename + ' ' + guest.surname;
 	}
 
-	let addModal = false;
-	let resetModal = false;
-	let appointment = data.appointment;
-	let guests = appointment.guests.slice();
-	let counts = appointment.counts.slice();
+	let addModal = $state(false);
+	let resetModal = $state(false);
+	let appointment = $state(data.appointment);
+	let guests = $state(appointment.guests.slice());
+	let counts = $state(appointment.counts.slice());
 	if (guests.length == 1 && guests[0] == '') {
 		guests = [];
 		counts = [];
 	}
-	let selectedGuest;
-	let saveEnabled = false;
-	let totalCount = 0;
-	let newDate = new Date(appointment.date);
-	let newDateAsStrg = newDate.toString();
-	let vip = true;
+	let selectedGuest = $state();
+	let saveEnabled = $state(false);
+	let totalCount = $state(0);
+	let newDate = $state(new Date(appointment.date));
+	let newDateAsStrg = $state(newDate.toString());
+	let vip = $state(true);
 
-	$: {
+	run(() => {
 		newDate = new Date(newDateAsStrg);
 		let objs = [];
 		for (let i = 0; i < guests.length; i++) {
@@ -118,7 +121,7 @@
 		appointment.counts = counts.slice();
 		appointment.date = newDate.toISOString();
 		totalCount = counts.reduce((partialSum, a) => partialSum + a, 0);
-	}
+	});
 </script>
 
 <Table hoverable={true}>

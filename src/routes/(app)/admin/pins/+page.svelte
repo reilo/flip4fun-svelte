@@ -10,7 +10,8 @@
 		Checkbox
 	} from 'flowbite-svelte';
 
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
 
 	async function updatePin(id, active) {
 		const url = '/api/pin/' + id + '?active=' + active.toString();

@@ -1,5 +1,6 @@
 <script>
-	export let data;
+	import { run } from 'svelte/legacy';
+
 
 	import {
 		TableBody,
@@ -12,14 +13,16 @@
 	} from 'flowbite-svelte';
 
 	import Device from 'svelte-device-info';
+	/** @type {{data: any}} */
+	let { data } = $props();
 
-	let searchTerm = '';
-	let openRow;
-	let details;
+	let searchTerm = $state('');
+	let openRow = $state();
+	let details = $state();
 
-	let sortKey = 'name';
-	let sortDirection = 1; // ascending
-	let items = data.pins.slice();
+	let sortKey = $state('name');
+	let sortDirection = $state(1); // ascending
+	let items = $state(data.pins.slice());
 
 	const toggleRow = (i) => {
 		openRow = openRow === i ? null : i;
@@ -34,7 +37,7 @@
 		}
 	};
 
-	$: {
+	run(() => {
 		items = data.pins.slice();
 		const filtered = items.filter(
 			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
@@ -50,7 +53,7 @@
 			return 0;
 		});
 		items = sorted;
-	}
+	});
 </script>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>

@@ -43,29 +43,28 @@ export const POST = async ({ request }) => {
             throw "type is undefined";
         } else if (body.type === "") {
             throw "type is empty";
-        } else if (body.type !== "flipfinal" && body.type !== "flipliga") {
+        } else if (body.type !== "flipfinal" && body.type !== "flipliga" && body.type !== "fliptwin") {
             throw "type " + body.type + " is unknown";
         }
 
         let startDate, endDate;
-        if (body.startDate !== undefined) {
-            startDate = body.startDate;
-        } else {
+//        if (body.startDate !== undefined) {
+//            startDate = body.startDate;
+//        } else {
             startDate = (new Date()).toISOString();
-        }
-        if (body.endDate !== undefined) {
-            endDate = body.endDate;
-        } else {
+//        }
+//        if (body.endDate !== undefined) {
+//            endDate = body.endDate;
+//        } else {
             endDate = (new Date()).toISOString();
-        }
+//        }
 
         const data = {
             name: body.name,
             type: body.type,
-            startDate: startDate,
-            endDate: endDate,
+            //startDate: startDate,
+            //endDate: endDate,
             players: [],
-            arenas: [],
             settings: {},
             results: {}
         }

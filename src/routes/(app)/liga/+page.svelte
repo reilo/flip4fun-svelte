@@ -5,7 +5,8 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
 
-	export let data;
+	/** @type {{data: any}} */
+	let { data } = $props();
 </script>
 
 <div>

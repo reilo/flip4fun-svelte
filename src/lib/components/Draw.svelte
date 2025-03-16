@@ -1,17 +1,18 @@
 <script>
-	export let myData;
 
 	import { Toggle, Button, P, Heading, Spinner } from 'flowbite-svelte';
 	import { SearchSolid } from 'flowbite-svelte-icons';
+	/** @type {{myData: any}} */
+	let { myData } = $props();
 
-	let em = true;
-	let ee = true;
-	let dmd = true;
-	let lcd = true;
+	let em = $state(true);
+	let ee = $state(true);
+	let dmd = $state(true);
+	let lcd = $state(true);
 
-	let selectedPin = '';
+	let selectedPin = $state('');
 
-	let progress = false;
+	let progress = $state(false);
 
 	function selectPin() {
 		progress = true;
