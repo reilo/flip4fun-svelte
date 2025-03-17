@@ -1,6 +1,5 @@
 <script>
 	import { P } from 'flowbite-svelte';
-	import Sidebar from './Sidebar.svelte';
 	import { access, ReadAccess, AdminAccess } from '../../../stores.js';
 	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
@@ -12,7 +11,6 @@
 
 {#if accessValue >= AdminAccess}
 	<div class="flex flex-col sm:flex-row gap-3">
-		<!--Sidebar /-->
 		{@render children?.()}
 	</div>
 {:else}
