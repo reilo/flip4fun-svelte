@@ -1,0 +1,463 @@
+{
+    "round": 2,
+    "date": "2024-04-05",
+    "status": "Completed",
+    "rank-init": [
+        {
+            "player": "choeltermann",
+            "points": 68.3,
+            "strength": 8
+        },
+        {
+            "player": "mwerni",
+            "points": 67.3,
+            "strength": 7
+        },
+        {
+            "player": "jbrzank",
+            "points": 65.3,
+            "strength": 7
+        },
+        {
+            "player": "hbeischl",
+            "points": 63.7,
+            "strength": 6
+        },
+        {
+            "player": "yberreiter",
+            "points": 60.7,
+            "strength": 6
+        },
+        {
+            "player": "mnetsch",
+            "points": 60.0,
+            "strength": 6
+        },
+        {
+            "player": "adiaco",
+            "points": 58.5,
+            "strength": 5
+        },
+        {
+            "player": "beder",
+            "points": 58.3,
+            "strength": 5
+        },
+        {
+            "player": "kloeffler",
+            "points": 58.0,
+            "strength": 5
+        },
+        {
+            "player": "mschippling",
+            "points": 57.7,
+            "strength": 5
+        },
+        {
+            "player": "jostermeier",
+            "points": 57.3,
+            "strength": 4
+        },
+        {
+            "player": "rkappenberger",
+            "points": 57.0,
+            "strength": 4
+        },
+        {
+            "player": "aschneider",
+            "points": 56.0,
+            "strength": 4
+        },
+        {
+            "player": "sherold",
+            "points": 56.0,
+            "strength": 4
+        },
+        {
+            "player": "mschmiss",
+            "points": 55.0,
+            "strength": 4
+        },
+        {
+            "player": "sschichtl",
+            "points": 55.0,
+            "strength": 3
+        },
+        {
+            "player": "mpautz",
+            "points": 55.0,
+            "strength": 3
+        },
+        {
+            "player": "rloch",
+            "points": 54.7,
+            "strength": 3
+        },
+        {
+            "player": "fzabel",
+            "points": 54.0,
+            "strength": 3
+        },
+        {
+            "player": "mlindwurm",
+            "points": 54.0,
+            "strength": 3
+        },
+        {
+            "player": "mmaisberger",
+            "points": 53.8,
+            "strength": 3
+        },
+        {
+            "player": "tstrack",
+            "points": 53.0,
+            "strength": 2
+        },
+        {
+            "player": "thaertlein",
+            "points": 53.0,
+            "strength": 2
+        },
+        {
+            "player": "msuck",
+            "points": 52.0,
+            "strength": 2
+        },
+        {
+            "player": "pwalterhallstroem",
+            "points": 52.0,
+            "strength": 2
+        },
+        {
+            "player": "rmahrla",
+            "points": 52.0,
+            "strength": 2
+        },
+        {
+            "player": "skarlhuber",
+            "points": 52.0,
+            "strength": 2
+        },
+        {
+            "player": "nmutoro",
+            "points": 52.0,
+            "strength": 2
+        },
+        {
+            "player": "grahner",
+            "points": 51.0,
+            "strength": 1
+        },
+        {
+            "player": "dgasparevic",
+            "points": 51.0,
+            "strength": 1
+        }
+    ],
+    "matches": [
+        {
+            "player1": "mlindwurm",
+            "player2": "yberreiter",
+            "pin": "jr",
+            "score1": 0,
+            "score2": 3
+        },
+        {
+            "player1": "mschmiss",
+            "player2": "kloeffler",
+            "pin": "tron",
+            "score1": 2,
+            "score2": 3
+        },
+        {
+            "player1": "yberreiter",
+            "player2": "mlindwurm",
+            "pin": "pb",
+            "score1": 3,
+            "score2": 0
+        },
+        {
+            "player1": "sherold",
+            "player2": "choeltermann",
+            "pin": "tav",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "msuck",
+            "player2": "rloch",
+            "pin": "sp",
+            "score1": 2,
+            "score2": 3
+        },
+        {
+            "player1": "msuck",
+            "player2": "mnetsch",
+            "pin": "ss",
+            "score1": 0,
+            "score2": 2
+        },
+        {
+            "player1": "kloeffler",
+            "player2": "yberreiter",
+            "pin": "mm",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "sschichtl",
+            "player2": "hbeischl",
+            "pin": "fs",
+            "score1": 2,
+            "score2": 3
+        },
+        {
+            "player1": "mnetsch",
+            "player2": "mschmiss",
+            "pin": "ek",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "yberreiter",
+            "player2": "kloeffler",
+            "pin": "boa",
+            "score1": 1,
+            "score2": 3
+        },
+        {
+            "player1": "rloch",
+            "player2": "mpautz",
+            "pin": "cftbl",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "msuck",
+            "player2": "mlindwurm",
+            "pin": "nbaf",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "sschichtl",
+            "player2": "choeltermann",
+            "pin": "tom",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "kloeffler",
+            "player2": "hbeischl",
+            "pin": "farfalla",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "beder",
+            "player2": "mpautz",
+            "pin": "dd",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "mschippling",
+            "player2": "yberreiter",
+            "pin": "acdc",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "sherold",
+            "player2": "mwerni",
+            "pin": "mm",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "mschmiss",
+            "player2": "mnetsch",
+            "pin": "jca",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "rloch",
+            "player2": "msuck",
+            "pin": "hg",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "yberreiter",
+            "player2": "mschippling",
+            "pin": "tw",
+            "score1": 3,
+            "score2": 0
+        },
+        {
+            "player1": "mnetsch",
+            "player2": "hbeischl",
+            "pin": "potc",
+            "score1": 3,
+            "score2": 2
+        },
+        {
+            "player1": "mpautz",
+            "player2": "beder",
+            "pin": "msf",
+            "score1": 3,
+            "score2": 1
+        },
+        {
+            "player1": "mschmiss",
+            "player2": "sherold",
+            "pin": "eftlw",
+            "score1": 2,
+            "score2": 3
+        },
+        {
+            "player1": "rloch",
+            "player2": "hbeischl",
+            "pin": "sj",
+            "score1": 0,
+            "score2": 3
+        },
+        {
+            "player1": "sschichtl",
+            "player2": "kloeffler",
+            "pin": "sp",
+            "score1": 1,
+            "score2": 3
+        },
+        {
+            "player1": "sherold",
+            "player2": "mschmiss",
+            "pin": "dm",
+            "score1": 3,
+            "score2": 0
+        }
+    ],
+    "rank-final": [
+        {
+            "player": "kloeffler",
+            "points": 76.3
+        },
+        {
+            "player": "yberreiter",
+            "points": 75.7
+        },
+        {
+            "player": "hbeischl",
+            "points": 71.3
+        },
+        {
+            "player": "sherold",
+            "points": 70.3
+        },
+        {
+            "player": "mnetsch",
+            "points": 68.7
+        },
+        {
+            "player": "mwerni",
+            "points": 67.3
+        },
+        {
+            "player": "choeltermann",
+            "points": 65.7
+        },
+        {
+            "player": "jbrzank",
+            "points": 65.3
+        },
+        {
+            "player": "mschippling",
+            "points": 62.7
+        },
+        {
+            "player": "beder",
+            "points": 61.0
+        },
+        {
+            "player": "mschmiss",
+            "points": 61.0
+        },
+        {
+            "player": "sschichtl",
+            "points": 61.0
+        },
+        {
+            "player": "mpautz",
+            "points": 60.0
+        },
+        {
+            "player": "rloch",
+            "points": 58.7
+        },
+        {
+            "player": "adiaco",
+            "points": 58.5
+        },
+        {
+            "player": "jostermeier",
+            "points": 57.3
+        },
+        {
+            "player": "rkappenberger",
+            "points": 57.0
+        },
+        {
+            "player": "aschneider",
+            "points": 56.0
+        },
+        {
+            "player": "msuck",
+            "points": 55.0
+        },
+        {
+            "player": "fzabel",
+            "points": 54.0
+        },
+        {
+            "player": "mmaisberger",
+            "points": 53.8
+        },
+        {
+            "player": "tstrack",
+            "points": 53.0
+        },
+        {
+            "player": "thaertlein",
+            "points": 53.0
+        },
+        {
+            "player": "pwalterhallstroem",
+            "points": 52.0
+        },
+        {
+            "player": "rmahrla",
+            "points": 52.0
+        },
+        {
+            "player": "skarlhuber",
+            "points": 52.0
+        },
+        {
+            "player": "nmutoro",
+            "points": 52.0
+        },
+        {
+            "player": "grahner",
+            "points": 51.0
+        },
+        {
+            "player": "dgasparevic",
+            "points": 51.0
+        },
+        {
+            "player": "mlindwurm",
+            "points": 50.3
+        }
+    ]
+}

@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const GET = async (data) => {
     try {
-        const tournaments = await prisma.tournament.findMany({
+        const includeBlobs = data.url.searchParams.get("includeBlobs");
+        let params = {
             orderBy: [{ name: 'asc' }],
             select: {
                 id: true,
@@ -11,7 +12,15 @@ export const GET = async () => {
                 type: true,
                 status: true,
             }
-        });
+        };
+        if (includeBlobs === null) {
+            params.where =  {
+                NOT: {
+                    type: 'blob'
+                }
+            };
+        }
+        const tournaments = await prisma.tournament.findMany(params);
         return new Response(
             JSON.stringify({ tournaments: tournaments }),
             {
