@@ -13,7 +13,6 @@
 	} from 'flowbite-svelte';
 
 	import Device from 'svelte-device-info';
-	/** @type {{data: any}} */
 	let { data } = $props();
 
 	let searchTerm = $state('');

@@ -3,7 +3,6 @@
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
     import { Heading } from 'flowbite-svelte';
 
-	/** @type {{data: any, children?: import('svelte').Snippet}} */
 	let { data, children } = $props();
     let tournament = data.tournament;
 </script>

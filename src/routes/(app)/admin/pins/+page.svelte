@@ -10,7 +10,6 @@
 		Checkbox
 	} from 'flowbite-svelte';
 
-	/** @type {{data: any}} */
 	let { data } = $props();
 
 	async function updatePin(id, active) {

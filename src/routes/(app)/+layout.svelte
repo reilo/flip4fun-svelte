@@ -2,7 +2,6 @@
 	import Header from '$lib/components/Header.svelte';
 	import "../../app.css";
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
-	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
 </script>
 

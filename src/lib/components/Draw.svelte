@@ -2,7 +2,6 @@
 
 	import { Toggle, Button, P, Heading, Spinner } from 'flowbite-svelte';
 	import { SearchSolid } from 'flowbite-svelte-icons';
-	/** @type {{myData: any}} */
 	let { myData } = $props();
 
 	let em = $state(true);

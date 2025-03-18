@@ -9,7 +9,7 @@ Fehlerbehandlung
 
 Essentiell: Liga/Turnier-Framework
 - Flipliga: Übersichtsseite mit Smart Links
-- Spieler-Fotos
+- Spieler-Fotos / in gehosteter Version ladbar
 - Spielstärken
 - Pyramide
 - Spieler-Statistik (Gesamt)
