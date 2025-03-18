@@ -10,11 +10,12 @@ Fehlerbehandlung
 Essentiell: Liga/Turnier-Framework
 - Flipliga: Übersichtsseite mit Smart Links
 - Spieler-Fotos / in gehosteter Version ladbar
-- Spielstärken
+- Spielstärken (in json pro Spieltagbeginn)
 - Pyramide
 - Spieler-Statistik (Gesamt)
 - Spieltag starten/beenden
 - Matcheingabe
+- Spieler bei neuem Spieltag hinzufügen
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!
