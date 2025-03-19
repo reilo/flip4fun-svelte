@@ -15,9 +15,7 @@
 	});
 
 	let tournament = data.tournament;
-
-	const parts = $page.url.pathname.split('/');
-	let id = parts[parts.length - 1];
+	let id = $page.params.id;
 
 	const links = [
 		{ link: '/admin/tournaments/flipliga/' + id + '/todo', name: 'Todo' }

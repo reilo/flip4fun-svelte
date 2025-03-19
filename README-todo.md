@@ -16,6 +16,7 @@ Essentiell: Liga/Turnier-Framework
 - Spieltag starten/beenden
 - Matcheingabe
 - Spieler bei neuem Spieltag hinzufügen
+- Datum: Turnier, Spieltag, Spiel
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!

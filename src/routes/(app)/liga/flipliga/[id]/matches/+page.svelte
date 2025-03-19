@@ -13,6 +13,7 @@
     const numRounds = tournament.results.currentRound;
     const status = MapTourStatus(blob.status);
     const matches = blob.results.matches;
+	const ranks = blob.results.rankInit;
 
     const getPlayerName = (id) => {
         const player = players.find(item => item.id === id);
@@ -32,9 +33,42 @@
         }
     }
 
+	const getStrength = (playerName) => {
+		const rank = ranks.find(item => item.player === playerName);
+		if (rank === null) {
+			return -1;
+		} else {
+			return rank.strength;
+		}
+	}
+
     const formatResultString = (p1, p2) => {
         return `${p1} : ${p2}`;
     }
+
+	const getPoints = (match, num) => {
+		let result;
+		let strength1 = getStrength(match.player1);
+		let strength2 = getStrength(match.player2);
+		if (num === 1) {
+			if (match.score1 > match.score2) {
+				result = strength2 * (1 - (match.score2 / match.score1));
+			} else {
+				result = -Math.min(strength1, Math.abs(strength1 - strength2)) * (1 - (match.score1 / match.score2));
+			}
+		} else {
+			if (match.score2 > match.score1) {
+				result = strength1 * (1 - (match.score1 / match.score2));
+			} else {
+				result = -Math.min(strength2, Math.abs(strength1 - strength2)) * (1 - (match.score2 / match.score1));
+			}
+		} 
+		return result + 1;
+	}
+
+	const roundNumber = (num) => {
+		return (Math.round(num * 10) / 10).toFixed(1);
+	}
 
 </script>
 
@@ -50,19 +84,23 @@
 			<TableHeadCell>Spieler 1</TableHeadCell>
 			<TableHeadCell>Spieler 2</TableHeadCell>
 			<TableHeadCell>Ergebnis</TableHeadCell>
+			<TableHeadCell>Punkte</TableHeadCell>
             <TableHeadCell>Flipper</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each matches as match, i}
 					<TableBodyRow>
 						<TableBodyCell>
-							{getPlayerName(match.player1)}
+							{getPlayerName(match.player1) + " (" + getStrength(match.player1) + ")"}
 						</TableBodyCell>
 						<TableBodyCell>
-							{getPlayerName(match.player2)}
+							{getPlayerName(match.player2) + " (" + getStrength(match.player2) + ")"}
 						</TableBodyCell>
 						<TableBodyCell align="left">
 							{formatResultString(match.score1, match.score2)}
+						</TableBodyCell>
+						<TableBodyCell align="left">
+							{formatResultString(roundNumber(getPoints(match, 1)), roundNumber(getPoints(match, 2)))}
 						</TableBodyCell>
 						<TableBodyCell>
 							{getPinName(match.pin)}

@@ -1,16 +1,7 @@
 <script>
-	import { run } from 'svelte/legacy';
-
-
-	import {
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		TableSearch,
-		Checkbox
-	} from 'flowbite-svelte';
+	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
+	import { Checkbox } from 'flowbite-svelte';
 
 	import Device from 'svelte-device-info';
 	let { data } = $props();
@@ -36,7 +27,7 @@
 		}
 	};
 
-	run(() => {
+	$effect.pre(() => {
 		items = data.pins.slice();
 		const filtered = items.filter(
 			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1

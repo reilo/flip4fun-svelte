@@ -6,9 +6,9 @@
 	import { page } from '$app/stores';
 
 	let { data, children } = $props();
+	
 	let tournament = data.tournament;
-	const parts = $page.url.pathname.split('/');
-	let id = parts[parts.length - 2];
+	let id = $page.params.id;
 
 	const links = [
 		{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
