@@ -1,26 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async (data) => {
+export const GET = async () => {
     try {
-        const includeBlobs = data.url.searchParams.get("includeBlobs");
-        let params = {
+        const options = {
             orderBy: [{ name: 'asc' }],
             select: {
                 id: true,
                 name: true,
                 type: true,
                 status: true,
-            }
-        };
-        if (includeBlobs === null) {
-            params.where =  {
+            },
+            where: {
                 NOT: {
                     type: 'blob'
                 }
-            };
-        }
-        const tournaments = await prisma.tournament.findMany(params);
+            }
+        };
+        const tournaments = await prisma.tournament.findMany(options);
         return new Response(
             JSON.stringify({ tournaments: tournaments }),
             {
@@ -57,16 +54,16 @@ export const POST = async ({ request }) => {
         }
 
         let startDate, endDate;
-//        if (body.startDate !== undefined) {
-//            startDate = body.startDate;
-//        } else {
-            startDate = (new Date()).toISOString();
-//        }
-//        if (body.endDate !== undefined) {
-//            endDate = body.endDate;
-//        } else {
-            endDate = (new Date()).toISOString();
-//        }
+        //        if (body.startDate !== undefined) {
+        //            startDate = body.startDate;
+        //        } else {
+        startDate = (new Date()).toISOString();
+        //        }
+        //        if (body.endDate !== undefined) {
+        //            endDate = body.endDate;
+        //        } else {
+        endDate = (new Date()).toISOString();
+        //        }
 
         const data = {
             name: body.name,

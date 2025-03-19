@@ -30,6 +30,16 @@ export async function load({fetch, params}) {
     });
 
     const pins = await pinsResponse.json();
+    const burl = "/api/tournament/" + params.id + "/blob/" + tournament.tournament.results.currentRound;
+    const blobResponse = await fetch(burl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
 
-    return { tournament: tournament.tournament, players: players.players, pins: pins.pins };
+    const blob = await blobResponse.json();
+
+    return { tournament: tournament.tournament, players: players.players, pins: pins.pins, blob: blob.blob };
 }

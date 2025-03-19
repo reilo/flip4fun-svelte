@@ -22,7 +22,7 @@ Nice to have:
 
 ferner (falls Zeit ist):
 - Flipperliste mehr Funktionen
-- Mehr Pin-Details: Auflage, Designer, Art Designer
+- Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
 
 
 ##################################################

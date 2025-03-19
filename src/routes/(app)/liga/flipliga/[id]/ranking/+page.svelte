@@ -15,10 +15,11 @@
 	let { data } = $props();
     let tournament = data.tournament;
     let players = data.players;
+	let blob = data.blob;
 
-    const numRounds = tournament.results.length;
-    const status = MapTourStatus(tournament.results[numRounds-1].status);
-    const ranking = tournament.results[numRounds-1].rank;
+    const numRounds = tournament.results.currentRound;
+    const status = MapTourStatus(blob.status);
+    const ranking = blob.results.rankFinal;
 
     const getPlayerName = (id) => {
         const player = players.find(item => item.id === id);
