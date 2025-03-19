@@ -61,7 +61,7 @@
 						{MapTourStatus(tournament.status)}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if tournament.status == 'Planned' || tournament.status == 'Ready' || tournament.status == 'Active'}
+						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
 							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}">Bearbeiten</Button
 							>
 						{:else}
@@ -69,14 +69,14 @@
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if tournament.status == 'Ready'}
+						{#if tournament.status == 'Planned'}
 							<Button>Starten</Button>
 						{:else}
 							<Button disabled>Starten</Button>
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if tournament.status == 'Planned' || tournament.status == 'Ready' || tournament.status == 'Active'}
+						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
 							<Button>Beenden</Button>
 						{:else}
 							<Button disabled>Beenden</Button>

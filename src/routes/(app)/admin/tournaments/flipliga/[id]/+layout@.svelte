@@ -1,19 +1,26 @@
 <script>
-	import Header from '../../../../../lib/components/Header.svelte'
+	import Header from '../../../../../../lib/components/Header.svelte';
+	import { P } from 'flowbite-svelte';
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+	import { access, ReadAccess, AdminAccess } from '../../../../../../stores.js';
 	import { page } from '$app/stores';
 
 	let { data, children } = $props();
+
+	let accessValue = $state(ReadAccess);
+	access.subscribe((value) => {
+		accessValue = value;
+	});
+
 	let tournament = data.tournament;
+
 	const parts = $page.url.pathname.split('/');
-	let id = parts[parts.length - 2];
+	let id = parts[parts.length - 1];
 
 	const links = [
-		{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
-		{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
-		{ link: '/liga/flipliga/' + id + '/draw', name: 'Flipper losen' }
+		{ link: '/admin/tournaments/flipliga/' + id + '/todo', name: 'Todo' }
 	];
 </script>
 
@@ -27,7 +34,13 @@
 	<Heading tag="h3">{tournament.name}</Heading>
 	<br />
 
-	{@render children?.()}
+	{#if accessValue >= AdminAccess}
+		<div class="flex flex-col sm:flex-row gap-3">
+			{@render children?.()}
+		</div>
+	{:else}
+		<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
+	{/if}
 </main>
 
 <Footer>

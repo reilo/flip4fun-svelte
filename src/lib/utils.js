@@ -4,9 +4,6 @@ export function MapTourStatus(status) {
         case "Planned":
             mapped = "In Planung";
             break;
-        case "Ready":
-            mapped = "Startbereit";
-            break;
         case "Active":
             mapped = "Aktiv";
             break;

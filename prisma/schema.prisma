@@ -8,30 +8,33 @@ datasource db {
 }
 
 model Pin {
-  id      String   @id
-  name    String
-  code    String?
-  manu    PinManu
-  year    Int
-  type    PinType
-  active  Boolean  @default(true)
-  deleted Boolean  @default(false)
+  id        String  @id
+  createdAt DateTime @default(now())
+  name      String
+  code      String?
+  manu      PinManu
+  year      Int
+  type      PinType
+  active    Boolean @default(true)
+  deleted   Boolean @default(false)
 }
 
 model Player {
-  id        String  @id
+  id        String   @id
+  createdAt DateTime @default(now())
   forename  String
   surname   String
   shortname String?
   photo     String?
-  active    Boolean @default(true)
+  active    Boolean  @default(true)
 }
 
 model Tournament {
-  id        String           @id @default(uuid())
-  name      String
+  id        String     @id @default(uuid())
+  createdAt DateTime   @default(now())
+  name      String?
   type      String
-  status    TournamentStatus @default(Planned)
+  status    TourStatus @default(Planned)
   players   String[]
   settings  Json
   results   Json
@@ -61,9 +64,8 @@ enum PinManu {
   Zaccaria
 }
 
-enum TournamentStatus {
+enum TourStatus {
   Planned
-  Ready
   Active
   Completed
 }
