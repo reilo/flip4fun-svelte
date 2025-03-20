@@ -1,7 +1,7 @@
-export async function load({fetch, params}) {
+export async function load({ fetch, params }) {
 
     const turl = "/api/tournament/" + params.id;
-    const tournamentResponse = await fetch(turl, {
+    const tResponse = await fetch(turl, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -9,9 +9,9 @@ export async function load({fetch, params}) {
         }
     });
 
-    const tournament = await tournamentResponse.json();
+    const tData = await tResponse.json();
 
-    const playersResponse = await fetch("/api/player", {
+    const plResponse = await fetch("/api/player", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -19,9 +19,9 @@ export async function load({fetch, params}) {
         }
     });
 
-    const players = await playersResponse.json();
+    const plData = await plResponse.json();
 
-    const pinsResponse = await fetch("/api/pin", {
+    const pResponse = await fetch("/api/pin", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -29,9 +29,10 @@ export async function load({fetch, params}) {
         }
     });
 
-    const pins = await pinsResponse.json();
-    const burl = "/api/tournament/" + params.id + "/blob/" + tournament.tournament.results.currentRound;
-    const blobResponse = await fetch(burl, {
+    const pData = await pResponse.json();
+
+    const burl = "/api/tournament/" + params.id + "/blob/" + tData.tournament.results.currentRound;
+    const bResponse = await fetch(burl, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -39,7 +40,7 @@ export async function load({fetch, params}) {
         }
     });
 
-    const blob = await blobResponse.json();
+    const bData = await bResponse.json();
 
-    return { tournament: tournament.tournament, players: players.players, pins: pins.pins, blob: blob.blob };
+    return { tournament: tData.tournament, players: plData.players, pins: pData.pins, blob: bData.blob };
 }

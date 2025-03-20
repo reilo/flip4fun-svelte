@@ -1,5 +1,5 @@
 export async function load({fetch}) {
-    const pinsResponse = await fetch("/api/pin", {
+    const response = await fetch("/api/pin", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -7,7 +7,7 @@ export async function load({fetch}) {
         }
     });
 
-    const pins = await pinsResponse.json();
+    const responseData = await response.json();
 
-    return pins;
+    return responseData;
 }

@@ -1,5 +1,5 @@
 <script>
-	import Header from '../../../../../lib/components/Header.svelte'
+	import Header from '$lib/components/Header.svelte'
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
@@ -13,7 +13,8 @@
 	const links = [
 		{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 		{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
-		{ link: '/liga/flipliga/' + id + '/draw', name: 'Flipper losen' }
+		{ link: '/liga/flipliga/' + id + '/draw', name: 'Flipper losen' },
+		{ link: '/admin/tournaments/flipliga/' + id, name: 'Administration' }
 	];
 </script>
 

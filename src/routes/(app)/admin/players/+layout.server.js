@@ -1,5 +1,5 @@
 export async function load({fetch}) {
-    const playersResponse = await fetch("/api/player", {
+    const response = await fetch("/api/player", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -7,7 +7,7 @@ export async function load({fetch}) {
         }
     });
 
-    const players = await playersResponse.json();
+    const responseData = await response.json();
 
-    return players;
+    return responseData;
 }

@@ -7,13 +7,16 @@
 
 	let { data } = $props();
 	let tournaments = $state(data.tournaments);
+	let newForm = $state(false);
+	let newTourName = $state('');
+	let newTourType = $state('');
 
 	async function createTour() {
 		const response = await fetch('/api/tournament', {
 			method: 'POST',
 			body: JSON.stringify({
 				name: newTourName,
-				type: newTourType,
+				type: newTourType
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -22,17 +25,26 @@
 		});
 		let result = await response.json();
 		if (response.status === 200) {
-			tournaments = [...tournaments, result.tournament];
 			newForm = false;
+			newTourName = '';
+			newTourType = '';
+			const tResponse = await fetch('/api/tournament', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			});
+			const tResult = await tResponse.json();
+			if (tResponse.status === 200) {
+				tournaments = tResult.tournaments;
+			} else {
+				alert(JSON.stringify(tResult));
+			}
 		} else {
 			alert(JSON.stringify(result));
 		}
 	}
-
-	let newForm = $state(false);
-	let newTourName = $state('');
-	let newTourType = $state('');
-
 </script>
 
 <div>
@@ -45,9 +57,8 @@
 			<TableHeadCell>Typ</TableHeadCell>
 			<TableHeadCell>Status</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-			<TableHeadCell></TableHeadCell>
 		</TableHead>
+		
 		<TableBody tableBodyClass="divide-y">
 			{#each tournaments as tournament, i}
 				<TableBodyRow>
@@ -66,20 +77,6 @@
 							>
 						{:else}
 							<Button disabled>Bearbeiten</Button>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if tournament.status == 'Planned'}
-							<Button>Starten</Button>
-						{:else}
-							<Button disabled>Starten</Button>
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
-							<Button>Beenden</Button>
-						{:else}
-							<Button disabled>Beenden</Button>
 						{/if}
 					</TableBodyCell>
 				</TableBodyRow>

@@ -1,11 +1,3 @@
-<!--
-    "baseline": 50, // Basispunkte für jeden Spieler zu Saisonbeginn
-    "challengeSame": 1, // Wie oft der gleiche Gegner je Saison gefordert werden darf
-    "matchBonus": 1, // Bonuspunkte für jedes angetretene Match
-    "minMatches": 1, // Wie viele Matches ein Spieler pro Spieltag spielen muss
-    "minRound": 5 // Ab welcher Runde erfolgen Matchabzüge
--->
-
 <script>
 
     import { P, Heading } from 'flowbite-svelte';

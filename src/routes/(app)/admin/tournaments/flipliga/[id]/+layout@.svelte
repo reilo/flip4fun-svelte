@@ -1,5 +1,5 @@
 <script>
-	import Header from '../../../../../../lib/components/Header.svelte';
+	import Header from '$lib/components/Header.svelte';
 	import { P } from 'flowbite-svelte';
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { Heading } from 'flowbite-svelte';
@@ -18,7 +18,9 @@
 	let id = $page.params.id;
 
 	const links = [
-		{ link: '/admin/tournaments/flipliga/' + id + '/todo', name: 'Todo' }
+		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Einstellungen' },
+		{ link: '/admin/tournaments/flipliga/' + id + '/players', name: 'Spieler' },
+		{ link: '/admin/tournaments/flipliga/' + id + '/blobs', name: 'Spieltag' }
 	];
 </script>
 
