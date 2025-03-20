@@ -19,7 +19,7 @@ export const GET = async ({ params }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Blobs konnten nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Blobs konnten nicht geladen werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

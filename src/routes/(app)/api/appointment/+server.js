@@ -15,7 +15,7 @@ export const GET = async () => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Terminliste konnte nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Terminliste konnte nicht geladen werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }
@@ -58,7 +58,7 @@ export const POST = async ({ request }) => {
     } catch (e) {
 
         return new Response(
-            JSON.stringify({ message: "Termin konnte nicht angelegt werden", error: e }),
+            JSON.stringify({ message: "Termin konnte nicht angelegt werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

@@ -12,11 +12,26 @@
 	let newTourType = $state('');
 
 	async function createTour() {
+		let defaultSettings;
+		switch (newTourType) {
+			case 'flipliga':
+				defaultSettings = {
+					baseline: 50,
+					minRound: 5,
+					matchBonus: 1,
+					minMatches: 1,
+					challengeSame: 1
+				};
+				break;
+			default:
+				defaultSettings = {};
+		}
 		const response = await fetch('/api/tournament', {
 			method: 'POST',
 			body: JSON.stringify({
 				name: newTourName,
-				type: newTourType
+				type: newTourType,
+				settings: defaultSettings
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -58,7 +73,7 @@
 			<TableHeadCell>Status</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
-		
+
 		<TableBody tableBodyClass="divide-y">
 			{#each tournaments as tournament, i}
 				<TableBodyRow>
@@ -73,7 +88,7 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
-							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}">Bearbeiten</Button
+							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings">Bearbeiten</Button
 							>
 						{:else}
 							<Button disabled>Bearbeiten</Button>

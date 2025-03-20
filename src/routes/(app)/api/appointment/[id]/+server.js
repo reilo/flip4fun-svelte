@@ -15,7 +15,7 @@ export const GET = async ({ params }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Termin konnte nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Termin konnte nicht geladen werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }
@@ -59,7 +59,7 @@ export const PUT = async ({ params, url }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Termin konnte nicht aktualisiert werden", error: e }),
+            JSON.stringify({ message: "Termin konnte nicht aktualisiert werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

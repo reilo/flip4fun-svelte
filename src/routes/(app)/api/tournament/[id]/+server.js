@@ -15,7 +15,7 @@ export const GET = async ({ params }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Turnier konnte nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Turnier konnte nicht geladen werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }
@@ -23,7 +23,7 @@ export const GET = async ({ params }) => {
     }
 }
 
-export const PUT = async ({ request }) => {
+export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
         let data = {};
@@ -61,7 +61,7 @@ export const PUT = async ({ request }) => {
         );
     } catch (e) {
         return new Response(
-            JSON.stringify({ message: "Turnier konnte nicht geändert werden", error: e }),
+            JSON.stringify({ message: "Turnier konnte nicht geändert werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

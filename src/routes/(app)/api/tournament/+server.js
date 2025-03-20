@@ -27,7 +27,7 @@ export const GET = async () => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Turnierliste konnte nicht geladen werden", error: e }),
+            JSON.stringify({ message: "Turnierliste konnte nicht geladen werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }
@@ -53,25 +53,17 @@ export const POST = async ({ request }) => {
             throw "type " + body.type + " is unknown";
         }
 
-        let startDate, endDate;
-        //        if (body.startDate !== undefined) {
-        //            startDate = body.startDate;
-        //        } else {
-        startDate = (new Date()).toISOString();
-        //        }
-        //        if (body.endDate !== undefined) {
-        //            endDate = body.endDate;
-        //        } else {
-        endDate = (new Date()).toISOString();
-        //        }
+        if (body.settings === undefined) {
+            throw "settings are undefined";
+        } else if (body.settings === "") {
+            throw "settings are empty";
+        }
 
         const data = {
             name: body.name,
             type: body.type,
-            //startDate: startDate,
-            //endDate: endDate,
             players: [],
-            settings: {},
+            settings: body.settings,
             results: {}
         }
         const tournament = await prisma.tournament.create({
@@ -86,7 +78,7 @@ export const POST = async ({ request }) => {
     } catch (e) {
 
         return new Response(
-            JSON.stringify({ message: "Turnier konnte nicht gespeichert werden", error: e }),
+            JSON.stringify({ message: "Turnier konnte nicht gespeichert werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

@@ -24,7 +24,7 @@ export const PUT = async ({ params, url }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Spieler konnte nicht aktualisiert werden", error: e }),
+            JSON.stringify({ message: "Spieler konnte nicht aktualisiert werden", error: e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

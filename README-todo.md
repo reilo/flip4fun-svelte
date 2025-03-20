@@ -8,7 +8,6 @@ Fehlerbehandlung
 
 
 Essentiell: Liga/Turnier-Framework
-- Flipliga: Übersichtsseite mit Smart Links
 - Spieler-Fotos / in gehosteter Version ladbar
 - Spielstärken (in json pro Spieltagbeginn)
 - Pyramide
@@ -16,7 +15,6 @@ Essentiell: Liga/Turnier-Framework
 - Spieltag starten/beenden
 - Matcheingabe
 - Spieler bei neuem Spieltag hinzufügen
-- Datum: Turnier, Spieltag, Spiel
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!

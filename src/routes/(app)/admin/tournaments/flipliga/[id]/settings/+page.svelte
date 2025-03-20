@@ -1,41 +1,72 @@
 <script>
-	import { Input, NumberInput, Label } from 'flowbite-svelte';
+	import { Button, NumberInput, Label } from 'flowbite-svelte';
+	import { page } from '$app/stores';
 
-	let baselineValue = $state(50);
-	let challengeSameValue = $state(1);
-	let matchBonusValue = $state(1);
-	let minMatchesValue = $state(1);
-	let minRoundValue = $state(1);
+	let { data } = $props();
+
+	const status = data.tournament.status;
+	const settingsEnabled = status == 'Planned';
+	let originalSettings = $state(data.tournament.settings);
+	let settings = $state(data.tournament.settings);
+	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
+	let id = $page.params.id;
+
+	async function updateSettings() {
+		const response = await fetch('/api/tournament/' + id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				settings: settings
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		console.log("ready");
+		let result = await response.json();
+		if (response.status === 200) {
+			originalSettings = JSON.parse(JSON.stringify(settings));
+		} else {
+			alert(JSON.stringify(result));
+		}
+	}
+
 </script>
 
 <form>
 	<div>
 		<Label>
 			<span>Basispunkte für jeden Spieler zu Saisonbeginn</span>
-			<NumberInput disabled min="30" max="60" bind:value={baselineValue} />
+			<NumberInput disabled={!settingsEnabled} min="30" max="60" bind:value={settings.baseline} />
 		</Label>
 		<br />
+
 		<Label>
 			<span>Wie oft darf der gleiche Gegner je Saison gefordert werden</span>
-			<NumberInput disabled min="1" max="3" bind:value={challengeSameValue} />
+			<NumberInput disabled={!settingsEnabled} min="1" max="3" bind:value={settings.challengeSame} />
 		</Label>
 		<br />
 
 		<Label>
 			<span>Bonuspunkte für jedes absolvierte Match</span>
-			<NumberInput disabled min="0" max="3" bind:value={matchBonusValue} />
+			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchBonus} />
 		</Label>
 		<br />
 
 		<Label>
 			<span>Wie viele Matches muss ein Spieler pro Spieltag spielen?</span>
-			<NumberInput disabled min="1" max="3" bind:value={minMatchesValue} />
+			<NumberInput disabled={!settingsEnabled} min="1" max="3" bind:value={settings.minMatches} />
 		</Label>
 		<br />
 
 		<Label>
 			<span>Ab welcher Runde erfolgen Matchabzüge?</span>
-			<NumberInput disabled min="3" max="8" bind:value={minRoundValue} />
+			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.minRound} />
 		</Label>
+		<br />
+
+		{#if settingsEnabled}
+			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+		{/if}
 	</div>
 </form>
