@@ -7,9 +7,8 @@
 
 	let startForm = $state(false);
 	let endForm = $state(false);
-
-	let startEnabled = (data.blob.status === "Planned" || data.blob.status === "Completed");
-	let endEnabled = (data.blob.status === "Active");
+	let startEnabled = (data.blob != null) ? (data.blob.status === "Planned" || data.blob.status === "Completed") : false;
+	let endEnabled = (data.blob != null) ? (data.blob.status === "Active") : false;
 
 	async function startBlob() {
 		// activate current blob (if Planned) or create next blob (if Completed)

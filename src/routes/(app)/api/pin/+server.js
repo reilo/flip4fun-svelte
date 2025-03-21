@@ -1,10 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const GET = async ({ url }) => {
     try {
+        let fields = {};
+        url.searchParams.forEach((value, key) => {
+            fields[key] = (value === "true" ? true : (value === "false" ? false : value));
+        });
         const pins = await prisma.pin.findMany({
-            orderBy: [{ name: 'asc' }]
+            orderBy: [{ name: 'asc' }],
+            where: fields
         });
         return new Response(
             JSON.stringify({ pins: pins }),

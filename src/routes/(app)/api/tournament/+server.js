@@ -1,23 +1,18 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async () => {
+export const GET = async ({ url }) => {
     try {
-        const options = {
+        let fields = {};
+        url.searchParams.forEach((value, key) => {
+            fields[key] = (value === "true" ? true : (value === "false" ? false : value));
+        });
+        fields.NOT = { type: 'blob' };
+        const tournaments = await prisma.tournament.findMany({
             orderBy: [{ name: 'asc' }],
-            select: {
-                id: true,
-                name: true,
-                type: true,
-                status: true,
-            },
-            where: {
-                NOT: {
-                    type: 'blob'
-                }
-            }
-        };
-        const tournaments = await prisma.tournament.findMany(options);
+            select: { id: true, name: true, type: true, status: true },
+            where: fields
+        });
         return new Response(
             JSON.stringify({ tournaments: tournaments }),
             {
