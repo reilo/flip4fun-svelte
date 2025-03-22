@@ -24,12 +24,12 @@
 		});
 		let result = await response.json();
 		if (response.status === 200) {
-			originalSettings = JSON.parse(JSON.stringify(settings));
+			originalSettings = JSON.parse(JSON.stringify(settings)); // triggers 'changed' update
+			data.tournament.settings = JSON.parse(JSON.stringify(settings));
 		} else {
 			alert(JSON.stringify(result));
 		}
 	}
-
 </script>
 
 <form>
@@ -42,7 +42,12 @@
 
 		<Label>
 			<span>Wie oft darf der gleiche Gegner je Saison gefordert werden</span>
-			<NumberInput disabled={!settingsEnabled} min="1" max="3" bind:value={settings.challengeSame} />
+			<NumberInput
+				disabled={!settingsEnabled}
+				min="1"
+				max="3"
+				bind:value={settings.challengeSame}
+			/>
 		</Label>
 		<br />
 

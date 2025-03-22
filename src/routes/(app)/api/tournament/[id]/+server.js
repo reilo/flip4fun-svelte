@@ -30,17 +30,8 @@ export const PUT = async ({ request, params }) => {
         if (body.name !== undefined && body.name !== "") {
             data.name = body.name;
         }
-        if (body.startDate !== undefined) {
-            data.startDate = body.startDate;
-        }
-        if (body.endDate !== undefined) {
-            data.endDate = body.endDate;
-        }
         if (body.players !== undefined && body.players != []) {
             data.players = body.players;
-        }
-        if (body.arenas !== undefined && body.arenas != []) {
-            data.arenas = body.arenas;
         }
         if (body.settings !== undefined && body.settings != {}) {
             data.settings = body.settings;

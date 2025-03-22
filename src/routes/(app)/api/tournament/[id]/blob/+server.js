@@ -5,9 +5,11 @@ export const GET = async ({ params }) => {
     try {
         const options = {
             where: {
-                id: params.id,
+                id: { startsWith: params.id + ":" },  // all blobs for tournament
                 type: 'blob'
-            }
+            },
+            select: { id: true, status: true },
+            orderBy: [{ id: 'asc' }]
         };
         const blobs = await prisma.tournament.findMany(options);
         return new Response(

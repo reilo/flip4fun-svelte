@@ -11,6 +11,33 @@ export async function load({ fetch, params }) {
 
     const tData = await tResponse.json();
 
+    const bsurl = "/api/tournament/" + params.id + "/blob";
+    const bsresponse = await fetch(bsurl, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    });
+
+    const bsData = await bsresponse.json();
+
+    let bData;
+
+    if (bsData.blobs.length > 0) {
+        const bid = bsData.blobs[bsData.blobs.length - 1].id.split(":")[1];
+        const burl = "/api/tournament/" + params.id + "/blob/" + bid;
+        const bresponse = await fetch(burl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        });
+
+        bData = await bresponse.json();
+    }
+
     const plResponse = await fetch("/api/player", {
         method: "GET",
         headers: {
@@ -31,16 +58,5 @@ export async function load({ fetch, params }) {
 
     const pData = await pResponse.json();
 
-    const burl = "/api/tournament/" + params.id + "/blob/" + tData.tournament.results.currentRound;
-    const bResponse = await fetch(burl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
-    });
-
-    const bData = await bResponse.json();
-
-    return { tournament: tData.tournament, players: plData.players, pins: pData.pins, blob: bData.blob };
+    return { tournament: tData.tournament, blobs: bsData.blobs, blob: bData ? bData.blob : undefined, players: plData.players, pins: pData.pins };
 }

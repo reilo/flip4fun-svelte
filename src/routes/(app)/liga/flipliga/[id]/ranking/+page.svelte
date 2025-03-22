@@ -9,7 +9,7 @@
 	let players = data.players;
 	let blob = data.blob;
 
-	const numRounds = tournament.results.currentRound;
+	const numRound = parseInt(data.blobs[data.blobs.length - 1].id.split(":")[1], 10);
 	const status = TourUtil.MapStatus(blob.status);
 	const ranking = blob.results.rankFinal;
 
@@ -68,7 +68,7 @@
 	};
 </script>
 
-<Heading tag="h5">Aktuelle Runde {numRounds} ({status})</Heading>
+<Heading tag="h5">Aktuelle Runde {numRound} ({status})</Heading>
 <br />
 
 <div>

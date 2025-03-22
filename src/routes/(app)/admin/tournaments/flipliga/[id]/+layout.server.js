@@ -11,8 +11,8 @@ export async function load({fetch, params}) {
 
     const tData = await tresponse.json();
 
-    const burl = "/api/tournament/" + params.id + "/blob/" + tData.tournament.results.currentRound;
-    const bresponse = await fetch(burl, {
+    const bsurl = "/api/tournament/" + params.id + "/blob"; 
+    const bsresponse = await fetch(bsurl, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -20,7 +20,23 @@ export async function load({fetch, params}) {
         }
     });
 
-    const bData = await bresponse.json();
+    const bsData = await bsresponse.json();
+
+    let bData;
+
+    if (bsData.blobs.length > 0) {
+        const bid = bsData.blobs[bsData.blobs.length - 1].id.split(":")[1];
+        const burl = "/api/tournament/" + params.id + "/blob/" + bid;
+        const bresponse = await fetch(burl, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        });
+
+        bData = await bresponse.json();
+    }
 
     const purl = "/api/player?active=true";
     const presponse = await fetch(purl, {
@@ -33,5 +49,5 @@ export async function load({fetch, params}) {
 
     const pData = await presponse.json();
 
-    return { tournament: tData.tournament, blob: bData.blob, players: pData.players };
+    return { tournament: tData.tournament, blobs: bsData.blobs, blob: bData ? bData.blob : undefined, players: pData.players };
 }

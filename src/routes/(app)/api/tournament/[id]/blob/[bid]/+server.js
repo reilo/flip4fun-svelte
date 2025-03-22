@@ -6,7 +6,8 @@ export const GET = async ({ params }) => {
         const blob = await prisma.tournament.findUniqueOrThrow({
             where: {
                 id: params.id + ":" + params.bid
-            }
+            },
+            select: { status: true, results: true }
         });
         return new Response(
             JSON.stringify({ blob: blob }),
