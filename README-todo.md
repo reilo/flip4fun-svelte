@@ -6,6 +6,8 @@ Code kommentieren, insbes. Component Parameter
 Strings lokalisieren
 Fehlerbehandlung
 
+Wait Cursor
+Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
 - Spieler-Fotos / in gehosteter Version ladbar
