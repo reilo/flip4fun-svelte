@@ -2,7 +2,7 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { MapTourStatus } from '$lib/utils';
+	import * as TourUtil from '$lib/TourUtil';
 
 	let { data } = $props();
 	let tournament = data.tournament;
@@ -10,7 +10,7 @@
 	let blob = data.blob;
 
 	const numRounds = tournament.results.currentRound;
-	const status = MapTourStatus(blob.status);
+	const status = TourUtil.MapStatus(blob.status);
 	const ranking = blob.results.rankFinal;
 
 	const getPlayerName = (id) => {

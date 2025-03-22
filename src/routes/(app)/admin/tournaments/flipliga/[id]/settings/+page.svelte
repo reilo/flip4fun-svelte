@@ -22,7 +22,6 @@
 				Accept: 'application/json'
 			}
 		});
-		console.log("ready");
 		let result = await response.json();
 		if (response.status === 200) {
 			originalSettings = JSON.parse(JSON.stringify(settings));

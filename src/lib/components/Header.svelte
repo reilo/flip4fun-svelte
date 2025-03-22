@@ -62,11 +62,11 @@
 				</Label>
 				<Button
 					color={accessValue == AdminAccess ? 'primary' : 'alternative'}
-					on:click={adminClicked}>Administrator</Button
+					on:click={adminClicked}>Admin</Button
 				>
 				<Button
 					color={accessValue == ReadAccess ? 'primary' : 'alternative'}
-					on:click={guestClicked}>Nur lesen</Button
+					on:click={guestClicked}>Gast</Button
 				>
 			</form>
 		</Modal>

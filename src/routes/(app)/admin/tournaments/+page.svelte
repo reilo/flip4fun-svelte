@@ -3,7 +3,7 @@
 	import { Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
+	import * as TourUtil from '$lib/TourUtil';
 
 	let { data } = $props();
 	let tournaments = $state(data.tournaments);
@@ -81,10 +81,10 @@
 						{tournament.name}
 					</TableBodyCell>
 					<TableBodyCell>
-						{MapTourType(tournament.type)}
+						{TourUtil.MapType(tournament.type)}
 					</TableBodyCell>
 					<TableBodyCell>
-						{MapTourStatus(tournament.status)}
+						{TourUtil.MapStatus(tournament.status)}
 					</TableBodyCell>
 					<TableBodyCell>
 						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
@@ -110,7 +110,7 @@
 			</Label>
 			<Select
 				class="w-44 p-3 space-y-3 text-sm"
-				items={GetTourTypeMap()}
+				items={GetTypeMap()}
 				bind:value={newTourType}
 				placeholder="Turnier-Typ"
 			></Select>

@@ -14,7 +14,7 @@
 		{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 		{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
 		{ link: '/liga/flipliga/' + id + '/draw', name: 'Flipper losen' },
-		{ link: '/admin/tournaments/flipliga/' + id, name: 'Administration' }
+		{ link: '/admin/tournaments/flipliga/' + id + "/settings", name: 'Admin' }
 	];
 </script>
 

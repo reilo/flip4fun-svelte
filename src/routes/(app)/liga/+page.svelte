@@ -3,7 +3,7 @@
 	import { Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
+	import * as TourUtil from '$lib/TourUtil';
 
 	let { data } = $props();
 </script>
@@ -26,7 +26,7 @@
 							{tournament.name}
 						</TableBodyCell>
 						<TableBodyCell>
-							{MapTourType(tournament.type)}
+							{TourUtil.MapType(tournament.type)}
 						</TableBodyCell>
 						<TableBodyCell>
 							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
@@ -58,7 +58,7 @@
 							{tournament.name}
 						</TableBodyCell>
 						<TableBodyCell>
-							{MapTourType(tournament.type)}
+							{MapType(tournament.type)}
 						</TableBodyCell>
 						<TableBodyCell>
 							<Button href="/liga/{tournament.type}/{tournament.id}">Öffnen</Button>

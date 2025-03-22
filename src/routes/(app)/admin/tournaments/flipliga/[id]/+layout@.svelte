@@ -3,7 +3,7 @@
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { P, Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
-	import { MapTourStatus, MapTourType, GetTourTypeMap } from '$lib/utils';
+	import * as TourUtil from '$lib/TourUtil';
 	import { access, ReadAccess, AdminAccess } from '../../../../../../stores.js';
 	import { page } from '$app/stores';
 
@@ -31,7 +31,7 @@
 <Header headerLinks={links} {headerLink} />
 
 <main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
-	<Heading tag="h3">{tournament.name + " (" + MapTourStatus(tournament.status) + ")"}</Heading>
+	<Heading tag="h3">{tournament.name + " (" + TourUtil.MapStatus(tournament.status) + ")"}</Heading>
 	<br />
 
 	{#if accessValue >= AdminAccess}
