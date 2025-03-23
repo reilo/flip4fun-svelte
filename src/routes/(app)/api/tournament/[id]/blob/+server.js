@@ -12,8 +12,12 @@ export const GET = async ({ params }) => {
             orderBy: [{ id: 'asc' }]
         };
         const blobs = await prisma.tournament.findMany(options);
+        let blobs2 = [];
+        blobs.forEach((blob) => {
+            blobs2.push({id: blob.id, status: blob.status, blobid: blob.id.split(":")[1] })
+        })
         return new Response(
-            JSON.stringify({ blobs: blobs }),
+            JSON.stringify({ blobs: blobs2 }),
             {
                 status: 200, headers: { "Content-Type": "application/json" }
             }

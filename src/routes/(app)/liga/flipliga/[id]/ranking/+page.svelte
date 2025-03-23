@@ -2,15 +2,11 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import * as TourUtil from '$lib/TourUtil';
 
 	let { data } = $props();
-	let tournament = data.tournament;
 	let players = data.players;
 	let blob = data.blob;
 
-	const numRound = parseInt(data.blobs[data.blobs.length - 1].id.split(":")[1], 10);
-	const status = TourUtil.MapStatus(blob.status);
 	const ranking = blob.results.rankFinal;
 
 	const getPlayerName = (id) => {
@@ -36,7 +32,7 @@
 
 	const formatPlayerRankChange = (id) => {
 		const rankChange = getPlayerRankChange(id);
-		return (rankChange > 0 ? "+" : "") + rankChange;
+		return (rankChange > 0 ? '+' : '') + rankChange;
 	};
 
 	const getPlayerRankChangeStyle = (id) => {
@@ -67,9 +63,6 @@
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
 </script>
-
-<Heading tag="h5">Aktuelle Runde {numRound} ({status})</Heading>
-<br />
 
 <div>
 	<Heading tag="h5">Rangfolge</Heading>

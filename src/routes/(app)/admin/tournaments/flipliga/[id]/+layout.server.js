@@ -1,53 +1,28 @@
-export async function load({fetch, params}) {
+export async function load({ fetch, params }) {
 
-    const turl = "/api/tournament/" + params.id;
-    const tresponse = await fetch(turl, {
+    const getParms = {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         }
-    });
+    };
 
+    const tresponse = await fetch("/api/tournament/" + params.id, getParms);
     const tData = await tresponse.json();
 
-    const bsurl = "/api/tournament/" + params.id + "/blob"; 
-    const bsresponse = await fetch(bsurl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
-    });
-
+    const bsresponse = await fetch("/api/tournament/" + params.id + "/blob", getParms);
     const bsData = await bsresponse.json();
 
-    let bData;
-
+    let blData;
     if (bsData.blobs.length > 0) {
-        const bid = bsData.blobs[bsData.blobs.length - 1].id.split(":")[1];
-        const burl = "/api/tournament/" + params.id + "/blob/" + bid;
-        const bresponse = await fetch(burl, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        });
-
-        bData = await bresponse.json();
+        const bid = bsData.blobs[bsData.blobs.length - 1].blobid;
+        const bresponse = await fetch("/api/tournament/" + params.id + "/blob/" + bid, getParms);
+        blData = await bresponse.json();
     }
 
-    const purl = "/api/player?active=true";
-    const presponse = await fetch(purl, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
-    });
+    const plresponse = await fetch("/api/player?active=true", getParms);
+    const plData = await plresponse.json();
 
-    const pData = await presponse.json();
-
-    return { tournament: tData.tournament, blobs: bsData.blobs, blob: bData ? bData.blob : undefined, players: pData.players };
+    return { tournament: tData.tournament, blobs: bsData.blobs, blob: blData ? blData.blob : undefined, players: plData.players };
 }

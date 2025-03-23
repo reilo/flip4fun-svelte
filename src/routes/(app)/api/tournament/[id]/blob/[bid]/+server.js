@@ -3,12 +3,13 @@ const prisma = new PrismaClient();
 
 export const GET = async ({ params }) => {
     try {
-        const blob = await prisma.tournament.findUniqueOrThrow({
+        let blob = await prisma.tournament.findUniqueOrThrow({
             where: {
                 id: params.id + ":" + params.bid
             },
             select: { status: true, results: true }
         });
+        blob["blobid"] = params.bid;
         return new Response(
             JSON.stringify({ blob: blob }),
             {

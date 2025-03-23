@@ -7,48 +7,67 @@
 	let unusedPlayers = $state([]);
 	let changed = $state();
 
-	let allPlayers = data.players;
 	let playerMap = [];
-	const settingsEnabled =
-		data.tournament.status === 'Planned' ||
-		(data.blob != undefined && data.blob.status !== 'Active');
+	const addEnabled = true;
+	const delEnabled = data.tournament.status == 'Planned';
 
-	const usePlayer = (player) => {
+	function addPlayer(player) {
 		usedPlayers.push(player);
 		const index = unusedPlayers.indexOf(player);
 		unusedPlayers.splice(index, 1);
 		changed = true;
-	};
+	}
 
-	const unusePlayer = (player) => {
+	function delPlayer(player) {
 		unusedPlayers.push(player);
 		const index = usedPlayers.indexOf(player);
 		usedPlayers.splice(index, 1);
 		changed = true;
-	};
+	}
+
+	function updateSettings() {
+		let usedPlayerIDs = [];
+		usedPlayers.forEach((item) => {
+			usedPlayerIDs.push(playerMap.find((item2) => item2.name === item).id);
+		});
+		updatePlayers(usedPlayerIDs);
+		changed = false;
+		data.tournament.players = usedPlayerIDs;
+	}
+
+	async function updatePlayers(players) {
+		const response = await fetch('/api/tournament/' + data.tournament.id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				players: players
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+	}
 
 	$effect.pre(() => {
 		let unusedPlayers2 = [];
 		let usedPlayers2 = [];
 
-		if (data.blob == undefined) {
-			allPlayers.forEach((item) => {
+		data.tournament.players.forEach((item) => {
+			const player = data.players.find((item2) => item2.id === item);
+			const playerName = player.forename + ' ' + player.surname;
+			usedPlayers2.push(playerName);
+			playerMap.push({ id: item, name: playerName });
+		});
+
+		data.players.forEach((item) => {
+			if (!data.tournament.players.includes(item.id)) {
 				const playerName = item.forename + ' ' + item.surname;
 				unusedPlayers2.push(playerName);
 				playerMap.push({ id: item.id, name: playerName });
-			});
-		} else {
-			allPlayers.forEach((item) => {
-				const playerName = item.forename + ' ' + item.surname;
-				const existing = data.blob.results.rankInit.find((item2) => item2.player === item.id);
-				if (existing) {
-					usedPlayers2.push(playerName);
-				} else {
-					unusedPlayers2.push(playerName);
-				}
-				playerMap.push({ id: item.id, name: playerName });
-			});
-		}
+			}
+		});
+
 		usedPlayers = usedPlayers2;
 		unusedPlayers = unusedPlayers2;
 	});
@@ -62,7 +81,7 @@
 					Teilnehmende Spieler
 				</h5>
 				{#each usedPlayers as player, i}
-					<Button disabled={!settingsEnabled} outline size="xs" on:click={unusePlayer(player)}>
+					<Button disabled={!delEnabled} outline size="xs" on:click={() => delPlayer(player)}>
 						{player}
 					</Button>
 				{/each}
@@ -74,13 +93,13 @@
 					Verfügbare Spieler
 				</h5>
 				{#each unusedPlayers as player, i}
-					<Button disabled={!settingsEnabled} outline size="xs" on:click={usePlayer(player)}>
+					<Button disabled={!addEnabled} outline size="xs" on:click={() => addPlayer(player)}>
 						{player}
 					</Button>
 				{/each}
 			</Card>
 		</div>
-		{#if settingsEnabled}
+		{#if addEnabled || delEnabled}
 			<div>
 				<Card>
 					<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>

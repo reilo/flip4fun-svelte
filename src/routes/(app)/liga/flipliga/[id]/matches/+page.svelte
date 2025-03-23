@@ -2,44 +2,30 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import * as TourUtil from '$lib/TourUtil';
+	import { CalcPoints } from '$lib/MatchUtil';
 
 	let { data } = $props();
-	let tournament = data.tournament;
 	let players = data.players;
 	let pins = data.pins;
 	let blob = data.blob;
+	let tournament = data.tournament;
 
-	const numRound = parseInt(data.blobs[data.blobs.length - 1].id.split(":")[1], 10);
-	const status = TourUtil.MapStatus(blob.status);
 	const matches = blob.results.matches;
-	const ranks = blob.results.rankInit;
+	const rankInit = blob.results.rankInit;
 
 	const getPlayerName = (id) => {
 		const player = players.find((item) => item.id === id);
-		if (player === null) {
-			return `Unbekannt (${id})`;
-		} else {
-			return `${player.forename} ${player.surname}`;
-		}
+		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
 	};
 
 	const getPinName = (id) => {
 		const pin = pins.find((item) => item.id === id);
-		if (pin === null) {
-			return `Unbekannt (${id})`;
-		} else {
-			return pin.name;
-		}
+		return pin != null ? pin.name : `Unbekannt (${id})`;
 	};
 
 	const getStrength = (playerName) => {
-		const rank = ranks.find((item) => item.player === playerName);
-		if (rank === null) {
-			return -1;
-		} else {
-			return rank.strength;
-		}
+		const rank = rankInit.find((item) => item.player === playerName);
+		return rank != null ? rank.strength : 0;
 	};
 
 	const formatResultString = (p1, p2) => {
@@ -59,34 +45,14 @@
 	};
 
 	const getPoints = (match, num) => {
-		let result;
-		let strength1 = getStrength(match.player1);
-		let strength2 = getStrength(match.player2);
-		if (num === 1) {
-			if (match.score1 > match.score2) {
-				result = strength2 * (1 - match.score2 / match.score1);
-			} else {
-				result =
-					-Math.min(strength1, Math.abs(strength1 - strength2)) * (1 - match.score1 / match.score2);
-			}
-		} else {
-			if (match.score2 > match.score1) {
-				result = strength1 * (1 - match.score1 / match.score2);
-			} else {
-				result =
-					-Math.min(strength2, Math.abs(strength1 - strength2)) * (1 - match.score2 / match.score1);
-			}
-		}
-		return result + 1;
+		const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
+		return (num == 1 ? result.player1 : result.player2) + tournament.settings.matchBonus;
 	};
 
 	const roundNumber = (num) => {
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
 </script>
-
-<Heading tag="h5">Aktuelle Runde {numRound} ({status})</Heading>
-<br />
 
 <div>
 	<Heading tag="h5">Matches Spieltag</Heading>

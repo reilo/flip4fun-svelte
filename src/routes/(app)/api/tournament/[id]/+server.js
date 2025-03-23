@@ -27,17 +27,20 @@ export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
         let data = {};
-        if (body.name !== undefined && body.name !== "") {
+        if (body.name != undefined && body.name !== "") {
             data.name = body.name;
         }
-        if (body.players !== undefined && body.players != []) {
+        if (body.players != undefined && body.players != []) {
             data.players = body.players;
         }
-        if (body.settings !== undefined && body.settings != {}) {
+        if (body.settings != undefined && body.settings != {}) {
             data.settings = body.settings;
         }
-        if (body.results !== undefined && body.results != {}) {
+        if (body.results != undefined && body.results != {}) {
             data.results = body.results;
+        }
+        if (body.status != undefined && body.status != "") {
+            data.status = body.status;
         }
         const updatedTournament = await prisma.tournament.update({
             where: { id: params.id }, data: data

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+import { IsValidType } from "$lib/TourUtil.js";
 
 export const GET = async ({ url }) => {
     try {
@@ -44,7 +45,7 @@ export const POST = async ({ request }) => {
             throw "type is undefined";
         } else if (body.type === "") {
             throw "type is empty";
-        } else if (body.type !== "flipfinal" && body.type !== "flipliga" && body.type !== "fliptwin") {
+        } else if (!IsValidType(body.type)) {
             throw "type " + body.type + " is unknown";
         }
 
@@ -54,13 +55,18 @@ export const POST = async ({ request }) => {
             throw "settings are empty";
         }
 
-        const data = {
+        let data = {
             name: body.name,
             type: body.type,
+            status: body.status ? body.status : "Planned",
             players: [],
-            settings: body.settings,
-            results: {}
+            settings: body.settings ? body.settings : {},
+            results: body.results ? body.results : {}
         }
+        if (body.id) {
+            data["id"] = body.id;
+        }
+
         const tournament = await prisma.tournament.create({
             data
         });

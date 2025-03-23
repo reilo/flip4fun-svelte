@@ -25,7 +25,7 @@ export async function load({ fetch, params }) {
     let bData;
 
     if (bsData.blobs.length > 0) {
-        const bid = bsData.blobs[bsData.blobs.length - 1].id.split(":")[1];
+        const bid = bsData.blobs[bsData.blobs.length - 1].blobid;
         const burl = "/api/tournament/" + params.id + "/blob/" + bid;
         const bresponse = await fetch(burl, {
             method: "GET",

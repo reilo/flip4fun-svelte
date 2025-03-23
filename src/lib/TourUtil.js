@@ -42,3 +42,19 @@ export function GetTypeMap() {
     ]
 }
 
+export function IsValidType(type) {
+    return (type === "flipfinal" || type === "flipliga" || type === "fliptwin" || type === "blob");
+}
+
+export function CalcStrength(pos, total) {
+    let sum = 0;
+    let rowCount = 0;
+    while (sum <= total) sum += ++rowCount;
+    let curPos = 1;
+    let i = 1;
+    while (curPos < pos) {
+        curPos += ++i;
+        --rowCount;
+    }
+    return rowCount;
+}
