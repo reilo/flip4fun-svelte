@@ -1,7 +1,9 @@
 <script>
 	import { P, Heading } from 'flowbite-svelte';
+	import { Modal, Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import * as TourUtil from '$lib/TourUtil';
 	import { CalcPoints } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -9,6 +11,8 @@
 	let pins = data.pins;
 	let blob = data.blob;
 	let tournament = data.tournament;
+
+	let newForm = $state(false);
 
 	const matches = blob.results.matches;
 	const rankInit = blob.results.rankInit;
@@ -52,11 +56,23 @@
 	const roundNumber = (num) => {
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
+
+	const addMatch = () => {
+		newForm = false;
+	};
 </script>
 
 <div>
 	<Heading tag="h5">Matches Spieltag</Heading>
 	<br />
+
+	<Button on:click={() => (newForm = true)}>Spieleingabe...</Button>
+	<Modal title="Spieleingabe" bind:open={newForm} autoclose={false} class="max-w-sm">
+		<form class="flex flex-col space-y-6" action="#">
+			<Button color="alternative" on:click={addMatch}>Anlegen</Button>
+			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
+		</form>
+	</Modal>
 
 	<Table hoverable={true}>
 		<TableHead>

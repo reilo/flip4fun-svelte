@@ -88,7 +88,8 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
-							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings">Bearbeiten</Button
+							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
+								>Bearbeiten</Button
 							>
 						{:else}
 							<Button disabled>Bearbeiten</Button>
@@ -110,7 +111,7 @@
 			</Label>
 			<Select
 				class="w-44 p-3 space-y-3 text-sm"
-				items={GetTypeMap()}
+				items={TourUtil.GetTypeMap()}
 				bind:value={newTourType}
 				placeholder="Turnier-Typ"
 			></Select>

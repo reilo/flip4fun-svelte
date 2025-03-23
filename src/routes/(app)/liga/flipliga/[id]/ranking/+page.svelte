@@ -4,28 +4,23 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 
 	let { data } = $props();
-	let players = data.players;
-	let blob = data.blob;
-
-	const ranking = blob.results.rankFinal;
+	const players = data.players;
+	const blob = data.blob;
+	const tournament = data.tournament;
 
 	const getPlayerName = (id) => {
 		const player = players.find((item) => item.id === id);
-		if (player === null) {
-			return `Unbekannt (${id})`;
-		} else {
-			return `${player.forename} ${player.surname}`;
-		}
+		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
 	};
 
-	const getPlayerStrength = (id) => {
+	const getStrength = (id) => {
 		const player = blob.results.rankInit.find((item) => item.player === id);
 		return player.strength;
 	};
 
 	const getPlayerRankChange = (id) => {
 		const rank1 = blob.results.rankInit.findIndex((item) => item.player === id);
-		const rank2 = blob.results.rankFinal.findIndex((item) => item.player === id);
+		const rank2 = ranking.findIndex((item) => item.player === id);
 		const rankChange = rank1 - rank2;
 		return rankChange != 0 ? rankChange : '';
 	};
@@ -46,7 +41,7 @@
 
 	const getPlayerScoring = (id) => {
 		const player1 = blob.results.rankInit.find((item) => item.player === id);
-		const player2 = blob.results.rankFinal.find((item) => item.player === id);
+		const player2 = ranking.find((item) => item.player === id);
 		return player2.points - player1.points;
 	};
 
@@ -62,6 +57,29 @@
 	const roundNumber = (num) => {
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
+
+	const calcRanking = () => {
+		let ranking = [];
+		if (blob.status === 'Completed') {
+			ranking = blob.results.rankFinal;
+		} else {
+			blob.results.rankInit.forEach((item) => {
+				ranking.push({ player: item.player, points: item.points });
+			});
+			blob.results.matches.forEach((match) => {
+				const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
+				const index1 = ranking.findIndex((item) => item.player === match.player1);
+				ranking[index1][points] += result.player1 + tournament.settings.matchBonus;
+				const index2 = ranking.findIndex((item) => item.player === match.player2);
+				ranking[index2][points] += result.player2 + tournament.settings.matchBonus;
+			});
+		}
+		ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
+		return ranking;
+	};
+
+	let ranking = $state([]);
+	ranking = calcRanking();
 </script>
 
 <div>
@@ -84,7 +102,7 @@
 						{getPlayerName(rank.player)}
 					</TableBodyCell>
 					<TableBodyCell>
-						{getPlayerStrength(rank.player)}
+						{getStrength(rank.player)}
 					</TableBodyCell>
 					<TableBodyCell>
 						<div style={getPlayerRankChangeStyle(rank.player)}>

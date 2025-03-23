@@ -76,16 +76,7 @@
 	}
 
 	async function updateBlob(tid, blob, players) {}
-	/*
-	if (data.blob == undefined || data.blob.status == 'Completed') {
-			// create new blob with initial players
-			let nextBlobID = BlobUtil.Increment(data.blob ? data.blob.blobid : undefined);
-			createBlob(data.tournament.id, nextBlobID, usedPlayerIDs);
-		} else if (data.blob.status == 'Planned') {
-			// update existing blob with added players
-			updateBlob(data.tournament.id, data.blob, usedPlayerIDs);
-		}
-*/
+	
 </script>
 
 <div>

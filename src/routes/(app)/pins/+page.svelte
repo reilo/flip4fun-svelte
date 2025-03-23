@@ -32,8 +32,8 @@
 	};
 
 	$effect.pre(() => {
-		items = data.pins.slice();
-		const filtered = items.filter(
+		let items2 = data.pins.slice();
+		const filtered = items2.filter(
 			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
 		);
 		const sorted = filtered.sort((a, b) => {
