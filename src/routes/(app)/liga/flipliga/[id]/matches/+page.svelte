@@ -7,27 +7,23 @@
 	import { CalcPoints } from '$lib/MatchUtil';
 
 	let { data } = $props();
-	let players = data.players;
-	let pins = data.pins;
-	let blob = data.blob;
-	let tournament = data.tournament;
 
 	let newForm = $state(false);
 	let showAlert = $state(false);
 	let showSure = $state(false);
 
-	const matches = blob.results.matches;
-	const rankInit = blob.results.rankInit;
+	const matches = $state(data.blob.results.matches);
+	const rankInit = data.blob.results.rankInit;
 
-	const addMatchEnabled = blob.status === 'Active';
+	const addMatchEnabled = data.blob.status === 'Active';
 
 	const getPlayerName = (id) => {
-		const player = players.find((item) => item.id === id);
+		const player = data.players.find((item) => item.id === id);
 		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
 	};
 
 	const getPinName = (id) => {
-		const pin = pins.find((item) => item.id === id);
+		const pin = data.pins.find((item) => item.id === id);
 		return pin != null ? pin.name : `Unbekannt (${id})`;
 	};
 
@@ -54,7 +50,7 @@
 
 	const getPoints = (match, num) => {
 		const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
-		return (num == 1 ? result.player1 : result.player2) + tournament.settings.matchBonus;
+		return (num == 1 ? result.player1 : result.player2) + data.tournament.settings.matchBonus;
 	};
 
 	const roundNumber = (num) => {
@@ -78,17 +74,30 @@
 		}
 	};
 
-	const storeMatch = () => {
+	async function storeMatch() {
 		let match = {
-				player1: selPlayer1,
-				player2: selPlayer2,
-				score1: selPoints1,
-				score2: selPoints2,
-				pin: selPin
-			};
-			showSure = newForm = false;
-			resetFormFields();
-	}
+			player1: selPlayer1,
+			player2: selPlayer2,
+			score1: selPoints1,
+			score2: selPoints2,
+			pin: selPin
+		};
+		matches.push(match);
+		data.blob.results.matches = matches;
+		const response = await fetch('/api/tournament/' + data.blob.id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				results: data.blob.results
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		showSure = newForm = false;
+		resetFormFields();
+	};
 
 	const cancelAddMatch = () => {
 		newForm = false;
@@ -104,13 +113,13 @@
 	};
 
 	const pinMap = [];
-	pins.forEach((item) => {
+	data.pins.forEach((item) => {
 		pinMap.push({ name: item.name, value: item.id });
 	});
 
 	const playerMap = [];
-	tournament.players.forEach((item) => {
-		const player = players.find((item2) => item2.id === item);
+	data.tournament.players.forEach((item) => {
+		const player = data.players.find((item2) => item2.id === item);
 		playerMap.push({ name: player.forename + ' ' + player.surname, value: item });
 	});
 
@@ -194,11 +203,9 @@
 		<div>
 			<Modal bind:open={showAlert} size="xs" autoclose>
 				<div class="text-center">
-					<CloseCircleOutline
-						class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700"
-					/>
+					<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-						Daten sind nicht korrekt oder unvollständig. Bitte korrigieren!
+						Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
 					</h3>
 					<Button color="alternative">Schließen</Button>
 				</div>
@@ -212,7 +219,13 @@
 						class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 					/>
 					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-						{getPlayerName(selPlayer1) + " : " + getPlayerName(selPlayer2) + " = " + selPoints1 + " : " + selPoints2}
+						{getPlayerName(selPlayer1) +
+							' : ' +
+							getPlayerName(selPlayer2) +
+							' = ' +
+							selPoints1 +
+							' : ' +
+							selPoints2}
 					</h3>
 					<Button color="red" class="me-2" on:click={storeMatch}>Ja, ich bin sicher</Button>
 					<Button color="alternative">Nein, abbrechen</Button>

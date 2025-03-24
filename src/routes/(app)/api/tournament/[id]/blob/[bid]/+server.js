@@ -7,7 +7,7 @@ export const GET = async ({ params }) => {
             where: {
                 id: params.id + ":" + params.bid
             },
-            select: { status: true, results: true }
+            select: { id: true, status: true, results: true }
         });
         blob["blobid"] = params.bid;
         return new Response(

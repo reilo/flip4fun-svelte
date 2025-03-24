@@ -12,3 +12,27 @@ export function CalcPoints(match, strength1, strength2) {
 
     return { player1: result1, player2: result2 }
 }
+
+export function CalcRanking(results, matchBonus) {
+
+	function getStrength (id) {
+		const player = results.rankInit.find((item) => item.player === id);
+		return player.strength;
+	};
+
+    let ranking = [];
+
+    results.rankInit.forEach((item) => {
+        ranking.push({ player: item.player, points: item.points });
+    });
+    results.matches.forEach((match) => {
+        const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
+        const index1 = ranking.findIndex((item) => item.player === match.player1);
+        ranking[index1].points += result.player1 + matchBonus;
+        const index2 = ranking.findIndex((item) => item.player === match.player2);
+        ranking[index2].points += result.player2 + matchBonus;
+    });
+    
+    ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
+    return ranking;
+}

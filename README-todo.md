@@ -13,10 +13,12 @@ Essentiell: Liga/Turnier-Framework
 - Spieler-Fotos / in gehosteter Version ladbar
 - Pyramide
 - Spieler-Statistik (Gesamt)
-- Spieltag starten/beenden
-- Matcheingabe
 -- Anzahl Herausforderungen checken
-- Spieler bei neuem Spieltag hinzufügen
+- Spieltag starten
+-- neue Spieler hinzufügen
+- Ergebnis-PDF erstellen
+- DB Refactoring
+-- Blob-Tabelle
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!

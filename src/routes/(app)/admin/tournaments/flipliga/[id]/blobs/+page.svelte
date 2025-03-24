@@ -2,8 +2,10 @@
 	import { Heading, Modal, Label } from 'flowbite-svelte';
 	import { Card, Button } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { Increment } from '$lib/BlobUtil';
 	import { CalcStrength } from '$lib/TourUtil';
+	import { CalcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
 
@@ -22,24 +24,31 @@
 	const baseline = data.tournament.settings.baseline;
 
 	async function startBlob() {
-		// activate current blob (if Planned) or create next blob (if Completed)
+		// create first or next blob
 		let rankInit = [];
-		if (!data.blob) {
+		if (!data.blob) { // first blob of tournament
 			data.tournament.players.forEach((item, i) => {
 				const strength = CalcStrength(i + 1, data.tournament.players.length);
 				rankInit.push({ player: item, strength: strength, points: baseline + strength });
 			});
-		} else {
+		} else { // next blob, add new players
+			
 		}
 		const results = { rankInit: rankInit, matches: [], rankFinal: [] };
 		createBlob(data.tournament.id, nextBlobName, nextBlobID, results);
-		updateTournamentStatus(data.tournament.id);
+		updateTournamentStatus(data.tournament.id, "Active");
 		startForm = false;
 		startEnabled = false;
 	}
 
 	async function endBlob() {
 		// calculate final results and set status to Completed
+		const results = data.blob.results;
+		results.rankFinal = CalcRanking(data.blob.results, data.tournament.settings.matchBonus);
+		updateBlob(data.blob.id, results);
+		data.blob.results = results;
+		endForm = false;
+		endEnabled = false;
 	}
 
 	async function createBlob(tid, name, bid, results) {
@@ -61,11 +70,12 @@
 		const result = await response.json();
 	}
 
-	async function updateTournamentStatus(tid) {
-		const response = await fetch('/api/tournament/' + tid, {
+	async function updateBlob(id, results) {
+		const response = await fetch('/api/tournament/' + id, {
 			method: 'PUT',
 			body: JSON.stringify({
-				status: 'Active'
+				results: results,
+				status: "Completed"
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -75,8 +85,20 @@
 		const result = await response.json();
 	}
 
-	async function updateBlob(tid, blob, players) {}
-	
+	async function updateTournamentStatus(tid, status) {
+		const response = await fetch('/api/tournament/' + tid, {
+			method: 'PUT',
+			body: JSON.stringify({
+				status: status
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+	}
+
 </script>
 
 <div>
@@ -111,20 +133,26 @@
 
 <div>
 	<Modal title="Spieltag starten" bind:open={startForm} autoclose={false} class="max-w-sm">
-		<form class="flex flex-col space-y-6" action="#">
-			<Label class="space-y-2">Spieltag Nr. {nextRound} starten</Label>
-			<Button color="alternative" on:click={startBlob}>Starten</Button>
-			<Button color="primary" on:click={() => (startForm = false)}>Abbrechen</Button>
-		</form>
+		<div class="text-center">
+			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<form class="flex flex-col space-y-6" action="#">
+				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich gestartet werden?</Label>
+				<Button color="alternative" on:click={startBlob}>Ja, starten</Button>
+				<Button color="primary" on:click={() => (startForm = false)}>Nein, abbrechen</Button>
+			</form>
+		</div>
 	</Modal>
 </div>
 
 <div>
 	<Modal title="Spieltag beenden" bind:open={endForm} autoclose={false} class="max-w-sm">
-		<form class="flex flex-col space-y-6" action="#">
-			<Label class="space-y-2">Spieltag x beenden</Label>
-			<Button color="alternative" on:click={endBlob}>Beenden</Button>
-			<Button color="primary" on:click={() => (endForm = false)}>Abbrechen</Button>
-		</form>
+		<div class="text-center">
+			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<form class="flex flex-col space-y-6" action="#">
+				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich beendet werden?</Label>
+				<Button color="alternative" on:click={endBlob}>Ja, beenden</Button>
+				<Button color="primary" on:click={() => (endForm = false)}>Nein, abbrechen</Button>
+			</form>
+		</div>
 	</Modal>
 </div>

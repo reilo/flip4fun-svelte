@@ -2,6 +2,7 @@
 	import { Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { CalcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
 	const players = data.players;
@@ -63,18 +64,8 @@
 		if (blob.status === 'Completed') {
 			ranking = blob.results.rankFinal;
 		} else {
-			blob.results.rankInit.forEach((item) => {
-				ranking.push({ player: item.player, points: item.points });
-			});
-			blob.results.matches.forEach((match) => {
-				const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
-				const index1 = ranking.findIndex((item) => item.player === match.player1);
-				ranking[index1][points] += result.player1 + tournament.settings.matchBonus;
-				const index2 = ranking.findIndex((item) => item.player === match.player2);
-				ranking[index2][points] += result.player2 + tournament.settings.matchBonus;
-			});
+			ranking = CalcRanking(blob.results, tournament.settings.matchBonus);
 		}
-		ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
 		return ranking;
 	};
 
