@@ -6,6 +6,7 @@
 	import { Increment } from '$lib/BlobUtil';
 	import { CalcStrength } from '$lib/TourUtil';
 	import { CalcRanking } from '$lib/MatchUtil';
+	import { jsPDF } from 'jspdf';
 
 	let { data } = $props();
 
@@ -26,17 +27,18 @@
 	async function startBlob() {
 		// create first or next blob
 		let rankInit = [];
-		if (!data.blob) { // first blob of tournament
+		if (!data.blob) {
+			// first blob of tournament
 			data.tournament.players.forEach((item, i) => {
 				const strength = CalcStrength(i + 1, data.tournament.players.length);
 				rankInit.push({ player: item, strength: strength, points: baseline + strength });
 			});
-		} else { // next blob, add new players
-			
+		} else {
+			// next blob, add new players
 		}
 		const results = { rankInit: rankInit, matches: [], rankFinal: [] };
 		createBlob(data.tournament.id, nextBlobName, nextBlobID, results);
-		updateTournamentStatus(data.tournament.id, "Active");
+		updateTournamentStatus(data.tournament.id, 'Active');
 		startForm = false;
 		startEnabled = false;
 	}
@@ -75,7 +77,7 @@
 			method: 'PUT',
 			body: JSON.stringify({
 				results: results,
-				status: "Completed"
+				status: 'Completed'
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -99,6 +101,11 @@
 		const result = await response.json();
 	}
 
+	function generatePDF() {
+		const doc = new jsPDF();
+		doc.text('Hello world!', 10, 10);
+		doc.save('a4.pdf');
+	}
 </script>
 
 <div>
@@ -127,6 +134,18 @@
 		</p>
 		<Button disabled={!endEnabled} on:click={() => (endForm = true)} class="w-fit">
 			Beenden<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
+		</Button>
+	</Card>
+</div>
+
+<div>
+	<Card>
+		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			Ergebnis-PDF generieren
+		</h5>
+		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">...</p>
+		<Button disabled={false} on:click={generatePDF} class="w-fit">
+			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
 	</Card>
 </div>
