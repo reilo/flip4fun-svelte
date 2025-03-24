@@ -1,9 +1,9 @@
 <script>
-	import { P, Heading } from 'flowbite-svelte';
+	import { Heading } from 'flowbite-svelte';
 	import { Modal, Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import * as TourUtil from '$lib/TourUtil';
+	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { CalcPoints } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -13,9 +13,13 @@
 	let tournament = data.tournament;
 
 	let newForm = $state(false);
+	let showAlert = $state(false);
+	let showSure = $state(false);
 
 	const matches = blob.results.matches;
 	const rankInit = blob.results.rankInit;
+
+	const addMatchEnabled = blob.status === 'Active';
 
 	const getPlayerName = (id) => {
 		const player = players.find((item) => item.id === id);
@@ -57,22 +61,167 @@
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
 
-	const addMatch = () => {
-		newForm = false;
+	const checkMatch = () => {
+		if (
+			!selPlayer1 ||
+			!selPlayer2 ||
+			selPlayer1 === selPlayer2 ||
+			!selPin ||
+			selPin === '' ||
+			selPoints1 == null ||
+			selPoints2 == null ||
+			selPoints1 === selPoints2
+		) {
+			showAlert = true;
+		} else {
+			showSure = true;
+		}
 	};
+
+	const storeMatch = () => {
+		let match = {
+				player1: selPlayer1,
+				player2: selPlayer2,
+				score1: selPoints1,
+				score2: selPoints2,
+				pin: selPin
+			};
+			showSure = newForm = false;
+			resetFormFields();
+	}
+
+	const cancelAddMatch = () => {
+		newForm = false;
+		resetFormFields();
+	};
+
+	const resetFormFields = () => {
+		selPin = '';
+		selPlayer1 = '';
+		selPlayer2 = '';
+		selPoints1 = 0;
+		selPoints2 = 0;
+	};
+
+	const pinMap = [];
+	pins.forEach((item) => {
+		pinMap.push({ name: item.name, value: item.id });
+	});
+
+	const playerMap = [];
+	tournament.players.forEach((item) => {
+		const player = players.find((item2) => item2.id === item);
+		playerMap.push({ name: player.forename + ' ' + player.surname, value: item });
+	});
+
+	const pointsMap = [];
+	for (let i = 0; i <= 7; ++i) {
+		pointsMap.push({ name: i, value: i });
+	}
+
+	let selPin = $state('');
+	let selPlayer1 = $state('');
+	let selPlayer2 = $state('');
+	let selPoints1 = $state(0);
+	let selPoints2 = $state(0);
+
+	$effect.pre(() => {});
 </script>
 
 <div>
 	<Heading tag="h5">Matches Spieltag</Heading>
 	<br />
 
-	<Button on:click={() => (newForm = true)}>Spieleingabe...</Button>
-	<Modal title="Spieleingabe" bind:open={newForm} autoclose={false} class="max-w-sm">
-		<form class="flex flex-col space-y-6" action="#">
-			<Button color="alternative" on:click={addMatch}>Anlegen</Button>
-			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
-		</form>
-	</Modal>
+	{#if addMatchEnabled}
+		<div>
+			<Button on:click={() => (newForm = true)}>Spieleingabe...</Button>
+
+			<Modal title="Spieleingabe" bind:open={newForm} autoclose={false} class="max-w-sm">
+				<form class="flex flex-col space-y-6" action="#">
+					<div class="grid gap-6 mb-6 md:grid-cols-2">
+						<Label>
+							Spieler 1:
+							<Select
+								class="mt-4 w-40 p-3 space-y-3 text-sm"
+								items={playerMap}
+								bind:value={selPlayer1}
+								placeholder="Spieler 1"
+							></Select>
+						</Label>
+						<Label>
+							Punkte 1:
+							<Select
+								class="mt-4 w-40 p-3 space-y-3 text-sm"
+								items={pointsMap}
+								bind:value={selPoints1}
+								placeholder="Punkte Spieler 1"
+							></Select>
+						</Label>
+						<Label>
+							Spieler 2:
+							<Select
+								class="mt-4 w-40 p-3 space-y-3 text-sm"
+								items={playerMap}
+								bind:value={selPlayer2}
+								placeholder="Spieler 2"
+							></Select>
+						</Label>
+						<Label>
+							Punkte 1:
+							<Select
+								class="mt-4 w-40 p-3 space-y-3 text-sm"
+								items={pointsMap}
+								bind:value={selPoints2}
+								placeholder="Punkte Spieler 2"
+							></Select>
+						</Label>
+					</div>
+					<Label>
+						Flipper auswählen:
+						<Select
+							class="mt-4 p-3 space-y-3 text-sm"
+							items={pinMap}
+							bind:value={selPin}
+							placeholder="Flipper"
+						></Select>
+					</Label>
+					<Button color="alternative" on:click={checkMatch}>Anlegen</Button>
+					<Button color="primary" on:click={cancelAddMatch}>Abbrechen</Button>
+				</form>
+			</Modal>
+		</div>
+
+		<div>
+			<Modal bind:open={showAlert} size="xs" autoclose>
+				<div class="text-center">
+					<CloseCircleOutline
+						class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700"
+					/>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+						Daten sind nicht korrekt oder unvollständig. Bitte korrigieren!
+					</h3>
+					<Button color="alternative">Schließen</Button>
+				</div>
+			</Modal>
+		</div>
+
+		<div>
+			<Modal bind:open={showSure} size="xs" autoclose>
+				<div class="text-center">
+					<ExclamationCircleOutline
+						class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+					/>
+					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+						{getPlayerName(selPlayer1) + " : " + getPlayerName(selPlayer2) + " = " + selPoints1 + " : " + selPoints2}
+					</h3>
+					<Button color="red" class="me-2" on:click={storeMatch}>Ja, ich bin sicher</Button>
+					<Button color="alternative">Nein, abbrechen</Button>
+				</div>
+			</Modal>
+		</div>
+
+		<br />
+	{/if}
 
 	<Table hoverable={true}>
 		<TableHead>

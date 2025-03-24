@@ -1,5 +1,5 @@
 <script>
-	import { P, Heading } from 'flowbite-svelte';
+	import { Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 

@@ -66,6 +66,27 @@
 	<Heading tag="h5">Turniere bearbeiten, starten oder beenden</Heading>
 	<br />
 
+	<div>
+		<Button on:click={() => (newForm = true)}>Neues Turnier...</Button>
+		<Modal title="Neues Turnier anlegen" bind:open={newForm} autoclose={false} class="max-w-sm">
+			<form class="flex flex-col space-y-6" action="#">
+				<Label class="space-y-2">
+					<span></span>
+					<Input bind:value={newTourName} placeholder="Turnier-Name" />
+				</Label>
+				<Select
+					class="w-44 p-3 space-y-3 text-sm"
+					items={TourUtil.GetTypeMap()}
+					bind:value={newTourType}
+					placeholder="Turnier-Typ"
+				></Select>
+				<Button color="alternative" on:click={createTour}>Anlegen</Button>
+				<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
+			</form>
+		</Modal>
+	</div>
+	<br />
+
 	<Table hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
@@ -99,24 +120,4 @@
 			{/each}
 		</TableBody>
 	</Table>
-</div>
-
-<div>
-	<Button on:click={() => (newForm = true)}>Neues Turnier...</Button>
-	<Modal title="Neues Turnier anlegen" bind:open={newForm} autoclose={false} class="max-w-sm">
-		<form class="flex flex-col space-y-6" action="#">
-			<Label class="space-y-2">
-				<span></span>
-				<Input bind:value={newTourName} placeholder="Turnier-Name" />
-			</Label>
-			<Select
-				class="w-44 p-3 space-y-3 text-sm"
-				items={TourUtil.GetTypeMap()}
-				bind:value={newTourType}
-				placeholder="Turnier-Typ"
-			></Select>
-			<Button color="alternative" on:click={createTour}>Anlegen</Button>
-			<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
-		</form>
-	</Modal>
 </div>

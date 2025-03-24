@@ -11,11 +11,11 @@ Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
 - Spieler-Fotos / in gehosteter Version ladbar
-- Spielstärken (in json pro Spieltagbeginn)
 - Pyramide
 - Spieler-Statistik (Gesamt)
 - Spieltag starten/beenden
 - Matcheingabe
+-- Anzahl Herausforderungen checken
 - Spieler bei neuem Spieltag hinzufügen
 
 Nice to have:
