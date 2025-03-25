@@ -16,7 +16,6 @@ model Pin {
   year      Int
   type      PinType
   active    Boolean @default(true)
-  deleted   Boolean @default(false)
 }
 
 model Player {
@@ -38,6 +37,20 @@ model Tournament {
   players   String[]
   settings  Json
   results   Json
+}
+
+model Round {
+  createdAt DateTime   @default(now())
+  tid       String
+  rid       Int
+  name      String
+  status    TourStatus @default(Planned)
+  players   String[]
+  settings  Json
+  matches   Json[]
+  results   Json
+  tempData  Json
+  @@unique([tid, rid])
 }
 
 enum PinType {
