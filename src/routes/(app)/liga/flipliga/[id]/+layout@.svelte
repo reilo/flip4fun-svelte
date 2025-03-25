@@ -18,8 +18,7 @@
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Admin' }
 	];
 
-	const blobnum = parseInt(data.blob.blobid, 10);
-	const blobstatus = TourUtil.MapStatus(data.blob.status);
+	const roundstatus = TourUtil.MapStatus(data.round.status);
 </script>
 
 {#snippet headerLink(d)}
@@ -31,7 +30,7 @@
 <main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
 	<Heading tag="h3">{tournament.name}</Heading>
 	<br />
-	<Heading tag="h5">Aktuelle Runde {blobnum} ({blobstatus})</Heading>
+	<Heading tag="h5">Aktuelle Runde {data.round.rid} ({roundstatus})</Heading>
 	<br />
 
 	{@render children?.()}

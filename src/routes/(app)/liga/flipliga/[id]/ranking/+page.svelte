@@ -6,7 +6,7 @@
 
 	let { data } = $props();
 	const players = data.players;
-	const blob = data.blob;
+	const round = data.round;
 	const tournament = data.tournament;
 
 	const getPlayerName = (id) => {
@@ -15,12 +15,12 @@
 	};
 
 	const getStrength = (id) => {
-		const player = blob.results.rankInit.find((item) => item.player === id);
+		const player = round.settings.rankInit.find((item) => item.player === id);
 		return player.strength;
 	};
 
 	const getPlayerRankChange = (id) => {
-		const rank1 = blob.results.rankInit.findIndex((item) => item.player === id);
+		const rank1 = round.settings.rankInit.findIndex((item) => item.player === id);
 		const rank2 = ranking.findIndex((item) => item.player === id);
 		const rankChange = rank1 - rank2;
 		return rankChange != 0 ? rankChange : '';
@@ -41,13 +41,13 @@
 	};
 
 	const getPlayerScoring = (id) => {
-		const player1 = blob.results.rankInit.find((item) => item.player === id);
+		const player1 = round.settings.rankInit.find((item) => item.player === id);
 		const player2 = ranking.find((item) => item.player === id);
 		return player2.points - player1.points;
 	};
 
 	const getCountMatches = (id) => {
-		return blob.results.matches.reduce((count, item) => {
+		return round.matches.reduce((count, item) => {
 			if (item.player1 === id || item.player2 === id) {
 				count += 1;
 			}
@@ -61,10 +61,10 @@
 
 	const calcRanking = () => {
 		let ranking = [];
-		if (blob.status === 'Completed') {
-			ranking = blob.results.rankFinal;
+		if (round.status === 'Completed') {
+			ranking = round.results.rankFinal;
 		} else {
-			ranking = CalcRanking(blob.results, tournament.settings.matchBonus);
+			ranking = CalcRanking(round.settings.rankInit, round.matches, tournament.settings.matchBonus);
 		}
 		return ranking;
 	};

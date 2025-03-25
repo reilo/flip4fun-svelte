@@ -11,14 +11,14 @@ export async function load({ fetch, params }) {
     const tResponse = await fetch("/api/tournament/" + params.id, getParms);
     const tData = await tResponse.json();
 
-    const bsresponse = await fetch("/api/tournament/" + params.id + "/blob", getParms);
-    const bsData = await bsresponse.json();
+    const rsresponse = await fetch("/api/tournament/" + params.id + "/round", getParms);
+    const rsData = await rsresponse.json();
 
-    let bData;
-    if (bsData.blobs.length > 0) {
-        const bid = bsData.blobs[bsData.blobs.length - 1].blobid;
-        const bresponse = await fetch("/api/tournament/" + params.id + "/blob/" + bid, getParms);
-        bData = await bresponse.json();
+    let rData;
+    if (rsData.rounds.length > 0) {
+        const rid = rsData.rounds[rsData.rounds.length - 1].rid;
+        const rresponse = await fetch("/api/tournament/" + params.id + "/round/" + rid, getParms);
+        rData = await rresponse.json();
     }
 
     const plResponse = await fetch("/api/player", getParms);
@@ -27,5 +27,5 @@ export async function load({ fetch, params }) {
     const pResponse = await fetch("/api/pin?active=true", getParms);
     const pData = await pResponse.json();
 
-    return { tournament: tData.tournament, blobs: bsData.blobs, blob: bData ? bData.blob : undefined, players: plData.players, pins: pData.pins };
+    return { tournament: tData.tournament, rounds: rsData.rounds, round: rData ? rData.round : null, players: plData.players, pins: pData.pins };
 }

@@ -20,7 +20,7 @@
 	const links = [
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Einstellungen' },
 		{ link: '/admin/tournaments/flipliga/' + id + '/players', name: 'Spieler' },
-		{ link: '/admin/tournaments/flipliga/' + id + '/blobs', name: 'Spieltag' }
+		{ link: '/admin/tournaments/flipliga/' + id + '/rounds', name: 'Spieltag' }
 	];
 </script>
 

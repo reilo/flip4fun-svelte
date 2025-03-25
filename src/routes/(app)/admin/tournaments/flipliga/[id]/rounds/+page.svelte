@@ -2,7 +2,6 @@
 	import { Modal, Label, Button } from 'flowbite-svelte';
 	import { Card } from 'flowbite-svelte';
 	import { ArrowRightOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { Increment } from '$lib/BlobUtil';
 	import { CalcStrength } from '$lib/TourUtil';
 	import { CalcRanking } from '$lib/MatchUtil';
 	import { jsPDF } from 'jspdf';
@@ -13,31 +12,30 @@
 	let endForm = $state(false);
 
 	let startEnabled = $state(
-		(!data.blob && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
-			(data.blob && data.blob.status === 'Completed')
+		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
+			(data.round && data.round.status === 'Completed')
 	);
-	let endEnabled = $state(data.blob && data.blob.status === 'Active');
+	let endEnabled = $state(data.round && data.round.status === 'Active');
 
-	const nextBlobID = data.blob ? Increment(data.blob.blobid) : '0001';
-	const nextRound = parseInt(nextBlobID);
-	const nextBlobName = data.tournament.name + ' - Runde ' + nextRound;
+	const nextRound = data.round ? data.round.rid + 1: 1;
+	const nextRoundName = data.tournament.name + ' - Runde ' + nextRound;
 	const baseline = data.tournament.settings.baseline;
 
-	async function startBlob() {
-		// create first or next blob
+	async function startRound() {
+		// create first or next round
 		let rankInit = [];
-		if (!data.blob) {
-			// first blob of tournament
+		if (!data.round) {
+			// first round of tournament
 			data.tournament.players.forEach((item, i) => {
 				const strength = CalcStrength(i + 1, data.tournament.players.length);
 				rankInit.push({ player: item, strength: strength, points: baseline + strength });
 			});
 		} else {
-			// next blob, add new players
+			// next round, add new players
 			let allPlayers = data.tournament.players.slice();
 			const numPlayers = allPlayers.length;
 			let insertPos = numPlayers;
-			data.blob.results.rankFinal.forEach((item, i) => {
+			data.round.results.rankFinal.forEach((item, i) => {
 				rankInit.push({
 					player: item.player,
 					points: item.points
@@ -57,33 +55,38 @@
 				rankInit[i].strength = CalcStrength(i + 1, numPlayers);
 			});
 		}
-		const results = { rankInit: rankInit, matches: [], rankFinal: [] };
-		createBlob(data.tournament.id, nextBlobName, nextBlobID, results);
-		data.blob.results = results;
+		const settings = { rankInit: rankInit };
+		const matches = [];
+		const results = { rankFinal: [] };
+		createRound(data.tournament.id, nextRoundName, nextRound, settings, matches, results);
+		if (data.round) {
+			data.round.settings = settings;
+		}
 		updateTournamentStatus(data.tournament.id, 'Active');
 		startForm = startEnabled = false;
 		endEnabled = true;
 	}
 
-	async function endBlob() {
+	async function endRound() {
 		// calculate final results and set status to Completed
-		const results = data.blob.results;
-		results.rankFinal = CalcRanking(data.blob.results, data.tournament.settings.matchBonus);
-		updateBlob(data.blob.id, results);
-		data.blob.results = results;
+		const results = data.round.results;
+		results.rankFinal = CalcRanking(data.round.settings.rankInit, data.round.matches, data.tournament.settings.matchBonus);
+		updateRound(data.tournament.id, data.round.rid, results);
+		data.round.results = results;
 		endForm = endEnabled = false;
 		startEnabled = true;
 	}
 
-	async function createBlob(tid, name, bid, results) {
-		const response = await fetch('/api/tournament', {
+	async function createRound(tid, name, rid, settings, matches, results) {
+		const response = await fetch('/api/tournament/' + tid + "/round", {
 			method: 'POST',
 			body: JSON.stringify({
+				tid: tid,
+				rid: rid,
 				name: name,
-				type: 'blob',
-				id: tid + ':' + bid,
 				status: 'Active',
-				settings: {},
+				settings: settings,
+				matches: matches,
 				results: results
 			}),
 			headers: {
@@ -94,8 +97,8 @@
 		const result = await response.json();
 	}
 
-	async function updateBlob(id, results) {
-		const response = await fetch('/api/tournament/' + id, {
+	async function updateRound(tid, rid, results) {
+		const response = await fetch('/api/tournament/' + tid + '/round/' + rid, {
 			method: 'PUT',
 			body: JSON.stringify({
 				results: results,
@@ -178,7 +181,7 @@
 			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich gestartet werden?</Label>
-				<Button color="alternative" on:click={startBlob}>Ja, starten</Button>
+				<Button color="alternative" on:click={startRound}>Ja, starten</Button>
 				<Button color="primary" on:click={() => (startForm = false)}>Nein, abbrechen</Button>
 			</form>
 		</div>
@@ -191,7 +194,7 @@
 			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich beendet werden?</Label>
-				<Button color="alternative" on:click={endBlob}>Ja, beenden</Button>
+				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
 				<Button color="primary" on:click={() => (endForm = false)}>Nein, abbrechen</Button>
 			</form>
 		</div>

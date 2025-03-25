@@ -11,18 +11,18 @@ export async function load({ fetch, params }) {
     const tresponse = await fetch("/api/tournament/" + params.id, getParms);
     const tData = await tresponse.json();
 
-    const bsresponse = await fetch("/api/tournament/" + params.id + "/blob", getParms);
-    const bsData = await bsresponse.json();
+    const rsresponse = await fetch("/api/tournament/" + params.id + "/round", getParms);
+    const rsData = await rsresponse.json();
 
-    let blData;
-    if (bsData.blobs.length > 0) {
-        const bid = bsData.blobs[bsData.blobs.length - 1].blobid;
-        const bresponse = await fetch("/api/tournament/" + params.id + "/blob/" + bid, getParms);
-        blData = await bresponse.json();
+    let rData;
+    if (rsData.rounds.length > 0) {
+        const rid = rsData.rounds[rsData.rounds.length - 1].rid;
+        const rresponse = await fetch("/api/tournament/" + params.id + "/round/" + rid, getParms);
+        rData = await rresponse.json();
     }
 
     const plresponse = await fetch("/api/player?active=true", getParms);
     const plData = await plresponse.json();
 
-    return { tournament: tData.tournament, blobs: bsData.blobs, blob: blData ? blData.blob : undefined, players: plData.players };
+    return { tournament: tData.tournament, rounds: rsData.rounds, round: rData ? rData.round : null, players: plData.players };
 }

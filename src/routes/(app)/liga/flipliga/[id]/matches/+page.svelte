@@ -12,10 +12,10 @@
 	let showAlert = $state(false);
 	let showSure = $state(false);
 
-	const matches = $state(data.blob.results.matches);
-	const rankInit = data.blob.results.rankInit;
+	const matches = $state(data.round.matches);
+	const rankInit = data.round.settings.rankInit;
 
-	const addMatchEnabled = data.blob.status === 'Active';
+	const addMatchEnabled = data.round.status === 'Active';
 
 	const getPlayerName = (id) => {
 		const player = data.players.find((item) => item.id === id);
@@ -83,11 +83,11 @@
 			pin: selPin
 		};
 		matches.push(match);
-		data.blob.results.matches = matches;
-		const response = await fetch('/api/tournament/' + data.blob.id, {
+		data.round.matches = matches;
+		const response = await fetch('/api/tournament/' + data.tournament.id + '/round/' + data.round.rid, {
 			method: 'PUT',
 			body: JSON.stringify({
-				results: data.blob.results
+				matches: matches
 			}),
 			headers: {
 				'Content-Type': 'application/json',

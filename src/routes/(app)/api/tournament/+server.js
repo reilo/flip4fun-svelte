@@ -8,7 +8,6 @@ export const GET = async ({ url }) => {
         url.searchParams.forEach((value, key) => {
             fields[key] = (value === "true" ? true : (value === "false" ? false : value));
         });
-        fields.NOT = { type: 'blob' };
         const tournaments = await prisma.tournament.findMany({
             orderBy: [{ name: 'asc' }],
             select: { id: true, name: true, type: true, status: true },
@@ -59,7 +58,7 @@ export const POST = async ({ request }) => {
             name: body.name,
             type: body.type,
             status: body.status ? body.status : "Planned",
-            players: [],
+            players: body.players ? body.players : [],
             settings: body.settings ? body.settings : {},
             results: body.results ? body.results : {}
         }

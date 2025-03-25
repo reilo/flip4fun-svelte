@@ -43,7 +43,7 @@ export function GetTypeMap() {
 }
 
 export function IsValidType(type) {
-    return (type === "flipfinal" || type === "flipliga" || type === "fliptwin" || type === "blob");
+    return (type === "flipfinal" || type === "flipliga" || type === "fliptwin");
 }
 
 export function CalcStrength(pos, total) {
