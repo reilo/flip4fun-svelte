@@ -14,11 +14,19 @@ Essentiell: Liga/Turnier-Framework
 - Pyramide
 - Spieler-Statistik (Gesamt)
 -- Anzahl Herausforderungen checken
-- Spieltag starten
--- neue Spieler hinzufügen
+- Spieltag starten/beenden -> Seite updaten
+-- import { invalidate, invalidateAll } from '$app/navigation';
 - Ergebnis-PDF erstellen
 - DB Refactoring
--- Blob-Tabelle
+-- Blob-Tabelle (temp data)
+
+REST APIS
+- expand parameter
+- search params checken
+- Fehlerbehandlung!
+
+Unit Tests...
+Postgres lokal...
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!
@@ -26,6 +34,20 @@ Nice to have:
 ferner (falls Zeit ist):
 - Flipperliste mehr Funktionen
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
+
+###################################################
+
+model Round {
+  createdAt DateTime   @default(now())
+  tid       String
+  rid       Int
+  name      String
+  status    TourStatus @default(Planned)
+  settings  Json
+  matches   Json
+  results   Json
+  tempData  Json
+}
 
 
 ##################################################

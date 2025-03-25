@@ -6,7 +6,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"test": "vitest"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.2.5",
@@ -37,6 +38,7 @@
 		"flowbite-svelte-icons": "^2.0.3",
 		"jspdf": "^3.0.1",
 		"svelte-device-info": "^1.0.0",
-		"tailwind-merge": "^3.0.2"
+		"tailwind-merge": "^3.0.2",
+		"vitest": "^3.0.9"
 	}
 }

@@ -49,7 +49,7 @@ export function IsValidType(type) {
 export function CalcStrength(pos, total) {
     let sum = 0;
     let rowCount = 0;
-    while (sum <= total) sum += ++rowCount;
+    while (sum < total) sum += ++rowCount;
     let curPos = 1;
     let i = 1;
     while (curPos < pos) {

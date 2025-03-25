@@ -1,8 +1,7 @@
 <script>
-	import { Heading, Modal, Label } from 'flowbite-svelte';
-	import { Card, Button } from 'flowbite-svelte';
-	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { Modal, Label, Button } from 'flowbite-svelte';
+	import { Card } from 'flowbite-svelte';
+	import { ArrowRightOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { Increment } from '$lib/BlobUtil';
 	import { CalcStrength } from '$lib/TourUtil';
 	import { CalcRanking } from '$lib/MatchUtil';
@@ -35,12 +34,35 @@
 			});
 		} else {
 			// next blob, add new players
+			let allPlayers = data.tournament.players.slice();
+			const numPlayers = allPlayers.length;
+			let insertPos = numPlayers;
+			data.blob.results.rankFinal.forEach((item, i) => {
+				rankInit.push({
+					player: item.player,
+					points: item.points
+				});
+				allPlayers.splice(allPlayers.indexOf(item.player), 1);
+				if (item.points < baseline) {
+					insertPos = i;
+				}
+			});
+			allPlayers.forEach((item, i) => {
+				rankInit.splice(insertPos++, 0, {
+					player: item,
+					points: baseline
+				});
+			});
+			rankInit.forEach((item, i) => {
+				rankInit[i].strength = CalcStrength(i + 1, numPlayers);
+			});
 		}
 		const results = { rankInit: rankInit, matches: [], rankFinal: [] };
 		createBlob(data.tournament.id, nextBlobName, nextBlobID, results);
+		data.blob.results = results;
 		updateTournamentStatus(data.tournament.id, 'Active');
-		startForm = false;
-		startEnabled = false;
+		startForm = startEnabled = false;
+		endEnabled = true;
 	}
 
 	async function endBlob() {
@@ -49,8 +71,8 @@
 		results.rankFinal = CalcRanking(data.blob.results, data.tournament.settings.matchBonus);
 		updateBlob(data.blob.id, results);
 		data.blob.results = results;
-		endForm = false;
-		endEnabled = false;
+		endForm = endEnabled = false;
+		startEnabled = true;
 	}
 
 	async function createBlob(tid, name, bid, results) {
