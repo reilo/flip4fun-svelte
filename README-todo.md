@@ -10,44 +10,25 @@ Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
-- Spieler-Fotos / in gehosteter Version ladbar
+- Spieler-Fotos lokal ladbar
 - Pyramide
 - Spieler-Statistik (Gesamt)
--- Anzahl Herausforderungen checken
-- Spieltag starten/beenden -> Seite updaten
--- import { invalidate, invalidateAll } from '$app/navigation';
+- Anzahl Herausforderungen checken (temp data)
+- Strafpunkte implementieren
 - Ergebnis-PDF erstellen
-- DB Refactoring
--- Blob-Tabelle (temp data)
-
-REST APIS
-- expand parameter
-- search params checken
-- Fehlerbehandlung!
-
+- Spielerliste in Round
 Unit Tests...
-Postgres lokal...
+
+Device Phone eliminieren
 
 Nice to have:
 - CRUD-Funktionen Pins/Spieler!
 
 ferner (falls Zeit ist):
+- Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
+- Rest APIs: expand parameter
 - Flipperliste mehr Funktionen
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
-
-###################################################
-
-model Round {
-  createdAt DateTime   @default(now())
-  tid       String
-  rid       Int
-  name      String
-  status    TourStatus @default(Planned)
-  settings  Json
-  matches   Json
-  results   Json
-  tempData  Json
-}
 
 
 ##################################################

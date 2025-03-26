@@ -34,16 +34,11 @@ export const POST = async ({ request, params }) => {
     try {
         const body = await request.json();
 
-        if (body.rid === undefined) {
-            throw "round id is undefined";
-        } else if (body.rid === "") {
-            throw "round id is empty";
+        if (!body.rid) {
+            throw "round id is undefined or empty";
         }
-
-        if (body.name === undefined) {
-            throw "name is undefined";
-        } else if (body.name === "") {
-            throw "name is empty";
+        if (!body.name) {
+            throw "name is undefined or empty";
         }
 
         let data = {
@@ -70,7 +65,7 @@ export const POST = async ({ request, params }) => {
     } catch (e) {
 
         return new Response(
-            JSON.stringify({ message: "Runde konnte nicht gespeichert werden", error: e.message }),
+            JSON.stringify({ message: "Runde konnte nicht gespeichert werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

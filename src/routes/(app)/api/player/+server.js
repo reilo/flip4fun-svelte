@@ -5,7 +5,14 @@ export const GET = async ({ url }) => {
     try {
         let fields = {};
         url.searchParams.forEach((value, key) => {
-            fields[key] = (value === "true" ? true : (value === "false" ? false : value));
+            if (!["forename", "surname", "", "active"].includes(key)) {
+                throw key + " ist kein gültiger Suchparameter";
+            }
+            if (value === "true") {
+                fields[key] = true;
+            } else {
+                fields[key] = value;
+            }
         });
         const players = await prisma.player.findMany({
             orderBy: [{ forename: 'asc' }, { surname: 'asc' }],
@@ -20,7 +27,7 @@ export const GET = async ({ url }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Spielerliste konnte nicht geladen werden", error: e.message }),
+            JSON.stringify({ message: "Spielerliste konnte nicht geladen werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

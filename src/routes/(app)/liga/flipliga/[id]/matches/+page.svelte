@@ -1,9 +1,10 @@
 <script>
 	import { Heading } from 'flowbite-svelte';
-	import { Modal, Button, Label, Input, Select } from 'flowbite-svelte';
+	import { Modal, Button, Label, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
+	import { invalidateAll } from '$app/navigation';
 	import { CalcPoints } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -12,7 +13,7 @@
 	let showAlert = $state(false);
 	let showSure = $state(false);
 
-	const matches = $state(data.round.matches);
+	const matches = $derived(data.round.matches);
 	const rankInit = data.round.settings.rankInit;
 
 	const addMatchEnabled = data.round.status === 'Active';
@@ -83,21 +84,27 @@
 			pin: selPin
 		};
 		matches.push(match);
-		data.round.matches = matches;
-		const response = await fetch('/api/tournament/' + data.tournament.id + '/round/' + data.round.rid, {
-			method: 'PUT',
-			body: JSON.stringify({
-				matches: matches
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
+		const response = await fetch(
+			'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid,
+			{
+				method: 'PUT',
+				body: JSON.stringify({
+					matches: matches
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
 			}
-		});
+		);
 		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		invalidateAll();
 		showSure = newForm = false;
 		resetFormFields();
-	};
+	}
 
 	const cancelAddMatch = () => {
 		newForm = false;

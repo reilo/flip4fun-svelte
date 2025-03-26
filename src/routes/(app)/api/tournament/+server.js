@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { Status } from "@prisma/client";
 const prisma = new PrismaClient();
 import { IsValidType } from "$lib/TourUtil.js";
 
@@ -6,7 +7,20 @@ export const GET = async ({ url }) => {
     try {
         let fields = {};
         url.searchParams.forEach((value, key) => {
-            fields[key] = (value === "true" ? true : (value === "false" ? false : value));
+            if (!["type", "status"].includes(key)) {
+                throw key + " ist kein gültiger Suchparameter";
+            }
+            if (value === "true") {
+                fields[key] = true;
+            } else if (key === "type") {
+                fields[key] = value;
+            } else if (key === "status") {
+                if (Object.values(Status).includes(value)) {
+                    fields[key] = Status[value];
+                } else {
+                    throw value + " ist kein gültiger Wert für " + key;
+                }
+            }
         });
         const tournaments = await prisma.tournament.findMany({
             orderBy: [{ name: 'asc' }],
@@ -22,7 +36,7 @@ export const GET = async ({ url }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Turnierliste konnte nicht geladen werden", error: e.message }),
+            JSON.stringify({ message: "Turnierliste konnte nicht geladen werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }
@@ -34,24 +48,16 @@ export const POST = async ({ request }) => {
     try {
         const body = await request.json();
 
-        if (body.name === undefined) {
-            throw "name is undefined";
-        } else if (body.name === "") {
-            throw "name is empty";
+        if (!body.name ) {
+            throw "name is undefined or empty";
         }
-
-        if (body.type === undefined) {
-            throw "type is undefined";
-        } else if (body.type === "") {
-            throw "type is empty";
+        if (!body.type) {
+            throw "type is undefined or empty";
         } else if (!IsValidType(body.type)) {
             throw "type " + body.type + " is unknown";
         }
-
-        if (body.settings === undefined) {
-            throw "settings are undefined";
-        } else if (body.settings === "") {
-            throw "settings are empty";
+        if (!body.settings) {
+            throw "settings are undefined or empty";
         }
 
         let data = {
@@ -61,9 +67,6 @@ export const POST = async ({ request }) => {
             players: body.players ? body.players : [],
             settings: body.settings ? body.settings : {},
             results: body.results ? body.results : {}
-        }
-        if (body.id) {
-            data["id"] = body.id;
         }
 
         const tournament = await prisma.tournament.create({
@@ -78,7 +81,7 @@ export const POST = async ({ request }) => {
     } catch (e) {
 
         return new Response(
-            JSON.stringify({ message: "Turnier konnte nicht gespeichert werden", error: e.message }),
+            JSON.stringify({ message: "Turnier konnte nicht gespeichert werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

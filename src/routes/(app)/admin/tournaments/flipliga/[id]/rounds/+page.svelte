@@ -1,12 +1,14 @@
 <script>
-	import { Modal, Label, Button } from 'flowbite-svelte';
-	import { Card } from 'flowbite-svelte';
+	import { Modal, Label, Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { invalidateAll } from '$app/navigation';
 	import { CalcStrength } from '$lib/TourUtil';
 	import { CalcRanking } from '$lib/MatchUtil';
 	import { jsPDF } from 'jspdf';
 
 	let { data } = $props();
+	let tournament = $derived(data.tournament);
+	let round = $derived(data.round);
 
 	let startForm = $state(false);
 	let endForm = $state(false);
@@ -24,18 +26,18 @@
 	async function startRound() {
 		// create first or next round
 		let rankInit = [];
-		if (!data.round) {
+		if (!round) {
 			// first round of tournament
-			data.tournament.players.forEach((item, i) => {
-				const strength = CalcStrength(i + 1, data.tournament.players.length);
+			tournament.players.forEach((item, i) => {
+				const strength = CalcStrength(i + 1, tournament.players.length);
 				rankInit.push({ player: item, strength: strength, points: baseline + strength });
 			});
 		} else {
 			// next round, add new players
-			let allPlayers = data.tournament.players.slice();
+			let allPlayers = tournament.players.slice();
 			const numPlayers = allPlayers.length;
 			let insertPos = numPlayers;
-			data.round.results.rankFinal.forEach((item, i) => {
+			round.results.rankFinal.forEach((item, i) => {
 				rankInit.push({
 					player: item.player,
 					points: item.points
@@ -58,21 +60,19 @@
 		const settings = { rankInit: rankInit };
 		const matches = [];
 		const results = { rankFinal: [] };
-		createRound(data.tournament.id, nextRoundName, nextRound, settings, matches, results);
-		if (data.round) {
-			data.round.settings = settings;
-		}
-		updateTournamentStatus(data.tournament.id, 'Active');
+		createRound(tournament.id, nextRoundName, nextRound, settings, matches, results);
+		updateTournamentStatus(tournament.id, 'Active');
+		invalidateAll();
 		startForm = startEnabled = false;
 		endEnabled = true;
 	}
 
 	async function endRound() {
 		// calculate final results and set status to Completed
-		const results = data.round.results;
-		results.rankFinal = CalcRanking(data.round.settings.rankInit, data.round.matches, data.tournament.settings.matchBonus);
-		updateRound(data.tournament.id, data.round.rid, results);
-		data.round.results = results;
+		const results = round.results;
+		results.rankFinal = CalcRanking(round.settings.rankInit, round.matches, tournament.settings.matchBonus);
+		updateRound(tournament.id, round.rid, results);
+		invalidateAll();
 		endForm = endEnabled = false;
 		startEnabled = true;
 	}
@@ -95,6 +95,9 @@
 			}
 		});
 		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	async function updateRound(tid, rid, results) {
@@ -110,6 +113,9 @@
 			}
 		});
 		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	async function updateTournamentStatus(tid, status) {
@@ -124,6 +130,9 @@
 			}
 		});
 		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	function generatePDF() {

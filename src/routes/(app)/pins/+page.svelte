@@ -1,10 +1,12 @@
 <script>
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
-	import { Checkbox } from 'flowbite-svelte';
-
+	import { Alert } from 'flowbite-svelte';
+	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import Device from 'svelte-device-info';
+
 	let { data } = $props();
+	let showError = $derived(!data || !data.pins);
 
 	let searchTerm = $state('');
 	let openRow = $state();
@@ -12,7 +14,7 @@
 
 	let sortKey = $state('name');
 	let sortDirection = $state(1); // ascending
-	let items = $state(data.pins.slice());
+	let items = $state(data.pins ? data.pins.slice() : []);
 
 	const toggleRow = (i) => {
 		openRow = openRow === i ? null : i;
@@ -32,7 +34,7 @@
 	};
 
 	$effect.pre(() => {
-		let items2 = data.pins.slice();
+		let items2 = data.pins ? data.pins.slice() : [];
 		const filtered = items2.filter(
 			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
 		);
@@ -49,6 +51,18 @@
 		items = sorted;
 	});
 </script>
+
+{#if showError}
+	<Alert border color="red">
+		<InfoCircleSolid slot="icon" class="w-5 h-5" />
+		<span class="font-medium">Interner Fehler!</span>
+		<br />
+		{data.message}
+		<br />
+		{data.error}
+	</Alert>
+{/if}
+<br />
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
 	<caption

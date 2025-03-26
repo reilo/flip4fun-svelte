@@ -47,6 +47,9 @@
 			}
 		});
 		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
 	}
 
 	$effect.pre(() => {

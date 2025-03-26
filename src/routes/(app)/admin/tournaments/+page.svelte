@@ -1,12 +1,16 @@
 <script>
 	import { Heading, Modal } from 'flowbite-svelte';
-	import { Button, Label, Input, Select } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
+	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { invalidateAll } from '$app/navigation';
 	import * as TourUtil from '$lib/TourUtil';
 
 	let { data } = $props();
-	let tournaments = $state(data.tournaments);
+	let showError = $derived(!data || !data.tournaments);
+	let tournaments = $derived(data.tournaments);
+	
 	let newForm = $state(false);
 	let newTourName = $state('');
 	let newTourType = $state('');
@@ -43,24 +47,24 @@
 			newForm = false;
 			newTourName = '';
 			newTourType = '';
-			const tResponse = await fetch('/api/tournament', {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
-			});
-			const tResult = await tResponse.json();
-			if (tResponse.status === 200) {
-				tournaments = tResult.tournaments;
-			} else {
-				alert(JSON.stringify(tResult));
-			}
+			invalidateAll();
 		} else {
 			alert(JSON.stringify(result));
 		}
 	}
 </script>
+
+{#if showError}
+	<Alert border color="red">
+		<InfoCircleSolid slot="icon" class="w-5 h-5" />
+		<span class="font-medium">Interner Fehler!</span>
+		<br />
+		{data.message}
+		<br />
+		{data.error}
+	</Alert>
+{/if}
+<br />
 
 <div>
 	<Heading tag="h5">Turniere bearbeiten, starten oder beenden</Heading>

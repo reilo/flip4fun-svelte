@@ -4,8 +4,7 @@ const prisma = new PrismaClient();
 export const GET = async ({ params }) => {
     try {
         let round = await prisma.round.findUniqueOrThrow({
-            where: { tid_rid: { tid: params.tid, rid: parseInt(params.rid) } },
-            select: { rid: true, status: true, players: true, settings: true, matches: true, results: true, tempData: true }
+            where: { tid_rid: { tid: params.tid, rid: parseInt(params.rid) } }
         });
         return new Response(
             JSON.stringify({ round: round }),

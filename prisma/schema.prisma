@@ -8,49 +8,49 @@ datasource db {
 }
 
 model Pin {
-  id        String  @id
-  createdAt DateTime @default(now())
+  id        String      @id
+  createdAt DateTime    @default(now())
   name      String
   code      String?
-  manu      PinManu
-  year      Int
-  type      PinType
-  active    Boolean @default(true)
+  manu      PinManu     @default(Other)
+  year      Int         @default(0)
+  type      PinType     @default(Other)
+  active    Boolean     @default(true)
 }
 
 model Player {
-  id        String   @id
-  createdAt DateTime @default(now())
+  id        String      @id
+  createdAt DateTime    @default(now())
   forename  String
   surname   String
   shortname String?
   photo     String?
-  active    Boolean  @default(true)
+  active    Boolean     @default(true)
 }
 
 model Tournament {
-  id        String     @id @default(uuid())
-  createdAt DateTime   @default(now())
-  name      String?
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  name      String
   type      String
-  status    TourStatus @default(Planned)
-  players   String[]
-  settings  Json
-  results   Json
+  status    Status      @default(Planned)
+  players   String[]    @default([])
+  settings  Json        @default("{}")
+  results   Json        @default("{}")
 }
 
 model Round {
-  createdAt DateTime   @default(now())
+  createdAt DateTime    @default(now())
   tid       String
   rid       Int
-  name      String
-  status    TourStatus @default(Planned)
-  players   String[]
-  settings  Json
-  matches   Json[]
-  results   Json
-  tempData  Json
   @@unique([tid, rid])
+  name      String
+  status    Status      @default(Planned)
+  players   String[]    @default([])
+  settings  Json        @default("{}")
+  matches   Json        @default("{}")
+  results   Json        @default("{}")
+  tempData  Json        @default("{}")
 }
 
 enum PinType {
@@ -65,6 +65,7 @@ enum PinType {
   WPC
   WPC95
   Whitestar
+  Other
 }
 
 enum PinManu {
@@ -75,9 +76,10 @@ enum PinManu {
   Stern
   Williams
   Zaccaria
+  Other
 }
 
-enum TourStatus {
+enum Status {
   Planned
   Active
   Completed

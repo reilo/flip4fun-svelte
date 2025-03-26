@@ -1,17 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const PUT = async ({ params, url }) => {
+export const PUT = async ({ request, params }) => {
     try {
-        const aUrl = new URL(url);
-        const activeParam = aUrl.searchParams.get("active");
-        if (activeParam == null) {
-            throw "URL Parameter 'active' fehlt";
+        const body = await request.json();
+        console.log(body);
+        let data = {};
+        if (body.active !== undefined) {
+            data.active = body.active;
         }
-        const active = (activeParam === 'true');
-
         const updatedPin = await prisma.pin.update({
-            where: { id: params.id }, data: { active: active }
+            where: { id: params.id }, data: data
         });
         return new Response(
             JSON.stringify({ pin: updatedPin }),

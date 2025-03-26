@@ -33,6 +33,7 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
 		"@prisma/client": "^6.5.0",
+		"@sveltejs/enhanced-img": "^0.4.4",
 		"flowbite": "^3.1.2",
 		"flowbite-svelte": "^0.48.4",
 		"flowbite-svelte-icons": "^2.0.3",

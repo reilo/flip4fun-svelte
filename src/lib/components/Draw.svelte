@@ -1,8 +1,10 @@
 <script>
+	import { P, Heading } from 'flowbite-svelte';
+	import { Toggle, Button, Alert, Spinner } from 'flowbite-svelte';
+	import { SearchSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
 
-	import { Toggle, Button, P, Heading, Spinner } from 'flowbite-svelte';
-	import { SearchSolid } from 'flowbite-svelte-icons';
 	let { myData } = $props();
+	let showError = $derived(!myData || !myData.pins);
 
 	let em = $state(true);
 	let ee = $state(true);
@@ -20,10 +22,12 @@
 		let items = myData.pins.filter(
 			(pin) =>
 				pin.active &&
-				((em ? ["EM"].includes(pin.type) : false) ||
-					(ee ? ["EE","Sys11"].includes(pin.type) : false) ||
-					(dmd ? ["DataEast","Gottlieb","Pin2000","Whitestar","WPC","WPC95"].includes(pin.type) : false) ||
-					(lcd ? ["SAM","Spike"].includes(pin.type) : false))
+				((em ? ['EM'].includes(pin.type) : false) ||
+					(ee ? ['EE', 'Sys11'].includes(pin.type) : false) ||
+					(dmd
+						? ['DataEast', 'Gottlieb', 'Pin2000', 'Whitestar', 'WPC', 'WPC95'].includes(pin.type)
+						: false) ||
+					(lcd ? ['SAM', 'Spike'].includes(pin.type) : false))
 		);
 		if (items.length > 0) {
 			let num = Math.floor(Math.random() * items.length);
@@ -38,6 +42,18 @@
 		}, timeout);
 	}
 </script>
+
+{#if showError}
+	<Alert border color="red">
+		<InfoCircleSolid slot="icon" class="w-5 h-5" />
+		<span class="font-medium">Interner Fehler!</span>
+		<br />
+		{myData.message}
+		<br />
+		{myData.error}
+	</Alert>
+{/if}
+<br />
 
 <Heading tag="h5">Flipper losen</Heading>
 
@@ -56,7 +72,7 @@
 	<Toggle checked={lcd} on:change={() => (lcd = !lcd)}>Moderne Flipper (SAM, Spike)</Toggle>
 	<div>
 		<br />
-		<Button size="xl" on:click={selectPin}>
+		<Button disabled={showError} size="xl" on:click={selectPin}>
 			<Spinner class="mr-3 {progress ? '' : 'hidden'}" size="4" />
 			<SearchSolid class="w-3.5 h-3.5 mr-2 {progress ? 'hidden' : ''}" />
 			Starten

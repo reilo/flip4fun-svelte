@@ -52,7 +52,7 @@
 		<br />
 
 		<Label>
-			<span>Bonuspunkte für jedes absolvierte Match</span>
+			<span>Bonuspunkt(e) für jedes absolvierte Match</span>
 			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchBonus} />
 		</Label>
 		<br />
@@ -64,7 +64,7 @@
 		<br />
 
 		<Label>
-			<span>Ab welcher Runde erfolgen Matchabzüge?</span>
+			<span>Ab welcher Runde erfolgen Punktabzüge?</span>
 			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.minRound} />
 		</Label>
 		<br />
