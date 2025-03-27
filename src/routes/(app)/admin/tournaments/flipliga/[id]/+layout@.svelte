@@ -21,7 +21,7 @@
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Einstellungen' },
 		{ link: '/admin/tournaments/flipliga/' + id + '/players', name: 'Spieler' },
 		{ link: '/admin/tournaments/flipliga/' + id + '/rounds', name: 'Spieltag' },
-		{ link: '/liga/flipliga/' + id + '/ranking', name: 'zum Turnier' }
+		{ link: '/liga/flipliga/' + id + '/ranking', name: 'zur Liga' }
 	];
 </script>
 

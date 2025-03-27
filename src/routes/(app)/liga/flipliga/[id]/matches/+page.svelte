@@ -269,7 +269,7 @@
 		<br />
 	{/if}
 
-	<Table hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Spieler 1</TableHeadCell>
 			<TableHeadCell>Spieler 2</TableHeadCell>

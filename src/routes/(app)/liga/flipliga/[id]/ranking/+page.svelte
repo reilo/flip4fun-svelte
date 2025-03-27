@@ -3,6 +3,7 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ArrowUpOutline, ArrowDownOutline, ArrowsRepeatOutline } from 'flowbite-svelte-icons';
+	import { page } from '$app/stores';
 	import { CalcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -56,6 +57,11 @@
 		}, 0);
 	};
 
+	const getTotalCountMatches = (id) => {
+		const entry = round.settings.rankInit.find((item) => item.player === id);
+		return getCountMatches(id) + entry.matches;
+	};
+
 	const roundNumber = (num) => {
 		return (Math.round(num * 10) / 10).toFixed(1);
 	};
@@ -65,7 +71,7 @@
 		if (round.status === 'Completed') {
 			ranking = round.results.rankFinal;
 		} else {
-			ranking = CalcRanking(round.settings.rankInit, round.matches, tournament.settings.matchBonus);
+			ranking = CalcRanking(round.rid, round.settings.rankInit, round.matches, tournament.settings);
 		}
 		return ranking;
 	};
@@ -86,8 +92,9 @@
 			<!--TableHeadCell>Tendenz</TableHeadCell-->
 			<TableHeadCell class="text-center">Tendenz</TableHeadCell>
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
-			<TableHeadCell class="text-center">Punktgewinn</TableHeadCell>
-			<TableHeadCell class="text-center">Matches</TableHeadCell>
+			<TableHeadCell class="text-center">Punkte<br/>gewinn</TableHeadCell>
+			<TableHeadCell class="text-center">Matches<br/>Spieltag</TableHeadCell>
+			<TableHeadCell class="text-center">Matches<br/>Gesamt</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
@@ -114,7 +121,7 @@
 						{/if}
 					</TableBodyCell-->
 					<TableBodyCell>
-						{getPlayerName(rank.player)}
+						<a href={"/liga/flipliga/" + $page.params.id + "/statistics/" + rank.player}>{getPlayerName(rank.player)}</a>
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{getStrength(rank.player)}
@@ -155,6 +162,9 @@
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{getCountMatches(rank.player)}
+					</TableBodyCell>
+					<TableBodyCell tdClass="text-center">
+						{getTotalCountMatches(rank.player)}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

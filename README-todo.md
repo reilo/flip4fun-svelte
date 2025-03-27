@@ -12,9 +12,12 @@ Zeilenhintergrund alternierend nach Spielstärke
 Essentiell: Liga/Turnier-Framework
 - Spieler-Fotos wo?
 - Pyramide
-- Spieler-Statistik (Gesamt)
-- Strafpunkte implementieren
+- Strafpunkte variabel / Spielstärke?
 - Ergebnis-PDF erstellen
+- Titel/Untertitel, Erklärungstexte bearbeiten
+- Datum verwenden (Spieltag)
+- Styling allgemein
+- Spieler Liga-Admin -> Tabellenlayout
 
 Unit Tests...
 Env Variablen in Service-Mode

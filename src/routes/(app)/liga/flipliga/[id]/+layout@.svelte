@@ -15,7 +15,8 @@
 		{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 		{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
 		{ link: '/liga/flipliga/' + id + '/draw', name: 'Flipper losen' },
-		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Admin' }
+		{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
+		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 	];
 
 	const roundstatus = TourUtil.MapStatus(data.round.status);
@@ -28,9 +29,7 @@
 <Header headerLinks={links} {headerLink} />
 
 <main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
-	<Heading tag="h3">{tournament.name}</Heading>
-	<br />
-	<Heading tag="h5">Aktuelle Runde {data.round.rid} ({roundstatus})</Heading>
+	<Heading tag="h3">{tournament.name} / {data.round.rid}. Spieltag ({roundstatus})</Heading>
 	<br />
 
 	{@render children?.()}

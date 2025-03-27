@@ -1,5 +1,5 @@
 <script>
-	import { Card, Button } from 'flowbite-svelte';
+	import { P, Card, Button } from 'flowbite-svelte';
 
 	let { data } = $props();
 
@@ -75,6 +75,18 @@
 		unusedPlayers = unusedPlayers2;
 	});
 </script>
+
+<div>
+	<P>Hier kannst du neue Spieler zur Liga hinzufügen.</P>
+	<P
+		>Zum Ligastart klicke die Spieler in der Reihenfolge an, wie sie beim Start-Turnier ermittelt
+		wurde.</P
+	>
+	<P
+		>Während der laufenden Liga werden die neuen Spieler erst mit dem Start des nächsten Spieltages
+		ergänzt.</P
+	>
+</div>
 
 <form>
 	<div class="flex flex-col sm:flex-row justify-center content-center gap-3">

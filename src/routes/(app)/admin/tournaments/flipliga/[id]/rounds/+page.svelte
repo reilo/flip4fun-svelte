@@ -7,10 +7,12 @@
 	import { jsPDF } from 'jspdf';
 
 	let { data } = $props();
-	
+
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
 	let rounds = $derived(data.rounds);
+	let nextRound = $derived(data.round ? data.round.rid + 1 : 1);
+	let nextRoundName = $derived(data.tournament.name + ' - Runde ' + nextRound);
 
 	let startForm = $state(false);
 	let endForm = $state(false);
@@ -21,8 +23,6 @@
 	);
 	let endEnabled = $state(data.round && data.round.status === 'Active');
 
-	const nextRound = data.round ? data.round.rid + 1 : 1;
-	const nextRoundName = data.tournament.name + ' - Runde ' + nextRound;
 	const baseline = data.tournament.settings.baseline;
 
 	async function startRound() {
@@ -32,27 +32,43 @@
 			// first round of tournament
 			tournament.players.forEach((item, i) => {
 				const strength = CalcStrength(i + 1, tournament.players.length);
-				rankInit.push({ player: item, strength: strength, points: baseline + strength });
+				rankInit.push({
+					player: item,
+					strength: strength,
+					matches: 0,
+					points: baseline + strength,
+					bonus: 0,
+					penalty: 0
+				});
 			});
 		} else {
 			// next round, add new players
 			let allPlayers = tournament.players.slice();
 			const numPlayers = allPlayers.length;
-			let insertPos = numPlayers;
+			let insertPos;
 			round.results.rankFinal.forEach((item, i) => {
 				rankInit.push({
 					player: item.player,
-					points: item.points
+					matches: item.matches,
+					points: item.points,
+					bonus: item.bonus,
+					penalty: item.penalty
 				});
 				allPlayers.splice(allPlayers.indexOf(item.player), 1);
-				if (item.points < baseline) {
+				if (!insertPos && item.points < baseline) {
 					insertPos = i;
 				}
 			});
+			if (!insertPos) {
+				insertPos = numPlayers;
+			}
 			allPlayers.forEach((item, i) => {
 				rankInit.splice(insertPos++, 0, {
 					player: item,
-					points: baseline
+					points: baseline,
+					matches: 0,
+					bonus: 0,
+					penalty: 0
 				});
 			});
 			rankInit.forEach((item, i) => {
@@ -83,9 +99,10 @@
 		// calculate final results and set status to Completed
 		const results = round.results;
 		results.rankFinal = CalcRanking(
+			round.rid,
 			round.settings.rankInit,
 			round.matches,
-			tournament.settings.matchBonus
+			tournament.settings
 		);
 		updateRound(tournament.id, round.rid, results, {});
 		invalidateAll();
@@ -101,9 +118,9 @@
 			});
 		});
 		rounds.forEach((round) => {
-			round.matches.forEach((match)=> {
-				const index = encounters.findIndex((encounter) =>
-					encounter.p === match.player1 + '-' + match.player2
+			round.matches.forEach((match) => {
+				const index = encounters.findIndex(
+					(encounter) => encounter.p === match.player1 + '-' + match.player2
 				);
 				encounters[index].e += 1;
 			});
@@ -214,7 +231,9 @@
 		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Ergebnis-PDF generieren
 		</h5>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">...</p>
+		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+			Generiere hier das PDF mit allen Statistiken bis zum aktuellen Spieltag. Kann etwas länger dauern...
+		</p>
 		<Button disabled={false} on:click={generatePDF} class="w-fit">
 			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
@@ -239,7 +258,7 @@
 		<div class="text-center">
 			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
 			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich beendet werden?</Label>
+				<Label class="space-y-2">Soll der {nextRound - 1}. Spieltag wirklich beendet werden?</Label>
 				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
 				<Button color="primary" on:click={() => (endForm = false)}>Nein, abbrechen</Button>
 			</form>
