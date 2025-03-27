@@ -4,7 +4,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { CalcStrength } from '$lib/TourUtil';
 	import { CalcRanking } from '$lib/MatchUtil';
-	import { jsPDF } from 'jspdf';
+	import { GeneratePDF } from '$lib/PDFUtil';
 
 	let { data } = $props();
 
@@ -16,12 +16,17 @@
 
 	let startForm = $state(false);
 	let endForm = $state(false);
+	let endLigaForm = $state(false);
 
 	let startEnabled = $state(
 		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
-			(data.round && data.round.status === 'Completed')
+			(data.round && data.round.status === 'Completed' && data.tournament.status === 'Active')
 	);
 	let endEnabled = $state(data.round && data.round.status === 'Active');
+	let endLigaEnabled = $state(
+		data.round && data.round.status === 'Completed' && data.tournament.status === 'Active'
+	);
+	let pdfEnabled = $state(data.round && data.round.status === 'Completed');
 
 	const baseline = data.tournament.settings.baseline;
 
@@ -110,6 +115,13 @@
 		startEnabled = true;
 	}
 
+	async function endLiga() {
+		updateTournamentStatus(tournament.id, 'Completed');
+		invalidateAll();
+		endLigaForm = false;
+		startEnabled = endEnabled = endLigaEnabled = false;
+	}
+
 	const createTempData = () => {
 		let encounters = [];
 		tournament.players.forEach((p1) => {
@@ -190,9 +202,7 @@
 	}
 
 	function generatePDF() {
-		const doc = new jsPDF();
-		doc.text('Hello world!', 10, 10);
-		doc.save('a4.pdf');
+		GeneratePDF(data);
 	}
 </script>
 
@@ -232,10 +242,25 @@
 			Ergebnis-PDF generieren
 		</h5>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das PDF mit allen Statistiken bis zum aktuellen Spieltag. Kann etwas länger dauern...
+			Generiere hier das PDF mit allen Statistiken für alle Spieltage. Kann etwas länger dauern...
 		</p>
-		<Button disabled={false} on:click={generatePDF} class="w-fit">
+		<Button disabled={!pdfEnabled} on:click={generatePDF} class="w-fit">
 			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
+		</Button>
+	</Card>
+</div>
+
+<div>
+	<Card>
+		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			Liga beenden
+		</h5>
+		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+			Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet
+			werden.
+		</p>
+		<Button disabled={!endLigaEnabled} on:click={() => (endLigaForm = true)} class="w-fit">
+			Beenden<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
 	</Card>
 </div>
@@ -261,6 +286,19 @@
 				<Label class="space-y-2">Soll der {nextRound - 1}. Spieltag wirklich beendet werden?</Label>
 				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
 				<Button color="primary" on:click={() => (endForm = false)}>Nein, abbrechen</Button>
+			</form>
+		</div>
+	</Modal>
+</div>
+
+<div>
+	<Modal title="Liga beenden" bind:open={endLigaForm} autoclose={false} class="max-w-sm">
+		<div class="text-center">
+			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<form class="flex flex-col space-y-6" action="#">
+				<Label class="space-y-2">Soll diese Liga wirklich endgültig beendet werden?</Label>
+				<Button color="alternative" on:click={endLiga}>Ja, beenden</Button>
+				<Button color="primary" on:click={() => (endLigaForm = false)}>Nein, abbrechen</Button>
 			</form>
 		</div>
 	</Modal>

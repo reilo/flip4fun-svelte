@@ -20,6 +20,7 @@
 	];
 
 	const roundstatus = TourUtil.MapStatus(data.round.status);
+	const tournamentStatus = TourUtil.MapStatus(data.tournament.status);
 </script>
 
 {#snippet headerLink(d)}
@@ -29,7 +30,11 @@
 <Header headerLinks={links} {headerLink} />
 
 <main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
-	<Heading tag="h3">{tournament.name} / {data.round.rid}. Spieltag ({roundstatus})</Heading>
+	{#if tournament.status === 'Active'}
+		<Heading tag="h3">{tournament.name} / {data.round.rid}. Spieltag ({roundstatus})</Heading>
+	{:else}
+		<Heading tag="h3">{tournament.name} ({tournamentStatus})</Heading>
+	{/if}
 	<br />
 
 	{@render children?.()}

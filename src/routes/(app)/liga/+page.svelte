@@ -72,10 +72,10 @@
 							{tournament.name}
 						</TableBodyCell>
 						<TableBodyCell>
-							{MapType(tournament.type)}
+							{TourUtil.MapType(tournament.type)}
 						</TableBodyCell>
 						<TableBodyCell>
-							<Button href="/liga/{tournament.type}/{tournament.id}">Öffnen</Button>
+							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
 						</TableBodyCell>
 					</TableBodyRow>
 				{/if}

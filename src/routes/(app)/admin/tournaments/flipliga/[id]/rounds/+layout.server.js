@@ -19,5 +19,8 @@ export async function load({ fetch, params, parent }) {
         rData = await rresponse.json();
     }
 
-    return { rounds: rsData.rounds, round: rData ? rData.round : null }
+    const presponse = await fetch("/api/pin", getParms);
+    const pData = await presponse.json();
+
+    return { rounds: rsData.rounds, round: rData ? rData.round : null, pins: pData.pins }
 }

@@ -91,7 +91,7 @@
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#if !matches.length}
-			<P class="text-center">noch keine Matches</P>
+			noch keine Matches
 		{:else}
 			{#each matches as match, i}
 				<TableBodyRow>
