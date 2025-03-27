@@ -27,5 +27,5 @@ export async function load({ fetch, params }) {
     const pResponse = await fetch("/api/pin?active=true", getParms);
     const pData = await pResponse.json();
 
-    return { tournament: tData.tournament, rounds: rsData.rounds, round: rData ? rData.round : null, players: plData.players, pins: pData.pins };
+    return { tournament: tData.tournament, round: rData ? rData.round : null, players: plData.players, pins: pData.pins };
 }

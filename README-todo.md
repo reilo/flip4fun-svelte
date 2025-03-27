@@ -13,10 +13,8 @@ Essentiell: Liga/Turnier-Framework
 - Spieler-Fotos wo?
 - Pyramide
 - Spieler-Statistik (Gesamt)
-- Anzahl Herausforderungen checken (temp data)
 - Strafpunkte implementieren
 - Ergebnis-PDF erstellen
-- Ranking Style refactorn und parametriesieren
 
 Unit Tests...
 Env Variablen in Service-Mode
@@ -27,6 +25,7 @@ Nice to have:
 
 ferner (falls Zeit ist):
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
+- Ranking Style refactorn und parametriesieren
 - Rest APIs: expand parameter
 - Flipperliste mehr Funktionen
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb

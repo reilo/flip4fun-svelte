@@ -7,8 +7,10 @@
 	import { jsPDF } from 'jspdf';
 
 	let { data } = $props();
+	
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
+	let rounds = $derived(data.rounds);
 
 	let startForm = $state(false);
 	let endForm = $state(false);
@@ -60,6 +62,7 @@
 		const settings = { rankInit: rankInit };
 		const matches = [];
 		const results = { rankFinal: [] };
+		const tempData = createTempData();
 		createRound(
 			tournament.id,
 			nextRoundName,
@@ -67,7 +70,8 @@
 			tournament.players,
 			settings,
 			matches,
-			results
+			results,
+			tempData
 		);
 		updateTournamentStatus(tournament.id, 'Active');
 		invalidateAll();
@@ -83,13 +87,31 @@
 			round.matches,
 			tournament.settings.matchBonus
 		);
-		updateRound(tournament.id, round.rid, results);
+		updateRound(tournament.id, round.rid, results, {});
 		invalidateAll();
 		endForm = endEnabled = false;
 		startEnabled = true;
 	}
 
-	async function createRound(tid, name, rid, players, settings, matches, results) {
+	const createTempData = () => {
+		let encounters = [];
+		tournament.players.forEach((p1) => {
+			tournament.players.forEach((p2) => {
+				encounters.push({ p: p1 + '-' + p2, e: 0 });
+			});
+		});
+		rounds.forEach((round) => {
+			round.matches.forEach((match)=> {
+				const index = encounters.findIndex((encounter) =>
+					encounter.p === match.player1 + '-' + match.player2
+				);
+				encounters[index].e += 1;
+			});
+		});
+		return { encounters: encounters };
+	};
+
+	async function createRound(tid, name, rid, players, settings, matches, results, tempData) {
 		const response = await fetch('/api/tournament/' + tid + '/round', {
 			method: 'POST',
 			body: JSON.stringify({
@@ -100,7 +122,8 @@
 				players: players,
 				settings: settings,
 				matches: matches,
-				results: results
+				results: results,
+				tempData: tempData
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -113,11 +136,12 @@
 		}
 	}
 
-	async function updateRound(tid, rid, results) {
+	async function updateRound(tid, rid, results, tempData) {
 		const response = await fetch('/api/tournament/' + tid + '/round/' + rid, {
 			method: 'PUT',
 			body: JSON.stringify({
 				results: results,
+				tempData: tempData,
 				status: 'Completed'
 			}),
 			headers: {

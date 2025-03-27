@@ -1,17 +1,35 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-export const GET = async ({ params }) => {
+export const GET = async ({ url, params }) => {
     try {
+        let expandResults = false;
+        url.searchParams.forEach((value, key) => {
+            if (!["expand"].includes(key)) {
+                throw key + " ist kein gültiger Suchparameter";
+            }
+            if (key === "expand") {
+                if (value === "true") {
+                    expandResults = true;
+                } else {
+                    throw value + " ist kein gültiger Wert für " + key;
+                }
+            }
+        });
+
         const options = {
             where: { tid: params.tid },
-            select: { rid: true, status: true },
+            select: { tid: true, rid: true, name: true, status: true, matches: expandResults },
             orderBy: [{ rid: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);
         let rounds2 = [];
         rounds.forEach((round) => {
-            rounds2.push({ rid: round.rid, status: round.status })
+            let entry = { tid: round.tid, rid: round.rid, name: round.name, status: round.status };
+            if (expandResults) {
+                entry["matches"] = round.matches;
+            }
+            rounds2.push(entry)
         })
         return new Response(
             JSON.stringify({ rounds: rounds2 }),
@@ -22,7 +40,7 @@ export const GET = async ({ params }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Runden konnten nicht geladen werden", error: e.message }),
+            JSON.stringify({ message: "Runden konnten nicht geladen werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

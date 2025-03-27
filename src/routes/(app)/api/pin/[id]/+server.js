@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
-        console.log(body);
         let data = {};
         if (body.active !== undefined) {
             data.active = body.active;
