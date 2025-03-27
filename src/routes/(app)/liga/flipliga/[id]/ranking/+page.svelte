@@ -1,7 +1,8 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, Avatar } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { ArrowUpOutline, ArrowDownOutline, ArrowsRepeatOutline } from 'flowbite-svelte-icons';
 	import { CalcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -77,36 +78,82 @@
 	<Heading tag="h5">Rangfolge</Heading>
 	<br />
 
-	<Table hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
+			<!--TableHeadCell></TableHeadCell-->
 			<TableHeadCell>Spieler</TableHeadCell>
-			<TableHeadCell>Spielstärke</TableHeadCell>
-			<TableHeadCell>Tendenz</TableHeadCell>
-			<TableHeadCell>Punkte</TableHeadCell>
-			<TableHeadCell>Punktgewinn</TableHeadCell>
-			<TableHeadCell>Matches</TableHeadCell>
+			<TableHeadCell class="text-center">Spielstärke</TableHeadCell>
+			<!--TableHeadCell>Tendenz</TableHeadCell-->
+			<TableHeadCell class="text-center">Tendenz</TableHeadCell>
+			<TableHeadCell class="text-center">Punkte</TableHeadCell>
+			<TableHeadCell class="text-center">Punktgewinn</TableHeadCell>
+			<TableHeadCell class="text-center">Matches</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
 				<TableBodyRow>
+					<!--TableBodyCell>
+						{#if rank.rankChange < 0}
+							<Avatar
+								alt={rank.player}
+								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
+								dot={{ color: 'red' }}
+							/>
+						{:else if rank.rankChange > 0}
+							<Avatar
+								alt={rank.player}
+								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
+								dot={{ color: 'green' }}
+							/>
+						{:else}
+							<Avatar
+								alt={rank.player}
+								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
+								dot={{}}
+							/>
+						{/if}
+					</TableBodyCell-->
 					<TableBodyCell>
 						{getPlayerName(rank.player)}
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell tdClass="text-center">
 						{getStrength(rank.player)}
 					</TableBodyCell>
-					<TableBodyCell>
-						<div style={getPlayerRankChangeStyle(rank.player)}>
-							{formatPlayerRankChange(rank.player)}
+					<!--TableBodyCell>
+						{#if rank.rankChange < 0}
+						<div style=color:red>
+							<ArrowDownOutline class="w-5 h-5" />
 						</div>
+						{:else if rank.rankChange > 0}
+						<div style='color:green;'>
+							<ArrowUpOutline class="w-5 h-5" />
+						</div>
+						{:else}
+						<div style=color:default>
+							<!--ArrowsRepeatOutline class="w-5 h-5" />
+						</div>
+						{/if}
+					</TableBodyCell-->
+					<TableBodyCell tdClass="text-center">
+						{#if rank.rankChange < 0}
+							<div style="color:red">
+								{rank.rankChange}
+							</div>
+						{:else if rank.rankChange > 0}
+							<div style="color:green;">
+								+{rank.rankChange}
+							</div>
+						{:else}
+							<div style="color:default"></div>
+						{/if}
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell tdClass="text-center">
 						{roundNumber(rank.points)}
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell tdClass="text-center">
 						{roundNumber(getPlayerScoring(rank.player))}
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell tdClass="text-center">
 						{getCountMatches(rank.player)}
 					</TableBodyCell>
 				</TableBodyRow>

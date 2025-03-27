@@ -53,7 +53,9 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each data.players as player, i}
 				<TableBodyRow>
-					<TableBodyCell><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.photo} /></TableBodyCell>
+					<TableBodyCell
+						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
+					>
 					<TableBodyCell
 						>{player.forename +
 							' ' +

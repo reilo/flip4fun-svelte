@@ -19,7 +19,7 @@
 	);
 	let endEnabled = $state(data.round && data.round.status === 'Active');
 
-	const nextRound = data.round ? data.round.rid + 1: 1;
+	const nextRound = data.round ? data.round.rid + 1 : 1;
 	const nextRoundName = data.tournament.name + ' - Runde ' + nextRound;
 	const baseline = data.tournament.settings.baseline;
 
@@ -60,7 +60,15 @@
 		const settings = { rankInit: rankInit };
 		const matches = [];
 		const results = { rankFinal: [] };
-		createRound(tournament.id, nextRoundName, nextRound, settings, matches, results);
+		createRound(
+			tournament.id,
+			nextRoundName,
+			nextRound,
+			tournament.players,
+			settings,
+			matches,
+			results
+		);
 		updateTournamentStatus(tournament.id, 'Active');
 		invalidateAll();
 		startForm = startEnabled = false;
@@ -70,21 +78,26 @@
 	async function endRound() {
 		// calculate final results and set status to Completed
 		const results = round.results;
-		results.rankFinal = CalcRanking(round.settings.rankInit, round.matches, tournament.settings.matchBonus);
+		results.rankFinal = CalcRanking(
+			round.settings.rankInit,
+			round.matches,
+			tournament.settings.matchBonus
+		);
 		updateRound(tournament.id, round.rid, results);
 		invalidateAll();
 		endForm = endEnabled = false;
 		startEnabled = true;
 	}
 
-	async function createRound(tid, name, rid, settings, matches, results) {
-		const response = await fetch('/api/tournament/' + tid + "/round", {
+	async function createRound(tid, name, rid, players, settings, matches, results) {
+		const response = await fetch('/api/tournament/' + tid + '/round', {
 			method: 'POST',
 			body: JSON.stringify({
 				tid: tid,
 				rid: rid,
 				name: name,
 				status: 'Active',
+				players: players,
 				settings: settings,
 				matches: matches,
 				results: results

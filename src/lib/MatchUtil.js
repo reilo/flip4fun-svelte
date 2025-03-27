@@ -15,10 +15,10 @@ export function CalcPoints(match, strength1, strength2) {
 
 export function CalcRanking(rankInit, matches, matchBonus) {
 
-	function getStrength (id) {
-		const player = rankInit.find((item) => item.player === id);
-		return player.strength;
-	};
+    function getStrength(id) {
+        const player = rankInit.find((item) => item.player === id);
+        return player.strength;
+    };
 
     let ranking = [];
 
@@ -32,7 +32,13 @@ export function CalcRanking(rankInit, matches, matchBonus) {
         const index2 = ranking.findIndex((item) => item.player === match.player2);
         ranking[index2].points += result.player2 + matchBonus;
     });
-    
+
     ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
-    return ranking;
+
+    let ranking2 = [];
+    ranking.forEach((item, i) => {
+        const j = rankInit.findIndex((item2) => item.player === item2.player);
+        ranking2.push({ player: item.player, points: item.points, rankChange: j - i })
+    });
+    return ranking2;
 }

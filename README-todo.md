@@ -10,15 +10,16 @@ Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
-- Spieler-Fotos lokal ladbar
+- Spieler-Fotos wo?
 - Pyramide
 - Spieler-Statistik (Gesamt)
 - Anzahl Herausforderungen checken (temp data)
 - Strafpunkte implementieren
 - Ergebnis-PDF erstellen
-- Spielerliste in Round
-Unit Tests...
+- Ranking Style refactorn und parametriesieren
 
+Unit Tests...
+Env Variablen in Service-Mode
 Device Phone eliminieren
 
 Nice to have:
