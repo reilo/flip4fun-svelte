@@ -1,10 +1,10 @@
 <script>
-	import { Heading, P, Avatar } from 'flowbite-svelte';
+	import { Heading, P, Button, Avatar } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Checkbox, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	import { getPlayerName } from '$lib/PlayerUtil';
+	import { formatPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);
@@ -41,29 +41,36 @@
 <br />
 
 <div>
-	<Heading tag="h5">Spieler aktiv oder inaktiv schalten</Heading>
-	<P>Jeder Klick wird sofort gespeichert!</P>
+	<Heading tag="h5">Spieler hinzufügen oder aktiv/inaktiv schalten</Heading>
+	<P>Jeder Klick auf eine Checkbox wird sofort gespeichert!</P>
+	<br />
+	<Button disabled>Neuer Spieler...</Button>
+	<br />
 	<br />
 
-	<Table hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.players as player, i}
 				<TableBodyRow>
-					<TableBodyCell
+					<TableBodyCell class="py-0"
 						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
 					>
-					<TableBodyCell>{getPlayerName(player, data.players)}</TableBodyCell>
+					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
 					<TableBodyCell>
 						{#if player.active == true}
 							<Checkbox checked on:change={() => updatePlayer(player.id, !player.active)} />
 						{:else}
 							<Checkbox on:change={() => updatePlayer(player.id, !player.active)} />
 						{/if}
+					</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<Button disabled size="xs">Bearbeiten</Button>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

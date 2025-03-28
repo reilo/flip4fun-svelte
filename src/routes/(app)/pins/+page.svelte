@@ -90,24 +90,24 @@
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
 			<TableBodyRow on:click={() => toggleRow(i)}>
-				<TableBodyCell>
+				<TableBodyCell class="py-2">
 					<div style={getTextStyle(pin.active)}>
 						{pin.name}
 					</div>
 				</TableBodyCell>
 				{#if !Device.isPhone}
-					<TableBodyCell>
+					<TableBodyCell class="py-0">
 						<div style={getTextStyle(pin.active)}>
 							{pin.manu}
 						</div>
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell class="py-0">
 						<div style={getTextStyle(pin.active)}>
 							{pin.year}
 						</div>
 					</TableBodyCell>
 
-					<TableBodyCell>
+					<TableBodyCell class="py-0">
 						<div style={getTextStyle(pin.active)}>
 							{pin.type}
 						</div>

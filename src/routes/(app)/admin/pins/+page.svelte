@@ -1,5 +1,5 @@
 <script>
-	import { Heading, P, Checkbox, Alert } from 'flowbite-svelte';
+	import { Heading, P, Button, Checkbox, Alert } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
@@ -39,32 +39,37 @@
 <br />
 
 <div>
-	<Heading tag="h5">Flipper aktiv oder inaktiv schalten</Heading>
-	<P>Jeder Klick wird sofort gespeichert!</P>
+	<Heading tag="h5">Flipper hinzufügen oder aktiv/inaktiv schalten</Heading>
+	<P>Jeder Klick auf eine Checkbox wird sofort gespeichert!</P>
 	<br />
 
-	<Table hoverable={true}>
+	<Button disabled>Neuer Flipper...</Button>
+	<br />
+	<br />
+
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.pins as pin, i}
 				<TableBodyRow>
 					{#if i > 0 && pin.name == data.pins[i - 1].name}
 						{#if pin.manu != data.pins[i - 1].manu}
-							<TableBodyCell>{pin.name} ({pin.manu})</TableBodyCell>
+							<TableBodyCell class="py-0">{pin.name} ({pin.manu})</TableBodyCell>
 						{:else}
-							<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+							<TableBodyCell class="py-0">{pin.name} ({pin.owner})</TableBodyCell>
 						{/if}
 					{:else if i < data.pins.length - 1 && pin.name == data.pins[i + 1].name}
 						{#if pin.manu != data.pins[i + 1].manu}
-							<TableBodyCell>{pin.name} ({pin.manu})</TableBodyCell>
+							<TableBodyCell class="py-0">{pin.name} ({pin.manu})</TableBodyCell>
 						{:else}
-							<TableBodyCell>{pin.name} ({pin.owner})</TableBodyCell>
+							<TableBodyCell class="py-0">{pin.name} ({pin.owner})</TableBodyCell>
 						{/if}
 					{:else}
-						<TableBodyCell>{pin.name}</TableBodyCell>
+						<TableBodyCell class="py-0">{pin.name}</TableBodyCell>
 					{/if}
 					<TableBodyCell>
 						{#if pin.active == true}
@@ -72,6 +77,9 @@
 						{:else}
 							<Checkbox on:change={() => updatePin(pin.id, !pin.active)} />
 						{/if}
+					</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<Button disabled size="xs">Bearbeiten</Button>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

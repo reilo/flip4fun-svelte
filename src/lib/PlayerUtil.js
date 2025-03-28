@@ -11,5 +11,9 @@ export function sortPlayerIDs(playerIDs, allPlayers) {
 
 export function getPlayerName(id, allPlayers) {
     const player = allPlayers.find((item) => item.id === id);
+    return formatPlayerName(player, id);
+}
+
+export function formatPlayerName(player, id) {
     return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
 }

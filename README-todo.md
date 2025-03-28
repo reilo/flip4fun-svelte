@@ -25,7 +25,7 @@ Env Variablen in Service-Mode
 Device Phone eliminieren
 
 Nice to have:
-- CRUD-Funktionen Pins/Spieler!
+- CRU(D)-Funktionen Pins/Spieler!
 
 ferner (falls Zeit ist):
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus

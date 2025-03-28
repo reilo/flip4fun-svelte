@@ -1,6 +1,8 @@
 <script>
 	import { P, Card, Button } from 'flowbite-svelte';
-	import {getPlayerName} from '$lib/PlayerUtil';
+	import { Table, TableHead, TableBody } from 'flowbite-svelte';
+	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
 
@@ -53,73 +55,74 @@
 		}
 	}
 
-	$effect.pre(() => {
-		let unusedPlayers2 = [];
-		let usedPlayers2 = [];
+	let unusedPlayers2 = [];
+	let usedPlayers2 = [];
 
-		data.tournament.players.forEach((item) => {
-			const playerName = getPlayerName(item, data.players);
-			usedPlayers2.push(playerName);
-			playerMap.push({ id: item, name: playerName });
-		});
-
-		data.players.forEach((item) => {
-			if (!data.tournament.players.includes(item.id)) {
-				const playerName = getPlayerName(item.id, data.players);
-				unusedPlayers2.push(playerName);
-				playerMap.push({ id: item.id, name: playerName });
-			}
-		});
-
-		usedPlayers = usedPlayers2;
-		unusedPlayers = unusedPlayers2;
+	data.tournament.players.forEach((item) => {
+		const playerName = getPlayerName(item, data.players);
+		usedPlayers2.push(playerName);
+		playerMap.push({ id: item, name: playerName });
 	});
+
+	data.players.forEach((item) => {
+		if (!data.tournament.players.includes(item.id)) {
+			const playerName = formatPlayerName(item);
+			unusedPlayers2.push(playerName);
+			playerMap.push({ id: item.id, name: playerName });
+		}
+	});
+
+	usedPlayers = usedPlayers2;
+	unusedPlayers = unusedPlayers2;
 </script>
 
-<div>
-	<P>Hier kannst du neue Spieler zur Liga hinzufügen.</P>
-	<P
-		>Zum Ligastart klicke die Spieler in der Reihenfolge an, wie sie beim Start-Turnier ermittelt
-		wurde.</P
-	>
-	<P
-		>Während der laufenden Liga werden die neuen Spieler erst mit dem Start des nächsten Spieltages
-		ergänzt.</P
-	>
-</div>
+<div class="flex-1 flex-col sm:flex-row justify-center content-center gap-3">
+	<div>
+		<P>Hier kannst du neue Spieler zur Liga hinzufügen.</P>
+		<P
+			>Zum Ligastart klicke die Spieler in der Reihenfolge an, wie sie beim Start-Turnier ermittelt
+			wurde.</P
+		>
+		<P
+			>Während der laufenden Liga werden die neuen Spieler erst mit dem Start des nächsten
+			Spieltages ergänzt.</P
+		>
+		<br />
+	</div>
 
-<form>
-	<div class="flex flex-col sm:flex-row justify-center content-center gap-3">
-		<div>
-			<Card>
-				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-					Teilnehmende Spieler
-				</h5>
-				{#each usedPlayers as player, i}
-					<Button disabled={!delEnabled} outline size="xs" on:click={() => delPlayer(player)}>
-						{player}
-					</Button>
-				{/each}
-			</Card>
-		</div>
-		<div>
-			<Card>
-				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-					Verfügbare Spieler
-				</h5>
-				{#each unusedPlayers as player, i}
-					<Button disabled={!addEnabled} outline size="xs" on:click={() => addPlayer(player)}>
-						{player}
-					</Button>
-				{/each}
-			</Card>
-		</div>
-		{#if addEnabled || delEnabled}
+	<form>
+		<div class="flex gap-3">
 			<div>
 				<Card>
-					<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+					<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+						Teilnehmende Spieler
+					</h5>
+					{#each usedPlayers as player, i}
+						<Button disabled={!delEnabled} outline size="xs" on:click={() => delPlayer(player)}>
+							{player}
+						</Button>
+					{/each}
 				</Card>
 			</div>
-		{/if}
-	</div>
-</form>
+			<div>
+				<Card>
+					<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+						Verfügbare Spieler
+					</h5>
+					{#each unusedPlayers as player, i}
+						<Button disabled={!addEnabled} outline size="xs" on:click={() => addPlayer(player)}>
+							{player}
+						</Button>
+					{/each}
+				</Card>
+			</div>
+			{#if addEnabled || delEnabled}
+				<div>
+					<Card>
+						<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+					</Card>
+				</div>
+			{/if}
+		</div>
+	</form>
+</div>
