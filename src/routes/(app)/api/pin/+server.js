@@ -47,3 +47,43 @@ export const GET = async ({ url }) => {
         )
     }
 }
+
+export const POST = async ({ request }) => {
+    try {
+        const body = await request.json();
+
+        if (!body.id) {
+            throw "id is undefined or empty";
+        }
+        if (!body.name) {
+            throw "name is undefined or empty";
+        }
+
+        let data = {
+            id: body.id,
+            name: body.name,
+            code: body.code ? body.code : null,
+            manu: body.manu ? body.manu : "Other",
+            year: body.year ? body.year : 0,
+            type: body.type ? body.type : "Other"
+        }
+
+        const pin = await prisma.pin.create({
+            data
+        });
+        return new Response(
+            JSON.stringify({ pin: pin }),
+            {
+                status: 200, headers: { "Content-Type": "application/json" }
+            }
+        );
+    } catch (e) {
+
+        return new Response(
+            JSON.stringify({ message: "Flipper konnte nicht gespeichert werden", error: typeof e == 'string' ? e : e.message }),
+            {
+                status: 500, headers: { "Content-Type": "application/json" }
+            }
+        )
+    }
+}

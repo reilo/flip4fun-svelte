@@ -5,8 +5,23 @@ export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
         let data = {};
-        if (body.active !== undefined) {
+        if (body.active) {
             data.active = body.active;
+        }
+        if (body.name) {
+            data.name = body.name;
+        }
+        if (body.code) {
+            data.code = body.code;
+        }
+        if (body.manu) {
+            data.manu = body.manu;
+        }
+        if (body.year) {
+            data.year = body.year;
+        }
+        if (body.type) {
+            data.type = body.type;
         }
         const updatedPin = await prisma.pin.update({
             where: { id: params.id }, data: data

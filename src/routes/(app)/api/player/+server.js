@@ -34,3 +34,45 @@ export const GET = async ({ url }) => {
         )
     }
 }
+
+export const POST = async ({ request }) => {
+    try {
+        const body = await request.json();
+
+        if (!body.id) {
+            throw "id is undefined or empty";
+        }
+        if (!body.forename) {
+            throw "forename is undefined or empty";
+        }
+        if (!body.surname) {
+            throw "surname are undefined or empty";
+        }
+
+        let data = {
+            id: body.id,
+            forename: body.forename,
+            surname: body.surname,
+            shortname: body.shortname ? body.shortname : null,
+            email: body.email ? body.email : null
+        }
+
+        const player = await prisma.player.create({
+            data
+        });
+        return new Response(
+            JSON.stringify({ player: player }),
+            {
+                status: 200, headers: { "Content-Type": "application/json" }
+            }
+        );
+    } catch (e) {
+
+        return new Response(
+            JSON.stringify({ message: "Spieler konnte nicht gespeichert werden", error: typeof e == 'string' ? e : e.message }),
+            {
+                status: 500, headers: { "Content-Type": "application/json" }
+            }
+        )
+    }
+}
