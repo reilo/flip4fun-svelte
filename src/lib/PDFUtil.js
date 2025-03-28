@@ -1,6 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
 import { getPinName } from "./PinUtil";
+import { mapDate } from './TypeUtil';
 
 export function generatePDF(data) {
 
@@ -22,7 +23,7 @@ export function generatePDF(data) {
 
     const writePStatSubTitle = () => {
         doc.setFontSize(16);
-        doc.text(10, 30, "Spielerstatistik Spieltag " + data.round.rid.toString());
+        doc.text(10, 30, "Spielerstatistik nach Spieltag " + data.round.rid.toString());
     }
 
     const doc = new jsPDF();
@@ -54,7 +55,10 @@ export function generatePDF(data) {
         data.rounds.forEach((round, i) => {
             round.matches.forEach((match) => {
                 if (match.player1 === player || match.player2 === player) {
-                    matches.push(match);
+                    let newMatch = JSON.parse(JSON.stringify(match));
+                    newMatch.round = round.rid;
+                    newMatch.date = mapDate(round.createdAt);
+                    matches.push(newMatch);
                 }
             })
         })
@@ -70,9 +74,10 @@ export function generatePDF(data) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
             matches.forEach((match) => {
-                doc.text(x, y, getPlayerName(match.player1, data.players) + " - " + getPlayerName(match.player2, data.players));
-                doc.text(x + 100, y, match.score1.toString() + " : " + match.score2.toString());
-                doc.text(x + 130, y, getPinName(match.pin, data.pins));
+                doc.text(x + 0, y, "(" + match.round.toString() + ") " + match.date);
+                doc.text(x + 30, y, getPlayerName(match.player1, data.players) + " - " + getPlayerName(match.player2, data.players));
+                doc.text(x + 110, y, match.score1.toString() + " : " + match.score2.toString());
+                doc.text(x + 135, y, getPinName(match.pin, data.pins));
                 y += 8;
             })
         }

@@ -10,15 +10,15 @@ Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
+- Strafpunkte variabel / Spielstärke?
+- Ergebnis-PDF erstellen...
+- Titel/Untertitel, Erklärungstexte bearbeiten
+...
+- primary key Round table
 - Spieler-Fotos wo?
 - Pyramide
-- Strafpunkte variabel / Spielstärke?
-- Ergebnis-PDF erstellen
-- Titel/Untertitel, Erklärungstexte bearbeiten
-- Datum verwenden (Spieltag)
 - Styling allgemein
 - Spieler Liga-Admin -> Tabellenlayout
-- Fehlerbehandlung, wenn keys nicht gefunden werden, Inkonsistenzen
 
 Unit Tests...
 Env Variablen in Service-Mode

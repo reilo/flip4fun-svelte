@@ -19,13 +19,13 @@ export const GET = async ({ url, params }) => {
 
         const options = {
             where: { tid: params.tid },
-            select: { tid: true, rid: true, name: true, status: true, matches: expandResults },
+            select: { tid: true, rid: true, name: true, status: true, createdAt: true, matches: expandResults },
             orderBy: [{ rid: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);
         let rounds2 = [];
         rounds.forEach((round) => {
-            let entry = { tid: round.tid, rid: round.rid, name: round.name, status: round.status };
+            let entry = { tid: round.tid, rid: round.rid, name: round.name, status: round.status, createdAt: round.createdAt };
             if (expandResults) {
                 entry["matches"] = round.matches;
             }

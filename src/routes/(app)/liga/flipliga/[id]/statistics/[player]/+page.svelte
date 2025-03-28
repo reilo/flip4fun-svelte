@@ -5,6 +5,7 @@
 	import { page } from '$app/stores';
 	import { sortPlayerIDs, getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil.js';
+	import { mapDate } from '$lib/TypeUtil';
 
 	let { data } = $props();
 
@@ -35,6 +36,7 @@
 			if (match.player1 === currentPlayer || match.player2 === currentPlayer) {
 				let newMatch = JSON.parse(JSON.stringify(match));
 				newMatch.round = round.rid;
+				newMatch.date = mapDate(round.createdAt);
 				matches.push(newMatch);
 				if (match.player1 === currentPlayer) {
 					const index = opps1.findIndex((opp1) => opp1.p == match.player2);
@@ -75,6 +77,7 @@
 <Table shadow hoverable={true}>
 	<TableHead>
 		<TableHeadCell class="text-center">Spieltag</TableHeadCell>
+		<TableHeadCell class="text-center">Datum</TableHeadCell>
 		<TableHeadCell class="text-center">Duell</TableHeadCell>
 		<TableHeadCell class="text-center">Sätze</TableHeadCell>
 		<TableHeadCell class="text-center">Flipper</TableHeadCell>
@@ -87,6 +90,9 @@
 				<TableBodyRow>
 					<TableBodyCell tdClass="text-center">
 						{match.round}
+					</TableBodyCell>
+					<TableBodyCell tdClass="text-center">
+						{match.date}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{getPlayerName(match.player1) + ' - ' + getPlayerName(match.player2)}
