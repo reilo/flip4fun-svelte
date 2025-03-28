@@ -1,5 +1,6 @@
 <script>
 	import { P, Card, Button } from 'flowbite-svelte';
+	import {getPlayerName} from '$lib/PlayerUtil';
 
 	let { data } = $props();
 
@@ -57,15 +58,14 @@
 		let usedPlayers2 = [];
 
 		data.tournament.players.forEach((item) => {
-			const player = data.players.find((item2) => item2.id === item);
-			const playerName = player.forename + ' ' + player.surname;
+			const playerName = getPlayerName(item, data.players);
 			usedPlayers2.push(playerName);
 			playerMap.push({ id: item, name: playerName });
 		});
 
 		data.players.forEach((item) => {
 			if (!data.tournament.players.includes(item.id)) {
-				const playerName = item.forename + ' ' + item.surname;
+				const playerName = getPlayerName(item.id, data.players);
 				unusedPlayers2.push(playerName);
 				playerMap.push({ id: item.id, name: playerName });
 			}

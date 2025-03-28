@@ -1,4 +1,4 @@
-export function MapStatus(status) {
+export function mapTourStatus(status) {
     let mapped;
     switch (status) {
         case "Planned":
@@ -16,7 +16,7 @@ export function MapStatus(status) {
     return mapped;
 }
 
-export function MapType(ttype) {
+export function mapTourType(ttype) {
     let mapped;
     switch (ttype) {
         case "fliptwin":
@@ -34,7 +34,7 @@ export function MapType(ttype) {
     return mapped;
 }
 
-export function GetTypeMap() {
+export function getTourTypeMap() {
     return [
         { 'name': 'TwinPin', 'value': 'fliptwin' },
         { 'name': 'FLIP-Liga', 'value': 'flipliga' },
@@ -42,11 +42,11 @@ export function GetTypeMap() {
     ]
 }
 
-export function IsValidType(type) {
+export function isValidTourType(type) {
     return (type === "flipfinal" || type === "flipliga" || type === "fliptwin");
 }
 
-export function CalcStrength(pos, total) {
+export function calcStrength(pos, total) {
     let sum = 0;
     let rowCount = 0;
     while (sum < total) sum += ++rowCount;

@@ -2,9 +2,9 @@
 	import { Modal, Label, Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import { CalcStrength } from '$lib/TourUtil';
-	import { CalcRanking } from '$lib/MatchUtil';
-	import { GeneratePDF } from '$lib/PDFUtil';
+	import { calcStrength } from '$lib/TourUtil';
+	import { calcRanking } from '$lib/MatchUtil';
+	import { generatePDF } from '$lib/PDFUtil';
 
 	let { data } = $props();
 
@@ -18,15 +18,15 @@
 	let endForm = $state(false);
 	let endLigaForm = $state(false);
 
-	let startEnabled = $state(
+	let startEnabled = $derived(
 		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
 			(data.round && data.round.status === 'Completed' && data.tournament.status === 'Active')
 	);
-	let endEnabled = $state(data.round && data.round.status === 'Active');
-	let endLigaEnabled = $state(
+	let endEnabled = $derived(data.round && data.round.status === 'Active');
+	let endLigaEnabled = $derived(
 		data.round && data.round.status === 'Completed' && data.tournament.status === 'Active'
 	);
-	let pdfEnabled = $state(data.round && data.round.status === 'Completed');
+	let pdfEnabled = $derived(data.round && data.round.status === 'Completed');
 
 	const baseline = data.tournament.settings.baseline;
 
@@ -36,7 +36,7 @@
 		if (!round) {
 			// first round of tournament
 			tournament.players.forEach((item, i) => {
-				const strength = CalcStrength(i + 1, tournament.players.length);
+				const strength = calcStrength(i + 1, tournament.players.length);
 				rankInit.push({
 					player: item,
 					strength: strength,
@@ -77,7 +77,7 @@
 				});
 			});
 			rankInit.forEach((item, i) => {
-				rankInit[i].strength = CalcStrength(i + 1, numPlayers);
+				rankInit[i].strength = calcStrength(i + 1, numPlayers);
 			});
 		}
 		const settings = { rankInit: rankInit };
@@ -96,14 +96,13 @@
 		);
 		updateTournamentStatus(tournament.id, 'Active');
 		invalidateAll();
-		startForm = startEnabled = false;
-		endEnabled = true;
+		startForm = false;
 	}
 
 	async function endRound() {
 		// calculate final results and set status to Completed
 		const results = round.results;
-		results.rankFinal = CalcRanking(
+		results.rankFinal = calcRanking(
 			round.rid,
 			round.settings.rankInit,
 			round.matches,
@@ -111,15 +110,13 @@
 		);
 		updateRound(tournament.id, round.rid, results, {});
 		invalidateAll();
-		endForm = endEnabled = false;
-		startEnabled = true;
+		endForm = false;
 	}
 
 	async function endLiga() {
 		updateTournamentStatus(tournament.id, 'Completed');
 		invalidateAll();
 		endLigaForm = false;
-		startEnabled = endEnabled = endLigaEnabled = false;
 	}
 
 	const createTempData = () => {
@@ -200,10 +197,6 @@
 			alert(JSON.stringify(result));
 		}
 	}
-
-	function generatePDF() {
-		GeneratePDF(data);
-	}
 </script>
 
 <div>
@@ -244,7 +237,7 @@
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Generiere hier das PDF mit allen Statistiken für alle Spieltage. Kann etwas länger dauern...
 		</p>
-		<Button disabled={!pdfEnabled} on:click={generatePDF} class="w-fit">
+		<Button disabled={!pdfEnabled} on:click={generatePDF(data)} class="w-fit">
 			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
 	</Card>

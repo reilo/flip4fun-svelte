@@ -1,4 +1,4 @@
-export function MapBoolean(value) {
+export function mapBoolean(value) {
     let mapped;
     switch (value) {
         case true:
@@ -15,7 +15,7 @@ export function MapBoolean(value) {
     return mapped;
 }
 
-export function MapDate(value) {
+export function mapDate(value) {
     let date = new Date(value);
     return date.toLocaleDateString("de-DE");
 }

@@ -5,7 +5,9 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import { CalcPoints } from '$lib/MatchUtil';
+	import { calcPoints } from '$lib/MatchUtil';
+	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
+	import { getPinName } from '$lib/PinUtil.js';
 
 	let { data } = $props();
 
@@ -21,13 +23,7 @@
 	const addMatchEnabled = data.round.status === 'Active';
 
 	const getPlayerName = (id) => {
-		const player = data.players.find((item) => item.id === id);
-		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
-	};
-
-	const getPinName = (id) => {
-		const pin = data.pins.find((item) => item.id === id);
-		return pin != null ? pin.name : `Unbekannt (${id})`;
+		return _getPlayerName(id, data.players);
 	};
 
 	const getStrength = (playerName) => {
@@ -52,7 +48,7 @@
 	};
 
 	const getPoints = (match, num) => {
-		const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
+		const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
 		return (num == 1 ? result.player1 : result.player2) + data.tournament.settings.matchBonus;
 	};
 
@@ -140,10 +136,15 @@
 		pinMap.push({ name: item.name, value: item.id });
 	});
 
-	const playerMap = [];
+	let playerMap = [];
 	data.tournament.players.forEach((item) => {
 		const player = data.players.find((item2) => item2.id === item);
-		playerMap.push({ name: player.forename + ' ' + player.surname, value: item });
+		const name = player ? player.forename + ' ' + player.surname : `Unbekannt (${item})`;
+		playerMap.push({ name: name, value: item });
+	});
+	playerMap.sort((a, b) => {
+		const val = a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+		return val;
 	});
 
 	const pointsMap = [];
@@ -297,7 +298,7 @@
 						{formatResultString(roundNumber(getPoints(match, 1)), roundNumber(getPoints(match, 2)))}
 					</TableBodyCell>
 					<TableBodyCell>
-						{getPinName(match.pin)}
+						{getPinName(match.pin, data.pins)}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

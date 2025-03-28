@@ -4,17 +4,13 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ArrowUpOutline, ArrowDownOutline, ArrowsRepeatOutline } from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
-	import { CalcRanking } from '$lib/MatchUtil';
+	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
+	import { getPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
 	const players = data.players;
 	const round = data.round;
 	const tournament = data.tournament;
-
-	const getPlayerName = (id) => {
-		const player = players.find((item) => item.id === id);
-		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
-	};
 
 	const getStrength = (id) => {
 		const player = round.settings.rankInit.find((item) => item.player === id);
@@ -71,7 +67,12 @@
 		if (round.status === 'Completed') {
 			ranking = round.results.rankFinal;
 		} else {
-			ranking = CalcRanking(round.rid, round.settings.rankInit, round.matches, tournament.settings);
+			ranking = _calcRanking(
+				round.rid,
+				round.settings.rankInit,
+				round.matches,
+				tournament.settings
+			);
 		}
 		return ranking;
 	};
@@ -92,9 +93,9 @@
 			<!--TableHeadCell>Tendenz</TableHeadCell-->
 			<TableHeadCell class="text-center">Tendenz</TableHeadCell>
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
-			<TableHeadCell class="text-center">Punkte<br/>gewinn</TableHeadCell>
-			<TableHeadCell class="text-center">Matches<br/>Spieltag</TableHeadCell>
-			<TableHeadCell class="text-center">Matches<br/>Gesamt</TableHeadCell>
+			<TableHeadCell class="text-center">Punkte<br />gewinn</TableHeadCell>
+			<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
+			<TableHeadCell class="text-center">Matches<br />Gesamt</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
@@ -121,7 +122,9 @@
 						{/if}
 					</TableBodyCell-->
 					<TableBodyCell>
-						<a href={"/liga/flipliga/" + $page.params.id + "/statistics/" + rank.player}>{getPlayerName(rank.player)}</a>
+						<a href={'/liga/flipliga/' + $page.params.id + '/statistics/' + rank.player}
+							>{getPlayerName(rank.player, players)}</a
+						>
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{getStrength(rank.player)}

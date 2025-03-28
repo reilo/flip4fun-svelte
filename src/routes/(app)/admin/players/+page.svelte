@@ -4,6 +4,7 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Checkbox, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { getPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);
@@ -56,12 +57,7 @@
 					<TableBodyCell
 						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
 					>
-					<TableBodyCell
-						>{player.forename +
-							' ' +
-							player.surname +
-							(player.shortname ? ' (' + player.shortname + ')' : '')}</TableBodyCell
-					>
+					<TableBodyCell>{getPlayerName(player, data.players)}</TableBodyCell>
 					<TableBodyCell>
 						{#if player.active == true}
 							<Checkbox checked on:change={() => updatePlayer(player.id, !player.active)} />

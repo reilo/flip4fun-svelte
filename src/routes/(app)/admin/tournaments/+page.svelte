@@ -5,12 +5,12 @@
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import * as TourUtil from '$lib/TourUtil';
+	import { mapTourStatus, mapTourType, getTourTypeMap } from '$lib/TourUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.tournaments);
 	let tournaments = $derived(data.tournaments);
-	
+
 	let newForm = $state(false);
 	let newTourName = $state('');
 	let newTourType = $state('');
@@ -80,7 +80,7 @@
 				</Label>
 				<Select
 					class="w-44 p-3 space-y-3 text-sm"
-					items={TourUtil.GetTypeMap()}
+					items={getTourTypeMap()}
 					bind:value={newTourType}
 					placeholder="Turnier-Typ"
 				></Select>
@@ -101,26 +101,28 @@
 
 		<TableBody tableBodyClass="divide-y">
 			{#each tournaments as tournament, i}
-				<TableBodyRow>
-					<TableBodyCell>
-						{tournament.name}
-					</TableBodyCell>
-					<TableBodyCell>
-						{TourUtil.MapType(tournament.type)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{TourUtil.MapStatus(tournament.status)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if tournament.status == 'Planned' || tournament.status == 'Active'}
-							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
-								>Bearbeiten</Button
-							>
-						{:else}
-							<Button disabled>Bearbeiten</Button>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
+				{#if tournament.status !== 'Completed'}
+					<TableBodyRow>
+						<TableBodyCell>
+							{tournament.name}
+						</TableBodyCell>
+						<TableBodyCell>
+							{mapTourType(tournament.type)}
+						</TableBodyCell>
+						<TableBodyCell>
+							{mapTourStatus(tournament.status)}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if tournament.status == 'Planned' || tournament.status == 'Active'}
+								<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
+									>Bearbeiten</Button
+								>
+							{:else}
+								<Button disabled>Bearbeiten</Button>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/if}
 			{/each}
 		</TableBody>
 	</Table>

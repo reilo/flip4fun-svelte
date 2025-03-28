@@ -3,23 +3,14 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/stores';
+	import { sortPlayerIDs } from '$lib/PlayerUtil';
+	import { getPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
 
 	const allPlayers = data.players;
 	const tourPlayers = data.tournament.players;
-	tourPlayers.sort((a, b) => {
-		const ae = allPlayers.find((item) => item.id === a);
-		const be = allPlayers.find((item) => item.id === b);
-		const an = ae.forename + ' ' + ae.surname;
-		const bn = be.forename + ' ' + be.surname;
-		return an < bn ? -1 : bn < an ? 1 : 0;
-	});
-
-	const getPlayerName = (id) => {
-		const player = allPlayers.find((item) => item.id === id);
-		return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
-	};
+	sortPlayerIDs(tourPlayers, allPlayers);
 </script>
 
 <Heading tag="h5">Spieler-Statistiken</Heading>
@@ -35,7 +26,7 @@
 			<TableBodyRow>
 				<TableBodyCell tdClass="text-center">
 					<a href={'/liga/flipliga/' + $page.params.id + '/statistics/' + player}
-						>{getPlayerName(player)}</a
+						>{getPlayerName(player, allPlayers)}</a
 					>
 				</TableBodyCell>
 			</TableBodyRow>

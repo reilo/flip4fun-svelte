@@ -1,16 +1,8 @@
 import { jsPDF } from 'jspdf';
+import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
+import { getPinName } from "./PinUtil";
 
-export function GeneratePDF(data) {
-
-    const getPlayerName = (player) => {
-        const entry = data.players.find((item) => item.id === player);
-        return entry.forename + " " + entry.surname;
-    };
-
-    const getPinName = (pin) => {
-        const entry = data.pins.find((item) => item.id === pin);
-        return entry.name;
-    };
+export function generatePDF(data) {
 
     const drawHeaderSquare = () => {
         doc.setDrawColor(0);
@@ -46,13 +38,14 @@ export function GeneratePDF(data) {
 
     data.round.results.rankFinal.forEach((item, i) => {
         doc.text(x, y, (i + 1).toString() + ".");
-        doc.text(x + 10, y, getPlayerName(item.player));
-        doc.text(x + 100, y, item.points.toString());
+        doc.text(x + 10, y, getPlayerName(item.player, data.players));
+        doc.text(x + 100, y, (Math.round(item.points * 10) / 10).toFixed(1).toString());
         y += 8;
     })
     doc.addPage();
 
     let players = data.tournament.players.slice();
+    sortPlayerIDs(players, data.players);
     players.forEach((player) => {
         drawHeaderSquare();
         writeTitle();
@@ -67,7 +60,7 @@ export function GeneratePDF(data) {
         })
         y = 50;
         doc.setFontSize(16);
-        doc.text(x, y, getPlayerName(player));
+        doc.text(x, y, getPlayerName(player, data.players));
         y += 5;
         doc.setLineWidth(0.1);
         doc.line(x, y, 200, y);
@@ -77,9 +70,9 @@ export function GeneratePDF(data) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
             matches.forEach((match) => {
-                doc.text(x, y, getPlayerName(match.player1) + " - " + getPlayerName(match.player2));
-                doc.text(x + 120, y, match.score1.toString() + " : " + match.score2.toString());
-                doc.text(x + 150, y, getPinName(match.pin));
+                doc.text(x, y, getPlayerName(match.player1, data.players) + " - " + getPlayerName(match.player2, data.players));
+                doc.text(x + 100, y, match.score1.toString() + " : " + match.score2.toString());
+                doc.text(x + 130, y, getPinName(match.pin, data.pins));
                 y += 8;
             })
         }

@@ -4,7 +4,7 @@
 	import { Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/stores';
-	import * as TourUtil from '$lib/TourUtil';
+	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data, children } = $props();
 
@@ -19,8 +19,8 @@
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 	];
 
-	const roundstatus = TourUtil.MapStatus(data.round.status);
-	const tournamentStatus = TourUtil.MapStatus(data.tournament.status);
+	const roundstatus = mapTourStatus(data.round.status);
+	const tournamentStatus = mapTourStatus(data.tournament.status);
 </script>
 
 {#snippet headerLink(d)}

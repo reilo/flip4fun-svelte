@@ -4,7 +4,7 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	import * as TourUtil from '$lib/TourUtil';
+	import { mapTourType } from '$lib/TourUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.tournaments);
@@ -40,7 +40,7 @@
 							{tournament.name}
 						</TableBodyCell>
 						<TableBodyCell>
-							{TourUtil.MapType(tournament.type)}
+							{mapTourType(tournament.type)}
 						</TableBodyCell>
 						<TableBodyCell>
 							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
@@ -72,7 +72,7 @@
 							{tournament.name}
 						</TableBodyCell>
 						<TableBodyCell>
-							{TourUtil.MapType(tournament.type)}
+							{mapTourType(tournament.type)}
 						</TableBodyCell>
 						<TableBodyCell>
 							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>

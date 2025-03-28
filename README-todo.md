@@ -19,9 +19,6 @@ Essentiell: Liga/Turnier-Framework
 - Styling allgemein
 - Spieler Liga-Admin -> Tabellenlayout
 - Fehlerbehandlung, wenn keys nicht gefunden werden, Inkonsistenzen
-- Spieleingabe Dialog alphabetisch
-- Spieltag beenden, Buttons falsch deaktiviert
-- PDF alphabetisch
 
 Unit Tests...
 Env Variablen in Service-Mode

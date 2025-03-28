@@ -1,4 +1,4 @@
-export function CalcPoints(match, strength1, strength2) {
+export function calcPoints(match, strength1, strength2) {
 
     let result1, result2;
 
@@ -13,7 +13,7 @@ export function CalcPoints(match, strength1, strength2) {
     return { player1: result1, player2: result2 }
 }
 
-export function CalcRanking(roundNum, rankInit, matches, settings) {
+export function calcRanking(roundNum, rankInit, matches, settings) {
 
     function getStrength(id) {
         const player = rankInit.find((item) => item.player === id);
@@ -27,7 +27,7 @@ export function CalcRanking(roundNum, rankInit, matches, settings) {
     });
 
     matches.forEach((match) => {
-        const result = CalcPoints(match, getStrength(match.player1), getStrength(match.player2));
+        const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
         const index1 = ranking.findIndex((item) => item.player === match.player1);
         ranking[index1].points += result.player1 + settings.matchBonus;
         ranking[index1].matches += 1;

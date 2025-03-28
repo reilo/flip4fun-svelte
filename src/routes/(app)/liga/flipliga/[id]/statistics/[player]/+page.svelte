@@ -3,19 +3,15 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/stores';
+	import { sortPlayerIDs, getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
+	import { getPinName } from '$lib/PinUtil.js';
 
 	let { data } = $props();
 
 	const rounds = data.rounds;
 	const allPlayers = data.players;
 	const tourPlayers = data.tournament.players;
-	tourPlayers.sort((a, b) => {
-		const ae = allPlayers.find((item) => item.id === a);
-		const be = allPlayers.find((item) => item.id === b);
-		const an = ae.forename + ' ' + ae.surname;
-		const bn = be.forename + ' ' + be.surname;
-		return an > bn ? -1 : bn > an ? 1 : 0;
-	});
+	sortPlayerIDs(tourPlayers, allPlayers);
 
 	const currentPlayer = $page.params.player;
 
@@ -62,13 +58,7 @@
 	});
 
 	const getPlayerName = (pl) => {
-		const entry = allPlayers.find((p) => p.id === pl);
-		return entry.forename + ' ' + entry.surname;
-	};
-
-	const getPinName = (pin) => {
-		const entry = data.pins.find((p) => p.id === pin);
-		return entry.name;
+		return _getPlayerName(pl, allPlayers);
 	};
 </script>
 
@@ -105,7 +95,7 @@
 						{match.score1 + ' - ' + match.score2}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
-						{getPinName(match.pin)}
+						{getPinName(match.pin, data.pins)}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Status } from "@prisma/client";
 const prisma = new PrismaClient();
-import { IsValidType } from "$lib/TourUtil.js";
+import { isValidTourType } from "$lib/TourUtil.js";
 
 export const GET = async ({ url }) => {
     try {
@@ -48,12 +48,12 @@ export const POST = async ({ request }) => {
     try {
         const body = await request.json();
 
-        if (!body.name ) {
+        if (!body.name) {
             throw "name is undefined or empty";
         }
         if (!body.type) {
             throw "type is undefined or empty";
-        } else if (!IsValidType(body.type)) {
+        } else if (!isValidTourType(body.type)) {
             throw "type " + body.type + " is unknown";
         }
         if (!body.settings) {
