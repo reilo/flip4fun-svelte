@@ -81,16 +81,15 @@
 			});
 		}
 		const settings = { rankInit: rankInit };
-		const matches = [];
 		const results = { rankFinal: [] };
 		const tempData = createTempData();
+		// TODO: need db transaction here!!!
 		createRound(
 			tournament.id,
 			nextRoundName,
 			nextRound,
 			tournament.players,
 			settings,
-			matches,
 			results,
 			tempData
 		);
@@ -108,7 +107,7 @@
 			round.matches,
 			tournament.settings
 		);
-		updateRound(tournament.id, round.rid, results, {});
+		updateRound(round.id, results, {});
 		invalidateAll();
 		endForm = false;
 	}
@@ -137,7 +136,7 @@
 		return { encounters: encounters };
 	};
 
-	async function createRound(tid, name, rid, players, settings, matches, results, tempData) {
+	async function createRound(tid, name, rid, players, settings, results, tempData) {
 		const response = await fetch('/api/tournament/' + tid + '/round', {
 			method: 'POST',
 			body: JSON.stringify({
@@ -147,7 +146,6 @@
 				status: 'Active',
 				players: players,
 				settings: settings,
-				matches: matches,
 				results: results,
 				tempData: tempData
 			}),
@@ -162,10 +160,11 @@
 		}
 	}
 
-	async function updateRound(tid, rid, results, tempData) {
-		const response = await fetch('/api/tournament/' + tid + '/round/' + rid, {
+	async function updateRound(id, results, tempData) {
+		const response = await fetch('/api/round/' + id, {
 			method: 'PUT',
 			body: JSON.stringify({
+				id: id,
 				results: results,
 				tempData: tempData,
 				status: 'Completed'

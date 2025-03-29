@@ -13,7 +13,7 @@ model Pin {
   name      String
   code      String?
   manu      PinManu     @default(Other)
-  year      Int         @default(0)
+  year      Int?
   type      PinType     @default(Other)
   active    Boolean     @default(true)
 }
@@ -24,8 +24,8 @@ model Player {
   forename  String
   surname   String
   shortname String?
-  email     String?
   active    Boolean     @default(true)
+  email     String?
 }
 
 model Tournament {
@@ -33,24 +33,36 @@ model Tournament {
   createdAt DateTime    @default(now())
   name      String
   type      String
-  status    Status      @default(Planned)
   players   String[]    @default([])
   settings  Json        @default("{}")
   results   Json        @default("{}")
+  status    Status      @default(Planned)
 }
 
 model Round {
+  id        String      @id @default(uuid())
   createdAt DateTime    @default(now())
   tid       String
   rid       Int
-  @@unique([tid, rid])
   name      String
   status    Status      @default(Planned)
   players   String[]    @default([])
   settings  Json        @default("{}")
-  matches   Json        @default("{}")
   results   Json        @default("{}")
   tempData  Json        @default("{}")
+}
+
+model Match {
+  id        String      @id @default(uuid())
+  createdAt DateTime    @default(now())
+  tid       String
+  rid       Int
+  name      String
+  player1   String
+  player2   String
+  score1    Int
+  score2    Int
+  pin       String
 }
 
 enum PinType {

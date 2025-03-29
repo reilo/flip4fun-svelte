@@ -57,7 +57,6 @@ export function generatePDF(data) {
                 if (match.player1 === player || match.player2 === player) {
                     let newMatch = JSON.parse(JSON.stringify(match));
                     newMatch.round = round.rid;
-                    newMatch.date = mapDate(round.createdAt);
                     matches.push(newMatch);
                 }
             })
@@ -74,7 +73,7 @@ export function generatePDF(data) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
             matches.forEach((match) => {
-                doc.text(x + 0, y, "(" + match.round.toString() + ") " + match.date);
+                doc.text(x + 0, y, "(" + match.round.toString() + ") " + mapDate(match.createdAt));
                 doc.text(x + 30, y, getPlayerName(match.player1, data.players) + " - " + getPlayerName(match.player2, data.players));
                 doc.text(x + 110, y, match.score1.toString() + " : " + match.score2.toString());
                 doc.text(x + 135, y, getPinName(match.pin, data.pins));

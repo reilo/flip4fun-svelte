@@ -64,15 +64,17 @@
 
 	const calcRanking = () => {
 		let ranking = [];
-		if (round.status === 'Completed') {
-			ranking = round.results.rankFinal;
-		} else {
-			ranking = _calcRanking(
-				round.rid,
-				round.settings.rankInit,
-				round.matches,
-				tournament.settings
-			);
+		if (round) {
+			if (round.status === 'Completed') {
+				ranking = round.results.rankFinal;
+			} else {
+				ranking = _calcRanking(
+					round.rid,
+					round.settings.rankInit,
+					round.matches,
+					tournament.settings
+				);
+			}
 		}
 		return ranking;
 	};

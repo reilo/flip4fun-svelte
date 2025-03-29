@@ -100,7 +100,6 @@
 		if (formPlayerEmail != null) {
 			player.email = formPlayerEmail;
 		}
-		console.log(player);
 		const url = '/api/player/' + playerToUpdate;
 		const response = await fetch(url, {
 			method: 'PUT',

@@ -16,11 +16,11 @@
 	let showAlert2 = $state(false);
 	let showSure = $state(false);
 
-	const matches = $derived(data.round.matches);
-	const tempData = $derived(data.round.tempData);
-	const rankInit = data.round.settings.rankInit;
+	const matches = $derived(data.round ? data.round.matches : []);
+	const tempData = $derived(data.round ? data.round.tempData : {});
+	const rankInit = data.round ? data.round.settings.rankInit : [];
 
-	const addMatchEnabled = data.round.status === 'Active';
+	const addMatchEnabled = data.round && data.round.status === 'Active';
 
 	const getPlayerName = (id) => {
 		return _getPlayerName(id, data.players);
@@ -86,21 +86,25 @@
 	};
 
 	async function storeMatch() {
+		const pName1 = _getPlayerName(selPlayer1, data.players);
+		const pName2 = _getPlayerName(selPlayer2, data.players);
+		const matchName =
+			data.tournament.name + ' - Runde ' + data.round.rid + ' - ' + pName1 + ' : ' + pName2;
 		let match = {
+			name: matchName,
 			player1: selPlayer1,
 			player2: selPlayer2,
 			score1: selPoints1,
 			score2: selPoints2,
 			pin: selPin
 		};
-		matches.push(match);
 		updateTempData(selPlayer1, selPlayer2);
-		const response = await fetch(
-			'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid,
+		// TODO: need db transaction here!!!
+		const tourResponse = await fetch(
+			'/api/round/' + data.round.id,
 			{
 				method: 'PUT',
 				body: JSON.stringify({
-					matches: matches,
 					tempData: tempData
 				}),
 				headers: {
@@ -109,9 +113,25 @@
 				}
 			}
 		);
-		const result = await response.json();
-		if (response.status !== 200) {
-			alert(JSON.stringify(result));
+		const tourResult = await tourResponse.json();
+		if (tourResponse.status !== 200) {
+			alert(JSON.stringify(tourResult));
+		} else {
+			const matchResponse = await fetch(
+				'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid + '/match',
+				{
+					method: 'POST',
+					body: JSON.stringify(match),
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}
+				}
+			);
+			const matchResult = await matchResponse.json();
+			if (matchResponse.status !== 200) {
+				alert(JSON.stringify(matchResult));
+			}
 		}
 		invalidateAll();
 		showSure = newForm = false;

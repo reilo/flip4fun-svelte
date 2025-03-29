@@ -9,8 +9,21 @@ export async function load({ fetch, params, parent }) {
         }
     };
 
-    const rsresponse = await fetch("/api/tournament/" + params.id + "/round?expand=true", getParms);
-    const rsData = await rsresponse.json();
+    const roundsResponse = await fetch("/api/tournament/" + params.id + "/round", getParms);
+    const roundsData = await roundsResponse.json();
 
-    return { rounds: rsData.rounds }
+    const matchesResponse = await fetch("/api/tournament/" + params.id + "/match", getParms);
+    const matchesData = await matchesResponse.json();
+
+    roundsData.rounds.forEach((round) => {
+        round.matches = [];
+    })
+    matchesData.matches.forEach((match) => {
+        const round = roundsData.rounds.find((round) => round.rid === match.rid);
+        if (round) {
+            round.matches.push(match);
+        }
+    })
+
+    return { rounds: roundsData.rounds }
 }

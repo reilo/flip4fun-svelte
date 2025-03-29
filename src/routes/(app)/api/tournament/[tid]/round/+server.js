@@ -3,36 +3,14 @@ const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {
     try {
-        let expandResults = false;
-        url.searchParams.forEach((value, key) => {
-            if (!["expand"].includes(key)) {
-                throw key + " ist kein gültiger Suchparameter";
-            }
-            if (key === "expand") {
-                if (value === "true") {
-                    expandResults = true;
-                } else {
-                    throw value + " ist kein gültiger Wert für " + key;
-                }
-            }
-        });
-
         const options = {
             where: { tid: params.tid },
-            select: { tid: true, rid: true, name: true, status: true, createdAt: true, matches: expandResults },
-            orderBy: [{ rid: 'asc' }]
+            select: { id: true, tid: true, rid: true, name: true, status: true, createdAt: true },
+            orderBy: [{ createdAt: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);
-        let rounds2 = [];
-        rounds.forEach((round) => {
-            let entry = { tid: round.tid, rid: round.rid, name: round.name, status: round.status, createdAt: round.createdAt };
-            if (expandResults) {
-                entry["matches"] = round.matches;
-            }
-            rounds2.push(entry)
-        })
         return new Response(
-            JSON.stringify({ rounds: rounds2 }),
+            JSON.stringify({ rounds: rounds }),
             {
                 status: 200, headers: { "Content-Type": "application/json" }
             }

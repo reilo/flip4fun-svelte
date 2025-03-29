@@ -19,7 +19,7 @@
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 	];
 
-	const roundstatus = mapTourStatus(data.round.status);
+	const roundstatus = (data.round) ? mapTourStatus(data.round.status) : null;
 	const tournamentStatus = mapTourStatus(data.tournament.status);
 </script>
 

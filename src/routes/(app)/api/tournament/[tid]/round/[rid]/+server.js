@@ -3,11 +3,14 @@ const prisma = new PrismaClient();
 
 export const GET = async ({ params }) => {
     try {
-        let round = await prisma.round.findUniqueOrThrow({
-            where: { tid_rid: { tid: params.tid, rid: parseInt(params.rid) } }
+        const rounds = await prisma.round.findMany({
+            where: { tid: params.tid, rid: parseInt(params.rid) }
         });
+        if (rounds.length > 1) {
+            throw "mehr als eine Runde für tid = " + tid + "rid = " + rid.toString() + " gefunden";
+        }
         return new Response(
-            JSON.stringify({ round: round }),
+            JSON.stringify({ round: rounds[0] }),
             {
                 status: 200, headers: { "Content-Type": "application/json" }
             }
@@ -15,53 +18,7 @@ export const GET = async ({ params }) => {
     }
     catch (e) {
         return new Response(
-            JSON.stringify({ message: "Runde konnte nicht geladen werden", error: e.message }),
-            {
-                status: 500, headers: { "Content-Type": "application/json" }
-            }
-        )
-    }
-}
-
-export const PUT = async ({ request, params }) => {
-    try {
-        const body = await request.json();
-        let data = {};
-        if (body.name) {
-            data.name = body.name;
-        }
-        if (body.players) {
-            data.players = body.players;
-        }
-        if (body.settings) {
-            data.settings = body.settings;
-        }
-        if (body.matches) {
-            data.matches = body.matches;
-        }
-        if (body.results) {
-            data.results = body.results;
-        }
-        if (body.tempData) {
-            data.tempData = body.tempData;
-        }
-        if (body.status) {
-            data.status = body.status;
-        }
-        const updatedRound = await prisma.round.update({
-            where: { tid_rid: { tid: params.tid, rid: parseInt(params.rid) } }, data: data
-        });
-        return new Response(
-            JSON.stringify({ round: updatedRound }),
-            {
-                status: 200, headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-    } catch (e) {
-        return new Response(
-            JSON.stringify({ message: "Runde konnte nicht geändert werden", error: e.message }),
+            JSON.stringify({ message: "Runden konnten nicht geladen werden", error: typeof e == 'string' ? e : e.message }),
             {
                 status: 500, headers: { "Content-Type": "application/json" }
             }

@@ -36,7 +36,6 @@
 			if (match.player1 === currentPlayer || match.player2 === currentPlayer) {
 				let newMatch = JSON.parse(JSON.stringify(match));
 				newMatch.round = round.rid;
-				newMatch.date = mapDate(round.createdAt);
 				matches.push(newMatch);
 				if (match.player1 === currentPlayer) {
 					const index = opps1.findIndex((opp1) => opp1.p == match.player2);
@@ -92,7 +91,7 @@
 						{match.round}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
-						{match.date}
+						{mapDate(match.createdAt)}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{getPlayerName(match.player1) + ' - ' + getPlayerName(match.player2)}
