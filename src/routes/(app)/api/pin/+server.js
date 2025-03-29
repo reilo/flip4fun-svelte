@@ -71,7 +71,7 @@ export const POST = async ({ request }) => {
             data.manu = body.manu;
         }
         if (body.year) {
-            data.year = body.year;
+            data.year = parseInt(body.year);
         }
         if (body.type) {
             data.type = body.type;

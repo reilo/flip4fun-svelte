@@ -5,7 +5,7 @@ export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
         let data = {};
-        if (body.active) {
+        if (body.active != null) {
             data.active = body.active;
         }
         if (body.name) {
@@ -18,7 +18,7 @@ export const PUT = async ({ request, params }) => {
             data.manu = body.manu;
         }
         if (body.year) {
-            data.year = body.year;
+            data.year = parseInt(body.year);
         }
         if (body.type) {
             data.type = body.type;
