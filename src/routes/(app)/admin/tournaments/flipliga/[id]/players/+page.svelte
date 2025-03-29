@@ -2,6 +2,7 @@
 	import { P, Card, Button } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
@@ -26,6 +27,11 @@
 		const index = usedPlayers.indexOf(player);
 		usedPlayers.splice(index, 1);
 		changed = true;
+	}
+
+	function restoreSettings() {
+		initPlayers();
+		changed = false;
 	}
 
 	function updateSettings() {
@@ -55,25 +61,28 @@
 		}
 	}
 
-	let unusedPlayers2 = [];
-	let usedPlayers2 = [];
+	const initPlayers = () => {
+		let unusedPlayers2 = [];
+		let usedPlayers2 = [];
 
-	data.tournament.players.forEach((item) => {
-		const playerName = getPlayerName(item, data.players);
-		usedPlayers2.push(playerName);
-		playerMap.push({ id: item, name: playerName });
-	});
+		data.tournament.players.forEach((item) => {
+			const playerName = getPlayerName(item, data.players);
+			usedPlayers2.push(playerName);
+			playerMap.push({ id: item, name: playerName });
+		});
 
-	data.players.forEach((item) => {
-		if (!data.tournament.players.includes(item.id)) {
-			const playerName = formatPlayerName(item);
-			unusedPlayers2.push(playerName);
-			playerMap.push({ id: item.id, name: playerName });
-		}
-	});
+		data.players.forEach((item) => {
+			if (!data.tournament.players.includes(item.id)) {
+				const playerName = formatPlayerName(item);
+				unusedPlayers2.push(playerName);
+				playerMap.push({ id: item.id, name: playerName });
+			}
+		});
 
-	usedPlayers = usedPlayers2;
-	unusedPlayers = unusedPlayers2;
+		usedPlayers = usedPlayers2;
+		unusedPlayers = unusedPlayers2;
+	};
+	initPlayers();
 </script>
 
 <div class="flex-1 flex-col sm:flex-row justify-center content-center gap-3">
@@ -120,6 +129,8 @@
 				<div>
 					<Card>
 						<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+						<br />
+						<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 					</Card>
 				</div>
 			{/if}

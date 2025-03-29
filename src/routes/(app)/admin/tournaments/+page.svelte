@@ -3,7 +3,11 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
-	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import {
+		InfoCircleSolid,
+		CloseCircleOutline,
+		ExclamationCircleOutline
+	} from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { mapTourStatus, mapTourType, getTourTypeMap } from '$lib/TourUtil';
 	import { cleanString } from '$lib/TypeUtil';
@@ -13,8 +17,25 @@
 	let tournaments = $derived(data.tournaments);
 
 	let newForm = $state(false);
+	let tourAlert0 = $state(false);
+	let tourAlert1 = $state(false);
+	let tourAlert2 = $state(false);
+	let tourSure = $state(false);
+
 	let newTourName = $state('');
 	let newTourType = $state('');
+
+	const verifyTour = () => {
+		if (newTourType === 'fliptwin' || newTourType === 'flipfinal') {
+			tourAlert0 = true;
+		} else if (!newTourName || !newTourType) {
+			tourAlert1 = true;
+		} else if (tournaments.find((tour) => tour.name === newTourName)) {
+			tourAlert2 = true;
+		} else {
+			tourSure = true;
+		}
+	};
 
 	async function createTour() {
 		let id = generateTournamentID(newTourName);
@@ -48,13 +69,17 @@
 		let result = await response.json();
 		if (response.status === 200) {
 			newForm = false;
-			newTourName = '';
-			newTourType = '';
 			invalidateAll();
 		} else {
 			alert(JSON.stringify(result));
 		}
 	}
+
+	const prepareFormForNew = () => {
+		newTourName = '';
+		newTourType = '';
+		newForm = true;
+	};
 
 	const generateTournamentID = (name) => {
 		let newOrigID = cleanString(name);
@@ -85,7 +110,7 @@
 	<br />
 
 	<div>
-		<Button on:click={() => (newForm = true)}>Neues Turnier...</Button>
+		<Button on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
 		<Modal title="Neues Turnier anlegen" bind:open={newForm} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">
@@ -98,12 +123,63 @@
 					bind:value={newTourType}
 					placeholder="Turnier-Typ"
 				></Select>
-				<Button color="alternative" on:click={createTour}>Anlegen</Button>
+				<Button color="alternative" on:click={verifyTour}>Anlegen</Button>
 				<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
 			</form>
 		</Modal>
 	</div>
 	<br />
+
+	<div>
+		<Modal bind:open={tourAlert0} size="xs" autoclose>
+			<div class="text-center">
+				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!
+				</h3>
+				<Button color="alternative">Schließen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={tourAlert1} size="xs" autoclose>
+			<div class="text-center">
+				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
+				</h3>
+				<Button color="alternative">Schließen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={tourAlert2} size="xs" autoclose>
+			<div class="text-center">
+				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					Ein Turnier mit dem Namen existiert schon. Bitte einen anderen Namen wählen!
+				</h3>
+				<Button color="alternative">Schließen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={tourSure} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline
+					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+				/>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{newTourName + ' (' + mapTourType(newTourType) + ')'}
+				</h3>
+				<Button color="red" class="me-2" on:click={createTour}>Ja, ich bin sicher</Button>
+				<Button color="alternative">Nein, abbrechen</Button>
+			</div>
+		</Modal>
+	</div>
 
 	<Table hoverable={true}>
 		<TableHead>

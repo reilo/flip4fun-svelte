@@ -30,6 +30,9 @@
 			alert(JSON.stringify(result));
 		}
 	}
+	const restoreSettings = () => {
+		settings = data.tournament.settings;
+	};
 </script>
 
 <form>
@@ -71,6 +74,7 @@
 
 		{#if settingsEnabled}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 		{/if}
 	</div>
 </form>
