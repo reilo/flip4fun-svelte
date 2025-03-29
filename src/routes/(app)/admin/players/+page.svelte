@@ -171,22 +171,6 @@
 		}
 		return newID;
 	};
-
-	const updatePlayerID = () => {
-		/*
-		let id;
-		if (formPlayerForename) {
-			id = formPlayerForename
-				.substring(0, 1)
-				.toLowerCase()
-				.replace(/[^\x00-\x7F]/g, '');
-		}
-		if (formPlayerSurname) {
-			id += formPlayerSurname.toLowerCase().replace(/[^\x00-\x7F]/g, '');
-		}
-		formPlayerID = id;
-		*/
-	};
 </script>
 
 {#if showError}
@@ -217,26 +201,12 @@
 		<form class="flex flex-col space-y-6" action="#">
 			<Label class="space-y-2">
 				<span>Vorname</span>
-				<Input
-					on:change={() => updatePlayerID()}
-					bind:value={formPlayerForename}
-					placeholder="Vorname"
-				/>
+				<Input bind:value={formPlayerForename} placeholder="Vorname" />
 			</Label>
 			<Label class="space-y-2">
 				<span>Nachname</span>
-				<Input
-					on:change={() => updatePlayerID()}
-					bind:value={formPlayerSurname}
-					placeholder="Nachname"
-				/>
+				<Input bind:value={formPlayerSurname} placeholder="Nachname" />
 			</Label>
-			<!--{#if !playerToUpdate}
-				<Label class="space-y-2">
-					<span>ID (für die Datenbank, muss eindeutig sein)</span>
-					<Input bind:value={formPlayerID} placeholder="ID" />
-				</Label>
-			{/if}-->
 			<Label class="space-y-2">
 				<span>Kurzname</span>
 				<Input bind:value={formPlayerShortname} placeholder="Kurzname (optional)" />

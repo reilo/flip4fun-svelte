@@ -5,7 +5,7 @@ export const PUT = async ({ request, params }) => {
     try {
         const body = await request.json();
         let data = {};
-        if (body.active) {
+        if (body.active != null) {
             data.active = body.active;
         }
         if (body.forename) {

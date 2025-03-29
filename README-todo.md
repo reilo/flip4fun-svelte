@@ -10,21 +10,18 @@ Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 
 Essentiell: Liga/Turnier-Framework
-- DB transactions: storeMatch, 
-- Check alle Admin-Seiten gesperrt
-- Create/Update Pins, Kürzel abfragen
-- Zurücksetzen Button für Spieler, Einstellungen (Liga-Admin)
+- DB transactions: storeMatch, startRound
 - Strafpunkte variabel / Spielstärke?
 - Ergebnis-PDF erstellen...
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - App als Service starten
 - Admin Löschseite, Turniere, Pins, Spieler
 - Fehleingaben korrigieren
-- JSON.stringify({ tournament: tournament }) sinnvoll allgemein?
-- Turniername checken auf duplikate, umbenennen ermöglichen, sure dialog
+- Turniername umbenennen
 - Navikonzept überarbeiten
 - Turnier beendet, Daten komplett, nicht Spieltag-bezogen anzeigen
 ...
+- Flipperkürzel checken und Abkürzung editierbar
 - leere String in DB speichern?
 - Spieler-Fotos wo?
 - Pyramide
