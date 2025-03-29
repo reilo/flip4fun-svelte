@@ -94,8 +94,8 @@
 			tempData
 		);
 		updateTournamentStatus(tournament.id, 'Active');
-		invalidateAll();
 		startForm = false;
+		invalidateAll();
 	}
 
 	async function endRound() {
@@ -108,14 +108,14 @@
 			tournament.settings
 		);
 		updateRound(round.id, results, {});
-		invalidateAll();
 		endForm = false;
+		invalidateAll();
 	}
 
 	async function endLiga() {
 		updateTournamentStatus(tournament.id, 'Completed');
-		invalidateAll();
 		endLigaForm = false;
+		invalidateAll();
 	}
 
 	const createTempData = () => {

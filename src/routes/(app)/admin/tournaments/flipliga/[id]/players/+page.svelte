@@ -1,7 +1,5 @@
 <script>
 	import { P, Card, Button } from 'flowbite-svelte';
-	import { Table, TableHead, TableBody } from 'flowbite-svelte';
-	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 
@@ -12,8 +10,8 @@
 	let changed = $state();
 
 	let playerMap = [];
-	const addEnabled = true;
-	const delEnabled = data.tournament.status == 'Planned';
+	const addEnabled = data.tournament.status !== 'Completed';
+	const delEnabled = data.tournament.status === 'Planned';
 
 	function addPlayer(player) {
 		usedPlayers.push(player);
@@ -125,15 +123,13 @@
 					{/each}
 				</Card>
 			</div>
-			{#if addEnabled || delEnabled}
-				<div>
-					<Card>
-						<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
-						<br />
-						<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
-					</Card>
-				</div>
-			{/if}
+			<div>
+				<Card>
+					<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
+					<br />
+					<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+				</Card>
+			</div>
 		</div>
 	</form>
 </div>

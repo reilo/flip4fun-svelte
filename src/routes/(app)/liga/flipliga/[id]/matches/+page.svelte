@@ -21,6 +21,7 @@
 	const rankInit = data.round ? data.round.settings.rankInit : [];
 
 	const addMatchEnabled = data.round && data.round.status === 'Active';
+	const tourCompleted = data.tournament.status === 'Completed';
 
 	const getPlayerName = (id) => {
 		return _getPlayerName(id, data.players);
@@ -100,19 +101,16 @@
 		};
 		updateTempData(selPlayer1, selPlayer2);
 		// TODO: need db transaction here!!!
-		const tourResponse = await fetch(
-			'/api/round/' + data.round.id,
-			{
-				method: 'PUT',
-				body: JSON.stringify({
-					tempData: tempData
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
+		const tourResponse = await fetch('/api/round/' + data.round.id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				tempData: tempData
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
 			}
-		);
+		});
 		const tourResult = await tourResponse.json();
 		if (tourResponse.status !== 200) {
 			alert(JSON.stringify(tourResult));
@@ -180,7 +178,7 @@
 </script>
 
 <div>
-	<Heading tag="h5">Matches Spieltag</Heading>
+	<Heading tag="h5">{'Matches' + (tourCompleted ? ' letzter Spieltag' : 'Spieltag')}</Heading>
 	<br />
 
 	{#if addMatchEnabled}

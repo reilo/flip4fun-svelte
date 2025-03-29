@@ -8,6 +8,7 @@ Fehlerbehandlung
 
 Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
+Eingabefocus
 
 Essentiell: Liga/Turnier-Framework
 - DB transactions: storeMatch, startRound
@@ -17,11 +18,11 @@ Essentiell: Liga/Turnier-Framework
 - App als Service starten
 - Admin Löschseite, Turniere, Pins, Spieler
 - Fehleingaben korrigieren
-- Turniername umbenennen
 - Navikonzept überarbeiten
-- Turnier beendet, Daten komplett, nicht Spieltag-bezogen anzeigen
+- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 ...
-- Flipperkürzel checken und Abkürzung editierbar
+- Turniername ändern
+- Flipper Abkürzung editierbar
 - leere String in DB speichern?
 - Spieler-Fotos wo?
 - Pyramide

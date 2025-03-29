@@ -11,6 +11,7 @@
 	const players = data.players;
 	const round = data.round;
 	const tournament = data.tournament;
+	const tourCompleted = data.tournament.status === 'Completed';
 
 	const getStrength = (id) => {
 		const player = round.settings.rankInit.find((item) => item.player === id);
@@ -84,19 +85,27 @@
 </script>
 
 <div>
-	<Heading tag="h5">Rangfolge</Heading>
+	<Heading tag="h5">{"Rangfolge" + (!tourCompleted ? " Spieltag" : "")}</Heading>
 	<br />
 
 	<Table shadow hoverable={true}>
 		<TableHead>
 			<!--TableHeadCell></TableHeadCell-->
 			<TableHeadCell>Spieler</TableHeadCell>
-			<TableHeadCell class="text-center">Spielstärke</TableHeadCell>
+			{#if !tourCompleted}
+				<TableHeadCell class="text-center">Spielstärke</TableHeadCell>
+			{/if}
 			<!--TableHeadCell>Tendenz</TableHeadCell-->
-			<TableHeadCell class="text-center">Tendenz</TableHeadCell>
+			{#if !tourCompleted}
+				<TableHeadCell class="text-center">Tendenz</TableHeadCell>
+			{/if}
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
-			<TableHeadCell class="text-center">Punkte<br />gewinn</TableHeadCell>
-			<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
+			{#if !tourCompleted}
+				<TableHeadCell class="text-center">Punkte<br />gewinn</TableHeadCell>
+			{/if}
+			{#if !tourCompleted}
+				<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
+			{/if}
 			<TableHeadCell class="text-center">Matches<br />Gesamt</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -128,9 +137,11 @@
 							>{getPlayerName(rank.player, players)}</a
 						>
 					</TableBodyCell>
-					<TableBodyCell tdClass="text-center">
-						{getStrength(rank.player)}
-					</TableBodyCell>
+					{#if !tourCompleted}
+						<TableBodyCell tdClass="text-center">
+							{getStrength(rank.player)}
+						</TableBodyCell>
+					{/if}
 					<!--TableBodyCell>
 						{#if rank.rankChange < 0}
 						<div style=color:red>
@@ -146,28 +157,34 @@
 						</div>
 						{/if}
 					</TableBodyCell-->
-					<TableBodyCell tdClass="text-center">
-						{#if rank.rankChange < 0}
-							<div style="color:red">
-								{rank.rankChange}
-							</div>
-						{:else if rank.rankChange > 0}
-							<div style="color:green;">
-								+{rank.rankChange}
-							</div>
-						{:else}
-							<div style="color:default"></div>
-						{/if}
-					</TableBodyCell>
+					{#if !tourCompleted}
+						<TableBodyCell tdClass="text-center">
+							{#if rank.rankChange < 0}
+								<div style="color:red">
+									{rank.rankChange}
+								</div>
+							{:else if rank.rankChange > 0}
+								<div style="color:green;">
+									+{rank.rankChange}
+								</div>
+							{:else}
+								<div style="color:default"></div>
+							{/if}
+						</TableBodyCell>
+					{/if}
 					<TableBodyCell tdClass="text-center">
 						{roundNumber(rank.points)}
 					</TableBodyCell>
-					<TableBodyCell tdClass="text-center">
-						{roundNumber(getPlayerScoring(rank.player))}
-					</TableBodyCell>
-					<TableBodyCell tdClass="text-center">
-						{getCountMatches(rank.player)}
-					</TableBodyCell>
+					{#if !tourCompleted}
+						<TableBodyCell tdClass="text-center">
+							{roundNumber(getPlayerScoring(rank.player))}
+						</TableBodyCell>
+					{/if}
+					{#if !tourCompleted}
+						<TableBodyCell tdClass="text-center">
+							{getCountMatches(rank.player)}
+						</TableBodyCell>
+					{/if}
 					<TableBodyCell tdClass="text-center">
 						{getTotalCountMatches(rank.player)}
 					</TableBodyCell>

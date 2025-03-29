@@ -74,8 +74,18 @@ export function generatePDF(data) {
         } else {
             matches.forEach((match) => {
                 doc.text(x + 0, y, "(" + match.round.toString() + ") " + mapDate(match.createdAt));
-                doc.text(x + 30, y, getPlayerName(match.player1, data.players) + " - " + getPlayerName(match.player2, data.players));
-                doc.text(x + 110, y, match.score1.toString() + " : " + match.score2.toString());
+                const player1 = getPlayerName(match.player1, data.players)
+                doc.text(x + 30, y, player1);
+                if (match.score1 > match.score2) {
+                    doc.line(x + 30, y + 1, x + 30 + doc.getTextWidth(player1), y + 1);
+                }
+                doc.text(x + 67, y, ":");
+                const player2 = getPlayerName(match.player2, data.players);
+                doc.text(x + 70, y, player2);
+                if (match.score1 < match.score2) {
+                    doc.line(x + 70, y + 1, x + 70 + doc.getTextWidth(player2), y + 1);
+                }
+                doc.text(x + 115, y, match.score1.toString() + " : " + match.score2.toString());
                 doc.text(x + 135, y, getPinName(match.pin, data.pins));
                 y += 8;
             })

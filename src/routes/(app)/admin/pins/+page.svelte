@@ -10,6 +10,7 @@
 	} from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinManuMap, getPinTypeMap } from '$lib/PinUtil';
+	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
@@ -35,12 +36,12 @@
 			!formPinName ||
 			!formPinManu ||
 			!formPinType ||
-			(!formPinShortcut.toLowerCase() && !pinToUpdate)
+			(!cleanString(formPinShortcut) && !pinToUpdate)
 		) {
 			pinAlert1 = true;
 		} else if (!pinToUpdate && allPins.find((item) => item.name === formPinName)) {
 			pinAlert2 = true;
-		} else if (!pinToUpdate && allPins.find((item) => item.id === formPinShortcut.toLowerCase())) {
+		} else if (!pinToUpdate && allPins.find((item) => item.id === cleanString(formPinShortcut))) {
 			pinAlert3 = true;
 		} else {
 			pinSure = true;
@@ -57,7 +58,7 @@
 
 	async function createPin() {
 		let pin = {
-			id: formPinShortcut.toLowerCase(),
+			id: cleanString(formPinShortcut),
 			name: formPinName,
 			manu: formPinManu,
 			type: formPinType
