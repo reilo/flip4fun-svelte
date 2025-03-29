@@ -11,6 +11,7 @@
 	} from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { formatPlayerName } from '$lib/PlayerUtil';
+	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);
@@ -31,10 +32,19 @@
 	let playerToUpdate = $state('');
 
 	const verifyPlayer = () => {
-		if (!formPlayerForename || !formPlayerSurname || (!playerToUpdate && !formPlayerID)) {
+		if (!formPlayerForename || !formPlayerSurname) {
 			playerAlert1 = true;
-		} else if (!playerToUpdate && allPlayers.find((item) => item.id === formPlayerID)) {
+		} else if (
+			!playerToUpdate &&
+			allPlayers.find(
+				(item) => item.forename === formPlayerForename && item.surname === formPlayerSurname
+			)
+		) {
 			playerAlert2 = true;
+		} else if (cleanString(formPlayerForename).length < 2) {
+			playerAlert1 = true;
+		} else if (cleanString(formPlayerSurname).length < 2) {
+			playerAlert1 = true;
 		} else {
 			playerSure = true;
 		}
@@ -49,8 +59,9 @@
 	}
 
 	async function createPlayer() {
+		const id = generatePlayerID();
 		let player = {
-			id: formPlayerID,
+			id: id,
 			forename: formPlayerForename,
 			surname: formPlayerSurname
 		};
@@ -83,10 +94,13 @@
 		};
 		if (formPlayerShortname) {
 			player.shortname = formPlayerShortname;
+		} else if (formPlayerShortname === '') {
+			player.shortname = null;
 		}
-		if (formPlayerEmail) {
+		if (formPlayerEmail != null) {
 			player.email = formPlayerEmail;
 		}
+		console.log(player);
 		const url = '/api/player/' + playerToUpdate;
 		const response = await fetch(url, {
 			method: 'PUT',
@@ -106,7 +120,6 @@
 
 	const cancelNewPlayer = () => {
 		playerForm = false;
-		resetNewFormFields();
 	};
 
 	const prepareFormForNew = () => {
@@ -147,7 +160,21 @@
 		}
 	}
 
+	const generatePlayerID = () => {
+		const newOrigID =
+			cleanString(formPlayerForename).substring(0, 2) +
+			cleanString(formPlayerSurname).substring(0, 2);
+		let newID = newOrigID;
+		let i = 2;
+		while (allPlayers.find((item) => item.id === newID)) {
+			newID = newOrigID + i.toString();
+			++i;
+		}
+		return newID;
+	};
+
 	const updatePlayerID = () => {
+		/*
 		let id;
 		if (formPlayerForename) {
 			id = formPlayerForename
@@ -159,6 +186,7 @@
 			id += formPlayerSurname.toLowerCase().replace(/[^\x00-\x7F]/g, '');
 		}
 		formPlayerID = id;
+		*/
 	};
 </script>
 
@@ -204,12 +232,12 @@
 					placeholder="Nachname"
 				/>
 			</Label>
-			{#if !playerToUpdate}
+			<!--{#if !playerToUpdate}
 				<Label class="space-y-2">
 					<span>ID (für die Datenbank, muss eindeutig sein)</span>
 					<Input bind:value={formPlayerID} placeholder="ID" />
 				</Label>
-			{/if}
+			{/if}-->
 			<Label class="space-y-2">
 				<span>Kurzname</span>
 				<Input bind:value={formPlayerShortname} placeholder="Kurzname (optional)" />
@@ -242,7 +270,7 @@
 			<div class="text-center">
 				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Die ID wird schon verwendet. Bitte eine andere wählen!
+					Der Spieler existiert schon. Bitte einen anderen Namen wählen!
 				</h3>
 				<Button color="alternative">Schließen</Button>
 			</div>
@@ -271,6 +299,7 @@
 		<TableHead>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Name</TableHeadCell>
+			<TableHeadCell>E-Mail</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
@@ -281,6 +310,7 @@
 						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
 					>
 					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
+					<TableBodyCell>{player.email}</TableBodyCell>
 					<TableBodyCell>
 						{#if player.active == true}
 							<Checkbox checked on:change={() => updatePlayerStatus(player.id, !player.active)} />

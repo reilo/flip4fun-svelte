@@ -6,6 +6,7 @@
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { mapTourStatus, mapTourType, getTourTypeMap } from '$lib/TourUtil';
+	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.tournaments);
@@ -16,6 +17,7 @@
 	let newTourType = $state('');
 
 	async function createTour() {
+		let id = generateTournamentID(newTourName);
 		let defaultSettings;
 		switch (newTourType) {
 			case 'flipliga':
@@ -33,6 +35,7 @@
 		const response = await fetch('/api/tournament', {
 			method: 'POST',
 			body: JSON.stringify({
+				id: id,
 				name: newTourName,
 				type: newTourType,
 				settings: defaultSettings
@@ -52,6 +55,17 @@
 			alert(JSON.stringify(result));
 		}
 	}
+
+	const generateTournamentID = (name) => {
+		let newOrigID = cleanString(name);
+		let newID = newOrigID;
+		let i = 2;
+		while (tournaments.find((item) => item.id === newID)) {
+			newID = newOrigID + i.toString();
+			++i;
+		}
+		return newID;
+	};
 </script>
 
 {#if showError}

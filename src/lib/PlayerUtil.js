@@ -15,5 +15,13 @@ export function getPlayerName(id, allPlayers) {
 }
 
 export function formatPlayerName(player, id) {
-    return player != null ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
+    return player ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
+}
+
+export function formatPlayerNameExt(player, id) {
+    if (player) {
+        return `${player.forename} ${player.surname}` + (player.shortname ? ` (${player.shortname})` : "");
+    } else{
+         return `Unbekannt (${id})`;
+    }
 }

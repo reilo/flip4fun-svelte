@@ -13,8 +13,17 @@ Essentiell: Liga/Turnier-Framework
 - Strafpunkte variabel / Spielstärke?
 - Ergebnis-PDF erstellen...
 - Titel/Untertitel, Erklärungstexte bearbeiten
+- Match DB Tabelle
+- App als Service starten
+- Check alle Admin-Seiten gesperrt
+- Create/Update Pins, Kürzel abfragen
+- Round/Match Namen inkrementieren
+- Admin Löschseite, Turniere, Pins, Spieler
+- Fehleingaben korrigieren
+- JSON.stringify({ tournament: tournament }) sinnvoll allgemein?
+- Turniername checken auf duplikate, umbenennen ermöglichen, sure dialog
 ...
-- primary key Round table
+- leere String in DB speichern?
 - Spieler-Fotos wo?
 - Pyramide
 - Styling allgemein
@@ -23,9 +32,6 @@ Essentiell: Liga/Turnier-Framework
 Unit Tests...
 Env Variablen in Service-Mode
 Device Phone eliminieren
-
-Nice to have:
-- CRU(D)-Funktionen Pins/Spieler!
 
 ferner (falls Zeit ist):
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus

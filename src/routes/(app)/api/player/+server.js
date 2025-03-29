@@ -52,9 +52,13 @@ export const POST = async ({ request }) => {
         let data = {
             id: body.id,
             forename: body.forename,
-            surname: body.surname,
-            shortname: body.shortname ? body.shortname : null,
-            email: body.email ? body.email : null
+            surname: body.surname
+        }
+        if (body.shortname){
+            data.shortname = body.shortname;
+        }
+        if (body.email) {
+            data.email = body.email;
         }
 
         const player = await prisma.player.create({

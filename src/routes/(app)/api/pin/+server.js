@@ -22,7 +22,7 @@ export const GET = async ({ url }) => {
             } else if (key === "type") {
                 if (Object.values(PinType).includes(value)) {
                     fields[key] = PinType[value];
-                } else{
+                } else {
                     throw value + " ist kein gültiger Wert für " + key;
                 }
             }
@@ -61,11 +61,20 @@ export const POST = async ({ request }) => {
 
         let data = {
             id: body.id,
-            name: body.name,
-            code: body.code ? body.code : null,
-            manu: body.manu ? body.manu : "Other",
-            year: body.year ? body.year : 0,
-            type: body.type ? body.type : "Other"
+            name: body.name
+        }
+
+        if (body.code) {
+            data.code = body.code;
+        }
+        if (body.manu) {
+            data.manu = body.manu;
+        }
+        if (body.year) {
+            data.year = body.year;
+        }
+        if (body.type) {
+            data.type = body.type;
         }
 
         const pin = await prisma.pin.create({

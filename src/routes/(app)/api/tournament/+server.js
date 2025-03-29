@@ -62,11 +62,22 @@ export const POST = async ({ request }) => {
 
         let data = {
             name: body.name,
-            type: body.type,
-            status: body.status ? body.status : "Planned",
-            players: body.players ? body.players : [],
-            settings: body.settings ? body.settings : {},
-            results: body.results ? body.results : {}
+            type: body.type
+        }
+        if (body.id) {
+            data.id = body.id;
+        }
+        if (body.status) {
+            data.status = body.status;
+        }
+        if (body.players) {
+            data.players = body.players;
+        }
+        if (body.settings) {
+            data.settings = body.settings;
+        }
+        if (body.results) {
+            data.results = body.results;
         }
 
         const tournament = await prisma.tournament.create({

@@ -62,13 +62,25 @@ export const POST = async ({ request, params }) => {
         let data = {
             rid: body.rid,
             tid: params.tid,
-            name: body.name,
-            status: body.status ? body.status : "Planned",
-            players: body.players ? body.players : [],
-            settings: body.settings ? body.settings : {},
-            matches: body.matches ? body.matches : [],
-            results: body.results ? body.results : {},
-            tempData: body.tempData ? body.tempData : {}
+            name: body.name
+        }
+        if (body.status) {
+            data.status = body.status;
+        }
+        if (body.players) {
+            data.players = body.players;
+        }
+        if (body.settings) {
+            data.settings = body.settings;
+        }
+        if (body.matches) {
+            data.matches = body.matches;
+        }
+        if (body.results) {
+            data.results = body.results;
+        }
+        if (body.tempData) {
+            data.tempData = body.tempData;
         }
 
         const round = await prisma.round.create({
