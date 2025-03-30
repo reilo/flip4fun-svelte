@@ -15,11 +15,10 @@
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
 
-	let pinForm = $state(false);
-	let pinAlert1 = $state(false);
-	let pinAlert2 = $state(false);
-	let pinAlert3 = $state(false);
-	let pinSure = $state(false);
+	let showForm = $state(false);
+	let showAlert = $state(false);
+	let alertMessage = $state(false);
+	let showSure = $state(false);
 
 	let formPinName = $state('');
 	let formPinShortcut = $state('');
@@ -38,13 +37,16 @@
 			!formPinType ||
 			(!cleanString(formPinShortcut) && !pinToUpdate)
 		) {
-			pinAlert1 = true;
+			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
+			showAlert = true;
 		} else if (!pinToUpdate && allPins.find((item) => item.name === formPinName)) {
-			pinAlert2 = true;
+			alertMessage = 'Der Flipper existiert schon!';
+			showAlert = true;
 		} else if (!pinToUpdate && allPins.find((item) => item.id === cleanString(formPinShortcut))) {
-			pinAlert3 = true;
+			alertMessage = 'Der Flipperkürzel existiert schon. Bitte einen anderen wählen!';
+			showAlert = true;
 		} else {
-			pinSure = true;
+			showSure = true;
 		}
 	};
 
@@ -78,7 +80,7 @@
 		if (response.status !== 200) {
 			alert(JSON.stringify(result));
 		}
-		pinSure = pinForm = false;
+		showSure = showForm = false;
 		invalidateAll();
 	}
 
@@ -108,7 +110,7 @@
 		if (response.status !== 200) {
 			alert(JSON.stringify(result));
 		}
-		pinSure = pinForm = false;
+		showSure = showForm = false;
 		invalidateAll();
 	}
 
@@ -131,11 +133,11 @@
 	}
 
 	const cancelNewPin = () => {
-		pinForm = false;
+		showForm = false;
 	};
 
 	const prepareFormForNew = () => {
-		pinForm = true;
+		showForm = true;
 		pinToUpdate = '';
 		formPinName = '';
 		formPinShortcut = '';
@@ -145,7 +147,7 @@
 	};
 
 	const prepareFormForUpdate = (pin) => {
-		pinForm = true;
+		showForm = true;
 		pinToUpdate = pin.id;
 		formPinName = pin.name;
 		formPinManu = pin.manu;
@@ -175,7 +177,7 @@
 
 	<Modal
 		title={pinToUpdate ? 'Flipper bearbeiten' : 'Neuen Flipper anlegen'}
-		bind:open={pinForm}
+		bind:open={showForm}
 		autoclose={false}
 		class="max-w-sm"
 	>
@@ -214,11 +216,11 @@
 	</Modal>
 
 	<div>
-		<Modal bind:open={pinAlert1} size="xs" autoclose>
+		<Modal bind:open={showAlert} size="xs" autoclose>
 			<div class="text-center">
 				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
+					{alertMessage}
 				</h3>
 				<Button color="alternative">Schließen</Button>
 			</div>
@@ -226,31 +228,7 @@
 	</div>
 
 	<div>
-		<Modal bind:open={pinAlert2} size="xs" autoclose>
-			<div class="text-center">
-				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Der Flipper existiert schon!
-				</h3>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={pinAlert3} size="xs" autoclose>
-			<div class="text-center">
-				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Der Flipperkürzel existiert schon. Bitte einen anderen wählen!
-				</h3>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={pinSure} size="xs" autoclose>
+		<Modal bind:open={showSure} size="xs" autoclose>
 			<div class="text-center">
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"

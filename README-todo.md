@@ -3,8 +3,10 @@ Benutzer-Dokumentation
 - Wie lokal starten?
 
 Code kommentieren, insbes. Component Parameter
-Strings lokalisieren
+Strings lokalisieren / aus Resourcen
 Fehlerbehandlung
+Dialog Snippets
+App als Service starten
 
 Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
@@ -15,12 +17,10 @@ Essentiell: Liga/Turnier-Framework
 - Strafpunkte variabel / Spielstärke?
 - Ergebnis-PDF erstellen...
 - Titel/Untertitel, Erklärungstexte bearbeiten
-- App als Service starten
-- Admin Löschseite, Turniere, Pins, Spieler
-- Fehleingaben korrigieren
+- Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
 - Navikonzept überarbeiten
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
-...
+Ferner:
 - Turniername ändern
 - Flipper Abkürzung editierbar
 - leere String in DB speichern?
@@ -35,7 +35,6 @@ Device Phone eliminieren
 ferner (falls Zeit ist):
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
 - Ranking Style refactorn und parametriesieren
-- Rest APIs: expand parameter
 - Flipperliste mehr Funktionen
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
 

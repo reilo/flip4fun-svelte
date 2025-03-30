@@ -16,10 +16,10 @@
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);
 
-	let playerForm = $state(false);
-	let playerAlert1 = $state(false);
-	let playerAlert2 = $state(false);
-	let playerSure = $state(false);
+	let showForm = $state(false);
+	let showAlert = $state(false);
+	let alertMessage = $state('');
+	let showSure = $state(false);
 
 	let formPlayerID = $state('');
 	let formPlayerForename = $state('');
@@ -33,20 +33,24 @@
 
 	const verifyPlayer = () => {
 		if (!formPlayerForename || !formPlayerSurname) {
-			playerAlert1 = true;
+			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
+			showAlert = true;
 		} else if (
 			!playerToUpdate &&
 			allPlayers.find(
 				(item) => item.forename === formPlayerForename && item.surname === formPlayerSurname
 			)
 		) {
-			playerAlert2 = true;
-		} else if (cleanString(formPlayerForename).length < 2) {
-			playerAlert1 = true;
-		} else if (cleanString(formPlayerSurname).length < 2) {
-			playerAlert1 = true;
+			alertMessage = 'Der Spieler existiert schon. Bitte einen anderen Namen wählen!';
+			showAlert = true;
+		} else if (
+			cleanString(formPlayerForename).length < 2 ||
+			cleanString(formPlayerSurname).length < 2
+		) {
+			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
+			showAlert = true;
 		} else {
-			playerSure = true;
+			showSure = true;
 		}
 	};
 
@@ -83,7 +87,7 @@
 		if (response.status !== 200) {
 			alert(JSON.stringify(result));
 		}
-		playerSure = playerForm = false;
+		showSure = showForm = false;
 		invalidateAll();
 	}
 
@@ -113,16 +117,16 @@
 		if (response.status !== 200) {
 			alert(JSON.stringify(result));
 		}
-		playerSure = playerForm = false;
+		showSure = showForm = false;
 		invalidateAll();
 	}
 
 	const cancelNewPlayer = () => {
-		playerForm = false;
+		showForm = false;
 	};
 
 	const prepareFormForNew = () => {
-		playerForm = true;
+		showForm = true;
 		playerToUpdate = '';
 		formPlayerID = '';
 		formPlayerForename = '';
@@ -132,7 +136,7 @@
 	};
 
 	const prepareFormForUpdate = (player) => {
-		playerForm = true;
+		showForm = true;
 		playerToUpdate = player.id;
 		formPlayerID = player.id;
 		formPlayerForename = player.forename;
@@ -194,7 +198,7 @@
 
 	<Modal
 		title={playerToUpdate ? 'Spieler bearbeiten' : 'Neuen Spieler anlegen'}
-		bind:open={playerForm}
+		bind:open={showForm}
 		autoclose={false}
 		class="max-w-sm"
 	>
@@ -223,11 +227,11 @@
 	</Modal>
 
 	<div>
-		<Modal bind:open={playerAlert1} size="xs" autoclose>
+		<Modal bind:open={showAlert} size="xs" autoclose>
 			<div class="text-center">
 				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
+					{alertMessage}
 				</h3>
 				<Button color="alternative">Schließen</Button>
 			</div>
@@ -235,19 +239,7 @@
 	</div>
 
 	<div>
-		<Modal bind:open={playerAlert2} size="xs" autoclose>
-			<div class="text-center">
-				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Der Spieler existiert schon. Bitte einen anderen Namen wählen!
-				</h3>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={playerSure} size="xs" autoclose>
+		<Modal bind:open={showSure} size="xs" autoclose>
 			<div class="text-center">
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"

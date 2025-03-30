@@ -77,7 +77,9 @@
 	<TableHead>
 		<TableHeadCell class="text-center">Spieltag</TableHeadCell>
 		<TableHeadCell class="text-center">Datum</TableHeadCell>
-		<TableHeadCell class="text-center">Duell</TableHeadCell>
+		<TableHeadCell class="text-right">Spieler 1</TableHeadCell>
+		<TableHeadCell class="text-center"></TableHeadCell>
+		<TableHeadCell class="text-left">Spieler 2</TableHeadCell>
 		<TableHeadCell class="text-center">Sätze</TableHeadCell>
 		<TableHeadCell class="text-center">Flipper</TableHeadCell>
 	</TableHead>
@@ -93,8 +95,24 @@
 					<TableBodyCell tdClass="text-center">
 						{mapDate(match.createdAt)}
 					</TableBodyCell>
-					<TableBodyCell tdClass="text-center">
-						{getPlayerName(match.player1) + ' - ' + getPlayerName(match.player2)}
+					<TableBodyCell tdClass="text-right">
+						<div
+							style={match.score1 > match.score2
+								? 'color:green; text-decoration:underline;'
+								: 'color:default;'}
+						>
+							{getPlayerName(match.player1)}
+						</div>
+					</TableBodyCell>
+					<TableBodyCell></TableBodyCell>
+					<TableBodyCell tdClass="text-left">
+						<div
+							style={match.score1 < match.score2
+								? 'color:green; text-decoration:underline;'
+								: 'color:default;'}
+						>
+							{getPlayerName(match.player2)}
+						</div>
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
 						{match.score1 + ' - ' + match.score2}

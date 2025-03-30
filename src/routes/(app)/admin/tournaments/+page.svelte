@@ -17,23 +17,25 @@
 	let tournaments = $derived(data.tournaments);
 
 	let newForm = $state(false);
-	let tourAlert0 = $state(false);
-	let tourAlert1 = $state(false);
-	let tourAlert2 = $state(false);
-	let tourSure = $state(false);
+	let showAlert = $state(false);
+	let alertMessage = $state("");
+	let showSure = $state(false);
 
 	let newTourName = $state('');
 	let newTourType = $state('');
 
 	const verifyTour = () => {
 		if (newTourType === 'fliptwin' || newTourType === 'flipfinal') {
-			tourAlert0 = true;
+			alertMessage = "Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!";
+			showAlert = true;
 		} else if (!newTourName || !newTourType) {
-			tourAlert1 = true;
+			alertMessage="Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!";
+			showAlert = true;
 		} else if (tournaments.find((tour) => tour.name === newTourName)) {
-			tourAlert2 = true;
+			alertMessage="Ein Turnier mit dem Namen existiert schon. Bitte einen anderen Namen wählen!";
+			showAlert = true;
 		} else {
-			tourSure = true;
+			showSure = true;
 		}
 	};
 
@@ -131,11 +133,11 @@
 	<br />
 
 	<div>
-		<Modal bind:open={tourAlert0} size="xs" autoclose>
+		<Modal bind:open={showAlert} size="xs" autoclose>
 			<div class="text-center">
 				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!
+					{alertMessage}
 				</h3>
 				<Button color="alternative">Schließen</Button>
 			</div>
@@ -143,31 +145,7 @@
 	</div>
 
 	<div>
-		<Modal bind:open={tourAlert1} size="xs" autoclose>
-			<div class="text-center">
-				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
-				</h3>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={tourAlert2} size="xs" autoclose>
-			<div class="text-center">
-				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Ein Turnier mit dem Namen existiert schon. Bitte einen anderen Namen wählen!
-				</h3>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={tourSure} size="xs" autoclose>
+		<Modal bind:open={showSure} size="xs" autoclose>
 			<div class="text-center">
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"

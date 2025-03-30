@@ -12,8 +12,8 @@
 	let { data } = $props();
 
 	let newForm = $state(false);
-	let showAlert1 = $state(false);
-	let showAlert2 = $state(false);
+	let showAlert = $state(false);
+	let alertMessage = $state("");
 	let showSure = $state(false);
 
 	const matches = $derived(data.round ? data.round.matches : []);
@@ -22,6 +22,7 @@
 
 	const addMatchEnabled = data.round && data.round.status === 'Active';
 	const tourCompleted = data.tournament.status === 'Completed';
+	const settings = data.tournament.settings;
 
 	const getPlayerName = (id) => {
 		return _getPlayerName(id, data.players);
@@ -50,7 +51,7 @@
 
 	const getPoints = (match, num) => {
 		const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
-		return (num == 1 ? result.player1 : result.player2) + data.tournament.settings.matchBonus;
+		return (num == 1 ? result.player1 : result.player2) + settings.matchBonus;
 	};
 
 	const roundNumber = (num) => {
@@ -59,7 +60,7 @@
 
 	const matchLimitReached = (player1, player2) => {
 		const entry = tempData.encounters.find((item) => item.p === player1 + '-' + player2);
-		return data.tournament.settings.challengeSame <= entry.e;
+		return settings.challengeSame <= entry.e;
 	};
 
 	const updateTempData = (player1, player2) => {
@@ -78,9 +79,11 @@
 			selPoints2 == null ||
 			selPoints1 === selPoints2
 		) {
-			showAlert1 = true;
+			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
+			showAlert = true;
 		} else if (matchLimitReached(selPlayer1, selPlayer2)) {
-			showAlert2 = true;
+			alertMessage = 'Dieses Match wurde schon ' + settings.challengeSame + ' mal gespielt!';
+			showAlert = true;
 		} else {
 			showSure = true;
 		}
@@ -241,23 +244,11 @@
 		</div>
 
 		<div>
-			<Modal bind:open={showAlert1} size="xs" autoclose>
+			<Modal bind:open={showAlert} size="xs" autoclose>
 				<div class="text-center">
 					<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-						Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!
-					</h3>
-					<Button color="alternative">Schließen</Button>
-				</div>
-			</Modal>
-		</div>
-
-		<div>
-			<Modal bind:open={showAlert2} size="xs" autoclose>
-				<div class="text-center">
-					<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-						Dieses Match wurde schon {data.tournament.settings.challengeSame} mal gespielt!
+						{alertMessage}
 					</h3>
 					<Button color="alternative">Schließen</Button>
 				</div>
