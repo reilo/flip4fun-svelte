@@ -6,6 +6,7 @@
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { calcPoints } from '$lib/MatchUtil';
+	import { roundNumber } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil.js';
 
@@ -13,7 +14,7 @@
 
 	let newForm = $state(false);
 	let showAlert = $state(false);
-	let alertMessage = $state("");
+	let alertMessage = $state('');
 	let showSure = $state(false);
 
 	const matches = $derived(data.round ? data.round.matches : []);
@@ -52,10 +53,6 @@
 	const getPoints = (match, num) => {
 		const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
 		return (num == 1 ? result.player1 : result.player2) + settings.matchBonus;
-	};
-
-	const roundNumber = (num) => {
-		return (Math.round(num * 10) / 10).toFixed(1);
 	};
 
 	const matchLimitReached = (player1, player2) => {

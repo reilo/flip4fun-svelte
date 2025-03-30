@@ -1,3 +1,10 @@
+/**
+ * Calculates match score depending on player strengths
+ * @param {json} match - match record
+ * @param {*} strength1 - player 1 strength
+ * @param {*} strength2 - player 2 strength
+ * @returns 
+ */
 export function calcPoints(match, strength1, strength2) {
 
     let result1, result2;
@@ -13,6 +20,26 @@ export function calcPoints(match, strength1, strength2) {
     return { player1: result1, player2: result2 }
 }
 
+/**
+ * Calculates final ranking data for a player for a completed round.
+ * @param {int} roundNum - number of the completed round
+ * @param {array} rankInit - initial ranking data at the beginning of the round. Array of
+ *            -- player: player ID,
+ *            -- matches: total count matches
+ *            -- bonus: total match bonus
+ *            -- points: total score
+ *            -- penalty: total penalty points
+ *            -- strength: player strength
+ * @param {array} matches - all match records of the completed round
+ * @param {json} settings - tournament settings
+ * @returns   rankFinal - final ranking data after all matches of the round: Array of
+ *            -- player: player ID
+ *            -- matches: total count matches
+ *            -- bonus: total match bonus
+ *            -- points: total score
+ *            -- penalty: total penalty points
+ *            -- rankChange: difference of rank before and after round matches
+ */
 export function calcRanking(roundNum, rankInit, matches, settings) {
 
     function getStrength(id) {
@@ -23,7 +50,13 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
     let ranking = [];
 
     rankInit.forEach((item) => {
-        ranking.push({ player: item.player, matches: item.matches, points: item.points, bonus: item.bonus, penalty: item.penalty });
+        ranking.push({
+            player: item.player,
+            matches: item.matches,
+            points: item.points,
+            bonus: item.bonus,
+            penalty: item.penalty
+        });
     });
 
     matches.forEach((match) => {
@@ -52,7 +85,15 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
     let ranking2 = [];
     ranking.forEach((item, i) => {
         const j = rankInit.findIndex((item2) => item.player === item2.player);
-        ranking2.push({ player: item.player, matches: item.matches, points: item.points, bonus: item.bonus, penalty: item.penalty, rankChange: j - i })
+        ranking2.push({
+            player: item.player,
+            matches: item.matches,
+            points: item.points,
+            bonus: item.bonus,
+            penalty: item.penalty,
+            rankChange: j - i
+        })
     });
+
     return ranking2;
 }

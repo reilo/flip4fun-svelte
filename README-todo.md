@@ -5,19 +5,19 @@ Benutzer-Dokumentation
 Code kommentieren, insbes. Component Parameter
 Strings lokalisieren / aus Resourcen
 Fehlerbehandlung
-Dialog Snippets
 App als Service starten
+Readmes überarbeiten
 
 Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 Eingabefocus
 
 Essentiell: Liga/Turnier-Framework
-- DB transactions: storeMatch, startRound
 - Strafpunkte variabel / Spielstärke?
-- Ergebnis-PDF erstellen...
-- Titel/Untertitel, Erklärungstexte bearbeiten
+- kritische Dialoge --> Sicherheitsabfrage und was eintippen
 - Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
+- Titel/Untertitel, Erklärungstexte bearbeiten
+- DB transactions: storeMatch, startRound
 - Navikonzept überarbeiten
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 Ferner:

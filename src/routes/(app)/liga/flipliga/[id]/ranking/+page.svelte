@@ -1,10 +1,10 @@
 <script>
-	import { Heading, Avatar } from 'flowbite-svelte';
+	import { Heading } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { ArrowUpOutline, ArrowDownOutline, ArrowsRepeatOutline } from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
+	import { roundNumber } from '$lib/TypeUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
@@ -18,49 +18,24 @@
 		return player.strength;
 	};
 
-	const getPlayerRankChange = (id) => {
-		const rank1 = round.settings.rankInit.findIndex((item) => item.player === id);
-		const rank2 = ranking.findIndex((item) => item.player === id);
-		const rankChange = rank1 - rank2;
-		return rankChange != 0 ? rankChange : '';
-	};
-
-	const formatPlayerRankChange = (id) => {
-		const rankChange = getPlayerRankChange(id);
-		return (rankChange > 0 ? '+' : '') + rankChange;
-	};
-
-	const getPlayerRankChangeStyle = (id) => {
-		const rankChange = getPlayerRankChange(id);
-		return rankChange != '' && rankChange > 0
-			? 'color:green; text-decoration:underline;'
-			: rankChange < 0
-				? 'color:red;'
-				: 'color:default;';
-	};
-
-	const getPlayerScoring = (id) => {
-		const player1 = round.settings.rankInit.find((item) => item.player === id);
-		const player2 = ranking.find((item) => item.player === id);
+	const getPlayerScoring = (playerID) => {
+		const player1 = round.settings.rankInit.find((item) => item.player === playerID);
+		const player2 = ranking.find((item) => item.player === playerID);
 		return player2.points - player1.points;
 	};
 
-	const getCountMatches = (id) => {
+	const getCountMatches = (playerID) => {
 		return round.matches.reduce((count, item) => {
-			if (item.player1 === id || item.player2 === id) {
+			if (item.player1 === playerID || item.player2 === playerID) {
 				count += 1;
 			}
 			return count;
 		}, 0);
 	};
 
-	const getTotalCountMatches = (id) => {
-		const entry = round.settings.rankInit.find((item) => item.player === id);
-		return getCountMatches(id) + entry.matches;
-	};
-
-	const roundNumber = (num) => {
-		return (Math.round(num * 10) / 10).toFixed(1);
+	const getTotalCountMatches = (playerID) => {
+		const entry = round.settings.rankInit.find((item) => item.player === playerID);
+		return getCountMatches(playerID) + entry.matches;
 	};
 
 	const calcRanking = () => {
@@ -85,17 +60,15 @@
 </script>
 
 <div>
-	<Heading tag="h5">{"Rangfolge" + (!tourCompleted ? " Spieltag" : "")}</Heading>
+	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
 	<br />
 
 	<Table shadow hoverable={true}>
 		<TableHead>
-			<!--TableHeadCell></TableHeadCell-->
 			<TableHeadCell>Spieler</TableHeadCell>
 			{#if !tourCompleted}
 				<TableHeadCell class="text-center">Spielstärke</TableHeadCell>
 			{/if}
-			<!--TableHeadCell>Tendenz</TableHeadCell-->
 			{#if !tourCompleted}
 				<TableHeadCell class="text-center">Tendenz</TableHeadCell>
 			{/if}
@@ -111,27 +84,6 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
 				<TableBodyRow>
-					<!--TableBodyCell>
-						{#if rank.rankChange < 0}
-							<Avatar
-								alt={rank.player}
-								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
-								dot={{ color: 'red' }}
-							/>
-						{:else if rank.rankChange > 0}
-							<Avatar
-								alt={rank.player}
-								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
-								dot={{ color: 'green' }}
-							/>
-						{:else}
-							<Avatar
-								alt={rank.player}
-								src={import.meta.env.VITE_IMAGE_DIR + rank.player + '.jpg'}
-								dot={{}}
-							/>
-						{/if}
-					</TableBodyCell-->
 					<TableBodyCell>
 						<a href={'/liga/flipliga/' + $page.params.id + '/statistics/' + rank.player}
 							>{getPlayerName(rank.player, players)}</a
@@ -142,21 +94,6 @@
 							{getStrength(rank.player)}
 						</TableBodyCell>
 					{/if}
-					<!--TableBodyCell>
-						{#if rank.rankChange < 0}
-						<div style=color:red>
-							<ArrowDownOutline class="w-5 h-5" />
-						</div>
-						{:else if rank.rankChange > 0}
-						<div style='color:green;'>
-							<ArrowUpOutline class="w-5 h-5" />
-						</div>
-						{:else}
-						<div style=color:default>
-							<!--ArrowsRepeatOutline class="w-5 h-5" />
-						</div>
-						{/if}
-					</TableBodyCell-->
 					{#if !tourCompleted}
 						<TableBodyCell tdClass="text-center">
 							{#if rank.rankChange < 0}

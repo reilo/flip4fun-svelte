@@ -20,6 +20,10 @@ export function mapDate(value) {
     return date.toLocaleDateString("de-DE");
 }
 
+export function roundNumber(num) {
+    return (Math.round(num * 10) / 10).toFixed(1);
+};
+
 export function cleanString(strg) {
     let s = strg.toLowerCase().replaceAll(" ", "").replaceAll("-", "");
     s = s.replaceAll("ä", "ae").replaceAll("ö", "oe").replaceAll("ü", "ue").replaceAll("ß", "s");
