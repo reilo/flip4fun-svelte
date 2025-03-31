@@ -19,7 +19,6 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- PDF aus Liga-Admin
 - alle Aktionen loggen
 - numbers full precision in DB??
 - Umbenennen tempData / cache
