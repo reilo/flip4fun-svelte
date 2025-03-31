@@ -6,13 +6,20 @@
 
 	let { children } = $props();
 
-	const links = [
-		{ link: '/pins', name: 'Flipperliste' },
-		{ link: '/draw', name: 'Lostrommel' },
-		{ link: '/liga', name: 'Liga' },
-		{ link: '/admin', name: 'Administration' },
-		{ link: '/about', name: 'Info' }
-	];
+	const links = import.meta.env.VITE_APP_FULL
+		? [
+				{ link: '/pins', name: 'Flipperliste' },
+				{ link: '/draw', name: 'Lostrommel' },
+				{ link: '/liga', name: 'Liga' },
+				{ link: '/admin', name: 'Administration' },
+				{ link: '/about', name: 'Info' }
+			]
+		: [
+				{ link: '/pins', name: 'Flipperliste' },
+				{ link: '/draw', name: 'Lostrommel' },
+				{ link: '/liga', name: 'Liga' },
+				{ link: '/about', name: 'Info' }
+			];
 </script>
 
 {#snippet headerLink(d)}
@@ -20,7 +27,7 @@
 {/snippet}
 
 <div class="flex flex-col min-h-screen">
-	<Header headerLinks={links} {headerLink}/>
+	<Header headerLinks={links} {headerLink} />
 
 	<main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
 		{@render children?.()}
