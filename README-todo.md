@@ -11,9 +11,16 @@ Readmes überarbeiten
 Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
 Eingabefocus
+Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Strafpunkte variabel / Spielstärke?
+- Read-only uner Neon/Vercel - neuer Flag
+- PDF aus Liga-Admin
+- alle Aktionen loggen
+- numbers full precision in DB??
+- Umbenennen tempData / cache
+- Statistiken redesignen -> Auswahlbox
+- Strafpunkte variabel / Spielstärke? an oder nach Spieltag?
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen
 - Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
 - Titel/Untertitel, Erklärungstexte bearbeiten

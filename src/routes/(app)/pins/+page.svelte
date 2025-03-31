@@ -84,7 +84,7 @@
 		{#if !Device.isPhone}
 			<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
 			<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
-			<TableHeadCell on:click={() => sortTable('type')}>Typ</TableHeadCell>
+			<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
 		{/if}
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">

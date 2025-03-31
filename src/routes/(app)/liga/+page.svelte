@@ -26,7 +26,7 @@
 	<Heading tag="h5">Aktive Turniere</Heading>
 	<br />
 
-	<Table shadow hoverable={true}>
+	<Table class="table-fixed" shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>
@@ -58,7 +58,7 @@
 	<Heading tag="h5">Turnier-Historie</Heading>
 	<br />
 
-	<Table shadow hoverable={true}>
+	<Table class="table-fixed" shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>
