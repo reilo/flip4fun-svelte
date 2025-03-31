@@ -2,6 +2,11 @@ Benutzer-Dokumentation
 - Wo Datenbank? Wie Daten bearbeiten? Backup erstellen.
 - Wie lokal starten?
 
+Export / Import Tabellen:
+- Export aus pgadmin als CSV, Delimiter |
+- Import via psql:
+-- \copy "Tournament" from "../Tournament.csv" delimiter '|' quote '^' csv header encoding 'utf8'
+
 Code kommentieren, insbes. Component Parameter
 Strings lokalisieren / aus Resourcen
 Fehlerbehandlung
@@ -14,7 +19,6 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Read-only uner Neon/Vercel - neuer Flag
 - PDF aus Liga-Admin
 - alle Aktionen loggen
 - numbers full precision in DB??

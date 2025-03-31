@@ -44,16 +44,18 @@
 		<NavHamburger on:click={toggle} />
 		<NavUl {hidden} {activeUrl}>
 			{#each headerLinks as h}
-				{@render headerLink	(h)}
+				{@render headerLink(h)}
 			{/each}
 		</NavUl>
-		<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
-			{#if accessValue == ReadAccess}
-				<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
-			{:else}
-				<LockOpenSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
-			{/if}
-		</Button>
+		{#if import.meta.env.VITE_APP_FULL}
+			<Button color="bg-gray-50 dark:bg-gray-800" class="!p-0" on:click={() => (formModal = true)}>
+				{#if accessValue == ReadAccess}
+					<LockSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
+				{:else}
+					<LockOpenSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />
+				{/if}
+			</Button>
+		{/if}
 		<Modal title="Berechtigung wählen" bind:open={formModal} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">

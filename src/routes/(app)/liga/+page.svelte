@@ -29,23 +29,29 @@
 	<Table class="table-fixed" shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Typ</TableHeadCell>
+			{#if import.meta.env.VITE_APP_FULL}
+				<TableHeadCell>Typ</TableHeadCell>
+			{/if}
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.tournaments as tournament, i}
-				{#if tournament.status == 'Active'}
-					<TableBodyRow>
-						<TableBodyCell>
-							{tournament.name}
-						</TableBodyCell>
-						<TableBodyCell>
-							{mapTourType(tournament.type)}
-						</TableBodyCell>
-						<TableBodyCell>
-							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
-						</TableBodyCell>
-					</TableBodyRow>
+				{#if import.meta.env.VITE_APP_FULL || !tournament.name.includes('Test')}
+					{#if tournament.status == 'Active'}
+						<TableBodyRow>
+							<TableBodyCell>
+								{tournament.name}
+							</TableBodyCell>
+							{#if import.meta.env.VITE_APP_FULL}
+								<TableBodyCell>
+									{mapTourType(tournament.type)}
+								</TableBodyCell>
+							{/if}
+							<TableBodyCell>
+								<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/if}
 				{/if}
 			{/each}
 		</TableBody>
@@ -61,23 +67,29 @@
 	<Table class="table-fixed" shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Typ</TableHeadCell>
+			{#if import.meta.env.VITE_APP_FULL}
+				<TableHeadCell>Typ</TableHeadCell>
+			{/if}
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.tournaments as tournament, i}
-				{#if tournament.status == 'Completed'}
-					<TableBodyRow>
-						<TableBodyCell>
-							{tournament.name}
-						</TableBodyCell>
-						<TableBodyCell>
-							{mapTourType(tournament.type)}
-						</TableBodyCell>
-						<TableBodyCell>
-							<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
-						</TableBodyCell>
-					</TableBodyRow>
+				{#if import.meta.env.VITE_APP_FULL || !tournament.name.includes('Test')}
+					{#if tournament.status == 'Completed'}
+						<TableBodyRow>
+							<TableBodyCell>
+								{tournament.name}
+							</TableBodyCell>
+							{#if import.meta.env.VITE_APP_FULL}
+								<TableBodyCell>
+									{mapTourType(tournament.type)}
+								</TableBodyCell>
+							{/if}
+							<TableBodyCell>
+								<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/if}
 				{/if}
 			{/each}
 		</TableBody>

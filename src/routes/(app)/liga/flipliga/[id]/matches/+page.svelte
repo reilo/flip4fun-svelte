@@ -21,7 +21,8 @@
 	const tempData = $derived(data.round ? data.round.tempData : {});
 	const rankInit = data.round ? data.round.settings.rankInit : [];
 
-	const addMatchEnabled = data.round && data.round.status === 'Active';
+	const addMatchEnabled =
+		import.meta.env.VITE_APP_FULL && data.round && data.round.status === 'Active';
 	const tourCompleted = data.tournament.status === 'Completed';
 	const settings = data.tournament.settings;
 
