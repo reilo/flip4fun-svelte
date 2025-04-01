@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {
@@ -61,8 +61,17 @@ export const POST = async ({ request, params }) => {
             data.tempData = body.tempData;
         }
 
-        const round = await prisma.round.create({
-            data
+        // make sure that after the first round is started also the tournament is in status Active
+        const round = prisma.$transaction(async (tx) => {
+            // create round
+            const result = await tx.round.create({
+                data
+            });
+            // update tournament status
+            await tx.tournament.update({
+                where: { id: params.tid }, data: { status: "Active" }
+            });
+            return result;
         });
         return new Response(
             JSON.stringify({ round: round }),

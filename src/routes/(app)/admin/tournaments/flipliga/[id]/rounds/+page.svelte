@@ -83,7 +83,7 @@
 		const settings = { rankInit: rankInit };
 		const results = { rankFinal: [] };
 		const tempData = createTempData();
-		// TODO: need db transaction here!!!
+
 		createRound(
 			tournament.id,
 			nextRoundName,
@@ -93,7 +93,7 @@
 			results,
 			tempData
 		);
-		updateTournamentStatus(tournament.id, 'Active');
+		
 		startForm = false;
 		invalidateAll();
 	}
