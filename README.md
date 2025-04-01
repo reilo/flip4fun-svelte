@@ -1,6 +1,6 @@
 # Infos für den Anwender
 
-## under construction
+under construction
 
 # Infos für Entwickler
 
@@ -183,6 +183,25 @@ Dann Datenbank-Tabellen pushen via:
 ```bash
 npx prisma db push
 ```
+
+## Daten exportieren / importieren
+
+Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von lokal nach remote, folgendermaßen vorgehen:
+
+- Export aus pgadmin als CSV, Delimiter |
+- Import via psql-Kommando, z. B.
+
+```bash
+-- \copy "Tournament" FROM "../Tournament.csv" DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+
+Dabei folgendes beachten:
+- Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|', auf keinen Fall ','.
+- Als Quote ebenfalls ein Zeichen wählen, das in den Daten nicht vorkommt, z. B '^'.
+- UTF8-Encoding verwenden, weil sonst Umlaute nicht korrekt importiert werden.
+- Ggf. müssen die Spalten explizit in richtiger Reihenfolge angegeben werden, in Klammern direkt hinter dem Tabellennamen. In der csv-Datei kontrollieren.
+- HEADER-Option verwenden, wenn die csv-Datei mit Header erstellt wurde.
+- Tabellen- und Spaltennamen, die nicht vollständig lowercase sind, müssen immer in Anführungszeichen eingeschlossen werden.
 
 ## Datenformate
 
