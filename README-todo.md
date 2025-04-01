@@ -15,13 +15,12 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Runden -> Erfolgsmeldung
+- db update: createdAt -> created, tempData -> cache
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
-- Umbenennen tempData / cache
 - Statistiken redesignen -> Auswahlbox
 - Strafpunkte variabel / Spielstärke? an oder nach Spieltag?
-- kritische Dialoge --> Sicherheitsabfrage und was eintippen
+- kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
 - Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - Navikonzept überarbeiten

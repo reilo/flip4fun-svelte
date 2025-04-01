@@ -1,6 +1,6 @@
 <script>
 	import { Modal, Label, Button, Card } from 'flowbite-svelte';
-	import { ArrowRightOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { ArrowRightOutline, QuestionCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { calcStrength } from '$lib/TourUtil';
 	import { calcRanking } from '$lib/MatchUtil';
@@ -17,6 +17,9 @@
 	let startForm = $state(false);
 	let endForm = $state(false);
 	let endLigaForm = $state(false);
+	let startSuccess = $state(false);
+	let endSuccess = $state(false);
+	let endLigaSuccess = $state(false);
 
 	let startEnabled = $derived(
 		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
@@ -96,6 +99,7 @@
 
 		startForm = false;
 		invalidateAll();
+		startSuccess = true;
 	}
 
 	async function endRound() {
@@ -110,12 +114,14 @@
 		updateRound(round.id, results, {});
 		endForm = false;
 		invalidateAll();
+		endSuccess = true;
 	}
 
 	async function endLiga() {
 		updateTournamentStatus(tournament.id, 'Completed');
 		endLigaForm = false;
 		invalidateAll();
+		endLigaSuccess = true;
 	}
 
 	const createTempData = () => {
@@ -264,7 +270,7 @@
 <div>
 	<Modal title="Spieltag starten" bind:open={startForm} autoclose={false} class="max-w-sm">
 		<div class="text-center">
-			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich gestartet werden?</Label>
 				<Button color="alternative" on:click={startRound}>Ja, starten</Button>
@@ -275,9 +281,21 @@
 </div>
 
 <div>
+	<Modal bind:open={startSuccess} size="xs" autoclose>
+		<div class="text-center">
+			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				Der Spieltag wurde erfolgreich gestartet!
+			</h3>
+			<Button color="alternative">Schließen</Button>
+		</div>
+	</Modal>
+</div>
+
+<div>
 	<Modal title="Spieltag beenden" bind:open={endForm} autoclose={false} class="max-w-sm">
 		<div class="text-center">
-			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">Soll der {nextRound - 1}. Spieltag wirklich beendet werden?</Label>
 				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
@@ -288,14 +306,38 @@
 </div>
 
 <div>
+	<Modal bind:open={endSuccess} size="xs" autoclose>
+		<div class="text-center">
+			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				Der Spieltag wurde erfolgreich beendet!
+			</h3>
+			<Button color="alternative">Schließen</Button>
+		</div>
+	</Modal>
+</div>
+
+<div>
 	<Modal title="Liga beenden" bind:open={endLigaForm} autoclose={false} class="max-w-sm">
 		<div class="text-center">
-			<ExclamationCircleOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700" />
+			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">Soll diese Liga wirklich endgültig beendet werden?</Label>
 				<Button color="alternative" on:click={endLiga}>Ja, beenden</Button>
 				<Button color="primary" on:click={() => (endLigaForm = false)}>Nein, abbrechen</Button>
 			</form>
+		</div>
+	</Modal>
+</div>
+
+<div>
+	<Modal bind:open={endLigaSuccess} size="xs" autoclose>
+		<div class="text-center">
+			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				Die Liga wurde erfolgreich beendet!
+			</h3>
+			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>
 </div>
