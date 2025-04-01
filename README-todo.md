@@ -24,7 +24,6 @@ Essentiell: Liga/Turnier-Framework
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen
 - Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
 - Titel/Untertitel, Erklärungstexte bearbeiten
-- DB transactions: storeMatch, startRound
 - Navikonzept überarbeiten
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 Ferner:

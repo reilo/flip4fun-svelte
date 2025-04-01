@@ -100,37 +100,24 @@
 			score2: selPoints2,
 			pin: selPin
 		};
+		// set additional data for cache update
 		updateTempData(selPlayer1, selPlayer2);
-		// TODO: need db transaction here!!!
-		const tourResponse = await fetch('/api/round/' + data.round.id, {
-			method: 'PUT',
-			body: JSON.stringify({
-				tempData: tempData
-			}),
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			}
-		});
-		const tourResult = await tourResponse.json();
-		if (tourResponse.status !== 200) {
-			alert(JSON.stringify(tourResult));
-		} else {
-			const matchResponse = await fetch(
-				'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid + '/match',
-				{
-					method: 'POST',
-					body: JSON.stringify(match),
-					headers: {
-						'Content-Type': 'application/json',
-						Accept: 'application/json'
-					}
+		match.tempData = tempData;
+		match.roundId = data.round.id; // round internal ID, not rid
+		const matchResponse = await fetch(
+			'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid + '/match?updateCache',
+			{
+				method: 'POST',
+				body: JSON.stringify(match),
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
 				}
-			);
-			const matchResult = await matchResponse.json();
-			if (matchResponse.status !== 200) {
-				alert(JSON.stringify(matchResult));
 			}
+		);
+		const matchResult = await matchResponse.json();
+		if (matchResponse.status !== 200) {
+			alert(JSON.stringify(matchResult));
 		}
 		invalidateAll();
 		showSure = newForm = false;
@@ -302,7 +289,10 @@
 						{formatResultString(match.score1, match.score2)}
 					</TableBodyCell>
 					<TableBodyCell align="left">
-						{formatResultString(roundNumberToStrg(getPoints(match, 1)), roundNumberToStrg(getPoints(match, 2)))}
+						{formatResultString(
+							roundNumberToStrg(getPoints(match, 1)),
+							roundNumberToStrg(getPoints(match, 2))
+						)}
 					</TableBodyCell>
 					<TableBodyCell>
 						{getPinName(match.pin, data.pins)}

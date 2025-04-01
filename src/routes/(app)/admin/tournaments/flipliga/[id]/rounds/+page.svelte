@@ -93,7 +93,7 @@
 			results,
 			tempData
 		);
-		
+
 		startForm = false;
 		invalidateAll();
 	}
@@ -137,7 +137,11 @@
 	};
 
 	async function createRound(tid, name, rid, players, settings, results, tempData) {
-		const response = await fetch('/api/tournament/' + tid + '/round', {
+		let fetchUrl = '/api/tournament/' + tid + '/round';
+		if (tournament.status != 'Active') {
+			fetchUrl += '?updateTournamentStatus';
+		}
+		const response = await fetch(fetchUrl, {
 			method: 'POST',
 			body: JSON.stringify({
 				tid: tid,

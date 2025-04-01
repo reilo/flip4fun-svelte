@@ -40,7 +40,7 @@ export const GET = async ({ url, params }) => {
     }
 }
 
-export const POST = async ({ request, params }) => {
+export const POST = async ({ url, request, params }) => {
     try {
         const body = await request.json();
         if (!body.name) {
@@ -72,10 +72,23 @@ export const POST = async ({ request, params }) => {
             score2: parseInt(body.score2),
             pin: body.pin
         }
-
-        const match = await prisma.match.create({
-            data
-        });
+        let match;
+        if (!url.searchParams.has("updateCache")) {
+            match = await prisma.match.create({ data });
+        } else {
+            // make sure that after creating the match, the cache for the current round is updated
+            match = prisma.$transaction(async (tx) => {
+                // create match
+                const result = await tx.match.create({
+                    data
+                });
+                // update round cache
+                await tx.round.update({
+                    where: { id: body.roundId }, data: { tempData: body.tempData }
+                });
+                return result;
+            })
+        }
         return new Response(
             JSON.stringify({ match: match }),
             {
