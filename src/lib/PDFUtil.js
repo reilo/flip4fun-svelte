@@ -166,7 +166,7 @@ export function generatePDF(data) {
         //const rankingText = playerRanking + ". Platz";
         const bonusStrg = playerBonus.toString() + (playerBonus == 1 ? " Bonuspunkt" : " Bonuspunkte");
         doc.text(x + 155 - doc.getTextWidth(bonusStrg), y, bonusStrg);
-        const penaltyStrg = playerPenalty.toString() + (playerPenalty ? " Strafpunkt" : " Strafpunkte");
+        const penaltyStrg = playerPenalty.toString() + (playerPenalty == 1 ? " Strafpunkt" : " Strafpunkte");
         doc.text(x + 190 - doc.getTextWidth(penaltyStrg), y, penaltyStrg);
 
         // Trennungslinie

@@ -17,9 +17,9 @@
 	let alertMessage = $state('');
 	let showSure = $state(false);
 
-	const matches = $derived(data.round ? data.round.matches : []);
-	const tempData = $derived(data.round ? data.round.tempData : {});
-	const rankInit = data.round ? data.round.settings.rankInit : [];
+	let matches = $derived(data.round ? data.round.matches : []);
+	let tempData = data.round ? data.round.tempData : {};
+	let rankInit = data.round ? data.round.settings.rankInit : [];
 
 	const addMatchEnabled =
 		import.meta.env.VITE_APP_FULL && data.round && data.round.status === 'Active';

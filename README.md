@@ -205,6 +205,18 @@ Dabei folgendes beachten:
 
 ## Datenformate
 
+### Tabelle "Tournament"
+
+#### Flipliga
+
+`tournament.settings`
+-    `baseline`:      Basispunkte für jeden Spieler zu Saisonbeginn
+-    `challengeSame`: Wie oft darf der gleiche Gegner je Saison gefordert werden
+-    `matchBonus`:    Bonuspunkt(e) für jedes absolvierte Match
+-    `matchPenalty`:  Strafpunkt(e) für Fehlmatches pro Spieltag
+-    `minMatches`:    Wie viele Matches muss ein Spieler pro Spieltag spielen?
+-    `minRound`:      Ab welcher Runde erfolgen Punktabzüge?
+
 ### Tabelle "Round"
 
 `round.settings.rankInit`

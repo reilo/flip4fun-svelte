@@ -25,13 +25,13 @@
 	let opponents1 = []; // vom aktuellen Spieler herausgeforderte Gegner
 	let opponents2 = []; // Gegner, die aktuellen Spieler herausgefordert haben
 
+	let opps1 = [],
+		opps2 = [];
+	data.tournament.players.forEach((item) => {
+		opps1.push({ p: item, e: 0 });
+		opps2.push({ p: item, e: 0 });
+	});
 	rounds.forEach((round) => {
-		let opps1 = [],
-			opps2 = [];
-		data.tournament.players.forEach((item) => {
-			opps1.push({ p: item, e: 0 });
-			opps2.push({ p: item, e: 0 });
-		});
 		round.matches.forEach((match) => {
 			if (match.player1 === currentPlayer || match.player2 === currentPlayer) {
 				let newMatch = JSON.parse(JSON.stringify(match));

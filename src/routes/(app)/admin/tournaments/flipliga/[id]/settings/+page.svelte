@@ -59,6 +59,12 @@
 			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchBonus} />
 		</Label>
 		<br />
+		
+		<Label>
+			<span>Strafpunkt(e) für Fehlmatches pro Spieltag</span>
+			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchPenalty} />
+		</Label>
+		<br />
 
 		<Label>
 			<span>Wie viele Matches muss ein Spieler pro Spieltag spielen?</span>

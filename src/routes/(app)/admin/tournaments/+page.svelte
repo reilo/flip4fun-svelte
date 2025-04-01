@@ -48,6 +48,7 @@
 					baseline: 50,
 					minRound: 5,
 					matchBonus: 1,
+					matchPenalty: 1,
 					minMatches: 1,
 					challengeSame: 1
 				};

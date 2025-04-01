@@ -19,7 +19,6 @@ Essentiell: Liga/Turnier-Framework
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
 - Statistiken redesignen -> Auswahlbox
-- Strafpunkte variabel / Spielstärke? an oder nach Spieltag?
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
 - Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
 - Titel/Untertitel, Erklärungstexte bearbeiten

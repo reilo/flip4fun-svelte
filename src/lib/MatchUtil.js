@@ -66,21 +66,12 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
         const index1 = ranking.findIndex((item) => item.player === match.player1);
         ranking[index1].points += result.player1 + settings.matchBonus;
         ranking[index1].matches += 1;
-        ranking[index1].bonus += 1;
+        ranking[index1].bonus += settings.matchBonus;
         const index2 = ranking.findIndex((item) => item.player === match.player2);
         ranking[index2].points += result.player2 + settings.matchBonus;
         ranking[index2].matches += 1;
-        ranking[index2].bonus += 1;
+        ranking[index2].bonus += settings.matchBonus;
     });
-
-    if (roundNum >= settings.minRound) {
-        ranking.forEach((item, i) => {
-            if (item.matches < settings.minMatches * roundNum) {
-                ranking[i].points -= 1;
-                ranking[i].penalty += 1;
-            }
-        })
-    };
 
     ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
 

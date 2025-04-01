@@ -22,7 +22,7 @@
 	let endLigaSuccess = $state(false);
 
 	let startEnabled = $derived(
-		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 8) ||
+		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 4) ||
 			(data.round && data.round.status === 'Completed' && data.tournament.status === 'Active')
 	);
 	let endEnabled = $derived(data.round && data.round.status === 'Active');
@@ -53,36 +53,41 @@
 			// next round, add new players
 			let allPlayers = tournament.players.slice();
 			const numPlayers = allPlayers.length;
-			let insertPos;
+
+			let mismatch;
 			round.results.rankFinal.forEach((item, i) => {
+				mismatch =
+					round.rid >= tournament.settings.minRound &&
+					item.matches < round.rid * tournament.settings.minMatches
+						? tournament.settings.matchPenalty
+						: 0;
 				rankInit.push({
 					player: item.player,
 					matches: item.matches,
-					points: item.points,
+					points: item.points - mismatch,
 					bonus: item.bonus,
-					penalty: item.penalty
+					penalty: item.penalty + mismatch
 				});
 				allPlayers.splice(allPlayers.indexOf(item.player), 1);
-				if (!insertPos && item.points < baseline) {
-					insertPos = i;
-				}
 			});
-			if (!insertPos) {
-				insertPos = numPlayers;
-			}
-			allPlayers.forEach((item, i) => {
-				rankInit.splice(insertPos++, 0, {
+
+			mismatch = round.rid - tournament.settings.minRound + tournament.settings.matchPenalty;
+			allPlayers.forEach((item) => {
+				rankInit.push({
 					player: item,
-					points: baseline,
+					points: baseline - mismatch,
 					matches: 0,
 					bonus: 0,
-					penalty: 0
+					penalty: mismatch
 				});
 			});
+
+			rankInit.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
 			rankInit.forEach((item, i) => {
 				rankInit[i].strength = calcStrength(i + 1, numPlayers);
 			});
 		}
+
 		const settings = { rankInit: rankInit };
 		const results = { rankFinal: [] };
 		const tempData = createTempData();
