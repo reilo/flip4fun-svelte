@@ -4,7 +4,7 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
-	import { roundNumber } from '$lib/TypeUtil';
+	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 
 	let { data } = $props();
@@ -110,11 +110,11 @@
 						</TableBodyCell>
 					{/if}
 					<TableBodyCell tdClass="text-center">
-						{roundNumber(rank.points)}
+						{roundNumberToStrg(rank.points)}
 					</TableBodyCell>
 					{#if !tourCompleted}
 						<TableBodyCell tdClass="text-center">
-							{roundNumber(getPlayerScoring(rank.player))}
+							{roundNumberToStrg(getPlayerScoring(rank.player))}
 						</TableBodyCell>
 					{/if}
 					{#if !tourCompleted}

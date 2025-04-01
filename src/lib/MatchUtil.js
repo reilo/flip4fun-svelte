@@ -1,3 +1,5 @@
+import { roundNumberForDB } from "./TypeUtil";
+
 /**
  * Calculates match score depending on player strengths
  * @param {json} match - match record
@@ -17,7 +19,7 @@ export function calcPoints(match, strength1, strength2) {
         result2 = strength1 * (1 - match.score1 / match.score2);
     }
 
-    return { player1: result1, player2: result2 }
+    return { player1: roundNumberForDB(result1), player2: roundNumberForDB(result2) }
 }
 
 /**

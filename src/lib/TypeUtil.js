@@ -20,8 +20,22 @@ export function mapDate(value) {
     return date.toLocaleDateString("de-DE");
 }
 
-export function roundNumber(num) {
+/**
+ * Round number for UI - 1 decimal place
+ * @param {*} num The input float number, e.g. 2,666666666667
+ * @returns The rounded number, e.g. 2,7
+ */
+export function roundNumberToStrg(num) {
     return (Math.round(num * 10) / 10).toFixed(1);
+};
+
+/**
+ * Round number for storage in DB - 4 decimal places
+ * @param {*} num The input float number, e.g. 2,666666666667
+ * @returns The rounded number, e.g. 2,6667
+ */
+export function roundNumberForDB(num) {
+    return Math.round(num * 10000) / 10000;
 };
 
 export function cleanString(strg) {

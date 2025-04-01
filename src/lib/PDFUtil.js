@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
 import { getPinName } from "./PinUtil";
-import { mapDate, roundNumber } from './TypeUtil';
+import { mapDate, roundNumberToStrg } from './TypeUtil';
 
 export function generatePDF(data) {
 
@@ -96,11 +96,11 @@ export function generatePDF(data) {
         const diffRankStrg = diffRank ? (diffRank > 0 ? "+" : "") + diffRank.toString() : "";
         doc.text(x + 75 - doc.getTextWidth(diffRankStrg), y, diffRankStrg);
         // gained points
-        const diffPoints = roundNumber(item.points - initItem.points);
+        const diffPoints = roundNumberToStrg(item.points - initItem.points);
         const diffPointsStrg = diffPoints ? (diffPoints > 0 ? "+" : "") + diffPoints.toString() : "";
         doc.text(x + 105 - doc.getTextWidth(diffPointsStrg), y, diffPointsStrg);
         // current points
-        const pointsStrg = roundNumber(item.points).toString();
+        const pointsStrg = roundNumberToStrg(item.points).toString();
         doc.text(x + 135 - doc.getTextWidth(pointsStrg), y, pointsStrg);
         // count matches round
         const diffMatchesStrg = (item.matches - initItem.matches).toString();
@@ -161,7 +161,7 @@ export function generatePDF(data) {
         doc.setFontSize(12);
         const matchesStrg = totalMatches + (totalMatches == 1 ? " Match" : " Matches");
         doc.text(x + 90 - doc.getTextWidth(matchesStrg), y, matchesStrg);
-        const pointsStrg = roundNumber(playerPoints).toString() + " Punkte";
+        const pointsStrg = roundNumberToStrg(playerPoints).toString() + " Punkte";
         doc.text(x + 120 - doc.getTextWidth(pointsStrg), y, pointsStrg);
         //const rankingText = playerRanking + ". Platz";
         const bonusStrg = playerBonus.toString() + (playerBonus == 1 ? " Bonuspunkt" : " Bonuspunkte");

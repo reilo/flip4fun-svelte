@@ -6,7 +6,7 @@
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { calcPoints } from '$lib/MatchUtil';
-	import { roundNumber } from '$lib/TypeUtil';
+	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil.js';
 
@@ -302,7 +302,7 @@
 						{formatResultString(match.score1, match.score2)}
 					</TableBodyCell>
 					<TableBodyCell align="left">
-						{formatResultString(roundNumber(getPoints(match, 1)), roundNumber(getPoints(match, 2)))}
+						{formatResultString(roundNumberToStrg(getPoints(match, 1)), roundNumberToStrg(getPoints(match, 2)))}
 					</TableBodyCell>
 					<TableBodyCell>
 						{getPinName(match.pin, data.pins)}

@@ -1,17 +1,13 @@
 Benutzer-Dokumentation
 - Wo Datenbank? Wie Daten bearbeiten? Backup erstellen.
 - Wie lokal starten?
+- App als Service starten
 
-Export / Import Tabellen:
-- Export aus pgadmin als CSV, Delimiter |
-- Import via psql:
--- \copy "Tournament" from "../Tournament.csv" delimiter '|' quote '^' csv header encoding 'utf8'
+Work in progress Tasks:
+- Code kommentieren...
+- Fehlerbehandlung...
 
-Code kommentieren, insbes. Component Parameter
 Strings lokalisieren / aus Resourcen
-Fehlerbehandlung
-App als Service starten
-Readmes überarbeiten
 
 Wait Cursor
 Zeilenhintergrund alternierend nach Spielstärke
@@ -19,9 +15,9 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
+- Runden -> Erfolgsmeldung
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
-- numbers full precision in DB??
 - Umbenennen tempData / cache
 - Statistiken redesignen -> Auswahlbox
 - Strafpunkte variabel / Spielstärke? an oder nach Spieltag?
