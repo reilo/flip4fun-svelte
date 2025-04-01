@@ -10,7 +10,6 @@
 
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
-	let rounds = $derived(data.rounds);
 	let nextRound = $derived(data.round ? data.round.rid + 1 : 1);
 	let nextRoundName = $derived(data.tournament.name + ' - Runde ' + nextRound);
 
@@ -21,15 +20,15 @@
 	let endSuccess = $state(false);
 	let endLigaSuccess = $state(false);
 
-	let startEnabled = $derived(
+	let startEnabled = $state(
 		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 4) ||
 			(data.round && data.round.status === 'Completed' && data.tournament.status === 'Active')
 	);
-	let endEnabled = $derived(data.round && data.round.status === 'Active');
-	let endLigaEnabled = $derived(
+	let endEnabled = $state(data.round && data.round.status === 'Active');
+	let endLigaEnabled = $state(
 		data.round && data.round.status === 'Completed' && data.tournament.status === 'Active'
 	);
-	let pdfEnabled = $derived(data.round && data.round.status === 'Completed');
+	let pdfEnabled = $state(data.round && data.round.status === 'Completed');
 
 	const baseline = data.tournament.settings.baseline;
 
@@ -103,6 +102,8 @@
 		);
 
 		startForm = false;
+		startEnabled = endLigaEnabled = pdfEnabled = false;
+		endEnabled = true;
 		invalidateAll();
 		startSuccess = true;
 	}
@@ -118,6 +119,9 @@
 		);
 		updateRound(round.id, results, {});
 		endForm = false;
+		startEnabled = endLigaEnabled = pdfEnabled = true;
+		endEnabled = false;
+
 		invalidateAll();
 		endSuccess = true;
 	}
@@ -125,6 +129,9 @@
 	async function endLiga() {
 		updateTournamentStatus(tournament.id, 'Completed');
 		endLigaForm = false;
+		startEnabled = endEnabled = endLigaEnabled = false;
+		pdfEnabled = true;
+
 		invalidateAll();
 		endLigaSuccess = true;
 	}
@@ -136,7 +143,7 @@
 				encounters.push({ p: p1 + '-' + p2, e: 0 });
 			});
 		});
-		rounds.forEach((round) => {
+		data.rounds.forEach((round) => {
 			round.matches.forEach((match) => {
 				const index = encounters.findIndex(
 					(encounter) => encounter.p === match.player1 + '-' + match.player2

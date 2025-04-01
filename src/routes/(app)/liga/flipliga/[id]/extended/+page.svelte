@@ -3,7 +3,7 @@
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { generatePDF } from '$lib/PDFUtil';
 	let { data } = $props();
-	let pdfEnabled = $derived(data.round && data.round.status === 'Completed');
+	let pdfEnabled = data.round && data.round.status === 'Completed';
 </script>
 
 <div>
