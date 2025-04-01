@@ -19,6 +19,7 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
+- Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
 - numbers full precision in DB??
 - Umbenennen tempData / cache
