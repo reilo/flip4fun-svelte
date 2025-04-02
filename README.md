@@ -191,20 +191,27 @@ Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von loka
 - Quellsystem: Export entweder via pgadmin oder via psql-Kommando:
 
 ```bash
-\copy (SELECT * FROM pin) to '..\pin.csv' WITH CSV DELIMITER '|' HEADER
+\copy (SELECT * FROM pin) to '..\pin.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
 ```bash
-\copy (SELECT * FROM player) to '..\player.csv' WITH CSV DELIMITER '|' HEADER
+\copy (SELECT * FROM player) to '..\player.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
 ```bash
-\copy (SELECT * FROM tourney) to '..\tourney.csv' WITH CSV DELIMITER '|' HEADER
+\copy (SELECT * FROM tourney) to '..\tourney.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
 ```bash
-\copy (SELECT * FROM round) to '..\round.csv' WITH CSV DELIMITER '|' HEADER
+\copy (SELECT * FROM round) to '..\round.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
 ```bash
-\copy (SELECT * FROM match) to '..\match.csv' WITH CSV DELIMITER '|' HEADER
+\copy (SELECT * FROM match) to '..\match.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
+
+Dabei folgendes beachten:
+- Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|'. Auf keinen Fall ',' verwenden, da es in JSON-Elemente vorkommt.
+- Als Quote ebenfalls ein Zeichen wählen, das in den Daten nicht vorkommt, z. B '^'.
+- UTF8-Encoding verwenden, weil sonst Umlaute nicht korrekt importiert werden.
+- HEADER-Option verwenden, um die csv-Datei mit Header zu erstellen.
+- Tabellen- und Spaltennamen, die nicht vollständig lowercase sind, müssen immer in Anführungszeichen eingeschlossen werden. In diesem Projekt ist alles lowercase.
 
 - Zielsystem: Tabelleninhalte löschen, falls notwendig
 
@@ -235,12 +242,10 @@ delete from match;
 ```
 
 Dabei folgendes beachten:
-- Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|'. Auf keinen Fall ',' verwenden, da es in JSON-Elemente vorkommt.
-- Als Quote ebenfalls ein Zeichen wählen, das in den Daten nicht vorkommt, z. B '^'.
+- Delimiter und Quote wie beim Export angeben.
 - UTF8-Encoding verwenden, weil sonst Umlaute nicht korrekt importiert werden.
 - Ggf. müssen die Spalten explizit in richtiger Reihenfolge angegeben werden, in Klammern direkt hinter dem Tabellennamen. In der csv-Datei kontrollieren.
-- HEADER-Option verwenden, wenn die csv-Datei mit Header erstellt wurde.
-- Tabellen- und Spaltennamen, die nicht vollständig lowercase sind, müssen immer in Anführungszeichen eingeschlossen werden.
+- HEADER-Option verwenden, da die csv-Datei mit Header erstellt wurde.
 
 ## Datenformate
 

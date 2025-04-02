@@ -44,3 +44,27 @@ export const PUT = async ({ request, params }) => {
         )
     }
 }
+
+export const DELETE = async ({ request, params }) => {
+    try {
+        const deletedPin = await prisma.pin.delete({
+            where: { id: params.id }
+        });
+        return new Response(
+            JSON.stringify({ pin: deletedPin }),
+            {
+                status: 200, headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+    }
+    catch (e) {
+        return new Response(
+            JSON.stringify({ message: "Flipper konnte nicht gelöscht werden", error: e.message }),
+            {
+                status: 500, headers: { "Content-Type": "application/json" }
+            }
+        )
+    }
+}

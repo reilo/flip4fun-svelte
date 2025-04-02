@@ -41,3 +41,27 @@ export const PUT = async ({ request, params }) => {
         )
     }
 }
+
+export const DELETE = async ({ request, params }) => {
+    try {
+        const deletedPlayer = await prisma.player.delete({
+            where: { id: params.id }
+        });
+        return new Response(
+            JSON.stringify({ player: deletedPlayer }),
+            {
+                status: 200, headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+    }
+    catch (e) {
+        return new Response(
+            JSON.stringify({ message: "Spieler konnte nicht gelöscht werden", error: e.message }),
+            {
+                status: 500, headers: { "Content-Type": "application/json" }
+            }
+        )
+    }
+}

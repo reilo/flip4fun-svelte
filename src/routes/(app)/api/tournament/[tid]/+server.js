@@ -62,3 +62,27 @@ export const PUT = async ({ request, params }) => {
         )
     }
 }
+
+export const DELETE = async ({ request, params }) => {
+    try {
+        const deletedTourney = await prisma.tourney.delete({
+            where: { id: params.id }
+        });
+        return new Response(
+            JSON.stringify({ tourney: deletedTourney }),
+            {
+                status: 200, headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+    }
+    catch (e) {
+        return new Response(
+            JSON.stringify({ message: "Turnier konnte nicht gelöscht werden", error: e.message }),
+            {
+                status: 500, headers: { "Content-Type": "application/json" }
+            }
+        )
+    }
+}
