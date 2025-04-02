@@ -5,12 +5,19 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
+	import { access, ReadAccess, AdminAccess } from '../../../../../../stores.js';
 	import { calcPoints } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
-	import { getPinName } from '$lib/PinUtil.js';
+	import { getPinName } from '$lib/PinUtil';
+	import { logInfo } from '$lib/LogUtil';
 
 	let { data } = $props();
+
+	let accessValue = $state(ReadAccess);
+	access.subscribe((value) => {
+		accessValue = value;
+	});
 
 	let newForm = $state(false);
 	let showAlert = $state(false);
@@ -119,6 +126,7 @@
 		if (matchResponse.status !== 200) {
 			alert(JSON.stringify(matchResult));
 		}
+		logInfo(matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
 		showSure = newForm = false;
 		resetFormFields();
@@ -271,6 +279,7 @@
 			<TableHeadCell>Sätze</TableHeadCell>
 			<TableHeadCell>Punkte</TableHeadCell>
 			<TableHeadCell>Flipper</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each matches as match, i}
@@ -296,6 +305,15 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						{getPinName(match.pin, data.pins)}
+					</TableBodyCell>
+					<TableBodyCell>
+						{#if accessValue >= AdminAccess}
+							{#if data.round.status === 'Active'}
+								<Button on:click={() => true} size="xs">Löschen</Button>
+							{:else}
+								<Button disabled on:click={() => true} size="xs">Löschen</Button>
+							{/if}
+						{/if}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}
