@@ -117,11 +117,15 @@
 
 	async function updatePinStatus(id, active) {
 		const url = '/api/pin/' + id;
+		let data = {
+			active: active
+		};
+		if (active) {
+			data.deleted = false;
+		}
 		const response = await fetch(url, {
 			method: 'PUT',
-			body: JSON.stringify({
-				active: active
-			}),
+			body: JSON.stringify(data),
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json'
@@ -131,6 +135,30 @@
 		if (response.status !== 200) {
 			alert(JSON.stringify(result));
 		}
+		invalidateAll();
+	}
+
+	async function updatePinDeleted(id, deleted) {
+		const url = '/api/pin/' + id;
+		let data = {
+			deleted: deleted
+		};
+		if (deleted) {
+			data.active = false;
+		}
+		const response = await fetch(url, {
+			method: 'PUT',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		invalidateAll();
 	}
 
 	const cancelNewPin = () => {
@@ -176,10 +204,10 @@
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
 
-	<Button disabled class="w-fit">PDF Export
+	<Button disabled class="w-fit"
+		>PDF Export
 		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
 	</Button>
-
 
 	<Modal
 		title={pinToUpdate ? 'Flipper bearbeiten' : 'Neuen Flipper anlegen'}
@@ -198,22 +226,28 @@
 					<Input bind:value={formPinShortcut} placeholder="Flipperkürzel" />
 				</Label>
 			{/if}
-			<Select
-				class="w-44 p-3 space-y-3 text-sm"
-				items={getPinManuMap()}
-				bind:value={formPinManu}
-				placeholder="Hersteller"
-			></Select>
+			<Label>
+				Hersteller
+				<Select
+					class="w-44 p-3 space-y-3 text-sm"
+					items={getPinManuMap()}
+					bind:value={formPinManu}
+					placeholder="Hersteller"
+				></Select>
+			</Label>
 			<Label class="space-y-2">
 				<span>Erscheinungsjahr</span>
 				<Input bind:value={formPinYear} placeholder="Erscheinungsjahr" />
 			</Label>
-			<Select
-				class="w-44 p-3 space-y-3 text-sm"
-				items={getPinTypeMap()}
-				bind:value={formPinType}
-				placeholder="Plattform"
-			></Select>
+			<Label>
+				Plattform
+				<Select
+					class="w-44 p-3 space-y-3 text-sm"
+					items={getPinTypeMap()}
+					bind:value={formPinType}
+					placeholder="Plattform"
+				></Select>
+			</Label>
 			<Button color="alternative" on:click={verifyPin}
 				>{!pinToUpdate ? 'Anlegen' : 'Speichern'}</Button
 			>
@@ -254,7 +288,8 @@
 	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Aktiv</TableHeadCell>
+			<TableHeadCell>Spielbereit</TableHeadCell>
+			<TableHeadCell>Verfügbar</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -273,13 +308,26 @@
 							<TableBodyCell class="py-0">{pin.name} ({pin.owner})</TableBodyCell>
 						{/if}
 					{:else}
-						<TableBodyCell class="py-0">{pin.name}</TableBodyCell>
+						<TableBodyCell class="py-0">
+							{#if pin.active}
+								<P class={pin.deleted ? 'line-through' : ''}>{pin.name}</P>
+							{:else}
+								<P italic class={pin.deleted ? 'line-through' : ''}>{pin.name}</P>
+							{/if}
+						</TableBodyCell>
 					{/if}
 					<TableBodyCell>
 						{#if pin.active == true}
 							<Checkbox checked on:change={() => updatePinStatus(pin.id, !pin.active)} />
 						{:else}
 							<Checkbox on:change={() => updatePinStatus(pin.id, !pin.active)} />
+						{/if}
+					</TableBodyCell>
+					<TableBodyCell>
+						{#if pin.deleted == false}
+							<Checkbox checked on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
+						{:else}
+							<Checkbox on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
 						{/if}
 					</TableBodyCell>
 					<TableBodyCell class="py-0">

@@ -8,6 +8,9 @@ export const PUT = async ({ request, params }) => {
         if (body.active != null) {
             data.active = body.active;
         }
+        if (body.deleted != null) {
+            data.deleted = body.deleted;
+        }
         if (body.name) {
             data.name = body.name;
         }
