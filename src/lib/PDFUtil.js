@@ -3,7 +3,7 @@ import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
 import { getPinName } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from './TypeUtil';
 
-export function generatePDF(data) {
+export function generateLigaResultsPDF(data) {
 
     const roundNum = data.round.rid.toString();
     const roundDate = mapDate(data.round.created);
