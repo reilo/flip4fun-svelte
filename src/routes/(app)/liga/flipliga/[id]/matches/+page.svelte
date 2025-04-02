@@ -61,7 +61,7 @@
 		return settings.challengeSame <= entry.e;
 	};
 
-	const updateTempData = (player1, player2) => {
+	const updateCache = (player1, player2) => {
 		const index = cache.encounters.findIndex((item) => item.p === player1 + '-' + player2);
 		cache.encounters[index].e += 1;
 	};
@@ -101,7 +101,7 @@
 			pin: selPin
 		};
 		// set additional data for cache update
-		updateTempData(selPlayer1, selPlayer2);
+		updateCache(selPlayer1, selPlayer2);
 		match.cache = cache;
 		match.roundId = data.round.id; // round internal ID, not rid
 		const matchResponse = await fetch(

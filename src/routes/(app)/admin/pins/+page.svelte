@@ -6,7 +6,8 @@
 	import {
 		InfoCircleSolid,
 		CloseCircleOutline,
-		ExclamationCircleOutline
+		ExclamationCircleOutline,
+		FilePdfOutline
 	} from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinManuMap, getPinTypeMap } from '$lib/PinUtil';
@@ -174,6 +175,11 @@
 	<br />
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
+
+	<Button disabled class="w-fit">PDF Export
+		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
+	</Button>
+
 
 	<Modal
 		title={pinToUpdate ? 'Flipper bearbeiten' : 'Neuen Flipper anlegen'}

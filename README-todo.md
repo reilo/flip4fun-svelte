@@ -15,6 +15,7 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
+- Pdf export flipper liste
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
 - Statistiken redesignen -> Auswahlbox

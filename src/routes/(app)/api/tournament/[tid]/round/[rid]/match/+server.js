@@ -84,7 +84,7 @@ export const POST = async ({ url, request, params }) => {
                 });
                 // update round cache
                 await tx.round.update({
-                    where: { id: body.roundId }, data: { tempData: body.tempData }
+                    where: { id: body.roundId }, data: { cache: body.cache }
                 });
                 return result;
             })

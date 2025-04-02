@@ -16,6 +16,7 @@ model pin {
   year      Int?
   type      PinType     @default(Other)
   active    Boolean     @default(true)
+  deleted   Boolean     @default(false)
 }
 
 model player {

@@ -136,7 +136,7 @@
 		endLigaSuccess = true;
 	}
 
-	const createTempData = () => {
+	const createCache = () => {
 		let encounters = [];
 		tournament.players.forEach((p1) => {
 			tournament.players.forEach((p2) => {

@@ -57,8 +57,8 @@ export const POST = async ({ url, request, params }) => {
         if (body.results) {
             data.results = body.results;
         }
-        if (body.tempData) {
-            data.tempData = body.tempData;
+        if (body.cache) {
+            data.cache = body.cache;
         }
 
         let round;
