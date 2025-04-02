@@ -6,7 +6,7 @@ import { mapDate, roundNumberToStrg } from './TypeUtil';
 export function generatePDF(data) {
 
     const roundNum = data.round.rid.toString();
-    const roundDate = mapDate(data.round.createdAt);
+    const roundDate = mapDate(data.round.created);
 
     const drawHeaderSquare = () => {
         doc.setDrawColor(0);
@@ -182,7 +182,7 @@ export function generatePDF(data) {
         } else {
             matches.forEach((match) => {
                 // Nummer des Spieltags + Spieldatum
-                doc.text(x + 0, y, "(" + match.round.toString() + ") " + mapDate(match.createdAt));
+                doc.text(x + 0, y, "(" + match.round.toString() + ") " + mapDate(match.created));
                 // Spieler 1
                 const player1 = getPlayerName(match.player1, data.players)
                 doc.text(x + 30, y, player1);

@@ -20,8 +20,8 @@ export const PUT = async ({ request, params }) => {
         if (body.results) {
             data.results = body.results;
         }
-        if (body.tempData) {
-            data.tempData = body.tempData;
+        if (body.cache) {
+            data.cache = body.cache;
         }
         if (body.status) {
             data.status = body.status;

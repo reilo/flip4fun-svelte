@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 export const GET = async ({ params }) => {
     try {
-        const tournament = await prisma.tournament.findUniqueOrThrow({
+        const tournament = await prisma.tourney.findUniqueOrThrow({
             where: { id: params.tid }
         });
         return new Response(
@@ -42,7 +42,7 @@ export const PUT = async ({ request, params }) => {
         if (body.status) {
             data.status = body.status;
         }
-        const updatedTournament = await prisma.tournament.update({
+        const updatedTournament = await prisma.tour.update({
             where: { id: params.tid }, data: data
         });
         return new Response(

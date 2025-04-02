@@ -7,9 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Pin {
+model pin {
   id        String      @id
-  createdAt DateTime    @default(now())
+  created   DateTime    @default(now())
   name      String
   code      String?
   manu      PinManu     @default(Other)
@@ -18,9 +18,9 @@ model Pin {
   active    Boolean     @default(true)
 }
 
-model Player {
+model player {
   id        String      @id
-  createdAt DateTime    @default(now())
+  created   DateTime    @default(now())
   forename  String
   surname   String
   shortname String?
@@ -28,9 +28,9 @@ model Player {
   email     String?
 }
 
-model Tournament {
+model tourney {
   id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
+  created   DateTime    @default(now())
   name      String
   type      String
   players   String[]    @default([])
@@ -39,9 +39,9 @@ model Tournament {
   status    Status      @default(Planned)
 }
 
-model Round {
+model round {
   id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
+  created   DateTime    @default(now())
   tid       String
   rid       Int
   name      String
@@ -49,12 +49,12 @@ model Round {
   players   String[]    @default([])
   settings  Json        @default("{}")
   results   Json        @default("{}")
-  tempData  Json        @default("{}")
+  cache     Json        @default("{}")
 }
 
-model Match {
+model match {
   id        String      @id @default(uuid())
-  createdAt DateTime    @default(now())
+  created   DateTime    @default(now())
   tid       String
   rid       Int
   name      String

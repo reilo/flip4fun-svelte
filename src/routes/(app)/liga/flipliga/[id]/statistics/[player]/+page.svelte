@@ -93,7 +93,7 @@
 						{match.round}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-center">
-						{mapDate(match.createdAt)}
+						{mapDate(match.created)}
 					</TableBodyCell>
 					<TableBodyCell tdClass="text-right">
 						<div

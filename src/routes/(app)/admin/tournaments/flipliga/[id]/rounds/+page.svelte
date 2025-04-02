@@ -89,7 +89,7 @@
 
 		const settings = { rankInit: rankInit };
 		const results = { rankFinal: [] };
-		const tempData = createTempData();
+		const cache = createCache();
 
 		createRound(
 			tournament.id,
@@ -98,7 +98,7 @@
 			tournament.players,
 			settings,
 			results,
-			tempData
+			cache
 		);
 
 		startForm = false;
@@ -154,7 +154,7 @@
 		return { encounters: encounters };
 	};
 
-	async function createRound(tid, name, rid, players, settings, results, tempData) {
+	async function createRound(tid, name, rid, players, settings, results, cache) {
 		let fetchUrl = '/api/tournament/' + tid + '/round';
 		if (tournament.status != 'Active') {
 			fetchUrl += '?updateTournamentStatus';
@@ -169,7 +169,7 @@
 				players: players,
 				settings: settings,
 				results: results,
-				tempData: tempData
+				cache: cache
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -182,13 +182,13 @@
 		}
 	}
 
-	async function updateRound(id, results, tempData) {
+	async function updateRound(id, results, cache) {
 		const response = await fetch('/api/round/' + id, {
 			method: 'PUT',
 			body: JSON.stringify({
 				id: id,
 				results: results,
-				tempData: tempData,
+				cache: cache,
 				status: 'Completed'
 			}),
 			headers: {

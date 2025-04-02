@@ -189,10 +189,22 @@ npx prisma db push
 Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von lokal nach remote, folgendermaßen vorgehen:
 
 - Export aus pgadmin als CSV, Delimiter |
-- Import via psql-Kommando, z. B.
+- Import via psql-Kommandos:
 
 ```bash
--- \copy "Tournament" FROM "../Tournament.csv" DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy pin FROM 'C:\Users\rloch\Downloads\postgres/Pin.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy player FROM 'C:\Users\rloch\Downloads\postgres/Player.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy tourney FROM 'C:\Users\rloch\Downloads\postgres/Tournament.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy round FROM 'C:\Users\rloch\Downloads\postgres/Round.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy match FROM 'C:\Users\rloch\Downloads\postgres/Match.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
 ```
 
 Dabei folgendes beachten:

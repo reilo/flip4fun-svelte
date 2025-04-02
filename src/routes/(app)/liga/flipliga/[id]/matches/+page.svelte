@@ -18,7 +18,7 @@
 	let showSure = $state(false);
 
 	let matches = $derived(data.round ? data.round.matches : []);
-	let tempData = data.round ? data.round.tempData : {};
+	let cache = data.round ? data.round.cache : {};
 	let rankInit = data.round ? data.round.settings.rankInit : [];
 
 	const addMatchEnabled =
@@ -57,13 +57,13 @@
 	};
 
 	const matchLimitReached = (player1, player2) => {
-		const entry = tempData.encounters.find((item) => item.p === player1 + '-' + player2);
+		const entry = cache.encounters.find((item) => item.p === player1 + '-' + player2);
 		return settings.challengeSame <= entry.e;
 	};
 
 	const updateTempData = (player1, player2) => {
-		const index = tempData.encounters.findIndex((item) => item.p === player1 + '-' + player2);
-		tempData.encounters[index].e += 1;
+		const index = cache.encounters.findIndex((item) => item.p === player1 + '-' + player2);
+		cache.encounters[index].e += 1;
 	};
 
 	const checkMatch = () => {
@@ -102,7 +102,7 @@
 		};
 		// set additional data for cache update
 		updateTempData(selPlayer1, selPlayer2);
-		match.tempData = tempData;
+		match.cache = cache;
 		match.roundId = data.round.id; // round internal ID, not rid
 		const matchResponse = await fetch(
 			'/api/tournament/' + data.tournament.id + '/round/' + data.round.rid + '/match?updateCache',

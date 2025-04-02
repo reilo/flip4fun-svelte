@@ -5,8 +5,8 @@ export const GET = async ({ url, params }) => {
     try {
         const options = {
             where: { tid: params.tid },
-            select: { id: true, tid: true, rid: true, name: true, status: true, createdAt: true },
-            orderBy: [{ createdAt: 'asc' }]
+            select: { id: true, tid: true, rid: true, name: true, status: true, created: true },
+            orderBy: [{ created: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);
         return new Response(
@@ -72,7 +72,7 @@ export const POST = async ({ url, request, params }) => {
                     data
                 });
                 // update tournament status
-                await tx.tournament.update({
+                await tx.tourney.update({
                     where: { id: params.tid }, data: { status: "Active" }
                 });
                 return result;

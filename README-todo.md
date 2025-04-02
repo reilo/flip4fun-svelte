@@ -15,7 +15,6 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- db update: createdAt -> created, tempData -> cache
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - alle Aktionen loggen
 - Statistiken redesignen -> Auswahlbox

@@ -22,7 +22,7 @@ export const GET = async ({ url }) => {
                 }
             }
         });
-        const tournaments = await prisma.tournament.findMany({
+        const tournaments = await prisma.tourney.findMany({
             orderBy: [{ name: 'asc' }],
             select: { id: true, name: true, type: true, status: true },
             where: fields
@@ -80,7 +80,7 @@ export const POST = async ({ request }) => {
             data.results = body.results;
         }
 
-        const tournament = await prisma.tournament.create({
+        const tournament = await prisma.tourney.create({
             data
         });
         return new Response(

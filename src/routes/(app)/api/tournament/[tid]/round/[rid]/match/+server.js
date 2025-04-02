@@ -9,7 +9,7 @@ export const GET = async ({ url, params }) => {
                 rid: parseInt(params.rid)
             },
             select: {
-                createdAt: true,
+                created: true,
                 tid: true,
                 rid: true,
                 player1: true,
@@ -19,7 +19,7 @@ export const GET = async ({ url, params }) => {
                 pin: true
             },
             orderBy: [
-                { createdAt: 'asc' }
+                { created: 'asc' }
             ]
         };
         const matches = await prisma.match.findMany(options);
