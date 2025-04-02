@@ -17,6 +17,7 @@ model pin {
   type      PinType     @default(Other)
   active    Boolean     @default(true)
   deleted   Boolean     @default(false)
+  owner     String?
 }
 
 model player {
