@@ -15,12 +15,12 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Pdf export flipper liste
-- Toasts mit Zufallssprüchen nach Matcheingabe
-- alle Aktionen loggen
+- Match Fehleingaben, Löschfunktion
+- PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
+- Aktionen loggen
 - Statistiken redesignen -> Auswahlbox
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
-- Löschfunktionen, Turniere, Pins, Spieler, Fehleingaben
+- Löschfunktionen Turniere, Pins, Spieler
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - Navikonzept überarbeiten
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
@@ -37,6 +37,7 @@ Env Variablen in Service-Mode
 Device Phone eliminieren
 
 ferner (falls Zeit ist):
+- Toasts mit Zufallssprüchen nach Matcheingabe
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
 - Ranking Style refactorn und parametriesieren
 - Flipperliste mehr Funktionen
