@@ -42,7 +42,7 @@ export const PUT = async ({ request, params }) => {
         if (body.status) {
             data.status = body.status;
         }
-        const updatedTournament = await prisma.tour.update({
+        const updatedTournament = await prisma.tourney.update({
             where: { id: params.tid }, data: data
         });
         return new Response(

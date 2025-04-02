@@ -188,27 +188,54 @@ npx prisma db push
 
 Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von lokal nach remote, folgendermaßen vorgehen:
 
-- Export aus pgadmin als CSV, Delimiter |
-- Import via psql-Kommandos:
+- Quellsystem: Export entweder via pgadmin oder via psql-Kommando:
 
 ```bash
-\copy pin FROM 'C:\Users\rloch\Downloads\postgres/Pin.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy (SELECT * FROM pin) to '..\pin.csv' WITH CSV DELIMITER '|' HEADER
 ```
 ```bash
-\copy player FROM 'C:\Users\rloch\Downloads\postgres/Player.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy (SELECT * FROM player) to '..\player.csv' WITH CSV DELIMITER '|' HEADER
 ```
 ```bash
-\copy tourney FROM 'C:\Users\rloch\Downloads\postgres/Tournament.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy (SELECT * FROM tourney) to '..\tourney.csv' WITH CSV DELIMITER '|' HEADER
 ```
 ```bash
-\copy round FROM 'C:\Users\rloch\Downloads\postgres/Round.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy (SELECT * FROM round) to '..\round.csv' WITH CSV DELIMITER '|' HEADER
 ```
 ```bash
-\copy match FROM 'C:\Users\rloch\Downloads\postgres/Match.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy (SELECT * FROM match) to '..\match.csv' WITH CSV DELIMITER '|' HEADER
+```
+
+- Zielsystem: Tabelleninhalte löschen, falls notwendig
+
+```bash
+delete from pin;
+delete from player;
+delete from tourney;
+delete from round;
+delete from match;
+```
+
+- Zielsystem: Import via psql-Kommandos:
+
+```bash
+\copy pin FROM '..\pin.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy player FROM '..\player.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy tourney FROM '..\tourney.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy round FROM '..\round.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy match FROM '..\match.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
 ```
 
 Dabei folgendes beachten:
-- Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|', auf keinen Fall ','.
+- Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|'. Auf keinen Fall ',' verwenden, da es in JSON-Elemente vorkommt.
 - Als Quote ebenfalls ein Zeichen wählen, das in den Daten nicht vorkommt, z. B '^'.
 - UTF8-Encoding verwenden, weil sonst Umlaute nicht korrekt importiert werden.
 - Ggf. müssen die Spalten explizit in richtiger Reihenfolge angegeben werden, in Klammern direkt hinter dem Tabellennamen. In der csv-Datei kontrollieren.
@@ -225,7 +252,7 @@ Dabei folgendes beachten:
 -    `baseline`:      Basispunkte für jeden Spieler zu Saisonbeginn
 -    `challengeSame`: Wie oft darf der gleiche Gegner je Saison gefordert werden
 -    `matchBonus`:    Bonuspunkt(e) für jedes absolvierte Match
--    `matchPenalty`:  Strafpunkt(e) für Fehlmatches pro Spieltag
+-    `matchPenalty`:  Strafpunkt(e) für Fehlmatches pro Spieltag (neu)
 -    `minMatches`:    Wie viele Matches muss ein Spieler pro Spieltag spielen?
 -    `minRound`:      Ab welcher Runde erfolgen Punktabzüge?
 
