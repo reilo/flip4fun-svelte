@@ -15,7 +15,6 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Statistiken redesignen -> Auswahlbox
 - PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
 - Löschfunktionen Turniere, Pins, Spieler

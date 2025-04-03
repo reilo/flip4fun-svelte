@@ -1,5 +1,5 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, P } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/stores';
@@ -60,6 +60,8 @@
 </script>
 
 <div>
+	<P>Spielername anklicken für Statistiken.</P>
+	<br />
 	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
 	<br />
 
@@ -85,7 +87,7 @@
 			{#each ranking as rank, i}
 				<TableBodyRow>
 					<TableBodyCell>
-						<a href={'/liga/flipliga/' + $page.params.id + '/statistics/' + rank.player}
+						<a href={'/liga/flipliga/' + $page.params.id + '/statistics?player=' + rank.player}
 							>{getPlayerName(rank.player, players)}</a
 						>
 					</TableBodyCell>
