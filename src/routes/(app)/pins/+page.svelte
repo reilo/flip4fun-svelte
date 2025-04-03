@@ -127,7 +127,7 @@
 				</TableBodyRow>
 				<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
 					<TableBodyCell colspan="2" class="italic indent-4 py-2">
-						Typ: {pin.type}
+						Plattform: {pin.type}
 					</TableBodyCell>
 				</TableBodyRow>
 			{/if}

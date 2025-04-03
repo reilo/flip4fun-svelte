@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 // PUT not implemented as not needed
 
-export const DELETE = async ({ url, params }) => {
+export const DELETE = async ({ url, params, request }) => {
     logInfo("DELETE " + url);
     try {
+        const body = await request.json();
         let match;
         if (!url.searchParams.has("updateCache")) {
-
             match = await prisma.match.delete({
                 where: { id: params.id }
             });

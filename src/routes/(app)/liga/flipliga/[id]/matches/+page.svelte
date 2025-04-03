@@ -130,7 +130,7 @@
 		if (matchResponse.status !== 200) {
 			alert(JSON.stringify(matchResult));
 		}
-		logInfo("Angelegt: " + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
+		logInfo('Angelegt: ' + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
 		showSure = newForm = false;
 		resetFormFields();
@@ -162,21 +162,18 @@
 
 	async function deleteMatch() {
 		updateCache(matchToDelete.player1, matchToDelete.player2, false);
-		let data = {
+		let body = {
 			cache: cache,
 			roundId: data.round.id // round internal ID, not rid
 		};
-		const matchResponse = await fetch(
-			'/api/tournament/' + data.tournament.id + '/match/' + matchToDelete.id + '?updateCache',
-			{
-				method: 'DELETE',
-				body: JSON.stringify(data),
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
+		const matchResponse = await fetch('/api/match/' + matchToDelete.id + '?updateCache', {
+			method: 'DELETE',
+			body: JSON.stringify(body),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
 			}
-		);
+		});
 		const matchResult = await matchResponse.json();
 		if (matchResponse.status !== 200) {
 			alert(JSON.stringify(matchResult));

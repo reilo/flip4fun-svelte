@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {

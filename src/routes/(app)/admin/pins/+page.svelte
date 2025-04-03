@@ -289,7 +289,7 @@
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Spielbereit</TableHeadCell>
-			<TableHeadCell>Verfügbar</TableHeadCell>
+			<TableHeadCell>In der<br/>Lounge</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
