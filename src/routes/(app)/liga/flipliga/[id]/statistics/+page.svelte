@@ -12,11 +12,11 @@
 	let { data } = $props();
 
 	const initPage = () => {
-		if ($page.url.searchParams.has("player")) {
-			selected = $page.url.searchParams.get("player");
+		if ($page.url.searchParams.has('player')) {
+			selected = $page.url.searchParams.get('player');
 			playerChanged();
 		}
-	}
+	};
 
 	let selected = $state('');
 
@@ -85,7 +85,13 @@
 <div>
 	<Label>
 		Spieler auswählen
-		<Select class="mt-2" items={playerMap} bind:value={selected} on:change={playerChanged} />
+		<Select
+			class="mt-2"
+			placeholder="Auswählen ..."
+			items={playerMap}
+			bind:value={selected}
+			on:change={playerChanged}
+		/>
 	</Label>
 </div>
 <br />

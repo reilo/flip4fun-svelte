@@ -44,7 +44,7 @@
 		</TimelineItem>
 		<TimelineItem title="Tailwind CSS & Flowbite">
 			<P class="mb-3 text-base font-normal text-gray-500 dark:text-gray-400">
-				Utility-First CSS-Framework mit Komponenten-Bibiliothek für ein Responsives Webdesign.
+				CSS-Framework mit Komponenten-Bibiliothek für ein Responsives Webdesign.
 			</P>
 			<Button color="alternative"
 				><A target="_blank" href="https://tailwindcss.com/">Mehr über Tailwind</A><ArrowRightOutline

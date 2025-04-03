@@ -288,8 +288,8 @@
 	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Spielbereit</TableHeadCell>
-			<TableHeadCell>In der<br/>Lounge</TableHeadCell>
+			<TableHeadCell>Spiel<br />bereit</TableHeadCell>
+			<TableHeadCell>In der<br />Lounge</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">

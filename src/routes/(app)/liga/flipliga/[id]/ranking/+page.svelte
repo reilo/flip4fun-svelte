@@ -69,14 +69,14 @@
 		<TableHead>
 			<TableHeadCell>Spieler</TableHeadCell>
 			{#if !tourCompleted}
-				<TableHeadCell class="text-center">Spielstärke</TableHeadCell>
+				<TableHeadCell class="text-center">Spiel<br />stärke</TableHeadCell>
 			{/if}
 			{#if !tourCompleted}
 				<TableHeadCell class="text-center">Tendenz</TableHeadCell>
 			{/if}
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
 			{#if !tourCompleted}
-				<TableHeadCell class="text-center">Punkte<br />gewinn</TableHeadCell>
+				<TableHeadCell class="text-center">Punkt<br />gewinn</TableHeadCell>
 			{/if}
 			{#if !tourCompleted}
 				<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
