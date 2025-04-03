@@ -1,6 +1,6 @@
 <script>
 	import { P } from 'flowbite-svelte';
-	import { access, ReadAccess, AdminAccess } from '../../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	let { children } = $props();
 	let accessValue = $state(ReadAccess);
 	access.subscribe((value) => {

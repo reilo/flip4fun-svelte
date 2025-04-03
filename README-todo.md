@@ -9,16 +9,15 @@ Work in progress Tasks:
 
 Strings lokalisieren / aus Resourcen
 
-Wait Cursor
+Wait Cursor --> svelte transition? flowbite svelte spinner
 Zeilenhintergrund alternierend nach Spielstärke
 Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Match Fehleingaben, Löschfunktion
-- PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
-- Aktionen loggen
+- Match Fehleingabe testen
 - Statistiken redesignen -> Auswahlbox
+- PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
 - Löschfunktionen Turniere, Pins, Spieler
 - Titel/Untertitel, Erklärungstexte bearbeiten

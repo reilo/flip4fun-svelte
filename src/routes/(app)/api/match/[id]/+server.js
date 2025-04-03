@@ -1,12 +1,35 @@
+import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
+const prisma = new PrismaClient();
+
 // PUT not implemented as not needed
 
-export const DELETE = async ({ request, params }) => {
+export const DELETE = async ({ url, params }) => {
+    logInfo("DELETE " + url);
     try {
-        const deletedMatch = await prisma.match.delete({
-            where: { id: params.id }
-        });
+        let match;
+        if (!url.searchParams.has("updateCache")) {
+
+            match = await prisma.match.delete({
+                where: { id: params.id }
+            });
+        } else {
+            // make sure that after deleting the match, the cache for the current round is updated
+            match = prisma.$transaction(async (tx) => {
+                // create match
+                const result = await tx.match.delete({
+                    where: { id: params.id }
+                });
+                // update round cache
+                await tx.round.update({
+                    where: { id: body.roundId }, data: { cache: body.cache }
+                });
+                return result;
+            })
+        }
         return new Response(
-            JSON.stringify({ match: deletedMatch }),
+            JSON.stringify({ match: match }),
             {
                 status: 200, headers: {
                     "Content-Type": "application/json"

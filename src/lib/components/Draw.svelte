@@ -2,6 +2,7 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Toggle, Button, Alert, Spinner } from 'flowbite-svelte';
 	import { SearchSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { logInfo } from '$lib/LogUtil';
 
 	let { myData } = $props();
 	let showError = $derived(!myData || !myData.pins);
@@ -40,6 +41,7 @@
 			progress = false;
 			selectedPin = newPin;
 		}, timeout);
+		logInfo("Lostrommel: " + newPin);
 	}
 </script>
 

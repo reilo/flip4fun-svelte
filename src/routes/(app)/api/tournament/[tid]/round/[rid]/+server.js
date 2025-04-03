@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
-export const GET = async ({ params }) => {
+export const GET = async ({ url, params }) => {
+    logInfo("GET " + url);
     try {
         const rounds = await prisma.round.findMany({
             where: { tid: params.tid, rid: parseInt(params.rid) }

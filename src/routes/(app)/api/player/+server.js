@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
 export const GET = async ({ url }) => {
+    logInfo("GET " + url);
     try {
         let fields = {};
         url.searchParams.forEach((value, key) => {
@@ -35,7 +38,8 @@ export const GET = async ({ url }) => {
     }
 }
 
-export const POST = async ({ request }) => {
+export const POST = async ({ url, request }) => {
+    logInfo("POST " + url);
     try {
         const body = await request.json();
 

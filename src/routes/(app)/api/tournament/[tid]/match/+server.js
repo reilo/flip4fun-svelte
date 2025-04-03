@@ -2,20 +2,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {
+    logInfo("GET " + url);
     try {
         const options = {
             where: {
                 tid: params.tid
-            },
-            select: {
-                created: true,
-                tid: true,
-                rid: true,
-                player1: true,
-                player2: true,
-                score1: true,
-                score2: true,
-                pin: true
             },
             orderBy: [
                 { created: 'asc' }

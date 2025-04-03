@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
-export const PUT = async ({ request, params }) => {
+export const PUT = async ({ url, params, request }) => {
+    logInfo("PUT " + url);
     try {
         const body = await request.json();
         let data = {};
@@ -42,7 +45,8 @@ export const PUT = async ({ request, params }) => {
     }
 }
 
-export const DELETE = async ({ request, params }) => {
+export const DELETE = async ({ url, params }) => {
+    logInfo("DELETE " + url);
     try {
         const deletedPlayer = await prisma.player.delete({
             where: { id: params.id }

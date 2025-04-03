@@ -1,22 +1,15 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {
+    logInfo("GET " + url);
     try {
         const options = {
             where: {
                 tid: params.tid,
                 rid: parseInt(params.rid)
-            },
-            select: {
-                created: true,
-                tid: true,
-                rid: true,
-                player1: true,
-                player2: true,
-                score1: true,
-                score2: true,
-                pin: true
             },
             orderBy: [
                 { created: 'asc' }
@@ -40,7 +33,8 @@ export const GET = async ({ url, params }) => {
     }
 }
 
-export const POST = async ({ url, request, params }) => {
+export const POST = async ({ url, params, request }) => {
+    logInfo("POST " + url);
     try {
         const body = await request.json();
         if (!body.name) {

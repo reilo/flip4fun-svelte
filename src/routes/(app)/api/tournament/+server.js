@@ -1,9 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import { Status } from "@prisma/client";
-const prisma = new PrismaClient();
 import { isValidTourType } from "$lib/TourUtil.js";
+import { logInfo } from '$lib/LogUtil';
+
+const prisma = new PrismaClient();
 
 export const GET = async ({ url }) => {
+    logInfo("GET " + url);
     try {
         let fields = {};
         url.searchParams.forEach((value, key) => {
@@ -24,7 +27,6 @@ export const GET = async ({ url }) => {
         });
         const tournaments = await prisma.tourney.findMany({
             orderBy: [{ name: 'asc' }],
-            select: { id: true, name: true, type: true, status: true },
             where: fields
         });
         return new Response(
@@ -44,7 +46,8 @@ export const GET = async ({ url }) => {
     }
 }
 
-export const POST = async ({ request }) => {
+export const POST = async ({ url, request }) => {
+    logInfo("POST " + url);
     try {
         const body = await request.json();
 

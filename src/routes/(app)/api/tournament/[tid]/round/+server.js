@@ -1,11 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { logInfo } from '$lib/LogUtil';
+
 const prisma = new PrismaClient();
 
 export const GET = async ({ url, params }) => {
+    logInfo("GET " + url);
     try {
         const options = {
             where: { tid: params.tid },
-            select: { id: true, tid: true, rid: true, name: true, status: true, created: true },
+            select: { id: true, created: true, tid: true, rid: true, name: true, status: true },
             orderBy: [{ created: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);
@@ -26,7 +29,8 @@ export const GET = async ({ url, params }) => {
     }
 }
 
-export const POST = async ({ url, request, params }) => {
+export const POST = async ({ url, params, request }) => {
+    logInfo("POST " + url);
     try {
         const body = await request.json();
 

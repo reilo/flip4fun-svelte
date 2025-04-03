@@ -4,7 +4,7 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
-	import { access, ReadAccess, AdminAccess } from '../../../../../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { page } from '$app/stores';
 
 	let { data, children } = $props();

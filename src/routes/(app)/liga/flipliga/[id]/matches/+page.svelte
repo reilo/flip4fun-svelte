@@ -5,7 +5,7 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import { access, ReadAccess, AdminAccess } from '../../../../../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { calcPoints } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
@@ -23,10 +23,14 @@
 	let showAlert = $state(false);
 	let alertMessage = $state('');
 	let showSure = $state(false);
+	let alertMessageDelete = $state('');
+	let showSureDelete = $state(false);
 
 	let matches = $derived(data.round ? data.round.matches : []);
 	let cache = data.round ? data.round.cache : {};
 	let rankInit = data.round ? data.round.settings.rankInit : [];
+
+	let matchToDelete;
 
 	const addMatchEnabled =
 		import.meta.env.VITE_APP_FULL && data.round && data.round.status === 'Active';
@@ -68,9 +72,9 @@
 		return settings.challengeSame <= entry.e;
 	};
 
-	const updateCache = (player1, player2) => {
+	const updateCache = (player1, player2, add) => {
 		const index = cache.encounters.findIndex((item) => item.p === player1 + '-' + player2);
-		cache.encounters[index].e += 1;
+		cache.encounters[index].e += add ? 1 : -1;
 	};
 
 	const checkMatch = () => {
@@ -108,7 +112,7 @@
 			pin: selPin
 		};
 		// set additional data for cache update
-		updateCache(selPlayer1, selPlayer2);
+		updateCache(selPlayer1, selPlayer2, true);
 		match.cache = cache;
 		match.roundId = data.round.id; // round internal ID, not rid
 		const matchResponse = await fetch(
@@ -126,7 +130,7 @@
 		if (matchResponse.status !== 200) {
 			alert(JSON.stringify(matchResult));
 		}
-		logInfo(matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
+		logInfo("Angelegt: " + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
 		showSure = newForm = false;
 		resetFormFields();
@@ -144,6 +148,43 @@
 		selPoints1 = 0;
 		selPoints2 = 0;
 	};
+
+	const verifyDelete = (match) => {
+		alertMessageDelete =
+			'Das Match ' +
+			_getPlayerName(match.player1, data.players) +
+			' gegen ' +
+			_getPlayerName(match.player2, data.players) +
+			' wirklich löschen?';
+		showSureDelete = true;
+		matchToDelete = match;
+	};
+
+	async function deleteMatch() {
+		updateCache(matchToDelete.player1, matchToDelete.player2, false);
+		let data = {
+			cache: cache,
+			roundId: data.round.id // round internal ID, not rid
+		};
+		const matchResponse = await fetch(
+			'/api/tournament/' + data.tournament.id + '/match/' + matchToDelete.id + '?updateCache',
+			{
+				method: 'DELETE',
+				body: JSON.stringify(data),
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			}
+		);
+		const matchResult = await matchResponse.json();
+		if (matchResponse.status !== 200) {
+			alert(JSON.stringify(matchResult));
+		}
+		logInfo('Gelöscht: ' + matchToDelete.name);
+		invalidateAll();
+		showSureDelete = false;
+	}
 
 	const pinMap = [];
 	data.pins.forEach((item) => {
@@ -309,9 +350,9 @@
 					<TableBodyCell>
 						{#if accessValue >= AdminAccess}
 							{#if data.round.status === 'Active'}
-								<Button on:click={() => true} size="xs">Löschen</Button>
+								<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
 							{:else}
-								<Button disabled on:click={() => true} size="xs">Löschen</Button>
+								<Button disabled size="xs">Löschen</Button>
 							{/if}
 						{/if}
 					</TableBodyCell>
@@ -319,4 +360,19 @@
 			{/each}
 		</TableBody>
 	</Table>
+
+	<div>
+		<Modal bind:open={showSureDelete} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline
+					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+				/>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{alertMessageDelete}
+				</h3>
+				<Button color="red" class="me-2" on:click={deleteMatch}>Ja, ich bin sicher</Button>
+				<Button color="alternative">Nein, abbrechen</Button>
+			</div>
+		</Modal>
+	</div>
 </div>

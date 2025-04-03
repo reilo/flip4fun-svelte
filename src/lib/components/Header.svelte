@@ -5,7 +5,7 @@
 	import { DarkMode } from 'flowbite-svelte';
 
 	import { page } from '$app/stores';
-	import { access, ReadAccess, AdminAccess } from '../../stores.js';
+	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 
 	let { headerLinks, headerLink } = $props();
 
