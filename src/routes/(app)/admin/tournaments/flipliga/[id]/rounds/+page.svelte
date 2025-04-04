@@ -45,39 +45,41 @@
 					matches: 0,
 					points: baseline + strength,
 					bonus: 0,
+					mismatch: 0,
 					penalty: 0
 				});
 			});
 		} else {
-			// next round, add new players
+			// next round
 			let allPlayers = tournament.players.slice();
 			const numPlayers = allPlayers.length;
-
-			let mismatch;
+			// existing players
 			round.results.rankFinal.forEach((item, i) => {
-				mismatch =
-					round.rid >= tournament.settings.minRound &&
-					item.matches < round.rid * tournament.settings.minMatches
-						? tournament.settings.matchPenalty
-						: 0;
 				rankInit.push({
 					player: item.player,
 					matches: item.matches,
-					points: item.points - mismatch,
+					points: item.points,
 					bonus: item.bonus,
-					penalty: item.penalty + mismatch
+					mismatch: item.mismatch,
+					penalty: item.penalty
 				});
 				allPlayers.splice(allPlayers.indexOf(item.player), 1);
 			});
-
-			mismatch = round.rid - tournament.settings.minRound + tournament.settings.matchPenalty;
+			// new players
+			let penalty = 0;
+			let mismatch = 0;
+			if (nextRound - tournament.settings.minRound >= 0) {
+				mismatch = nextRound;
+				penalty = mismatch * tournament.settings.matchPenalty;
+			}
 			allPlayers.forEach((item) => {
 				rankInit.push({
 					player: item,
-					points: baseline - mismatch,
+					points: baseline - penalty,
 					matches: 0,
 					bonus: 0,
-					penalty: mismatch
+					mismatch: mismatch,
+					penalty: penalty
 				});
 			});
 

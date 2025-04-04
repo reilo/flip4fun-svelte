@@ -30,6 +30,7 @@ export function calcPoints(match, strength1, strength2) {
  *            -- matches: total count matches
  *            -- bonus: total match bonus
  *            -- points: total score
+ *            -- mismatch: total missing matches
  *            -- penalty: total penalty points
  *            -- strength: player strength
  * @param {array} matches - all match records of the completed round
@@ -39,6 +40,7 @@ export function calcPoints(match, strength1, strength2) {
  *            -- matches: total count matches
  *            -- bonus: total match bonus
  *            -- points: total score
+ *            -- mismatch: total missing matches
  *            -- penalty: total penalty points
  *            -- rankChange: difference of rank before and after round matches
  */
@@ -51,16 +53,19 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
 
     let ranking = [];
 
+    // retrieve initial state before matches
     rankInit.forEach((item) => {
         ranking.push({
             player: item.player,
             matches: item.matches,
             points: item.points,
             bonus: item.bonus,
+            mismatch: item.mismatch,
             penalty: item.penalty
         });
     });
 
+    // calculate new scores from all matches of this round
     matches.forEach((match) => {
         const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
         const index1 = ranking.findIndex((item) => item.player === match.player1);
@@ -73,6 +78,22 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
         ranking[index2].bonus += settings.matchBonus;
     });
 
+    // calculate additional penalty for missing matches
+    if (settings.minRound - roundNum <= 0) {
+        ranking.forEach((item, i) => {
+            const currentMismatch = roundNum * settings.minMatches - item.matches;
+            if (currentMismatch > 0) {
+                const mismatchDiff = currentMismatch - item.mismatch;
+                if (mismatchDiff > 0) {
+                    ranking[i].mismatch += mismatchDiff;
+                    const penaltyDiff = mismatchDiff * settings.matchPenalty
+                    ranking[i].penalty += penaltyDiff;
+                    ranking[i].points -= penaltyDiff;
+                }
+            }
+        });
+    }
+
     ranking.sort((a, b) => (a.points < b.points ? 1 : b.points < a.points ? -1 : 0));
 
     let ranking2 = [];
@@ -83,6 +104,7 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
             matches: item.matches,
             points: item.points,
             bonus: item.bonus,
+            mismatch: item.mismatch,
             penalty: item.penalty,
             rankChange: j - i
         })

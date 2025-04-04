@@ -275,6 +275,7 @@ Dabei folgendes beachten:
 -    `player`:     player ID
 -    `points`:     Punkte zu Spieltagbeginn
 -    `matches`:    Anzahl Matches zu Spieltagbeginn
+-    `mismatch`:   Anzahl der fehldenden Spiele
 -    `penalty`:    Strafpunkte zu Spieltagbeginn
 -    `strength`:   Spielstärke zu Spieltagbeginn
 
@@ -283,5 +284,6 @@ Dabei folgendes beachten:
 -    `player`:     player ID,
 -    `points`:     Gesamtpunkte nach Spieltag
 -    `matches`:    Gesamtanzahl Matches nach Spieltag
+-    `mismatch`:   Anzahl der fehldenden Spiele
 -    `penalty`:    Strafpunkte Gesamt nach Spieltag
 -    `rankChange`: Rangänderung nach Spieltag  

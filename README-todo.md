@@ -6,6 +6,7 @@ Benutzer-Dokumentation
 Work in progress Tasks:
 - Code kommentieren...
 - Fehlerbehandlung...
+- Unit Tests...
 
 Strings lokalisieren / aus Resourcen
 
@@ -15,8 +16,10 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
+- Strafpunke Berechnung, Option Spielstärke
+- Settings besser umbenennen
 - PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
-- kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen liga beenden
+- kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen, liga beenden
 - Löschfunktionen Turniere, Pins, Spieler
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - Navikonzept überarbeiten
@@ -29,15 +32,13 @@ Ferner:
 - Pyramide
 - Styling allgemein
 
-Unit Tests...
 Env Variablen in Service-Mode
-Device Phone eliminieren
+Device Phone Support
 
 ferner (falls Zeit ist):
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
 - Ranking Style refactorn und parametriesieren
-- Flipperliste mehr Funktionen
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
 
 

@@ -142,12 +142,14 @@ export function generateLigaResultsPDF(data) {
         let playerPoints = 0;
         let playerRanking = 0;
         let playerBonus = 0;
+        let playerMismatch = 0;
         let playerPenalty = 0;
         rankFinal.forEach((item, i) => {
             if (item.player === player) {
                 playerPoints = item.points;
                 playerRanking = i + 1;
                 playerBonus = item.bonus;
+                playerMismatch = item.mismatch;
                 playerPenalty = item.penalty;
             }
         });
