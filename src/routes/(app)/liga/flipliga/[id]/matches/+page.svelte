@@ -27,6 +27,7 @@
 	let showSureDelete = $state(false);
 
 	let matches = $derived(data.round ? data.round.matches : []);
+
 	let cache = data.round ? data.round.cache : {};
 	let rankInit = data.round ? data.round.settings.rankInit : [];
 
@@ -132,6 +133,13 @@
 		}
 		logInfo('Angelegt: ' + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
+
+		// update data locally
+		//const matches = [...data.round.matches, match];
+		//const round = { ...data.round, matches: matches, cache: cache };
+		//data = { ...data, round: round };
+		//logInfo("new match: matches count = " + data.round.matches.length);
+
 		showSure = newForm = false;
 		resetFormFields();
 	}
@@ -180,6 +188,17 @@
 		}
 		logInfo('Gelöscht: ' + matchToDelete.name);
 		invalidateAll();
+
+		// update data locally
+		//const matches = [];
+		//data.round.matches.forEach((match) => {
+		//	if (match.id !== matchToDelete.id) {
+		//		matches.push(match);
+		//	}
+		//});
+		//const round = { ...data.round, matches: matches, cache: cache };
+		//data = { ...data, round: round };
+
 		showSureDelete = false;
 	}
 
@@ -320,7 +339,7 @@
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each matches as match, i}
+			{#each [...matches].reverse() as match, i}
 				<TableBodyRow>
 					<TableBodyCell>
 						<div style={getPlayer1ColorStyle(match)}>

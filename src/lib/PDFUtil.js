@@ -111,7 +111,6 @@ export function generateLigaResultsPDF(data) {
 
         y += 7.5;
     })
-    doc.addPage();
 
     // Seite 2 bis n+1 - Spieler-Statistiken
 
@@ -119,6 +118,7 @@ export function generateLigaResultsPDF(data) {
     sortPlayerIDs(players, data.players);
 
     players.forEach((player) => {
+        doc.addPage();
 
         drawHeaderSquare();
         writeTitle();
@@ -177,7 +177,7 @@ export function generateLigaResultsPDF(data) {
         doc.line(x, y, 200, y);
 
         // Liste der Matches
-        doc.setFontSize(12);
+        doc.setFontSize(11);
         y += 10;
         if (!matches.length) {
             doc.text(x, y, "noch keine Matches absolviert");
@@ -207,10 +207,9 @@ export function generateLigaResultsPDF(data) {
                 const pinText = getPinName(match.pin, data.pins);
                 doc.text(200 - doc.getTextWidth(pinText), y, pinText);
 
-                y += 7;
+                y += 6;
             })
         }
-        doc.addPage();
     })
 
     // Seite n+2 bis 2n+1

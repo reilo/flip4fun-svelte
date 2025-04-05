@@ -102,7 +102,7 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
         ranking2.push({
             player: item.player,
             matches: item.matches,
-            points: item.points,
+            points: roundNumberForDB(item.points),
             bonus: item.bonus,
             mismatch: item.mismatch,
             penalty: item.penalty,

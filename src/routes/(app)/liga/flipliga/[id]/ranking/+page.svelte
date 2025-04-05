@@ -6,10 +6,13 @@
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
+	import { logInfo } from '$lib/LogUtil';
 
 	let { data } = $props();
+
+	const round = $derived(data.round);
+
 	const players = data.players;
-	const round = data.round;
 	const tournament = data.tournament;
 	const tourCompleted = data.tournament.status === 'Completed';
 
@@ -67,6 +70,7 @@
 
 	<Table shadow hoverable={true}>
 		<TableHead>
+			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Spieler</TableHeadCell>
 			{#if !tourCompleted}
 				<TableHeadCell class="text-center">Spiel<br />stärke</TableHeadCell>
@@ -86,6 +90,7 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
 				<TableBodyRow>
+					<TableBodyCell>{i+1}</TableBodyCell>
 					<TableBodyCell>
 						<a href={'/liga/flipliga/' + $page.params.id + '/statistics?player=' + rank.player}
 							>{getPlayerName(rank.player, players)}</a
