@@ -70,7 +70,7 @@ export const POST = async ({ url, params, request }) => {
             round = await prisma.round.create({ data });
         } else {
             // make sure that after the first round is started also the tournament is in status Active
-            round = prisma.$transaction(async (tx) => {
+            round = await prisma.$transaction(async (tx) => {
                 // create round
                 const result = await tx.round.create({
                     data

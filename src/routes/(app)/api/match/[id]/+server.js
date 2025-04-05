@@ -16,7 +16,7 @@ export const DELETE = async ({ url, params, request }) => {
             });
         } else {
             // make sure that after deleting the match, the cache for the current round is updated
-            match = prisma.$transaction(async (tx) => {
+            match = await prisma.$transaction(async (tx) => {
                 // create match
                 const result = await tx.match.delete({
                     where: { id: params.id }
