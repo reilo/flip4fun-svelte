@@ -70,7 +70,12 @@
 			let mismatch = 0;
 			if (nextRound - tournament.settings.minRound >= 0) {
 				mismatch = nextRound;
-				penalty = mismatch * tournament.settings.matchPenalty;
+				let penaltyFactor = tournament.settings.matchPenalty;
+				if (penaltyFactor < 0) {
+					// player strength should be used instead of fix number, but new player has no strength yet, therefore using 1
+					penaltyFactor = 1;
+				}
+				penalty = mismatch * penaltyFactor;
 			}
 			allPlayers.forEach((item) => {
 				rankInit.push({

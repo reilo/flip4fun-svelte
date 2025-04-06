@@ -231,7 +231,7 @@
 </script>
 
 <div>
-	<Heading tag="h5">{'Matches' + (tourCompleted ? ' letzter Spieltag' : 'Spieltag')}</Heading>
+	<Heading tag="h5">{(tourCompleted ? 'Letzter Spieltag' : 'Aktueller Spieltag' + " - " + matches.length + " Matches")}</Heading>
 	<br />
 
 	{#if addMatchEnabled}

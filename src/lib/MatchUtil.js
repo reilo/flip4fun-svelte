@@ -86,7 +86,11 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
                 const mismatchDiff = currentMismatch - item.mismatch;
                 if (mismatchDiff > 0) {
                     ranking[i].mismatch += mismatchDiff;
-                    const penaltyDiff = mismatchDiff * settings.matchPenalty
+                    let penaltyFactor = settings.matchPenalty;
+                    if (penaltyFactor < 0) { // use player strength instead of fix number
+                        penaltyFactor = getStrength(item.player);
+                    }
+                    const penaltyDiff = mismatchDiff * penaltyFactor
                     ranking[i].penalty += penaltyDiff;
                     ranking[i].points -= penaltyDiff;
                 }

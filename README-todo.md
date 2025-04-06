@@ -16,15 +16,17 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Strafpunke Berechnung, Option Spielstärke
 - Settings besser umbenennen
+- PDF Ergebnisse
+-- Spieler Gesamtstatistik überarbeiten, Passivitätsabzüge, 
+-- mehrere Seiten pro Spieler (bei vielen Spielen)
 - PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
 - kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen, liga beenden
 - Löschfunktionen Turniere, Pins, Spieler
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - Navikonzept überarbeiten
-- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 Ferner:
+- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 - Turniername ändern
 - Flipper Abkürzung editierbar
 - leere String in DB speichern?
