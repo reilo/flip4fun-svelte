@@ -20,6 +20,7 @@
 	let showAlert = $state(false);
 	let alertMessage = $state(false);
 	let showSure = $state(false);
+	let showSureDelete = $state(false);
 
 	let formPinName = $state('');
 	let formPinShortcut = $state('');
@@ -47,6 +48,7 @@
 			alertMessage = 'Der Flipperkürzel existiert schon. Bitte einen anderen wählen!';
 			showAlert = true;
 		} else {
+			alertMessage = pinToUpdate ? "Diesen Flipper ändern?" : "Diesen Flipper neu anlegen?"
 			showSure = true;
 		}
 	};
@@ -161,6 +163,23 @@
 		invalidateAll();
 	}
 
+	async function deletePin() {
+		const url = '/api/pin/' + pinToUpdate;
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		showSureDelete = false;
+		invalidateAll();
+	}
+
 	const cancelNewPin = () => {
 		showForm = false;
 	};
@@ -183,6 +202,30 @@
 		formPinType = pin.type;
 		formPinYear = pin.year;
 	};
+
+	async function prepareFormForDelete(pin) {
+		const response = await fetch('/api/match?pin=' + pin.id, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		if (result.matches.length) {
+			alertMessage =
+				'Flipper kann nicht gelöscht werden, da er in ein oder mehreren Turnieren verwendet wird.';
+			showAlert = true;
+		} else {
+			pinToUpdate = pin.id;
+			formPinName = pin.name;
+			alertMessage = "Diesen Flipper löschen?"
+			showSureDelete = true;
+		}
+	}
 </script>
 
 {#if showError}
@@ -274,9 +317,26 @@
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 				/>
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					{formPinName}
+					{formPinName}<br />
+					{alertMessage}
 				</h3>
 				<Button color="red" class="me-2" on:click={createOrUpdatePin}>Ja, ich bin sicher</Button>
+				<Button color="alternative">Nein, abbrechen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={showSureDelete} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline
+					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+				/>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{formPinName}<br />
+					{alertMessage}
+				</h3>
+				<Button color="red" class="me-2" on:click={deletePin}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -290,6 +350,7 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Spiel<br />bereit</TableHeadCell>
 			<TableHeadCell>In der<br />Lounge</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -332,6 +393,9 @@
 					</TableBodyCell>
 					<TableBodyCell class="py-0">
 						<Button on:click={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>
+					</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<Button on:click={() => prepareFormForDelete(pin)} size="xs">Löschen</Button>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

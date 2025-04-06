@@ -70,9 +70,28 @@ export const PUT = async ({ url, params, request }) => {
 export const DELETE = async ({ url, params }) => {
     logInfo("DELETE " + url);
     try {
-        const deletedTourney = await prisma.tourney.delete({
-            where: { id: params.id }
-        });
+        let deletedTourney;
+        if (!url.searchParams.has("deleteDependencies")) {
+            deletedTourney = await prisma.tourney.delete({
+                where: { id: params.tid }
+            });
+        } else {
+            // make sure that after deleting the tournament, all dependent rounds and matches are also deleted
+            deletedTourney = await prisma.$transaction(async (tx) => {
+                const result = await tx.tourney.delete({
+                    where: { id: params.tid }
+                });
+                // delete rounds of this tournament
+                await tx.round.deleteMany({
+                    where: { tid: params.tid },
+                });
+                // delete matches of this tournament
+                await tx.match.deleteMany({
+                    where: { tid: params.tid },
+                });
+                return result;
+            });
+        }
         return new Response(
             JSON.stringify({ tourney: deletedTourney }),
             {

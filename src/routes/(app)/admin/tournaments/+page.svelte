@@ -6,7 +6,8 @@
 	import {
 		InfoCircleSolid,
 		CloseCircleOutline,
-		ExclamationCircleOutline
+		ExclamationCircleOutline,
+		ThumbsUpOutline
 	} from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { mapTourStatus, mapTourType, getTourTypeMap } from '$lib/TourUtil';
@@ -18,21 +19,26 @@
 
 	let newForm = $state(false);
 	let showAlert = $state(false);
-	let alertMessage = $state("");
+	let alertMessage = $state('');
+	let alertMessage2 = $state('');
 	let showSure = $state(false);
+	let showSureDelete = $state(false);
+	let deleteSuccess = $state(false);
+	let createSuccess = $state(false);
 
 	let newTourName = $state('');
 	let newTourType = $state('');
+	let tourToDelete = $state('');
 
 	const verifyTour = () => {
 		if (newTourType === 'fliptwin' || newTourType === 'flipfinal') {
-			alertMessage = "Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!";
+			alertMessage = 'Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!';
 			showAlert = true;
 		} else if (!newTourName || !newTourType) {
-			alertMessage="Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!";
+			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
 			showAlert = true;
 		} else if (tournaments.find((tour) => tour.name === newTourName)) {
-			alertMessage="Ein Turnier mit dem Namen existiert schon. Bitte einen anderen Namen wählen!";
+			alertMessage = 'Ein Turnier mit dem Namen existiert schon. Bitte einen anderen Namen wählen!';
 			showAlert = true;
 		} else {
 			showSure = true;
@@ -73,9 +79,28 @@
 		if (response.status === 200) {
 			newForm = false;
 			invalidateAll();
+			createSuccess = true;
 		} else {
 			alert(JSON.stringify(result));
 		}
+	}
+
+	async function deleteTour() {
+		const url = '/api/tournament/' + tourToDelete + '?deleteDependencies';
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		showSureDelete = false;
+		invalidateAll();
+		deleteSuccess = true;
 	}
 
 	const prepareFormForNew = () => {
@@ -83,6 +108,32 @@
 		newTourType = '';
 		newForm = true;
 	};
+
+	async function prepareTourForDelete(tournament) {
+		const response = await fetch('/api/match?tid=' + tournament.id, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		tourToDelete = tournament.id;
+		alertMessage = 'Turnier ' + tournament.name + ' wirklich löschen?';
+		if (result.matches.length) {
+			alertMessage2 =
+				'Vorsicht! Es wurden bereits ' +
+				result.matches.length +
+				' Match(es) für dieses Turnier eingetragen!';
+		} else {
+			alertMessage2 = '';
+		}
+		tourToDelete = tournament.id;
+		showSureDelete = true;
+	}
 
 	const generateTournamentID = (name) => {
 		let newOrigID = cleanString(name);
@@ -160,11 +211,51 @@
 		</Modal>
 	</div>
 
+	<div>
+		<Modal bind:open={showSureDelete} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline
+					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+				/>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{alertMessage}<br />{alertMessage2}
+				</h3>
+				<Button color="red" class="me-2" on:click={deleteTour}>Ja, ich bin sicher</Button>
+				<Button color="alternative">Nein, abbrechen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={deleteSuccess} size="xs" autoclose>
+			<div class="text-center">
+				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					Das Turnier wurde erfolgreich gelöscht!
+				</h3>
+				<Button color="alternative">Schließen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={createSuccess} size="xs" autoclose>
+			<div class="text-center">
+				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					Das Turnier wurde erfolgreich angelegt!
+				</h3>
+				<Button color="alternative">Schließen</Button>
+			</div>
+		</Modal>
+	</div>
+
 	<Table hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>
 			<TableHeadCell>Status</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 
@@ -182,12 +273,19 @@
 							{mapTourStatus(tournament.status)}
 						</TableBodyCell>
 						<TableBodyCell>
-							{#if tournament.status == 'Planned' || tournament.status == 'Active'}
+							{#if tournament.status === 'Planned' || tournament.status === 'Active'}
 								<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
 									>Bearbeiten</Button
 								>
 							{:else}
 								<Button disabled>Bearbeiten</Button>
+							{/if}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if tournament.name.includes('Test')}
+								<Button on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
+							{:else}
+								<Button disabled>Löschen</Button>
 							{/if}
 						</TableBodyCell>
 					</TableBodyRow>

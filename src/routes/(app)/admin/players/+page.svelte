@@ -20,6 +20,7 @@
 	let showAlert = $state(false);
 	let alertMessage = $state('');
 	let showSure = $state(false);
+	let showSureDelete = $state(false);
 
 	let formPlayerID = $state('');
 	let formPlayerForename = $state('');
@@ -51,6 +52,7 @@
 			showAlert = true;
 		} else {
 			showSure = true;
+			alertMessage = playerToUpdate ? 'Diesen Spieler ändern?' : 'Diesen Spieler neu anlegen?';
 		}
 	};
 
@@ -121,6 +123,23 @@
 		invalidateAll();
 	}
 
+	async function deletePlayer() {
+		const url = '/api/player/' + playerToUpdate;
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		showSureDelete = false;
+		invalidateAll();
+	}
+
 	const cancelNewPlayer = () => {
 		showForm = false;
 	};
@@ -144,6 +163,37 @@
 		formPlayerShortname = player.shortname;
 		formPlayerEmail = player.email;
 	};
+
+	async function prepareFormForDelete(player) {
+		const response = await fetch('/api/tournament', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		let playerUsed = false;
+		result.tournaments.forEach((tournament) => {
+			if (tournament.players.includes(player.id)) {
+				playerUsed = true;
+			}
+		});
+		if (playerUsed) {
+			alertMessage =
+				'Spieler kann nicht gelöscht werden, da er in ein oder mehreren Turnieren verwendet wird.';
+			showAlert = true;
+		} else {
+			playerToUpdate = player.id;
+			formPlayerForename = player.forename;
+			formPlayerSurname = player.surname;
+			alertMessage = 'Diesen Spieler löschen?';
+			showSureDelete = true;
+		}
+	}
 
 	async function updatePlayerStatus(id, active) {
 		const url = '/api/player/' + id;
@@ -245,9 +295,26 @@
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 				/>
 				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					{formPlayerForename + ' ' + formPlayerSurname}
+					{formPlayerForename + ' ' + formPlayerSurname}<br />
+					{alertMessage}
 				</h3>
 				<Button color="red" class="me-2" on:click={createOrUpdatePlayer}>Ja, ich bin sicher</Button>
+				<Button color="alternative">Nein, abbrechen</Button>
+			</div>
+		</Modal>
+	</div>
+
+	<div>
+		<Modal bind:open={showSureDelete} size="xs" autoclose>
+			<div class="text-center">
+				<ExclamationCircleOutline
+					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
+				/>
+				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{formPlayerForename + ' ' + formPlayerSurname}<br />
+					{alertMessage}
+				</h3>
+				<Button color="red" class="me-2" on:click={deletePlayer}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -262,6 +329,7 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>E-Mail</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
+			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -281,6 +349,9 @@
 					</TableBodyCell>
 					<TableBodyCell class="py-0">
 						<Button on:click={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
+					</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<Button on:click={() => prepareFormForDelete(player)} size="xs">Löschen</Button>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

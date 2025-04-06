@@ -17,11 +17,12 @@ Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
 - PDF Ergebnisse
--- Spieler Gesamtstatistik überarbeiten, Passivitätsabzüge, 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
-- PDF Flipperliste, Owner setzen, Settings mit möglichen Ownern (neue DB-Tabelle)
-- kritische Dialoge --> Sicherheitsabfrage und was eintippen, löschen, liga beenden
-- Löschfunktionen Turniere, Pins, Spieler
+-- Rangliste: Spielstärke hervorheben
+-- Pyramide
+- PDF Flipperliste:
+-- Owner bearbeiten, Settings mit möglichen Ownern (neue Einstellungen DB-Tabelle)
+- kritische Dialoge --> Sicherheitsabfrage
 - Titel/Untertitel, Erklärungstexte bearbeiten
 - Navikonzept überarbeiten
 Ferner:
