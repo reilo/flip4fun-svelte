@@ -68,7 +68,7 @@
 			// new players
 			let penalty = 0;
 			let mismatch = 0;
-			if (nextRound - tournament.settings.minRound >= 0) {
+			if (nextRound - tournament.settings.penaltyFirstRound >= 0) {
 				mismatch = nextRound;
 				let penaltyFactor = tournament.settings.matchPenalty;
 				if (penaltyFactor < 0) {

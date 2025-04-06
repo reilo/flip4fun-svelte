@@ -46,10 +46,10 @@
 			case 'flipliga':
 				defaultSettings = {
 					baseline: 50,
-					minRound: 5,
+					penaltyFirstRound: 5,
 					matchBonus: 1,
 					matchPenalty: 1,
-					minMatches: 1,
+					minMatchesRound: 1,
 					challengeSame: 1
 				};
 				break;

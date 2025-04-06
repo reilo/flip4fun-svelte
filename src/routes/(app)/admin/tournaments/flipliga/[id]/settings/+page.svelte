@@ -68,13 +68,13 @@
 
 		<Label>
 			<span>Wie viele Matches muss ein Spieler pro Spieltag spielen?</span>
-			<NumberInput disabled={!settingsEnabled} min="1" max="5" bind:value={settings.minMatches} />
+			<NumberInput disabled={!settingsEnabled} min="1" max="5" bind:value={settings.minMatchesRound} />
 		</Label>
 		<br />
 
 		<Label>
 			<span>Ab welcher Runde erfolgen Punktabzüge?</span>
-			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.minRound} />
+			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.penaltyFirstRound} />
 		</Label>
 		<br />
 

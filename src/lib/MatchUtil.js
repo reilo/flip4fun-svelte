@@ -79,9 +79,9 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
     });
 
     // calculate additional penalty for missing matches
-    if (settings.minRound - roundNum <= 0) {
+    if (settings.penaltyFirstRound - roundNum <= 0) {
         ranking.forEach((item, i) => {
-            const currentMismatch = roundNum * settings.minMatches - item.matches;
+            const currentMismatch = roundNum * settings.minMatchesRound - item.matches;
             if (currentMismatch > 0) {
                 const mismatchDiff = currentMismatch - item.mismatch;
                 if (mismatchDiff > 0) {

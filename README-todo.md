@@ -16,7 +16,6 @@ Eingabefocus
 Logo einbetten
 
 Essentiell: Liga/Turnier-Framework
-- Settings besser umbenennen
 - PDF Ergebnisse
 -- Spieler Gesamtstatistik überarbeiten, Passivitätsabzüge, 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
