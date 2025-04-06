@@ -41,7 +41,7 @@
 			progress = false;
 			selectedPin = newPin;
 		}, timeout);
-		logInfo("Lostrommel: " + newPin);
+		logInfo('Lostrommel: ' + newPin);
 	}
 </script>
 
@@ -54,8 +54,8 @@
 		<br />
 		{myData.error}
 	</Alert>
+	<br />
 {/if}
-<br />
 
 <Heading tag="h5">Flipper losen</Heading>
 

@@ -223,11 +223,11 @@ Dabei folgendes beachten:
 - Zielsystem: Tabelleninhalte löschen, falls notwendig
 
 ```bash
-delete from pin;
-delete from player;
-delete from tourney;
-delete from round;
-delete from match;
+DELETE FROM pin;
+DELETE FROM player;
+DELETE FROM tourney;
+DELETE FROM round;
+DELETE FROM match;
 ```
 
 - Zielsystem: Import via psql-Kommandos:

@@ -22,8 +22,7 @@ Essentiell: Liga/Turnier-Framework
 -- Pyramide
 - PDF Flipperliste:
 -- Owner bearbeiten, Settings mit möglichen Ownern (neue Einstellungen DB-Tabelle)
-- kritische Dialoge --> Sicherheitsabfrage
-- Titel/Untertitel, Erklärungstexte bearbeiten
+- kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Navikonzept überarbeiten
 Ferner:
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken

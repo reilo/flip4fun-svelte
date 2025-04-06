@@ -85,14 +85,14 @@
 
 <div class="flex-1 flex-col sm:flex-row justify-center content-center gap-3">
 	<div>
-		<P>Hier kannst du neue Spieler zur Liga hinzufügen.</P>
-		<P
+		<P class="py-1">Hier kannst du neue Spieler zur Liga hinzufügen.</P>
+		<P class="py-1"
 			>Zum Ligastart klicke die Spieler in der Reihenfolge an, wie sie beim Start-Turnier ermittelt
 			wurde.</P
 		>
-		<P
-			>Während der laufenden Liga werden die neuen Spieler erst mit dem Start des nächsten
-			Spieltages ergänzt.</P
+		<P class="py-1"
+			>Neue Spieler kannst du hier jederzeit ergänzen, diese werden aber erst zum Start des nächsten
+			Spieltages berücksichtigt.</P
 		>
 		<br />
 	</div>

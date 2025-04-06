@@ -68,7 +68,7 @@
 	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
 	<br />
 
-	<Table shadow hoverable={true}>
+	<Table striped={true} shadow >
 		<TableHead>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Spieler</TableHeadCell>

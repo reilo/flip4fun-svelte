@@ -1,7 +1,7 @@
 <script>
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
-	import { Alert } from 'flowbite-svelte';
+	import { Heading, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import Device from 'svelte-device-info';
 
@@ -33,23 +33,21 @@
 		return value ? '' : 'text-decoration: line-through;';
 	};
 
-	$effect.pre(() => {
-		let items2 = data.pins ? data.pins.slice() : [];
-		const filtered = items2.filter(
-			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-		);
-		const sorted = filtered.sort((a, b) => {
-			const aVal = a[sortKey];
-			const bVal = b[sortKey];
-			if (aVal < bVal) {
-				return -sortDirection;
-			} else if (aVal > bVal) {
-				return sortDirection;
-			}
-			return 0;
-		});
-		items = sorted;
+	let items2 = data.pins ? data.pins.slice() : [];
+	const filtered = items2.filter(
+		(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+	);
+	const sorted = filtered.sort((a, b) => {
+		const aVal = a[sortKey];
+		const bVal = b[sortKey];
+		if (aVal < bVal) {
+			return -sortDirection;
+		} else if (aVal > bVal) {
+			return sortDirection;
+		}
+		return 0;
 	});
+	items = sorted;
 </script>
 
 {#if showError}
@@ -61,14 +59,15 @@
 		<br />
 		{data.error}
 	</Alert>
+	<br />
 {/if}
-<br />
+
+<Heading tag="h5">Flipperliste</Heading>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
 	<caption
-		class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
+		class="px-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
 	>
-		Flipperliste
 		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
 			Durchgestrichene Geräte sind derzeit nicht spielbereit.
 			<br />
@@ -78,6 +77,7 @@
 				Klicke auf eine Zeile, um mehr Informationen über einen Flipper zu erhalten.
 			{/if}
 		</p>
+		<br />
 	</caption>
 	<TableHead>
 		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>
