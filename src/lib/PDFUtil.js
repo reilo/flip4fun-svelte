@@ -109,7 +109,7 @@ export function generateLigaResultsPDF(data) {
         const matchesStrg = item.matches.toString();
         doc.text(x + 185 - doc.getTextWidth(matchesStrg), y, matchesStrg);
 
-        y += 7.5;
+        y += 7.0;
     })
 
     // Seite 2 bis n+1 - Spieler-Statistiken
@@ -161,14 +161,14 @@ export function generateLigaResultsPDF(data) {
 
         // zusammenfassene Daten
         doc.setFontSize(12);
-        const matchesStrg = totalMatches + (totalMatches == 1 ? " Match" : " Matches");
-        doc.text(x + 90 - doc.getTextWidth(matchesStrg), y, matchesStrg);
-        const pointsStrg = roundNumberToStrg(playerPoints).toString() + " Punkte";
-        doc.text(x + 120 - doc.getTextWidth(pointsStrg), y, pointsStrg);
+        const matchesStrg = "Matches: " + totalMatches;
+        doc.text(x + 85 - doc.getTextWidth(matchesStrg), y, matchesStrg);
+        const pointsStrg = "Punkte: " + roundNumberToStrg(playerPoints).toString();
+        doc.text(x + 115 - doc.getTextWidth(pointsStrg), y, pointsStrg);
         //const rankingText = playerRanking + ". Platz";
-        const bonusStrg = playerBonus.toString() + (playerBonus == 1 ? " Bonuspunkt" : " Bonuspunkte");
-        doc.text(x + 155 - doc.getTextWidth(bonusStrg), y, bonusStrg);
-        const penaltyStrg = playerPenalty.toString() + (playerPenalty == 1 ? " Strafpunkt" : " Strafpunkte");
+        const bonusStrg = "Antrittsbonus: " + playerBonus.toString();
+        doc.text(x + 150 - doc.getTextWidth(bonusStrg), y, bonusStrg);
+        const penaltyStrg = "Passivitätsabzüge: " + playerPenalty.toString();
         doc.text(x + 190 - doc.getTextWidth(penaltyStrg), y, penaltyStrg);
 
         // Trennungslinie

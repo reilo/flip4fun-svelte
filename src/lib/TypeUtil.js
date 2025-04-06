@@ -16,8 +16,11 @@ export function mapBoolean(value) {
 }
 
 export function mapDate(value) {
-    let date = new Date(value);
-    return date.toLocaleDateString("de-DE");
+    let d = new Date(value);
+    const year = d.getFullYear().toString();
+    const month = (d.getMonth() < 10 ? "0" : "") + (d.getMonth() + 1).toString();
+    const day = (d.getDate() < 10 ? "0" : "") + d.getDate().toString();
+    return day + "." + month + "." + year;
 }
 
 /**
