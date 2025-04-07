@@ -9,7 +9,7 @@ export const GET = async ({ url }) => {
     try {
         let fields = {};
         url.searchParams.forEach((value, key) => {
-            if (!["manu", "year", "type", "active"].includes(key)) {
+            if (!["manu", "year", "type", "active", "owner"].includes(key)) {
                 throw key + " ist kein gültiger Suchparameter";
             }
             if (value === "true") {
@@ -28,6 +28,8 @@ export const GET = async ({ url }) => {
                 } else {
                     throw value + " ist kein gültiger Wert für " + key;
                 }
+            } else {
+                fields[key] = value;
             }
         });
         const pins = await prisma.pin.findMany({
@@ -79,6 +81,9 @@ export const POST = async ({ url, request }) => {
         }
         if (body.type) {
             data.type = body.type;
+        }
+        if (body.owner) {
+            data.owner = body.owner;
         }
 
         const pin = await prisma.pin.create({

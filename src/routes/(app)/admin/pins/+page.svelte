@@ -27,6 +27,7 @@
 	let formPinManu = $state('');
 	let formPinType = $state('');
 	let formPinYear = $state(null);
+	let formPinOwner = $state('');
 
 	let allPins = $derived(data.pins);
 
@@ -48,7 +49,7 @@
 			alertMessage = 'Der Flipperkürzel existiert schon. Bitte einen anderen wählen!';
 			showAlert = true;
 		} else {
-			alertMessage = pinToUpdate ? "Diesen Flipper ändern?" : "Diesen Flipper neu anlegen?"
+			alertMessage = pinToUpdate ? 'Diesen Flipper ändern?' : 'Diesen Flipper neu anlegen?';
 			showSure = true;
 		}
 	};
@@ -70,6 +71,9 @@
 		};
 		if (formPinYear) {
 			pin.year = formPinYear;
+		}
+		if (formPinOwner) {
+			pin.owner = formPinOwner;
 		}
 		const response = await fetch('/api/pin/', {
 			method: 'POST',
@@ -100,6 +104,9 @@
 		if (formPinYear) {
 			pin.year = formPinYear;
 		}
+		if (formPinOwner) {
+			pin.owner = formPinOwner;
+		}
 		const url = '/api/pin/' + pinToUpdate;
 		const response = await fetch(url, {
 			method: 'PUT',
@@ -122,9 +129,6 @@
 		let data = {
 			active: active
 		};
-		if (active) {
-			data.deleted = false;
-		}
 		const response = await fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify(data),
@@ -145,9 +149,6 @@
 		let data = {
 			deleted: deleted
 		};
-		if (deleted) {
-			data.active = false;
-		}
 		const response = await fetch(url, {
 			method: 'PUT',
 			body: JSON.stringify(data),
@@ -192,6 +193,7 @@
 		formPinManu = '';
 		formPinType = '';
 		formPinYear = null;
+		formPinOwner = '';
 	};
 
 	const prepareFormForUpdate = (pin) => {
@@ -201,6 +203,7 @@
 		formPinManu = pin.manu;
 		formPinType = pin.type;
 		formPinYear = pin.year;
+		formPinOwner = pin.owner;
 	};
 
 	async function prepareFormForDelete(pin) {
@@ -222,7 +225,7 @@
 		} else {
 			pinToUpdate = pin.id;
 			formPinName = pin.name;
-			alertMessage = "Diesen Flipper löschen?"
+			alertMessage = 'Diesen Flipper löschen?';
 			showSureDelete = true;
 		}
 	}
@@ -291,6 +294,10 @@
 					placeholder="Plattform"
 				></Select>
 			</Label>
+			<Label class="space-y-2">
+				<span>Besitzer</span>
+				<Input bind:value={formPinOwner} placeholder="Besitzer" />
+			</Label>
 			<Button color="alternative" on:click={verifyPin}
 				>{!pinToUpdate ? 'Anlegen' : 'Speichern'}</Button
 			>
@@ -350,6 +357,7 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Spiel<br />bereit</TableHeadCell>
 			<TableHeadCell>In der<br />Lounge</TableHeadCell>
+			<TableHeadCell>Besitzer</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
@@ -390,6 +398,9 @@
 						{:else}
 							<Checkbox on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
 						{/if}
+					</TableBodyCell>
+					<TableBodyCell>
+						{pin.owner}
 					</TableBodyCell>
 					<TableBodyCell class="py-0">
 						<Button on:click={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>

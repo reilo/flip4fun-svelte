@@ -29,6 +29,9 @@ export const PUT = async ({ url, params, request }) => {
         if (body.type) {
             data.type = body.type;
         }
+        if (body.owner) {
+            data.owner = body.owner;
+        }
         const updatedPin = await prisma.pin.update({
             where: { id: params.id }, data: data
         });
