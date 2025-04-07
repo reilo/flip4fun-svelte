@@ -1,11 +1,12 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
-	import { P, Heading } from 'flowbite-svelte';
+	import { P, Heading, Button, Spinner } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { page } from '$app/state';
+	import { goto, afterNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
 
@@ -23,10 +24,29 @@
 		{ link: '/admin/tournaments/flipliga/' + id + '/rounds', name: 'Spieltag' },
 		{ link: '/liga/flipliga/' + id + '/ranking', name: 'zur Liga' }
 	];
+
+	let loading = $state('');
+
+	const loadPage = (item) => {
+		loading = item.link;
+		goto(item.link);
+	};
+
+	afterNavigate(async () => {
+		loading = '';
+	});
 </script>
 
 {#snippet headerLink(d)}
-	<NavLi href={d.link}>{d.name}</NavLi>
+	<NavLi>
+		{#if loading === d.link}
+			<Button color="alternative">
+				<Spinner class="me-3" size="4" color="white" />Laden ...
+			</Button>
+		{:else}
+			<Button color="alternative" on:click={() => loadPage(d)}>{d.name}</Button>
+		{/if}
+	</NavLi>
 {/snippet}
 
 <Header headerLinks={links} {headerLink} />

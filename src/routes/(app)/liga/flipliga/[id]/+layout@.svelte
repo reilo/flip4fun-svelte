@@ -1,9 +1,10 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, Button, Spinner } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
+	import { goto, afterNavigate } from '$app/navigation';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data, children } = $props();
@@ -29,10 +30,29 @@
 
 	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;
 	const tournamentStatus = mapTourStatus(data.tournament.status);
+
+	let loading = $state('');
+
+	const loadPage = (item) => {
+		loading = item.link;
+		goto(item.link);
+	};
+
+	afterNavigate(async () => {
+		loading = '';
+	});
 </script>
 
 {#snippet headerLink(d)}
-	<NavLi href={d.link}>{d.name}</NavLi>
+	<NavLi>
+		{#if loading === d.link}
+			<Button color="alternative">
+				<Spinner class="me-3" size="4" color="white" />Laden ...
+			</Button>
+		{:else}
+			<Button color="alternative" on:click={() => loadPage(d)}>{d.name}</Button>
+		{/if}
+	</NavLi>
 {/snippet}
 
 <Header headerLinks={links} {headerLink} />
