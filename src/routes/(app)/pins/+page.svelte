@@ -89,47 +89,49 @@
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
-			<TableBodyRow on:click={() => toggleRow(i)}>
-				<TableBodyCell class="py-2">
-					<div style={getTextStyle(pin.active)}>
-						{pin.name}
-					</div>
-				</TableBodyCell>
-				{#if !Device.isPhone}
-					<TableBodyCell class="py-0">
+			{#if !pin.deleted}
+				<TableBodyRow on:click={() => toggleRow(i)}>
+					<TableBodyCell class="py-2">
 						<div style={getTextStyle(pin.active)}>
-							{pin.manu}
+							{pin.name}
 						</div>
 					</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<div style={getTextStyle(pin.active)}>
-							{pin.year}
-						</div>
-					</TableBodyCell>
+					{#if !Device.isPhone}
+						<TableBodyCell class="py-0">
+							<div style={getTextStyle(pin.active)}>
+								{pin.manu}
+							</div>
+						</TableBodyCell>
+						<TableBodyCell class="py-0">
+							<div style={getTextStyle(pin.active)}>
+								{pin.year}
+							</div>
+						</TableBodyCell>
 
-					<TableBodyCell class="py-0">
-						<div style={getTextStyle(pin.active)}>
-							{pin.type}
-						</div>
-					</TableBodyCell>
+						<TableBodyCell class="py-0">
+							<div style={getTextStyle(pin.active)}>
+								{pin.type}
+							</div>
+						</TableBodyCell>
+					{/if}
+				</TableBodyRow>
+				{#if openRow === i && Device.isPhone}
+					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
+						<TableBodyCell colspan="2" class="italic indent-4 py-2">
+							Hersteller: {pin.manu}
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
+						<TableBodyCell colspan="2" class="italic indent-4 py-2">
+							Jahr: {pin.year}
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
+						<TableBodyCell colspan="2" class="italic indent-4 py-2">
+							Plattform: {pin.type}
+						</TableBodyCell>
+					</TableBodyRow>
 				{/if}
-			</TableBodyRow>
-			{#if openRow === i && Device.isPhone}
-				<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-					<TableBodyCell colspan="2" class="italic indent-4 py-2">
-						Hersteller: {pin.manu}
-					</TableBodyCell>
-				</TableBodyRow>
-				<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-					<TableBodyCell colspan="2" class="italic indent-4 py-2">
-						Jahr: {pin.year}
-					</TableBodyCell>
-				</TableBodyRow>
-				<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-					<TableBodyCell colspan="2" class="italic indent-4 py-2">
-						Plattform: {pin.type}
-					</TableBodyCell>
-				</TableBodyRow>
 			{/if}
 		{/each}
 	</TableBody>

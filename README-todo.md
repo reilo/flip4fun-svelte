@@ -19,10 +19,8 @@ Essentiell: Liga/Turnier-Framework
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- Rangliste: Spielstärke hervorheben
 -- Pyramide
-- PDF Flipperliste:
--- Owner bearbeiten, Settings mit möglichen Ownern (neue Einstellungen DB-Tabelle)
+- PDF Flipperliste
 - kritische Dialoge --> Sicherheitsabfrage mit Eingabe
-- Navikonzept überarbeiten
 Ferner:
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 - Turniername ändern
@@ -33,10 +31,9 @@ Ferner:
 - Styling allgemein
 
 Env Variablen in Service-Mode
-Device Phone Support
+Device Phone Support, insbes. Navbar
 
 ferner (falls Zeit ist):
 - Toasts mit Zufallssprüchen nach Matcheingabe
 - Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
-- Ranking Style refactorn und parametriesieren
 - Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
