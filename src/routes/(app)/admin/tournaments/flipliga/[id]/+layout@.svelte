@@ -5,7 +5,7 @@
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	let { data, children } = $props();
 
@@ -15,7 +15,7 @@
 	});
 
 	let tournament = data.tournament;
-	let id = $page.params.id;
+	let id = page.params.id;
 
 	const links = [
 		{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Einstellungen' },

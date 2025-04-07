@@ -1,6 +1,6 @@
 <script>
 	import { Button, NumberInput, Label } from 'flowbite-svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	let { data } = $props();
 
@@ -9,7 +9,7 @@
 	let originalSettings = $state(data.tournament.settings);
 	let settings = $state(data.tournament.settings);
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
-	let id = $page.params.id;
+	let id = page.params.id;
 
 	async function updateSettings() {
 		const response = await fetch('/api/tournament/' + id, {

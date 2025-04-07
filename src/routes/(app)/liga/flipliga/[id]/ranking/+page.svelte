@@ -2,7 +2,7 @@
 	import { Heading, P } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
@@ -92,7 +92,7 @@
 				<TableBodyRow>
 					<TableBodyCell>{i+1}</TableBodyCell>
 					<TableBodyCell>
-						<a href={'/liga/flipliga/' + $page.params.id + '/statistics?player=' + rank.player}
+						<a href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
 							>{getPlayerName(rank.player, players)}</a
 						>
 					</TableBodyCell>

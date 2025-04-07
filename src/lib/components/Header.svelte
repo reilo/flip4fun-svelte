@@ -4,7 +4,7 @@
 	import { HomeSolid, LockSolid, LockTimeSolid, LockOpenSolid } from 'flowbite-svelte-icons';
 	import { DarkMode } from 'flowbite-svelte';
 
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 
 	let { headerLinks, headerLink } = $props();
@@ -33,7 +33,7 @@
 		formModal = false;
 	}
 
-	let activeUrl = $derived($page.url.pathname);
+	let activeUrl = $derived(page.url.pathname);
 </script>
 
 <header class="flex justify-between p-4 w-full max-w-full sm:max-w-7xl mx-auto">

@@ -3,7 +3,7 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Label, Select } from 'flowbite-svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { mapDate } from '$lib/TypeUtil';
 	import { getPinName } from '$lib/PinUtil';
 	import { sortPlayerIDs } from '$lib/PlayerUtil';
@@ -12,8 +12,8 @@
 	let { data } = $props();
 
 	const initPage = () => {
-		if ($page.url.searchParams.has('player')) {
-			selected = $page.url.searchParams.get('player');
+		if (page.url.searchParams.has('player')) {
+			selected = page.url.searchParams.get('player');
 			playerChanged();
 		}
 	};

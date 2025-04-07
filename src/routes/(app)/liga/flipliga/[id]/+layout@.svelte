@@ -3,13 +3,13 @@
 	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { Heading } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data, children } = $props();
 
 	let tournament = data.tournament;
-	let id = $page.params.id;
+	let id = page.params.id;
 
 	const links = import.meta.env.VITE_APP_FULL
 		? [
