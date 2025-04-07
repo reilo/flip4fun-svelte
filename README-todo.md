@@ -10,7 +10,6 @@ Work in progress Tasks:
 
 Strings lokalisieren / aus Resourcen
 
-Wait Cursor --> svelte transition? flowbite svelte spinner
 Zeilenhintergrund alternierend nach Spielstärke
 Eingabefocus
 Logo einbetten

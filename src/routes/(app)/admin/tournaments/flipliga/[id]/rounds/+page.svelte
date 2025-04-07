@@ -263,7 +263,7 @@
 			Ergebnis-PDF generieren
 		</h5>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das PDF mit allen Statistiken für alle Spieltage. Kann etwas länger dauern...
+			Generiere hier das PDF mit allen Statistiken für alle Spieltage.
 		</p>
 		<Button disabled={!pdfEnabled} on:click={generateLigaResultsPDF(data)} class="w-fit">
 			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />

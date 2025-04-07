@@ -1,13 +1,20 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
-	import { Button, Alert } from 'flowbite-svelte';
+	import { Heading, Button, Alert, Spinner } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { goto } from '$app/navigation';
 	import { mapTourType } from '$lib/TourUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.tournaments);
+
+	let loadingTournamentID = $state('');
+
+	const loadTournament = (tournament) => {
+		loadingTournamentID = tournament.id;
+		goto('/liga/' + tournament.type + '/' + tournament.id + '/ranking');
+	};
 </script>
 
 {#if showError}
@@ -48,7 +55,13 @@
 								</TableBodyCell>
 							{/if}
 							<TableBodyCell>
-								<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
+								{#if loadingTournamentID === tournament.id}
+									<Button class="w-fit">
+										<Spinner class="me-3" size="4" color="white" />Laden ...
+									</Button>
+								{:else}
+									<Button on:click={() => loadTournament(tournament)}>Öffnen</Button>
+								{/if}
 							</TableBodyCell>
 						</TableBodyRow>
 					{/if}
@@ -86,7 +99,13 @@
 								</TableBodyCell>
 							{/if}
 							<TableBodyCell>
-								<Button href="/liga/{tournament.type}/{tournament.id}/ranking">Öffnen</Button>
+								{#if loadingTournamentID === tournament.id}
+									<Button class="w-fit">
+										<Spinner class="me-3" size="4" color="white" />Laden ...
+									</Button>
+								{:else}
+									<Button on:click={() => loadTournament(tournament)}>Öffnen</Button>
+								{/if}
 							</TableBodyCell>
 						</TableBodyRow>
 					{/if}
