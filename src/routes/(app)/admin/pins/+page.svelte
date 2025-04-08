@@ -3,12 +3,8 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Label, Input, Select, Modal } from 'flowbite-svelte';
-	import {
-		InfoCircleSolid,
-		CloseCircleOutline,
-		ExclamationCircleOutline,
-		FilePdfOutline
-	} from 'flowbite-svelte-icons';
+	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinManuMap, getPinTypeMap } from '$lib/PinUtil';
 	import { cleanString } from '$lib/TypeUtil';

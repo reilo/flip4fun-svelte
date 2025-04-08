@@ -43,7 +43,29 @@ export function getTourTypeMap() {
 }
 
 export function isValidTourType(type) {
-    return (type === "flipfinal" || type === "flipliga" || type === "fliptwin");
+    return ["fliptwin", "flipliga", "flipfinal"].includes(type);
+}
+
+export function getDefaultSettings(type) {
+    switch (type) {
+        case "fliptwin":
+            return {};
+        case "flipliga":
+            return {
+                baseline: 50,
+                penaltyFirstRound: 5,
+                matchBonus: 1,
+                matchPenalty: 1,
+                minMatchesRound: 1,
+                challengeSame: 1
+            };
+        case "flipfinal":
+            return {
+                numFinalists: 4
+            };
+        default:
+            return {};
+    }
 }
 
 export function calcStrength(pos, total) {

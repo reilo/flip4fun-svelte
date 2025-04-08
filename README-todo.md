@@ -2,38 +2,42 @@ Benutzer-Dokumentation
 - Wo Datenbank? Wie Daten bearbeiten? Backup erstellen.
 - Wie lokal starten?
 - App als Service starten
+- Env Variablen in Service-Mode
 
-Work in progress Tasks:
+Work in progress Tasks
 - Code kommentieren...
 - Fehlerbehandlung...
 - Unit Tests...
 
-Strings lokalisieren / aus Resourcen
+Allgemein
+- Strings lokalisieren / aus Resourcen
+- Eingabefocus
+- Logo einbetten
+- Device Phone Support, insbes. Navbar
+- PDF Flipperliste
+- kritische Dialoge --> Sicherheitsabfrage mit Eingabe
+- Turniername ändern
+- leere String in DB speichern?
+- Styling allgemein
+- optional: Spieler-Fotos
+- optional: Flipper Abkürzung editierbar
+- optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
-Zeilenhintergrund alternierend nach Spielstärke
-Eingabefocus
-Logo einbetten
-
-Essentiell: Liga/Turnier-Framework
+FLIP-Liga
+- Zeilenhintergrund alternierend nach Spielstärke
 - PDF Ergebnisse
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- Rangliste: Spielstärke hervorheben
--- Pyramide
-- PDF Flipperliste
-- kritische Dialoge --> Sicherheitsabfrage mit Eingabe
-Ferner:
-- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
-- Turniername ändern
-- Flipper Abkürzung editierbar
-- leere String in DB speichern?
-- Spieler-Fotos wo?
-- Pyramide
-- Styling allgemein
+- Pyramide?
+- optional: Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
+- optional: Usability - von Admin direkt zurück zum Turnier -> Admin-Rolle raus
+- optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
-Env Variablen in Service-Mode
-Device Phone Support, insbes. Navbar
-
-ferner (falls Zeit ist):
-- Toasts mit Zufallssprüchen nach Matcheingabe
-- Usability: von Admin direkt zurück zum Turnier -> Admin-Rolle raus
-- Mehr Pin-Details: Auflage, Designer, Art Designer, Link zu ipdb
+FLIP-Final
+- Admin: Einstellungen: wieviele im Finale
+- Admin: Spieler einrichten: manuell oder von FLIP-Liga, später nicht änderbar
+- Admin: Runde starten / beenden, implizit Turnier beenden, wenn letzte Runde
+- Admin: Rundenzettel ausdrucken?
+- Admin: PDF Export
+- Liga: Ranking, Darstellung wer zuletzt aufgestiegen
+- Liga: 2 Matches pro Gruppe, Reihenfolge zum Anclicken, mit Admin-Rechten Resultat resetbar

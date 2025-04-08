@@ -3,14 +3,10 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
-	import {
-		InfoCircleSolid,
-		CloseCircleOutline,
-		ExclamationCircleOutline,
-		ThumbsUpOutline
-	} from 'flowbite-svelte-icons';
+	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import { mapTourStatus, mapTourType, getTourTypeMap } from '$lib/TourUtil';
+	import { mapTourStatus, mapTourType, getTourTypeMap, getDefaultSettings } from '$lib/TourUtil';
 	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
@@ -31,7 +27,7 @@
 	let tourToDelete = $state('');
 
 	const verifyTour = () => {
-		if (newTourType === 'fliptwin' || newTourType === 'flipfinal') {
+		if (newTourType === 'fliptwin') {
 			alertMessage = 'Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!';
 			showAlert = true;
 		} else if (!newTourName || !newTourType) {
@@ -47,28 +43,13 @@
 
 	async function createTour() {
 		let id = generateTournamentID(newTourName);
-		let defaultSettings;
-		switch (newTourType) {
-			case 'flipliga':
-				defaultSettings = {
-					baseline: 50,
-					penaltyFirstRound: 5,
-					matchBonus: 1,
-					matchPenalty: 1,
-					minMatchesRound: 1,
-					challengeSame: 1
-				};
-				break;
-			default:
-				defaultSettings = {};
-		}
 		const response = await fetch('/api/tournament', {
 			method: 'POST',
 			body: JSON.stringify({
 				id: id,
 				name: newTourName,
 				type: newTourType,
-				settings: defaultSettings
+				settings: getDefaultSettings(newTourType)
 			}),
 			headers: {
 				'Content-Type': 'application/json',

@@ -4,11 +4,8 @@
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Checkbox, Alert } from 'flowbite-svelte';
-	import {
-		InfoCircleSolid,
-		CloseCircleOutline,
-		ExclamationCircleOutline
-	} from 'flowbite-svelte-icons';
+	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { formatPlayerName } from '$lib/PlayerUtil';
 	import { cleanString } from '$lib/TypeUtil';
