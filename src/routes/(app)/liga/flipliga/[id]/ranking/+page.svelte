@@ -5,6 +5,7 @@
 	import { page } from '$app/state';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
+	import { calcStrength } from '$lib/TourUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { logInfo } from '$lib/LogUtil';
 
@@ -41,6 +42,10 @@
 		return getCountMatches(playerID) + entry.matches;
 	};
 
+	const getRowColor = (i) => {
+		return calcStrength(i+1, 50) % 2 ? "bg-gray-100 dark:bg-gray-700" : "bg-white dark:bg-gray-800";
+	}
+
 	const calcRanking = () => {
 		let ranking = [];
 		if (round) {
@@ -68,7 +73,7 @@
 	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
 	<br />
 
-	<Table striped={true} shadow >
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Spieler</TableHeadCell>
@@ -89,8 +94,8 @@
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
-				<TableBodyRow>
-					<TableBodyCell>{i+1}</TableBodyCell>
+				<TableBodyRow class={getRowColor(i)}>
+					<TableBodyCell>{i + 1}</TableBodyCell>
 					<TableBodyCell>
 						<a href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
 							>{getPlayerName(rank.player, players)}</a
