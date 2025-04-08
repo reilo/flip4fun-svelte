@@ -65,26 +65,13 @@ export const POST = async ({ url, request }) => {
             throw "name is undefined or empty";
         }
 
-        let data = {
-            id: body.id,
-            name: body.name
-        }
-
-        if (body.code) {
-            data.code = body.code;
-        }
-        if (body.manu) {
-            data.manu = body.manu;
-        }
-        if (body.year) {
-            data.year = parseInt(body.year);
-        }
-        if (body.type) {
-            data.type = body.type;
-        }
-        if (body.owner) {
-            data.owner = body.owner;
-        }
+        Object.keys(body).forEach((key)=> {
+            if (key === "year") {
+                data.year = parseInt(body.year);    
+            } else if (["id", "name", "code", "manu", "type", "owner"].includes(key)) {
+                data[key] = body[key];
+            }
+        })
 
         const pin = await prisma.pin.create({
             data

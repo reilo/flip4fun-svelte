@@ -53,17 +53,12 @@ export const POST = async ({ url, request }) => {
             throw "surname are undefined or empty";
         }
 
-        let data = {
-            id: body.id,
-            forename: body.forename,
-            surname: body.surname
-        }
-        if (body.shortname){
-            data.shortname = body.shortname;
-        }
-        if (body.email) {
-            data.email = body.email;
-        }
+        let data = {};
+        Object.keys(body).forEach((key) => {
+            if (["id", "forename", "surname", "shortname", "email"].includes(key)) {
+                data[key] = body[key];
+            }
+        })
 
         const player = await prisma.player.create({
             data

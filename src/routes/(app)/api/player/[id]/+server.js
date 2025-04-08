@@ -8,21 +8,13 @@ export const PUT = async ({ url, params, request }) => {
     try {
         const body = await request.json();
         let data = {};
-        if (body.active != null) {
-            data.active = body.active;
-        }
-        if (body.forename) {
-            data.forename = body.forename;
-        }
-        if (body.surname) {
-            data.surname = body.surname;
-        }
-        if (body.shortname) {
-            data.shortname = body.shortname;
-        }
-        if (body.email) {
-            data.email = body.email;
-        }
+        Object.keys(body).forEach((key) => {
+            if (["active"].includes(key) && body[key] != null) {
+                data[key] = body[key];
+            } else if (["forename", "surname", "shortname", "email"].includes(key)) {
+                data[key] = body[key];
+            }
+        })
         const updatedPlayer = await prisma.player.update({
             where: { id: params.id }, data: data
         });
