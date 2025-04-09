@@ -8,6 +8,7 @@ Foldende Konstanten können bzw. müssen in der Datei .env im Root-Verzeichnis d
  - **VITE_ADMIN_PASSWORD**: Admin-Passwort.
  - **VITE_IMAGE_DIR**: Url zum Bilder-Katalog (für Spieler-Fotos).
  - **VITE_APP_FULL**: wenn nicht gesetzt, läuft die App im Readonly-Modus (für die Web-Version gedacht), andernfalls volle Funktionalität.
+ - **VITE_KEEP_ADMIN**: wenn nicht gesetzt, springt die App in Read-Modus zurück beim Verlassen des Liga-Admin-Bereichs.
 
 # Infos für Entwickler
 

@@ -29,6 +29,9 @@
 
 	const loadPage = (item) => {
 		loading = item.link;
+		if (!import.meta.env.VITE_KEEP_ADMIN && !item.link.startsWith('/admin')) {
+			access.set(ReadAccess);
+		}
 		goto(item.link);
 	};
 

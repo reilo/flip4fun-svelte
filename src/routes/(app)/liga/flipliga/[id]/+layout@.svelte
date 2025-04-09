@@ -18,6 +18,7 @@
 				{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
 				{ link: '/liga/flipliga/' + id + '/draw', name: 'Lostrommel' },
 				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
+				{ link: '/liga/flipliga/' + id + '/extended', name: 'Erweitert' },
 				{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
