@@ -65,6 +65,7 @@ export const POST = async ({ url, request }) => {
             throw "name is undefined or empty";
         }
 
+        let data = {};
         Object.keys(body).forEach((key)=> {
             if (key === "year") {
                 data.year = parseInt(body.year);    
