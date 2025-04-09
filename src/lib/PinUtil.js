@@ -32,3 +32,7 @@ export function getPinTypeMap() {
         { 'name': 'Andere', 'value': 'Other' }
     ]
 }
+
+export function mapPinType(pinType) {
+    return getPinTypeMap().find((item) => item.value === pinType).name;
+}

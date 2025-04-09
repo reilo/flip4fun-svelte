@@ -1,18 +1,18 @@
 import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
-import { getPinName } from "./PinUtil";
+import { getPinName, mapPinType } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from './TypeUtil';
+
+const drawSquare = (doc, x, y, w, h, color) => {
+    doc.setDrawColor(0);
+    doc.setFillColor(color);
+    doc.rect(x, y, w, h, 'F');
+}
 
 export function generateLigaResultsPDF(data) {
 
     const roundNum = data.round.rid.toString();
     const roundDate = mapDate(data.round.created);
-
-    const drawSquare = (x, y, w, h, color) => {
-        doc.setDrawColor(0);
-        doc.setFillColor(color);
-        doc.rect(x, y, w, h, 'F');
-    }
 
     const writeTitle = () => {
         doc.setFontSize(20);
@@ -37,7 +37,7 @@ export function generateLigaResultsPDF(data) {
 
     // Seite 1 - aktueller Tabellenstand mit Details
 
-    drawSquare(5, 5, 200, 30, "0.80");
+    drawSquare(doc, 5, 5, 200, 30, "0.80");
     writeTitle();
     writeMatchSubTitle();
 
@@ -91,7 +91,7 @@ export function generateLigaResultsPDF(data) {
         });
         // alternating background
         if (highlight.includes(i + 1)) {
-            drawSquare(x, y - dy + 2, 190, dy, "0.90");
+            drawSquare(doc, x, y - dy + 2, 190, dy, "0.90");
         }
         // current rank
         doc.text(x, y, (i + 1).toString() + ".");
@@ -125,7 +125,7 @@ export function generateLigaResultsPDF(data) {
     players.forEach((player) => {
         doc.addPage();
 
-        drawSquare(5, 5, 200, 30, "0.80");
+        drawSquare(doc, 5, 5, 200, 30, "0.80");
         writeTitle();
         writePStatSubTitle();
 
@@ -221,4 +221,91 @@ export function generateLigaResultsPDF(data) {
     // Verfügbare Gegener
 
     doc.save(data.tournament.name + " Spieltag " + data.round.rid + '.pdf');
+}
+
+export function generatePinsPDF(pins) {
+
+    const writeTitle = () => {
+        doc.setFontSize(20);
+        doc.text(10, 15, "Pinball Lounge - Flipperliste");
+        doc.setFontSize(16);
+        const dateStrg = "Stand: " + mapDate(new Date);
+        doc.text(200 - doc.getTextWidth(dateStrg), 15, dateStrg);
+    }
+
+    const writePageTitle = (strg) => {
+        doc.setFontSize(16);
+        doc.text(10, 30, strg);
+    }
+
+    const doc = new jsPDF();
+    doc.setFont("times");
+
+    let pageNum = 1;
+
+    drawSquare(doc, 5, 5, 200, 30, "0.80");
+    writeTitle();
+    writePageTitle("Seite " + pageNum++);
+
+    let x = 10;
+    let y = 45;
+    let num = 0;
+
+    let pinTypes = new Map();
+    let pinOwners = new Map();
+
+    doc.setFontSize(12);
+    pins.forEach((pin) => {
+        if (!pin.deleted && pin.id !== 'muma') {
+            num += 1;
+
+            const numStrg = num.toString() + ".";
+            doc.text(x + 10 - doc.getTextWidth(numStrg), y, numStrg);
+            doc.text(x + 15, y, pin.name);
+            doc.text(x + 80, y, pin.type);
+            doc.text(x + 110, y, pin.owner);
+            y += 6;
+
+            pinTypes.set(pin.type, pinTypes.has(pin.type) ? pinTypes.get(pin.type) + 1 : 1);
+            pinOwners.set(pin.owner, pinOwners.has(pin.owner) ? pinOwners.get(pin.owner) + 1 : 1);
+        }
+        if (num > 0 && num % 40 === 0) {
+            // next page
+            doc.addPage();
+            drawSquare(doc, 5, 5, 200, 30, "0.80");
+            writeTitle();
+            writePageTitle("Seite " + pageNum++);
+            y = 45;
+            doc.setFontSize(12);
+        }
+    })
+
+    doc.addPage();
+    drawSquare(doc, 5, 5, 200, 30, "0.80");
+    writeTitle();
+    writePageTitle("Zusammenfassung");
+
+    x = 10;
+    y = 45;
+    doc.setFontSize(14);
+
+    pinOwners.forEach((value, key) => {
+        doc.text(x, y, key);
+        doc.text(x + 45 - doc.getTextWidth(value.toString()), y, value.toString());
+        y += 8
+    })
+
+    // Trennungslinie
+    doc.setLineWidth(0.1);
+    doc.line(x, y, 200, y);
+
+    y += 10;
+
+    pinTypes.forEach((value, key) => {
+        doc.text(x, y, mapPinType(key));
+        doc.text(x + 45 - doc.getTextWidth(value.toString()), y, value.toString());
+        y += 8
+    })
+
+    doc.save("Flipperliste " + mapDate(new Date) + '.pdf');
 }

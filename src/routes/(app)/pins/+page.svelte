@@ -56,8 +56,10 @@
 {/if}
 
 <Heading tag="h5"
-	>Flipperliste - insgesamt {data.pins.length}, spielbereit {data.pins.reduce((sum, pin) => {
-		return sum + (pin.active ? 1 : 0);
+	>Flipperliste - insgesamt {data.pins.reduce((sum, pin) => {
+		return sum + (!pin.deleted && pin.id !== 'muma' ? 1 : 0);
+	}, 0)}, spielbereit {data.pins.reduce((sum, pin) => {
+		return sum + (pin.active && !pin.deleted && pin.id !== 'muma' ? 1 : 0);
 	}, 0)}</Heading
 >
 
@@ -80,7 +82,7 @@
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
-			{#if !pin.deleted}
+			{#if !pin.deleted && pin.id !== 'muma'}
 				<TableBodyRow>
 					<TableBodyCell class="py-2">
 						<div style={getTextStyle(pin.active)}>

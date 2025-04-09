@@ -7,6 +7,7 @@
 	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinManuMap, getPinTypeMap } from '$lib/PinUtil';
+	import { generatePinsPDF } from '$lib/PDFUtil';
 	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
@@ -246,7 +247,7 @@
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
 
-	<Button disabled class="w-fit"
+	<Button on:click={generatePinsPDF(data.pins)} class="w-fit"
 		>PDF Export
 		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
 	</Button>

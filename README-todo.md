@@ -13,7 +13,6 @@ Allgemein
 - Strings lokalisieren / aus Resourcen
 - Eingabefocus
 - Logo einbetten
-- !!!!! PDF Flipperliste
 - kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Turniername ändern
 - leere String in DB speichern?
@@ -25,7 +24,7 @@ Allgemein
 - !!!!! multi-match Handling
 
 FLIP-Liga
-- !!!!! 2004 Ergebnisse eintragen
+- !!!!! 2004 Ergebnisse eintragen...
 - Ergebnis-PDF
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 - Pyramide?
