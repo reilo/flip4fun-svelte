@@ -8,10 +8,10 @@ export function generateLigaResultsPDF(data) {
     const roundNum = data.round.rid.toString();
     const roundDate = mapDate(data.round.created);
 
-    const drawHeaderSquare = () => {
+    const drawSquare = (x, y, w, h, color) => {
         doc.setDrawColor(0);
-        doc.setFillColor("0.80");
-        doc.rect(5, 5, 200, 30, 'F');
+        doc.setFillColor(color);
+        doc.rect(x, y, w, h, 'F');
     }
 
     const writeTitle = () => {
@@ -37,7 +37,7 @@ export function generateLigaResultsPDF(data) {
 
     // Seite 1 - aktueller Tabellenstand mit Details
 
-    drawHeaderSquare();
+    drawSquare(5, 5, 200, 30, "0.80");
     writeTitle();
     writeMatchSubTitle();
 
@@ -77,6 +77,8 @@ export function generateLigaResultsPDF(data) {
 
     doc.setFontSize(13);
     y += 7;
+    const highlight = [2, 3, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 29, 30, 31, 32, 33, 34, 35, 36];
+    let dy = 7;
     rankFinal.forEach((item, i) => {
 
         let initItem;
@@ -87,6 +89,10 @@ export function generateLigaResultsPDF(data) {
                 initItemIndex = i;
             }
         });
+        // alternating background
+        if (highlight.includes(i + 1)) {
+            drawSquare(x, y - dy + 2, 190, dy, "0.90");
+        }
         // current rank
         doc.text(x, y, (i + 1).toString() + ".");
         // player name
@@ -108,8 +114,7 @@ export function generateLigaResultsPDF(data) {
         // total match count
         const matchesStrg = item.matches.toString();
         doc.text(x + 185 - doc.getTextWidth(matchesStrg), y, matchesStrg);
-
-        y += 7.0;
+        y += dy;
     })
 
     // Seite 2 bis n+1 - Spieler-Statistiken
@@ -120,7 +125,7 @@ export function generateLigaResultsPDF(data) {
     players.forEach((player) => {
         doc.addPage();
 
-        drawHeaderSquare();
+        drawSquare(5, 5, 200, 30, "0.80");
         writeTitle();
         writePStatSubTitle();
 

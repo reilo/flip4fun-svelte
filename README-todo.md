@@ -13,7 +13,7 @@ Allgemein
 - Strings lokalisieren / aus Resourcen
 - Eingabefocus
 - Logo einbetten
-- PDF Flipperliste
+- !!!!! PDF Flipperliste
 - kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Turniername ändern
 - leere String in DB speichern?
@@ -21,16 +21,15 @@ Allgemein
 - optional: Spieler-Fotos
 - optional: Flipper Abkürzung editierbar
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
-- !!!!! alle Gäste
+- !!!!! alle Gäste, E-Mail-Adressen, PDF Export
 - !!!!! multi-match Handling
 
 FLIP-Liga
-- !!!!! PDF Ergebnisse --> auf Statistik-Seite, Spezialbehandlung raus
+- !!!!! 2004 Ergebnisse eintragen
+- Ergebnis-PDF
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
--- Rangliste: Spielstärke hervorheben
 - Pyramide?
-- optional: Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
-- !!!!! Usability - von Admin direkt zurück zum Turnier -> Admin-Rolle raus --> env Variable
+- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
