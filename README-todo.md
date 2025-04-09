@@ -13,7 +13,6 @@ Allgemein
 - Strings lokalisieren / aus Resourcen
 - Eingabefocus
 - Logo einbetten
-- Device Phone Support, insbes. Navbar
 - PDF Flipperliste
 - kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Turniername ändern
@@ -22,15 +21,16 @@ Allgemein
 - optional: Spieler-Fotos
 - optional: Flipper Abkürzung editierbar
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
+- !!!!! alle Gäste
+- !!!!! multi-match Handling
 
 FLIP-Liga
-- Zeilenhintergrund alternierend nach Spielstärke
-- PDF Ergebnisse
+- !!!!! PDF Ergebnisse --> auf Statistik-Seite, Spezialbehandlung raus
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- Rangliste: Spielstärke hervorheben
 - Pyramide?
 - optional: Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
-- optional: Usability - von Admin direkt zurück zum Turnier -> Admin-Rolle raus
+- !!!!! Usability - von Admin direkt zurück zum Turnier -> Admin-Rolle raus --> env Variable
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final

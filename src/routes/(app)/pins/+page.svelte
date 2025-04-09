@@ -3,22 +3,15 @@
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
 	import { Heading, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	import Device from 'svelte-device-info';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
 
 	let searchTerm = $state('');
-	let openRow = $state();
-	let details = $state();
 
 	let sortKey = $state('name');
 	let sortDirection = $state(1); // ascending
 	let items = $state(data.pins ? data.pins.slice() : []);
-
-	const toggleRow = (i) => {
-		openRow = openRow === i ? null : i;
-	};
 
 	const sortTable = (key) => {
 		if (sortKey === key) {
@@ -62,7 +55,11 @@
 	<br />
 {/if}
 
-<Heading tag="h5">Flipperliste</Heading>
+<Heading tag="h5"
+	>Flipperliste - insgesamt {data.pins.length}, spielbereit {data.pins.reduce((sum, pin) => {
+		return sum + (pin.active ? 1 : 0);
+	}, 0)}</Heading
+>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
 	<caption
@@ -72,66 +69,41 @@
 			Durchgestrichene Geräte sind derzeit nicht spielbereit.
 			<br />
 			Benutze das Suchfeld oben, um die Liste nach Flippernamen zu filtern.
-			{#if Device.isPhone}
-				<br />
-				Klicke auf eine Zeile, um mehr Informationen über einen Flipper zu erhalten.
-			{/if}
 		</p>
 		<br />
 	</caption>
 	<TableHead>
 		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>
-		{#if !Device.isPhone}
-			<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
-			<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
-			<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
-		{/if}
+		<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
+		<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
+		<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
 			{#if !pin.deleted}
-				<TableBodyRow on:click={() => toggleRow(i)}>
+				<TableBodyRow>
 					<TableBodyCell class="py-2">
 						<div style={getTextStyle(pin.active)}>
 							{pin.name}
 						</div>
 					</TableBodyCell>
-					{#if !Device.isPhone}
-						<TableBodyCell class="py-0">
-							<div style={getTextStyle(pin.active)}>
-								{pin.manu}
-							</div>
-						</TableBodyCell>
-						<TableBodyCell class="py-0">
-							<div style={getTextStyle(pin.active)}>
-								{pin.year}
-							</div>
-						</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<div style={getTextStyle(pin.active)}>
+							{pin.manu}
+						</div>
+					</TableBodyCell>
+					<TableBodyCell class="py-0">
+						<div style={getTextStyle(pin.active)}>
+							{pin.year}
+						</div>
+					</TableBodyCell>
 
-						<TableBodyCell class="py-0">
-							<div style={getTextStyle(pin.active)}>
-								{pin.type}
-							</div>
-						</TableBodyCell>
-					{/if}
+					<TableBodyCell class="py-0">
+						<div style={getTextStyle(pin.active)}>
+							{pin.type}
+						</div>
+					</TableBodyCell>
 				</TableBodyRow>
-				{#if openRow === i && Device.isPhone}
-					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-						<TableBodyCell colspan="2" class="italic indent-4 py-2">
-							Hersteller: {pin.manu}
-						</TableBodyCell>
-					</TableBodyRow>
-					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-						<TableBodyCell colspan="2" class="italic indent-4 py-2">
-							Jahr: {pin.year}
-						</TableBodyCell>
-					</TableBodyRow>
-					<TableBodyRow class="bg-gray-50" on:click={() => (details = pin)}>
-						<TableBodyCell colspan="2" class="italic indent-4 py-2">
-							Plattform: {pin.type}
-						</TableBodyCell>
-					</TableBodyRow>
-				{/if}
 			{/if}
 		{/each}
 	</TableBody>
