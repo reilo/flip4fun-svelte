@@ -134,12 +134,6 @@
 		logInfo('Angelegt: ' + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
 
-		// update data locally
-		//const matches = [...data.round.matches, match];
-		//const round = { ...data.round, matches: matches, cache: cache };
-		//data = { ...data, round: round };
-		//logInfo("new match: matches count = " + data.round.matches.length);
-
 		showSure = newForm = false;
 		resetFormFields();
 	}
@@ -189,22 +183,14 @@
 		logInfo('Gelöscht: ' + matchToDelete.name);
 		invalidateAll();
 
-		// update data locally
-		//const matches = [];
-		//data.round.matches.forEach((match) => {
-		//	if (match.id !== matchToDelete.id) {
-		//		matches.push(match);
-		//	}
-		//});
-		//const round = { ...data.round, matches: matches, cache: cache };
-		//data = { ...data, round: round };
-
 		showSureDelete = false;
 	}
 
 	const pinMap = [];
 	data.pins.forEach((item) => {
-		pinMap.push({ name: item.name, value: item.id });
+		if (pin.active) {
+			pinMap.push({ name: item.name, value: item.id });
+		}
 	});
 
 	let playerMap = [];
@@ -231,7 +217,11 @@
 </script>
 
 <div>
-	<Heading tag="h5">{(tourCompleted ? 'Letzter Spieltag' : 'Aktueller Spieltag' + " - " + matches.length + " Matches")}</Heading>
+	<Heading tag="h5"
+		>{tourCompleted
+			? 'Letzter Spieltag'
+			: 'Aktueller Spieltag' + ' - ' + matches.length + ' Matches'}</Heading
+	>
 	<br />
 
 	{#if addMatchEnabled}

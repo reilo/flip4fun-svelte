@@ -247,9 +247,8 @@
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
 
-	<Button on:click={generatePinsPDF(data.pins)} class="w-fit"
-		>PDF Export
-		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
+	<Button on:click={generatePinsPDF(data.pins)} class="w-fit">
+		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />PDF Export
 	</Button>
 
 	<Modal

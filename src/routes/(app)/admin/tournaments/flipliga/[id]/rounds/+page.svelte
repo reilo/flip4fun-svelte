@@ -69,7 +69,7 @@
 			let penalty = 0;
 			let mismatch = 0;
 			if (nextRound - tournament.settings.penaltyFirstRound >= 0) {
-				mismatch = nextRound;
+				mismatch = nextRound - 1; // mismatch count equals count of alrady played rounds
 				let penaltyFactor = tournament.settings.matchPenalty;
 				if (penaltyFactor < 0) {
 					// player strength should be used instead of fix number, but new player has no strength yet, therefore using 1

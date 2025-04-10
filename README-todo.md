@@ -20,7 +20,6 @@ Allgemein
 - optional: Spieler-Fotos
 - optional: Flipper Abkürzung editierbar
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
-- !!!!! alle Gäste & E-Mail-Adressen eintragen
 
 FLIP-Liga
 - !!!!! 2004 Ergebnisse eintragen...

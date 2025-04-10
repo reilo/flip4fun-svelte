@@ -72,7 +72,7 @@
 		});
 
 		data.players.forEach((item) => {
-			if (!data.tournament.players.includes(item.id)) {
+			if (item.active && !data.tournament.players.includes(item.id)) {
 				const playerName = formatPlayerName(item);
 				unusedPlayers2.push(playerName);
 				playerMap.push({ id: item.id, name: playerName });
@@ -136,9 +136,9 @@
 						on:click={generatePlayersPDF(
 							data.tournament.name + ' - Spieler',
 							data.tournament.players,
-							data.allPlayers
+							data.players
 						)}
-						>PDF Export<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
+						>PDF Export
 					</Button>
 				</Card>
 			</div>

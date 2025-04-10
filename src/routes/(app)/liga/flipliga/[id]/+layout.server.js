@@ -33,7 +33,7 @@ export async function load({ fetch, params }) {
     const playersResponse = await fetch("/api/player", getParms);
     const playersData = await playersResponse.json();
 
-    const pinsResponse = await fetch("/api/pin?active=true", getParms);
+    const pinsResponse = await fetch("/api/pin", getParms);
     const pinsData = await pinsResponse.json();
 
     return {
