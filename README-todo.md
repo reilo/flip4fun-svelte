@@ -20,13 +20,11 @@ Allgemein
 - optional: Spieler-Fotos
 - optional: Flipper Abkürzung editierbar
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
-- !!!!! alle Gäste, E-Mail-Adressen, PDF Export
-- !!!!! multi-match Handling
+- !!!!! alle Gäste & E-Mail-Adressen eintragen
 
 FLIP-Liga
 - !!!!! 2004 Ergebnisse eintragen...
-- Ergebnis-PDF
--- mehrere Seiten pro Spieler (bei vielen Spielen)
+- Ergebnis-PDF -> mehrere Seiten pro Spieler (bei vielen Spielen)
 - Pyramide?
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe

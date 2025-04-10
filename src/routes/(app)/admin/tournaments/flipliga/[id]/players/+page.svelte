@@ -1,7 +1,9 @@
 <script>
 	import { P, Card, Button } from 'flowbite-svelte';
+	import { FilePdfOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
+	import { generatePlayersPDF } from '$lib/PDFUtil';
 
 	let { data } = $props();
 
@@ -128,6 +130,16 @@
 					<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 					<br />
 					<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+					<br />
+					<Button
+						disabled={changed}
+						on:click={generatePlayersPDF(
+							data.tournament.name + ' - Spieler',
+							data.tournament.players,
+							data.players
+						)}
+						>PDF Export<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
+					</Button>
 				</Card>
 			</div>
 		</div>

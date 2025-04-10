@@ -9,37 +9,41 @@ const drawSquare = (doc, x, y, w, h, color) => {
     doc.rect(x, y, w, h, 'F');
 }
 
+const drawTitleSquare = (doc) => {
+    drawSquare(doc, 5, 5, 200, 30, "0.80");
+}
+
+const writeTitle = (doc, title1, title2) => {
+    doc.setFontSize(20);
+    doc.text(10, 15, title1);
+    if (title2) {
+        doc.setFontSize(16);
+        doc.text(200 - doc.getTextWidth(title2), 15, title2);
+    }
+}
+
+const writeSubtitle = (doc, strg) => {
+    doc.setFontSize(16);
+    doc.text(10, 30, strg);
+}
+
+
 export function generateLigaResultsPDF(data) {
-
-    const roundNum = data.round.rid.toString();
-    const roundDate = mapDate(data.round.created);
-
-    const writeTitle = () => {
-        doc.setFontSize(20);
-        doc.text(10, 15, data.tournament.name);
-    }
-
-    const writeMatchSubTitle = () => {
-        doc.setFontSize(16);
-        doc.text(10, 30, "Tabelle nach Spieltag " + roundNum + " (" + roundDate + ")");
-    }
-
-    const writePStatSubTitle = () => {
-        doc.setFontSize(16);
-        doc.text(10, 30, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
-    }
 
     const doc = new jsPDF();
     doc.setFont("times");
+
+    const roundNum = data.round.rid.toString();
+    const roundDate = mapDate(data.round.created);
 
     const rankFinal = data.round.results.rankFinal;
     const rankInit = data.round.settings.rankInit;
 
     // Seite 1 - aktueller Tabellenstand mit Details
 
-    drawSquare(doc, 5, 5, 200, 30, "0.80");
-    writeTitle();
-    writeMatchSubTitle();
+    drawTitleSquare(doc);
+    writeTitle(doc, data.tournament.name);
+    writeSubtitle(doc, "Tabelle nach Spieltag " + roundNum + " (" + roundDate + ")");
 
     let x = 10;
     let y = 45;
@@ -77,6 +81,7 @@ export function generateLigaResultsPDF(data) {
 
     doc.setFontSize(13);
     y += 7;
+    // numbers for alternating background color depending on player strength
     const highlight = [2, 3, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 29, 30, 31, 32, 33, 34, 35, 36];
     let dy = 7;
     rankFinal.forEach((item, i) => {
@@ -125,9 +130,9 @@ export function generateLigaResultsPDF(data) {
     players.forEach((player) => {
         doc.addPage();
 
-        drawSquare(doc, 5, 5, 200, 30, "0.80");
-        writeTitle();
-        writePStatSubTitle();
+        drawTitleSquare(doc);
+        writeTitle(doc, data.tournament.name);
+        writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
 
         // alle Spieltag-Matches ermitteln
         let matches = [];
@@ -225,27 +230,14 @@ export function generateLigaResultsPDF(data) {
 
 export function generatePinsPDF(pins) {
 
-    const writeTitle = () => {
-        doc.setFontSize(20);
-        doc.text(10, 15, "Pinball Lounge - Flipperliste");
-        doc.setFontSize(16);
-        const dateStrg = "Stand: " + mapDate(new Date);
-        doc.text(200 - doc.getTextWidth(dateStrg), 15, dateStrg);
-    }
-
-    const writePageTitle = (strg) => {
-        doc.setFontSize(16);
-        doc.text(10, 30, strg);
-    }
-
     const doc = new jsPDF();
     doc.setFont("times");
 
     let pageNum = 1;
 
-    drawSquare(doc, 5, 5, 200, 30, "0.80");
-    writeTitle();
-    writePageTitle("Seite " + pageNum++);
+    drawTitleSquare(doc);
+    writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+    writeSubtitle(doc, "Seite " + pageNum++);
 
     let x = 10;
     let y = 45;
@@ -263,27 +255,31 @@ export function generatePinsPDF(pins) {
             doc.text(x + 10 - doc.getTextWidth(numStrg), y, numStrg);
             doc.text(x + 15, y, pin.name);
             doc.text(x + 80, y, mapPinType(pin.type));
-            doc.text(x + 110, y, pin.owner);
+            if (pin.owner) {
+                doc.text(x + 110, y, pin.owner);
+            }
             y += 6;
 
             pinTypes.set(pin.type, pinTypes.has(pin.type) ? pinTypes.get(pin.type) + 1 : 1);
-            pinOwners.set(pin.owner, pinOwners.has(pin.owner) ? pinOwners.get(pin.owner) + 1 : 1);
+            if (pin.owner) {
+                pinOwners.set(pin.owner, pinOwners.has(pin.owner) ? pinOwners.get(pin.owner) + 1 : 1);
+            }
         }
         if (num > 0 && num % 40 === 0) {
             // next page
             doc.addPage();
-            drawSquare(doc, 5, 5, 200, 30, "0.80");
-            writeTitle();
-            writePageTitle("Seite " + pageNum++);
+            drawTitleSquare(doc);
+            writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+            writeSubtitle(doc, "Seite " + pageNum++);
             y = 45;
             doc.setFontSize(12);
         }
     })
 
     doc.addPage();
-    drawSquare(doc, 5, 5, 200, 30, "0.80");
-    writeTitle();
-    writePageTitle("Zusammenfassung");
+    drawTitleSquare(doc);
+    writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+    writeSubtitle(doc, "Zusammenfassung");
 
     x = 10;
     y = 45;
@@ -291,7 +287,7 @@ export function generatePinsPDF(pins) {
 
     let owners = [];
     pinOwners.forEach((value, key) => owners.push(key));
-    owners.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
+    owners.sort();
     owners.forEach((owner) => {
         doc.text(x, y, owner);
         const count = pinOwners.get(owner).toString();
@@ -316,4 +312,68 @@ export function generatePinsPDF(pins) {
     })
 
     doc.save("Flipperliste " + mapDate(new Date) + '.pdf');
+}
+
+export function generatePlayersPDF(title, playerIDs, allPlayers) {
+
+    const doc = new jsPDF();
+    doc.setFont("times");
+
+    let pageNum = 1;
+
+    drawTitleSquare(doc);
+    writeTitle(doc, title);
+    writeSubtitle(doc, "Seite " + pageNum++);
+
+    let x = 10;
+    let y = 45;
+    doc.setFontSize(14);
+
+    playerIDs.forEach((id, i) => {
+        const name = getPlayerName(id, allPlayers);
+        doc.text(x, y, name);
+        const email = allPlayers.find((item) => item.id === id).email;
+        if (email) {
+            doc.text(x + 60, y, email);
+        }
+        y += 6;
+        if (i + 1 > 0 && (i + 1) % 40 === 0) {
+            // next page
+            doc.addPage();
+            drawTitleSquare(doc);
+            writeTitle(doc, title);
+            writeSubtitle(doc, "Seite " + pageNum++);
+            y = 45;
+            doc.setFontSize(14);
+        }
+    })
+
+    doc.addPage();
+    drawTitleSquare(doc);
+    writeTitle(doc, title);
+    writeSubtitle(doc, "E-Mail-Verteiler");
+
+    x = 10;
+    y = 45;
+    doc.setFontSize(10);
+
+    let nextEmailStrg = '';
+    let num = 0;
+
+    playerIDs.forEach((id) => {
+        const email = allPlayers.find((item) => item.id === id).email;
+        if (email) {
+            if (num !== 0 && num % 5 === 0) {
+                doc.text(x, y, nextEmailStrg);
+                y += 6;
+                nextEmailStrg = "";
+            }
+            nextEmailStrg += (email + ";");
+        }
+    })
+    if (nextEmailStrg) {
+        doc.text(x, y, nextEmailStrg);
+    }
+
+    doc.save(title + '.pdf');
 }

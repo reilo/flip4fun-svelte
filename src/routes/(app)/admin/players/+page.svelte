@@ -5,10 +5,11 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Checkbox, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { CloseCircleOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { formatPlayerName } from '$lib/PlayerUtil';
 	import { cleanString } from '$lib/TypeUtil';
+	import { generatePlayersPDF } from '$lib/PDFUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);
@@ -242,6 +243,18 @@
 	<br />
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
+	<Button
+		on:click={generatePlayersPDF(
+			'Gästeliste',
+			allPlayers.map((item) => {
+				return item.id;
+			}),
+			allPlayers
+		)}
+		class="w-fit"
+		>PDF Export
+		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
+	</Button>
 
 	<Modal
 		title={playerToUpdate ? 'Spieler bearbeiten' : 'Neuen Spieler anlegen'}
