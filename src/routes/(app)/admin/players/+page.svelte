@@ -66,14 +66,14 @@
 		const id = generatePlayerID();
 		let player = {
 			id: id,
-			forename: formPlayerForename,
-			surname: formPlayerSurname
+			forename: formPlayerForename.trim(),
+			surname: formPlayerSurname.trim()
 		};
 		if (formPlayerShortname) {
-			player.shortname = formPlayerShortname;
+			player.shortname = formPlayerShortname.trim();
 		}
 		if (formPlayerEmail) {
-			player.email = formPlayerEmail;
+			player.email = formPlayerEmail.trim();
 		}
 		const response = await fetch('/api/player/', {
 			method: 'POST',

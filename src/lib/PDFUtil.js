@@ -332,7 +332,9 @@ export function generatePlayersPDF(title, playerIDs, allPlayers) {
     playerIDs.forEach((id, i) => {
         const name = getPlayerName(id, allPlayers);
         doc.text(x, y, name);
-        const email = allPlayers.find((item) => item.id === id).email;
+        console.log(id);
+        const player = allPlayers.find((item) => item.id === id);
+        const email = player ? player.email : "";
         if (email) {
             doc.text(x + 60, y, email);
         }
@@ -355,17 +357,18 @@ export function generatePlayersPDF(title, playerIDs, allPlayers) {
 
     x = 10;
     y = 45;
-    doc.setFontSize(10);
+    doc.setFontSize(8);
 
     let nextEmailStrg = '';
     let num = 0;
 
     playerIDs.forEach((id) => {
-        const email = allPlayers.find((item) => item.id === id).email;
+        const player = allPlayers.find((item) => item.id === id);
+        const email = player ? player.email : "";
         if (email) {
-            if (num !== 0 && num % 5 === 0) {
+            if (num++ % 5 === 0) {
                 doc.text(x, y, nextEmailStrg);
-                y += 6;
+                y += 4;
                 nextEmailStrg = "";
             }
             nextEmailStrg += (email + ";");

@@ -136,7 +136,7 @@
 						on:click={generatePlayersPDF(
 							data.tournament.name + ' - Spieler',
 							data.tournament.players,
-							data.players
+							data.allPlayers
 						)}
 						>PDF Export<FilePdfOutline class="w-3.5 h-3.5 mr-2" />
 					</Button>
