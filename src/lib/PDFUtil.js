@@ -262,7 +262,7 @@ export function generatePinsPDF(pins) {
             const numStrg = num.toString() + ".";
             doc.text(x + 10 - doc.getTextWidth(numStrg), y, numStrg);
             doc.text(x + 15, y, pin.name);
-            doc.text(x + 80, y, pin.type);
+            doc.text(x + 80, y, mapPinType(pin.type));
             doc.text(x + 110, y, pin.owner);
             y += 6;
 
@@ -289,9 +289,13 @@ export function generatePinsPDF(pins) {
     y = 45;
     doc.setFontSize(14);
 
-    pinOwners.forEach((value, key) => {
-        doc.text(x, y, key);
-        doc.text(x + 45 - doc.getTextWidth(value.toString()), y, value.toString());
+    let owners = [];
+    pinOwners.forEach((value, key) => owners.push(key));
+    owners.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
+    owners.forEach((owner) => {
+        doc.text(x, y, owner);
+        const count = pinOwners.get(owner).toString();
+        doc.text(x + 45 - doc.getTextWidth(count), y, count);
         y += 8
     })
 
@@ -301,9 +305,13 @@ export function generatePinsPDF(pins) {
 
     y += 10;
 
-    pinTypes.forEach((value, key) => {
-        doc.text(x, y, mapPinType(key));
-        doc.text(x + 45 - doc.getTextWidth(value.toString()), y, value.toString());
+    let types = [];
+    pinTypes.forEach((value, key) => types.push(key));
+    types.sort((a, b) => (mapPinType(a) > mapPinType(b) ? 1 : mapPinType(a) < mapPinType(b) ? -1 : 0));
+    types.forEach((item) => {
+        doc.text(x, y, mapPinType(item));
+        const count = pinTypes.get(item).toString();
+        doc.text(x + 45 - doc.getTextWidth(count), y, count);
         y += 8
     })
 
