@@ -133,11 +133,12 @@
 					<br />
 					<Button
 						disabled={changed}
-						on:click={generatePlayersPDF(
-							data.tournament.name + ' - Spieler',
-							data.tournament.players,
-							data.players
-						)}
+						on:click={() =>
+							generatePlayersPDF(
+								data.tournament.name + ' - Spieler',
+								data.tournament.players,
+								data.players
+							)}
 						>PDF Export
 					</Button>
 				</Card>

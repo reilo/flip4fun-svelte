@@ -244,13 +244,14 @@
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
 	<Button
-		on:click={generatePlayersPDF(
-			'Gästeliste',
-			allPlayers.map((item) => {
-				return item.id;
-			}),
-			allPlayers
-		)}
+		on:click={() =>
+			generatePlayersPDF(
+				'Gästeliste',
+				allPlayers.map((item) => {
+					return item.id;
+				}),
+				allPlayers
+			)}
 		class="w-fit"
 	>
 		PDF Export

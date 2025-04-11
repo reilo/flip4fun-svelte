@@ -269,6 +269,13 @@ Dabei folgendes beachten:
 -    `minMatchesRound`:   Wie viele Matches muss ein Spieler pro Spieltag spielen?
 -    `penaltyFirstRound`: Ab welcher Runde erfolgen Punktabzüge?
 
+#### Flipfinal
+
+`tournament.settings`
+-    `numFinalists`:      Wieviele Spieler sollen in die Finalebene aufrücken
+-    `pinTypes`:          Welche Art von Flipper sollen beim Double-Match gewählt werden
+                          (0 = beliebig, 1 = 1xDMD, 1xEarly, 2 = mindestens 1xDMD)
+
 ### Tabelle "Round"
 
 `round.settings.rankInit`

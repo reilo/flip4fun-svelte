@@ -29,7 +29,7 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Admin: Einstellungen: wieviele im Finale
+- Admin: Einstellungen: wieviele im Finale, welche Flippertypen
 - Admin: Spieler einrichten: manuell oder von FLIP-Liga, später nicht änderbar
 - Admin: Runde starten / beenden, implizit Turnier beenden, wenn letzte Runde
 - Admin: Rundenzettel ausdrucken?
