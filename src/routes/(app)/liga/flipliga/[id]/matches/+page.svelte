@@ -188,7 +188,7 @@
 
 	const pinMap = [];
 	data.pins.forEach((item) => {
-		if (pin.active) {
+		if (item.active) {
 			pinMap.push({ name: item.name, value: item.id });
 		}
 	});
