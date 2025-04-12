@@ -26,21 +26,23 @@
 		return value ? '' : 'text-decoration: line-through;';
 	};
 
-	let items2 = data.pins ? data.pins.slice() : [];
-	const filtered = items2.filter(
-		(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-	);
-	const sorted = filtered.sort((a, b) => {
-		const aVal = a[sortKey];
-		const bVal = b[sortKey];
-		if (aVal < bVal) {
-			return -sortDirection;
-		} else if (aVal > bVal) {
-			return sortDirection;
-		}
-		return 0;
+	$effect.pre(() => {
+		let items2 = data.pins ? data.pins.slice() : [];
+		const filtered = items2.filter(
+			(pin) => pin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
+		);
+		const sorted = filtered.sort((a, b) => {
+			const aVal = a[sortKey];
+			const bVal = b[sortKey];
+			if (aVal < bVal) {
+				return -sortDirection;
+			} else if (aVal > bVal) {
+				return sortDirection;
+			}
+			return 0;
+		});
+		items = sorted;
 	});
-	items = sorted;
 </script>
 
 {#if showError}
