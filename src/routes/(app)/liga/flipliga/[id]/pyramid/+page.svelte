@@ -1,4 +1,5 @@
 <script>
+	import { Button } from 'flowbite-svelte';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
@@ -9,7 +10,7 @@
 
 	const images = [];
 
-	$effect(() => {
+	const drawPyramid = () => {
 		let ranking = [];
 		if (round) {
 			if (round.status === 'Completed') {
@@ -42,10 +43,10 @@
 		let x = 0,
 			y = 0;
 
-		setTimeout(() => {
+		setInterval(() => {
 			let row = 1;
 			let rowIndex = 1;
-            y = delta;
+			y = delta;
 
 			while (images.length) {
 				images.shift();
@@ -56,19 +57,18 @@
 			ctx.fillStyle = colorDarkGray;
 			ctx.fillRect(0, y - delta, 1240, imageHeigth + 2 * delta);
 
-			ctx.font = imageHeigth/2 + 'px Georgia';
+			ctx.font = imageHeigth / 2 + 'px Georgia';
 
 			ranking.forEach((rank) => {
 				x = ((totalRows - row) / 2 + rowIndex) * (imageWidth + imageHSpacing);
 
 				if (rowIndex === 1) {
 					ctx.fillStyle = colorText;
-					ctx.fillText((totalRows -row + 1).toString(), imageHSpacing, y + imageHeigth/1.75);
+					ctx.fillText((totalRows - row + 1).toString(), imageHSpacing, y + imageHeigth / 1.75);
 				}
 
 				let img = new Image();
 				img.src = imageBaseUrl + rank.player + imageExtension;
-				console.log(img.src);
 				images.push(img);
 				ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
 
@@ -81,11 +81,17 @@
 				} else {
 					rowIndex++;
 				}
-			});
+			}, 2500);
 		});
+	};
+
+	$effect(() => {
+		drawPyramid();
 	});
 </script>
 
 <div>
+	<Button class="w-fit" on:click={() => drawPyramid()}>Aktualisieren</Button>
+	<br /><br />
 	<canvas id="myCanvas" width="1240" height="1200"></canvas>
 </div>
