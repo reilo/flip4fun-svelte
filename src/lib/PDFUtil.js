@@ -165,7 +165,7 @@ export function generateLigaResultsPDF(data) {
         });
 
         // Spielername
-        y = 50;
+        y = 45;
         doc.setFontSize(16);
         doc.text(x, y, getPlayerName(player, data.players));
 
@@ -182,13 +182,13 @@ export function generateLigaResultsPDF(data) {
         doc.text(x + 190 - doc.getTextWidth(penaltyStrg), y, penaltyStrg);
 
         // Trennungslinie
-        y += 5;
+        y += 3;
         doc.setLineWidth(0.1);
         doc.line(x, y, 200, y);
 
         // Liste der Matches
         doc.setFontSize(11);
-        y += 10;
+        y += 8;
         if (!matches.length) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
