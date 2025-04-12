@@ -107,11 +107,12 @@
 			results,
 			cache
 		);
+		invalidateAll();
 
 		startForm = false;
 		startEnabled = endLigaEnabled = pdfEnabled = false;
 		endEnabled = true;
-		invalidateAll();
+
 		startSuccess = true;
 	}
 
@@ -125,21 +126,23 @@
 			tournament.settings
 		);
 		updateRound(round.id, results, {});
+		invalidateAll();
+
 		endForm = false;
 		startEnabled = endLigaEnabled = pdfEnabled = true;
 		endEnabled = false;
 
-		invalidateAll();
 		endSuccess = true;
 	}
 
 	async function endLiga() {
 		updateTournamentStatus(tournament.id, 'Completed');
+		invalidateAll();
+
 		endLigaForm = false;
 		startEnabled = endEnabled = endLigaEnabled = false;
 		pdfEnabled = true;
 
-		invalidateAll();
 		endLigaSuccess = true;
 	}
 
@@ -225,6 +228,16 @@
 			alert(JSON.stringify(result));
 		}
 	}
+
+	const generateResults = () => {
+		generateLigaResultsPDF({
+			pins: data.pins,
+			players: data.players,
+			tournament: data.tournament,
+			round: data.round,
+			rounds: data.rounds
+		});
+	};
 </script>
 
 <div>
@@ -263,9 +276,9 @@
 			Ergebnis-PDF generieren
 		</h5>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das PDF mit allen Statistiken für alle Spieltage.
+			Generiere hier das PDF mit Ergebnissen und Statistiken für alle Spieltage.
 		</p>
-		<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data)} class="w-fit">
+		<Button disabled={!pdfEnabled} on:click={() => generateResults()} class="w-fit">
 			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
 	</Card>
