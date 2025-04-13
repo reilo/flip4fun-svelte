@@ -17,7 +17,6 @@ Allgemein
 - Turniername ändern
 - leere String in DB speichern?
 - Styling allgemein
-- optional: Spieler-Fotos
 - optional: Flipper Abkürzung editierbar
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 

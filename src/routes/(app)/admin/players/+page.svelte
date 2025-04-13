@@ -336,19 +336,20 @@
 
 	<Table shadow hoverable={true}>
 		<TableHead>
-			<TableHeadCell></TableHeadCell>
+			<!--TableHeadCell></TableHeadCell-->
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>E-Mail</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
+			<TableHeadCell>ID</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each allPlayers as player, i}
 				<TableBodyRow>
-					<TableBodyCell class="py-0"
+					<!--TableBodyCell class="py-0"
 						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
-					>
+					-->
 					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
 					<TableBodyCell>{player.email}</TableBodyCell>
 					<TableBodyCell>
@@ -358,6 +359,7 @@
 							<Checkbox on:change={() => updatePlayerStatus(player.id, !player.active)} />
 						{/if}
 					</TableBodyCell>
+					<TableBodyCell>{player.id}</TableBodyCell>
 					<TableBodyCell class="py-0">
 						<Button on:click={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
 					</TableBodyCell>
