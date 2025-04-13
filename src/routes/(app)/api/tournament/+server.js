@@ -26,7 +26,7 @@ export const GET = async ({ url }) => {
             }
         });
         const tournaments = await prisma.tourney.findMany({
-            orderBy: [{ name: 'asc' }],
+            orderBy: [{ created: 'desc' }],
             where: fields
         });
         return new Response(

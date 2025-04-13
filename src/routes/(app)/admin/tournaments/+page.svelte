@@ -6,6 +6,7 @@
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { CloseCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
+	import { mapDate } from '$lib/TypeUtil';
 	import { mapTourStatus, mapTourType, getTourTypeMap, getDefaultSettings } from '$lib/TourUtil';
 	import { cleanString } from '$lib/TypeUtil';
 
@@ -236,41 +237,43 @@
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>
 			<TableHeadCell>Status</TableHeadCell>
+			<TableHeadCell>Datum</TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell></TableHeadCell>
 		</TableHead>
 
 		<TableBody tableBodyClass="divide-y">
 			{#each tournaments as tournament, i}
-				{#if tournament.status !== 'Completed'}
-					<TableBodyRow>
-						<TableBodyCell>
-							{tournament.name}
-						</TableBodyCell>
-						<TableBodyCell>
-							{mapTourType(tournament.type)}
-						</TableBodyCell>
-						<TableBodyCell>
-							{mapTourStatus(tournament.status)}
-						</TableBodyCell>
-						<TableBodyCell>
-							{#if tournament.status === 'Planned' || tournament.status === 'Active'}
-								<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
-									>Bearbeiten</Button
-								>
-							{:else}
-								<Button disabled>Bearbeiten</Button>
-							{/if}
-						</TableBodyCell>
-						<TableBodyCell>
-							{#if tournament.name.includes('Test')}
-								<Button on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
-							{:else}
-								<Button disabled>Löschen</Button>
-							{/if}
-						</TableBodyCell>
-					</TableBodyRow>
-				{/if}
+				<TableBodyRow>
+					<TableBodyCell>
+						{tournament.name}
+					</TableBodyCell>
+					<TableBodyCell>
+						{mapTourType(tournament.type)}
+					</TableBodyCell>
+					<TableBodyCell>
+						{mapTourStatus(tournament.status)}
+					</TableBodyCell>
+					<TableBodyCell>
+						{mapDate(tournament.created)}
+					</TableBodyCell>
+					<TableBodyCell>
+						{#if tournament.status === 'Planned' || tournament.status === 'Active'}
+							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
+								>Bearbeiten</Button
+							>
+						{:else}
+							<Button disabled>Bearbeiten</Button>
+						{/if}
+					</TableBodyCell>
+					<TableBodyCell>
+						{#if tournament.name.toLowerCase().includes('test')}
+							<Button on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
+						{:else}
+							<Button disabled>Löschen</Button>
+						{/if}
+					</TableBodyCell>
+				</TableBodyRow>
 			{/each}
 		</TableBody>
 	</Table>

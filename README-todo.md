@@ -22,9 +22,13 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
-- !!!!! 2004 Ergebnisse eintragen...
 - Ergebnis-PDF -> mehrere Seiten pro Spieler (bei vielen Spielen)
-- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken
+- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken, auch PDF Export
+-- Gesamtspiele
+-- Flipperstatistiken
+-- Ergebnisstatistiken
+-- Grafik Aktivität
+-- Grafik Pins Rangliste
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
