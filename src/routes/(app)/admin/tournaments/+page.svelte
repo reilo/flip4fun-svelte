@@ -258,13 +258,9 @@
 						{mapDate(tournament.created)}
 					</TableBodyCell>
 					<TableBodyCell>
-						{#if tournament.status === 'Planned' || tournament.status === 'Active'}
-							<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
-								>Bearbeiten</Button
-							>
-						{:else}
-							<Button disabled>Bearbeiten</Button>
-						{/if}
+						<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
+							>Öffnen</Button
+						>
 					</TableBodyCell>
 					<TableBodyCell>
 						{#if tournament.name.toLowerCase().includes('test')}

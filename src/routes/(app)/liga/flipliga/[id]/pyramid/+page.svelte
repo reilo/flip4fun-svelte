@@ -43,7 +43,7 @@
 		let x = 0,
 			y = 0;
 
-		setInterval(() => {
+		setTimeout(() => {
 			let row = 1;
 			let rowIndex = 1;
 			y = delta;
@@ -81,7 +81,7 @@
 				} else {
 					rowIndex++;
 				}
-			}, 2500);
+			}, 2000);
 		});
 	};
 
@@ -91,7 +91,7 @@
 </script>
 
 <div>
-	<Button class="w-fit" on:click={() => drawPyramid()}>Aktualisieren</Button>
+	<Button class="w-fit" on:click={() => drawPyramid()}>Neu laden</Button>
 	<br /><br />
 	<canvas id="myCanvas" width="1240" height="1200"></canvas>
 </div>
