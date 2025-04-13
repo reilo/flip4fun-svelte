@@ -11,6 +11,7 @@ const drawSquare = (doc, x, y, w, h, color) => {
 
 const drawTitleSquare = (doc) => {
     drawSquare(doc, 5, 5, 200, 30, "0.80");
+    doc.addImage("/pinlounge.gif", "JPEG", 160, 10, 40, 20);
 }
 
 const writeTitle = (doc, title1, title2) => {
@@ -18,7 +19,7 @@ const writeTitle = (doc, title1, title2) => {
     doc.text(10, 15, title1);
     if (title2) {
         doc.setFontSize(16);
-        doc.text(200 - doc.getTextWidth(title2), 15, title2);
+        doc.text(150 - doc.getTextWidth(title2), 15, title2);
     }
 }
 

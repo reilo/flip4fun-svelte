@@ -12,7 +12,6 @@ Work in progress Tasks
 Allgemein
 - Strings lokalisieren / aus Resourcen
 - Eingabefocus
-- Logo einbetten
 - kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Turniername ändern
 - leere String in DB speichern?

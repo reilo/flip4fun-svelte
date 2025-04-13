@@ -72,6 +72,7 @@
 				>
 			</form>
 		</Modal>
-		<DarkMode />
+		<DarkMode />					
+		<img src="/pinlounge_trans.gif" width=128 alt="Logo" />
 	</Navbar>
 </header>
