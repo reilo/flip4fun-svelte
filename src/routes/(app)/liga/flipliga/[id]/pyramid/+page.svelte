@@ -28,7 +28,7 @@
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
-		const imageBaseUrl = import.meta.env.VITE_IMAGE_DIR;
+		const imageBaseUrl = "/photos/";
 		const imageExtension = '.jpg';
 		const imageWidth = 92;
 		const imageHeigth = imageWidth * 1.33;

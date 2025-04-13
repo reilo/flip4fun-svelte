@@ -348,7 +348,7 @@
 			{#each allPlayers as player, i}
 				<TableBodyRow>
 					<!--TableBodyCell class="py-0"
-						><Avatar src={import.meta.env.VITE_IMAGE_DIR + player.id + '.jpg'} /></TableBodyCell
+						><Avatar src={'/photos/' + player.id + '.jpg'} /></TableBodyCell
 					-->
 					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
 					<TableBodyCell>{player.email}</TableBodyCell>
