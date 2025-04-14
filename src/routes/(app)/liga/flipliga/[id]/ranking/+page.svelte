@@ -3,12 +3,14 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/state';
-	import Device from 'svelte-device-info';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { calcStrength } from '$lib/TourUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { logInfo } from '$lib/LogUtil';
+
+	let isPhone = $derived(innerWidth.current <= 480);
 
 	let { data } = $props();
 
@@ -80,20 +82,20 @@
 		<TableHead>
 			<TableHeadCell></TableHeadCell>
 			<TableHeadCell>Spieler</TableHeadCell>
-			{#if !tourCompleted && !Device.isPhone}
+			{#if !tourCompleted && !isPhone}
 				<TableHeadCell class="text-center">Spiel<br />stärke</TableHeadCell>
 			{/if}
-			{#if !tourCompleted && !Device.isPhone}
+			{#if !tourCompleted && !isPhone}
 				<TableHeadCell class="text-center">Tendenz</TableHeadCell>
 			{/if}
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
-			{#if !tourCompleted && !Device.isPhone}
+			{#if !tourCompleted && !isPhone}
 				<TableHeadCell class="text-center">Punkt<br />gewinn</TableHeadCell>
 			{/if}
-			{#if !tourCompleted && !Device.isPhone}
+			{#if !tourCompleted && !isPhone}
 				<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
 			{/if}
-			{#if !Device.isPhone}
+			{#if !isPhone}
 				<TableHeadCell class="text-center">Matches<br />Gesamt</TableHeadCell>
 			{/if}
 		</TableHead>
@@ -106,12 +108,12 @@
 							>{getPlayerName(rank.player, players)}</a
 						>
 					</TableBodyCell>
-					{#if !tourCompleted && !Device.isPhone}
+					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">
 							{getStrength(rank.player)}
 						</TableBodyCell>
 					{/if}
-					{#if !tourCompleted && !Device.isPhone}
+					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">
 							{#if rank.rankChange < 0}
 								<div style="color:red">
@@ -129,17 +131,17 @@
 					<TableBodyCell tdClass="text-center">
 						{roundNumberToStrg(rank.points)}
 					</TableBodyCell>
-					{#if !tourCompleted && !Device.isPhone}
+					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">
 							{roundNumberToStrg(getPlayerScoring(rank.player))}
 						</TableBodyCell>
 					{/if}
-					{#if !tourCompleted && !Device.isPhone}
+					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">
 							{getCountMatches(rank.player)}
 						</TableBodyCell>
 					{/if}
-					{#if !Device.isPhone}
+					{#if !isPhone}
 						<TableBodyCell tdClass="text-center">
 							{getTotalCountMatches(rank.player)}
 						</TableBodyCell>

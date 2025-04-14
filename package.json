@@ -40,6 +40,7 @@
 		"flowbite-svelte-icons": "^2.0.3",
 		"jspdf": "^3.0.1",
 		"svelte-device-info": "^1.0.0",
+		"svelte-media-queries": "^1.6.2",
 		"tailwind-merge": "^3.0.2",
 		"vitest": "^3.0.9"
 	}

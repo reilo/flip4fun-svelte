@@ -3,7 +3,7 @@
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
 	import { Heading, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	import Device from 'svelte-device-info';
+	import { innerWidth } from 'svelte/reactivity/window';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
@@ -13,6 +13,8 @@
 	let sortKey = $state('name');
 	let sortDirection = $state(1); // ascending
 	let items = $state(data.pins ? data.pins.slice() : []);
+
+	let isPhone = $derived(innerWidth.current <= 480);
 
 	const sortTable = (key) => {
 		if (sortKey === key) {
@@ -80,7 +82,7 @@
 	<TableHead>
 		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>
 		<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
-		{#if !Device.isPhone}
+		{#if !isPhone}
 			<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
 			<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
 		{/if}
@@ -99,7 +101,7 @@
 							{pin.manu}
 						</div>
 					</TableBodyCell>
-					{#if !Device.isPhone}
+					{#if !isPhone}
 						<TableBodyCell class="py-0">
 							<div style={getTextStyle(pin.active)}>
 								{pin.year}
