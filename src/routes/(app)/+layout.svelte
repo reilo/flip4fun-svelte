@@ -37,11 +37,11 @@
 {#snippet headerLink(d)}
 	<NavLi>
 		{#if loading === d.link}
-			<Button outline >
+			<Button size="sm" outline >
 				<Spinner class="me-3" size="4" color="white" />Laden ...
 			</Button>
 		{:else}
-			<Button outline on:click={() => loadPage(d)}>{d.name}</Button>
+			<Button size="sm" outline on:click={() => loadPage(d)}>{d.name}</Button>
 		{/if}
 	</NavLi>
 {/snippet}

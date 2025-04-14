@@ -3,6 +3,7 @@
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
 	import { Heading, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+	import Device from 'svelte-device-info';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
@@ -72,15 +73,17 @@
 		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
 			Durchgestrichene Geräte sind derzeit nicht spielbereit.
 			<br />
-			Benutze das Suchfeld oben, um die Liste nach Flippernamen zu filtern.
+			Klicke die Spaltentitel an zum Sortieren.
 		</p>
 		<br />
 	</caption>
 	<TableHead>
 		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>
 		<TableHeadCell on:click={() => sortTable('manu')}>Hersteller</TableHeadCell>
-		<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
-		<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
+		{#if !Device.isPhone}
+			<TableHeadCell on:click={() => sortTable('year')}>Jahr</TableHeadCell>
+			<TableHeadCell on:click={() => sortTable('type')}>Plattform</TableHeadCell>
+		{/if}
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each items as pin, i}
@@ -96,17 +99,18 @@
 							{pin.manu}
 						</div>
 					</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<div style={getTextStyle(pin.active)}>
-							{pin.year}
-						</div>
-					</TableBodyCell>
-
-					<TableBodyCell class="py-0">
-						<div style={getTextStyle(pin.active)}>
-							{pin.type}
-						</div>
-					</TableBodyCell>
+					{#if !Device.isPhone}
+						<TableBodyCell class="py-0">
+							<div style={getTextStyle(pin.active)}>
+								{pin.year}
+							</div>
+						</TableBodyCell>
+						<TableBodyCell class="py-0">
+							<div style={getTextStyle(pin.active)}>
+								{pin.type}
+							</div>
+						</TableBodyCell>
+					{/if}
 				</TableBodyRow>
 			{/if}
 		{/each}

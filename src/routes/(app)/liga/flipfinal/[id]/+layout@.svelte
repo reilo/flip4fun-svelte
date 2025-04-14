@@ -5,6 +5,7 @@
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
+	import Device from 'svelte-device-info';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data, children } = $props();
@@ -41,11 +42,13 @@
 {#snippet headerLink(d)}
 	<NavLi>
 		{#if loading === d.link}
-			<Button outline>
+			<Button size={Device.isPhone ? 'xs' : 'sm'} outline>
 				<Spinner class="me-3" size="4" color="white" />Laden ...
 			</Button>
 		{:else}
-			<Button outline on:click={() => loadPage(d)}>{d.name}</Button>
+			<Button size={Device.isPhone ? 'xs' : 'sm'} outline on:click={() => loadPage(d)}
+				>{d.name}</Button
+			>
 		{/if}
 	</NavLi>
 {/snippet}
