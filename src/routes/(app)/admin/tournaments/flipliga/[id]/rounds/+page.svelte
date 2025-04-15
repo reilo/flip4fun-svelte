@@ -136,7 +136,13 @@
 	}
 
 	async function endLiga() {
-		updateTournamentStatus(tournament.id, 'Completed');
+		let rankFinal = [];
+		round.results.rankFinal.forEach((item) => {
+			rankFinal.push(item.player);
+		});
+		const results = { rankFinal: rankFinal };
+
+		updateTournamentStatus(tournament.id, 'Completed', results);
 		invalidateAll();
 
 		endLigaForm = false;
@@ -212,11 +218,12 @@
 		}
 	}
 
-	async function updateTournamentStatus(tid, status) {
+	async function updateTournamentStatus(tid, status, results) {
 		const response = await fetch('/api/tournament/' + tid, {
 			method: 'PUT',
 			body: JSON.stringify({
-				status: status
+				status: status,
+				results: results
 			}),
 			headers: {
 				'Content-Type': 'application/json',
