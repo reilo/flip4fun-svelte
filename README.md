@@ -9,7 +9,33 @@ Foldende Konstanten können bzw. müssen in der Datei .env im Root-Verzeichnis d
  - **VITE_APP_FULL**: wenn nicht gesetzt, läuft die App im Readonly-Modus (für die Web-Version gedacht), andernfalls volle Funktionalität.
  - **VITE_KEEP_ADMIN**: wenn nicht gesetzt, springt die App in Read-Modus zurück beim Verlassen des Liga-Admin-Bereichs.
 
+## Datenbank
+
+Alle Daten werden in der lokalen Postgres-Datenbank gespeichert. Die Umgebungsvariable ist entsprechend - siehe oben - auf localhost gesetzt.
+
+Für die Web-Version der App müssen die Daten manuell in die unter NeonDB gehosteten Datenbank importiert werden. Die benötigte Url steht ebenfalls in der env-Datei (auskommentiert).
+
+Es ist zu empfehlen, regelmäßig manuell ein Backup der Datenbank zu erstellen bzw. die Tabellen nach csv zu exportieren. Vor allem nach einem abgeschlossenen Spieltag sollte das gemacht werden. Anleitung siehe weiter unten.
+
+## Applikation starten
+
+Die App läuft normalerweise unter localhost:5173. Ein entsprechender Service ist eingerichtet.
+
+Sollte sie nicht laufen, kann sie aus dem Entwicklungsverzeichnis 'flip4fun-svelte' heraus durch das Kommando 'npm run' gestartet werden.
+
 # Infos für Entwickler
+
+## Resourcen
+
+Svelte: https://svelte.dev/docs/svelte/overview
+
+Svelte Kit: https://svelte.dev/docs/kit/introduction
+
+Flowbite Svelte: https://flowbite-svelte.com/docs/pages/introduction
+
+Tailwind CSS: https://tailwindcss.com/docs/styling-with-utility-classes
+
+Markdown: https://www.markdownguide.org/cheat-sheet/#overview
 
 ## svelte-Projekte
 
@@ -169,7 +195,7 @@ import "../app.css";
 
 ## Flowbite
 
-### Install Flawbite
+### Install Flowbite
 
 ```bash
 npm install flowbite flowbite-svelte tailwind-merge @popperjs/core

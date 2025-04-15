@@ -1,9 +1,3 @@
-Benutzer-Dokumentation
-- Wo Datenbank? Wie Daten bearbeiten? Backup erstellen.
-- Wie lokal starten?
-- App als Service starten
-- Env Variablen in Service-Mode
-
 Work in progress Tasks
 - Code kommentieren...
 - Fehlerbehandlung...
@@ -30,7 +24,6 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Admin: Einstellungen: wieviele im Finale, welche Flippertypen
 - Admin: Spieler einrichten: manuell oder von FLIP-Liga, später nicht änderbar
 - Admin: Runde starten / beenden, implizit Turnier beenden, wenn letzte Runde
 - Admin: Rundenzettel ausdrucken?
