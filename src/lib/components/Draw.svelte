@@ -4,8 +4,8 @@
 	import { SearchSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
 	import { logInfo } from '$lib/LogUtil';
 
-	let { myData } = $props();
-	let showError = $derived(!myData || !myData.pins);
+	let { data } = $props();
+	let showError = $derived(!data || !data.pins);
 
 	let em = $state(true);
 	let ee = $state(true);
@@ -20,7 +20,7 @@
 		progress = true;
 		let newPin;
 		let timeout = 1500;
-		let items = myData.pins.filter(
+		let items = data.pins.filter(
 			(pin) =>
 				pin.active &&
 				((em ? ['EM'].includes(pin.type) : false) ||
@@ -50,9 +50,9 @@
 		<InfoCircleSolid slot="icon" class="w-5 h-5" />
 		<span class="font-medium">Interner Fehler!</span>
 		<br />
-		{myData.message}
+		{data.message}
 		<br />
-		{myData.error}
+		{data.error}
 	</Alert>
 	<br />
 {/if}

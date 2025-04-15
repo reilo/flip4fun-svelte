@@ -3,4 +3,4 @@
 	let { data } = $props();
 </script>
 
-<Draw myData={data} />
+<Draw data={data} />
