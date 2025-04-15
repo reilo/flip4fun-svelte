@@ -3,14 +3,14 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/state';
-	import { innerWidth } from 'svelte/reactivity/window';
+	import { innerWidth, devicePixelRatio } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { calcStrength } from '$lib/TourUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { logInfo } from '$lib/LogUtil';
 
-	let isPhone = $derived(innerWidth.current <= 480);
+	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 480);
 
 	let { data } = $props();
 

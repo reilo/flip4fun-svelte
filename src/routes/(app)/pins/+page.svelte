@@ -3,7 +3,7 @@
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
 	import { Heading, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	import { innerWidth } from 'svelte/reactivity/window';
+	import { innerWidth, devicePixelRatio } from 'svelte/reactivity/window';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.pins);
@@ -14,7 +14,7 @@
 	let sortDirection = $state(1); // ascending
 	let items = $state(data.pins ? data.pins.slice() : []);
 
-	let isPhone = $derived(innerWidth.current <= 480);
+	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 480);
 
 	const sortTable = (key) => {
 		if (sortKey === key) {

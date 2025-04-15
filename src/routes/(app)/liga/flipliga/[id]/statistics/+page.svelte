@@ -4,13 +4,13 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Label, Select } from 'flowbite-svelte';
 	import { page } from '$app/state';
-	import { innerWidth } from 'svelte/reactivity/window';
+	import { innerWidth, devicePixelRatio } from 'svelte/reactivity/window';
 	import { mapDate } from '$lib/TypeUtil';
 	import { getPinName } from '$lib/PinUtil';
 	import { sortPlayerIDs } from '$lib/PlayerUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 
-	let isPhone = $derived(innerWidth.current <= 480);
+	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 480);
 
 	let { data } = $props();
 
@@ -110,9 +110,9 @@
 			{#if !isPhone}
 				<TableHeadCell class="text-center">Datum</TableHeadCell>
 			{/if}
-			<TableHeadCell class="text-right">{isPhone ? "Sp. 1" : "Spieler 1"}</TableHeadCell>
+			<TableHeadCell class="text-right">{isPhone ? 'Sp. 1' : 'Spieler 1'}</TableHeadCell>
 			<TableHeadCell class="text-center"></TableHeadCell>
-			<TableHeadCell class="text-left">{isPhone ? "Sp. 2" : "Spieler 2"}</TableHeadCell>
+			<TableHeadCell class="text-left">{isPhone ? 'Sp. 2' : 'Spieler 2'}</TableHeadCell>
 			<TableHeadCell class="text-center">Sätze</TableHeadCell>
 			{#if !isPhone}
 				<TableHeadCell class="text-center">Flipper</TableHeadCell>

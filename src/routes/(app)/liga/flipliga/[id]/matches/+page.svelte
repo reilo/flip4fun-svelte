@@ -5,7 +5,7 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
-	import { innerWidth } from 'svelte/reactivity/window';
+	import { innerWidth, devicePixelRatio } from 'svelte/reactivity/window';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { calcPoints } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
@@ -13,7 +13,7 @@
 	import { getPinName } from '$lib/PinUtil';
 	import { logInfo } from '$lib/LogUtil';
 
-	let isPhone = $derived(innerWidth.current <= 480);
+	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 480);
 
 	let { data } = $props();
 
