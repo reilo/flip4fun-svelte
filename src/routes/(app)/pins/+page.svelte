@@ -14,7 +14,7 @@
 	let sortDirection = $state(1); // ascending
 	let items = $state(data.pins ? data.pins.slice() : []);
 
-	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 480);
+	let isPhone = $derived(innerWidth.current / devicePixelRatio.current <= 320);
 
 	const sortTable = (key) => {
 		if (sortKey === key) {
