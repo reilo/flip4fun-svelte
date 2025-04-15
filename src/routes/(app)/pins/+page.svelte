@@ -1,7 +1,7 @@
 <script>
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { TableHead, TableHeadCell, TableSearch } from 'flowbite-svelte';
-	import { Heading, Alert } from 'flowbite-svelte';
+	import { Heading, Alert, P } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
 	import { innerWidth, devicePixelRatio } from 'svelte/reactivity/window';
 
@@ -67,6 +67,9 @@
 		return sum + (pin.active && !pin.deleted && pin.id !== 'muma' ? 1 : 0);
 	}, 0)}</Heading
 >
+
+<P>innerWidth = {innerWidth.current}</P>
+<P>devicePixelRatio = {devicePixelRatio.current}</P>
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
 	<caption
