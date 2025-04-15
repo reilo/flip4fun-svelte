@@ -5,12 +5,15 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { calcPoints } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
 	import { logInfo } from '$lib/LogUtil';
+
+	let isPhone = $derived(innerWidth.current <= 480);
 
 	let { data } = $props();
 
@@ -38,8 +41,8 @@
 	const tourCompleted = data.tournament.status === 'Completed';
 	const settings = data.tournament.settings;
 
-	const getPlayerName = (id) => {
-		return _getPlayerName(id, data.players);
+	const getPlayerName = (id, short = false) => {
+		return _getPlayerName(id, data.players, short);
 	};
 
 	const getStrength = (playerName) => {
@@ -324,44 +327,56 @@
 			<TableHeadCell>Spieler 1</TableHeadCell>
 			<TableHeadCell>Spieler 2</TableHeadCell>
 			<TableHeadCell>Sätze</TableHeadCell>
-			<TableHeadCell>Punkte</TableHeadCell>
-			<TableHeadCell>Flipper</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
+			{#if !isPhone}
+				<TableHeadCell>Punkte</TableHeadCell>
+				<TableHeadCell>Flipper</TableHeadCell>
+				<TableHeadCell></TableHeadCell>
+			{/if}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each [...matches].reverse() as match, i}
 				<TableBodyRow>
 					<TableBodyCell>
 						<div style={getPlayer1ColorStyle(match)}>
-							{getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}
+							{#if isPhone}
+								{getPlayerName(match.player1, true)}
+							{:else}
+								{getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}
+							{/if}
 						</div>
 					</TableBodyCell>
 					<TableBodyCell>
 						<div style={getPlayer2ColorStyle(match)}>
-							{getPlayerName(match.player2) + ' (' + getStrength(match.player2) + ')'}
+							{#if isPhone}
+								{getPlayerName(match.player2, true)}
+							{:else}
+								{getPlayerName(match.player2) + ' (' + getStrength(match.player2) + ')'}
+							{/if}
 						</div>
 					</TableBodyCell>
 					<TableBodyCell align="left">
 						{formatResultString(match.score1, match.score2)}
 					</TableBodyCell>
-					<TableBodyCell align="left">
-						{formatResultString(
-							roundNumberToStrg(getPoints(match, 1)),
-							roundNumberToStrg(getPoints(match, 2))
-						)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{getPinName(match.pin, data.pins)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if accessValue >= AdminAccess}
-							{#if data.round.status === 'Active'}
-								<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
-							{:else}
-								<Button disabled size="xs">Löschen</Button>
+					{#if !isPhone}
+						<TableBodyCell align="left">
+							{formatResultString(
+								roundNumberToStrg(getPoints(match, 1)),
+								roundNumberToStrg(getPoints(match, 2))
+							)}
+						</TableBodyCell>
+						<TableBodyCell>
+							{getPinName(match.pin, data.pins)}
+						</TableBodyCell>
+						<TableBodyCell>
+							{#if accessValue >= AdminAccess}
+								{#if data.round.status === 'Active'}
+									<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
+								{:else}
+									<Button disabled size="xs">Löschen</Button>
+								{/if}
 							{/if}
-						{/if}
-					</TableBodyCell>
+						</TableBodyCell>
+					{/if}
 				</TableBodyRow>
 			{/each}
 		</TableBody>

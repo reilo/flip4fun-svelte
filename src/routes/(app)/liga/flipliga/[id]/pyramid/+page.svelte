@@ -1,8 +1,12 @@
 <script>
 	import { Button } from 'flowbite-svelte';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 
 	let { data } = $props();
+
+	let hsize = $derived(innerWidth.current);
+	let vsize = $derived(innerWidth.current * 0.9);
 
 	const round = $state(data.round);
 	const players = $state(data.players);
@@ -28,22 +32,25 @@
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
-		const imageBaseUrl = "/photos/";
+		let index = 0;
+		index = hsize <= 640 ? 0 : hsize <= 800 ? 1 : hsize <= 1024 ? 2 : hsize <= 1280 ? 3 : 4;
+
+		const imageBaseUrl = '/photos/';
 		const imageExtension = '.jpg';
-		const imageWidth = 92;
+		const imageWidth = [36, 48, 60, 78, 96][index];
 		const imageHeigth = imageWidth * 1.33;
-		const imageHSpacing = 48;
-		const imageVSpacing = 10;
+		const imageHSpacing = [18, 24, 30, 39, 48][index];
+		const imageVSpacing = [3, 5, 6, 8, 10][index];
 		const totalRows = 8;
 		const colorLightGray = '#eeeeee';
 		const colorDarkGray = '#dddddd';
 		const colorText = 'black';
-		const delta = 3;
+		const delta = [2, 2, 3, 3, 3][index];
 
 		let x = 0,
 			y = 0;
 
-		setTimeout(() => {
+		const interval = setInterval(() => {
 			let row = 1;
 			let rowIndex = 1;
 			y = delta;
@@ -52,10 +59,10 @@
 				images.shift();
 			}
 
-			ctx.clearRect(0, 0, 1240, 1200);
+			ctx.clearRect(0, 0, hsize, vsize);
 
 			ctx.fillStyle = colorDarkGray;
-			ctx.fillRect(0, y - delta, 1240, imageHeigth + 2 * delta);
+			ctx.fillRect(0, y - delta, hsize, imageHeigth + 2 * delta);
 
 			ctx.font = imageHeigth / 2 + 'px Georgia';
 
@@ -81,8 +88,11 @@
 				} else {
 					rowIndex++;
 				}
-			}, 2000);
+			}, 1000);
 		});
+		setTimeout(() => {
+			clearInterval(interval);
+		}, 3000);
 	};
 
 	$effect(() => {
@@ -93,5 +103,5 @@
 <div>
 	<Button class="w-fit" on:click={() => drawPyramid()}>Neu laden</Button>
 	<br /><br />
-	<canvas id="myCanvas" width="1240" height="1200"></canvas>
+	<canvas id="myCanvas" width={hsize} height={vsize}></canvas>
 </div>

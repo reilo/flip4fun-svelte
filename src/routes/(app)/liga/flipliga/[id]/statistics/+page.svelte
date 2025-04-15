@@ -4,10 +4,13 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Label, Select } from 'flowbite-svelte';
 	import { page } from '$app/state';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { mapDate } from '$lib/TypeUtil';
 	import { getPinName } from '$lib/PinUtil';
 	import { sortPlayerIDs } from '$lib/PlayerUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
+
+	let isPhone = $derived(innerWidth.current <= 480);
 
 	let { data } = $props();
 
@@ -25,8 +28,8 @@
 	const tourPlayers = data.tournament.players;
 	sortPlayerIDs(tourPlayers, allPlayers);
 
-	const getPlayerName = (player) => {
-		return _getPlayerName(player, allPlayers);
+	const getPlayerName = (player, short) => {
+		return _getPlayerName(player, allPlayers, short);
 	};
 
 	let playerMap = [];
@@ -99,13 +102,21 @@
 {#if selected}
 	<Table shadow hoverable={true}>
 		<TableHead>
-			<TableHeadCell class="text-center">Spieltag</TableHeadCell>
-			<TableHeadCell class="text-center">Datum</TableHeadCell>
-			<TableHeadCell class="text-right">Spieler 1</TableHeadCell>
+			{#if isPhone}
+				<TableHeadCell class="text-center">Spiel<br />tag</TableHeadCell>
+			{:else}
+				<TableHeadCell class="text-center">Spieltag</TableHeadCell>
+			{/if}
+			{#if !isPhone}
+				<TableHeadCell class="text-center">Datum</TableHeadCell>
+			{/if}
+			<TableHeadCell class="text-right">{isPhone ? "Sp. 1" : "Spieler 1"}</TableHeadCell>
 			<TableHeadCell class="text-center"></TableHeadCell>
-			<TableHeadCell class="text-left">Spieler 2</TableHeadCell>
+			<TableHeadCell class="text-left">{isPhone ? "Sp. 2" : "Spieler 2"}</TableHeadCell>
 			<TableHeadCell class="text-center">Sätze</TableHeadCell>
-			<TableHeadCell class="text-center">Flipper</TableHeadCell>
+			{#if !isPhone}
+				<TableHeadCell class="text-center">Flipper</TableHeadCell>
+			{/if}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#if !matches.length}
@@ -116,16 +127,18 @@
 						<TableBodyCell tdClass="text-center">
 							{match.round}
 						</TableBodyCell>
-						<TableBodyCell tdClass="text-center">
-							{mapDate(match.created)}
-						</TableBodyCell>
+						{#if !isPhone}
+							<TableBodyCell tdClass="text-center">
+								{mapDate(match.created)}
+							</TableBodyCell>
+						{/if}
 						<TableBodyCell tdClass="text-right">
 							<div
 								style={match.score1 > match.score2
 									? 'color:green; text-decoration:underline;'
 									: 'color:default;'}
 							>
-								{getPlayerName(match.player1)}
+								{getPlayerName(match.player1, isPhone)}
 							</div>
 						</TableBodyCell>
 						<TableBodyCell></TableBodyCell>
@@ -135,15 +148,17 @@
 									? 'color:green; text-decoration:underline;'
 									: 'color:default;'}
 							>
-								{getPlayerName(match.player2)}
+								{getPlayerName(match.player2, isPhone)}
 							</div>
 						</TableBodyCell>
 						<TableBodyCell tdClass="text-center">
 							{match.score1 + ' - ' + match.score2}
 						</TableBodyCell>
-						<TableBodyCell tdClass="text-center">
-							{getPinName(match.pin, data.pins)}
-						</TableBodyCell>
+						{#if !isPhone}
+							<TableBodyCell tdClass="text-center">
+								{getPinName(match.pin, data.pins)}
+							</TableBodyCell>
+						{/if}
 					</TableBodyRow>
 				{/each}
 			{/if}

@@ -9,13 +9,14 @@ export function sortPlayerIDs(playerIDs, allPlayers) {
     });
 }
 
-export function getPlayerName(id, allPlayers) {
+export function getPlayerName(id, allPlayers, short = false) {
     const player = allPlayers.find((item) => item.id === id);
-    return formatPlayerName(player, id);
+    return formatPlayerName(player, id, short);
 }
 
-export function formatPlayerName(player, id) {
-    return player ? `${player.forename} ${player.surname}` : `Unbekannt (${id})`;
+export function formatPlayerName(player, id, short = false) {
+    const lastName = short ? player.surname[0] + "." : player.surname;
+    return player ? `${player.forename} ${lastName}` : `Unbekannt (${id})`;
 }
 
 export function formatPlayerNameExt(player, id) {
