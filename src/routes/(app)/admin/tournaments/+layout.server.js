@@ -11,5 +11,5 @@ export async function load({ fetch }) {
     const response = await fetch("/api/tournament", getParms);
     const responseData = await response.json();
 
-    return responseData;
+    return { tournaments: responseData.tournaments };
 }

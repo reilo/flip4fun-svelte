@@ -1,13 +1,28 @@
 <script>
-	import { P, Card, Button } from 'flowbite-svelte';
+	import { P, Card, Button, Label, Select, Modal } from 'flowbite-svelte';
+	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 	import { generatePlayersPDF } from '$lib/PDFUtil';
 
-	let { tournament, allPlayers, description, addEnabled, delEnabled, update } = $props();
+	let {
+		tournament,
+		tournaments,
+		allPlayers,
+		description,
+		addEnabled,
+		delEnabled,
+		importFrom,
+		update
+	} = $props();
 
 	let usedPlayers = $state([]);
 	let unusedPlayers = $state([]);
 	let changed = $state();
+
+	let showSelect = $state(false);
+	let showNone = $state(false);
+	let tourSelect = $state([]);
+	let tourSelected = $state('');
 
 	let playerMap = [];
 
@@ -40,6 +55,37 @@
 			tournament.players = usedPlayerIDs;
 		}
 	}
+
+	const prepareImport = () => {
+		tourSelect = [];
+		tournaments.forEach((tournament) => {
+			if (tournament.type === importFrom && tournament.status === 'Completed') {
+				tourSelect.push({ value: tournament.id, name: tournament.name });
+			}
+		});
+		console.log(tourSelect);
+		if (tourSelect.length > 0) {
+			showSelect = true;
+		} else {
+			showNone = true;
+		}
+	};
+
+	const executeImport = () => {
+		usedPlayers.splice(0, usedPlayers.length);
+		const tournament = tournaments.find((item) => item.id === tourSelected);
+		tournament.results.rankFinal.forEach((item) => {
+			usedPlayers.push(item);
+			const unused = unusedPlayers.indexOf(item);
+			if (unused > -1) {
+				unusedPlayers.splice(unused, 1);
+			}
+		});
+	};
+
+	const cancelImport = () => {
+		showSelect = false;
+	};
 
 	const initPlayers = () => {
 		let unusedPlayers2 = [];
@@ -105,6 +151,9 @@
 					<br />
 					<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 					<br />
+					<Button disabled={!addEnabled || !importFrom} on:click={prepareImport}>Importieren</Button
+					>
+					<br />
 					<Button
 						disabled={changed}
 						on:click={() =>
@@ -115,4 +164,37 @@
 			</div>
 		</div>
 	</form>
+</div>
+
+<div>
+	<Modal
+		title={'Aus ' + importFrom + ' importieren'}
+		bind:open={showSelect}
+		autoclose={false}
+		class="max-w-sm"
+	>
+		<form class="flex flex-col space-y-6" action="#">
+			<Label>
+				Turnier auswählen:
+				<Select
+					class="w-44 p-3 space-y-3 text-sm"
+					items={tourSelect}
+					bind:value={tourSelected}
+					placeholder="Turnier"
+				></Select>
+			</Label>
+			<Button color="alternative" on:click={executeImport}>Importieren</Button>
+			<Button color="primary" on:click={cancelImport}>Abbrechen</Button>
+		</form>
+	</Modal>
+
+	<Modal bind:open={showNone} size="xs" autoclose>
+		<div class="text-center">
+			<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
+			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				Kein Turnier für Import vorhanden.
+			</h3>
+			<Button color="alternative">Schließen</Button>
+		</div>
+	</Modal>
 </div>
