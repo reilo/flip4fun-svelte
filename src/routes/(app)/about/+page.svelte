@@ -2,6 +2,9 @@
 	import { Heading, P, A } from 'flowbite-svelte';
 	import { Timeline, TimelineItem, Button } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
+	import { outerWidth, outerHeight } from 'svelte/reactivity/window';
+	import { devicePixelRatio } from 'svelte/reactivity/window';
 </script>
 
 <div class="flex max-w-3xl flex-col justify-center m-0">
@@ -73,4 +76,11 @@
 			>
 		</TimelineItem>
 	</Timeline>
+
+	<Heading tag="h4" class="mb-4">Geräteeigenschaften</Heading>
+	<P>innerWidth = {innerWidth.current}</P>
+	<P>innerHeight = {innerHeight.current}</P>
+	<P>outerWidth = {outerWidth.current}</P>
+	<P>outerHeight = {outerHeight.current}</P>
+	<P>devicePixelRatio = {devicePixelRatio.current}</P>
 </div>
