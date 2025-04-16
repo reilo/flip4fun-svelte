@@ -53,9 +53,9 @@
 
 	async function createOrUpdatePin() {
 		if (!pinToUpdate) {
-			createPin();
+			await createPin();
 		} else {
-			updatePin();
+			await updatePin();
 		}
 	}
 

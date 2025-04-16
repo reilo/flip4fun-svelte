@@ -56,9 +56,9 @@
 
 	async function createOrUpdatePlayer() {
 		if (!playerToUpdate) {
-			createPlayer();
+			await createPlayer();
 		} else {
-			updatePlayer();
+			await updatePlayer();
 		}
 	}
 

@@ -98,7 +98,7 @@
 		const results = { rankFinal: [] };
 		const cache = createCache();
 
-		createRound(
+		await createRound(
 			tournament.id,
 			nextRoundName,
 			nextRound,
@@ -125,7 +125,7 @@
 			round.matches,
 			tournament.settings
 		);
-		updateRound(round.id, results, {});
+		await updateRound(round.id, results, {});
 		invalidateAll();
 
 		endForm = false;
@@ -142,7 +142,7 @@
 		});
 		const results = { rankFinal: rankFinal };
 
-		updateTournamentStatus(tournament.id, 'Completed', results);
+		await updateTournamentStatus(tournament.id, 'Completed', results);
 		invalidateAll();
 
 		endLigaForm = false;
