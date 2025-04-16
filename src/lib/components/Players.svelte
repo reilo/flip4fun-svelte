@@ -21,6 +21,7 @@
 
 	let showSelect = $state(false);
 	let showNone = $state(false);
+	let alertMsg = $state('');
 	let tourSelect = $state([]);
 	let tourSelected = $state('');
 
@@ -41,7 +42,7 @@
 	}
 
 	function restoreSettings() {
-		initPlayers();
+		initPlayers(tournament.players);
 		changed = false;
 	}
 
@@ -63,10 +64,10 @@
 				tourSelect.push({ value: tournament.id, name: tournament.name });
 			}
 		});
-		console.log(tourSelect);
 		if (tourSelect.length > 0) {
 			showSelect = true;
 		} else {
+			alertMsg = 'Kein Turnier für Import vorhanden.';
 			showNone = true;
 		}
 	};
@@ -74,31 +75,34 @@
 	const executeImport = () => {
 		usedPlayers.splice(0, usedPlayers.length);
 		const tournament = tournaments.find((item) => item.id === tourSelected);
-		tournament.results.rankFinal.forEach((item) => {
-			usedPlayers.push(item);
-			const unused = unusedPlayers.indexOf(item);
-			if (unused > -1) {
-				unusedPlayers.splice(unused, 1);
-			}
-		});
+		if (tournament && tournament.results.rankFinal && tournament.results.rankFinal.length > 0) {
+			initPlayers(tournament.results.rankFinal);
+			showSelect = false;
+			changed = true;
+		} else {
+			showSelect = false;
+			alertMsg = 'Keine Spieler für Import vorhanden.';
+			showNone = true;
+		}
 	};
 
 	const cancelImport = () => {
 		showSelect = false;
 	};
 
-	const initPlayers = () => {
+	const initPlayers = (players) => {
 		let unusedPlayers2 = [];
 		let usedPlayers2 = [];
+		playerMap.splice(0, playerMap.length);
 
-		tournament.players.forEach((item) => {
+		players.forEach((item) => {
 			const playerName = getPlayerName(item, allPlayers);
 			usedPlayers2.push(playerName);
 			playerMap.push({ id: item, name: playerName });
 		});
 
 		allPlayers.forEach((item) => {
-			if (item.active && !tournament.players.includes(item.id)) {
+			if (item.active && !players.includes(item.id)) {
 				const playerName = formatPlayerName(item);
 				unusedPlayers2.push(playerName);
 				playerMap.push({ id: item.id, name: playerName });
@@ -108,7 +112,7 @@
 		usedPlayers = usedPlayers2;
 		unusedPlayers = unusedPlayers2;
 	};
-	initPlayers();
+	initPlayers(tournament.players);
 </script>
 
 <div class="flex-1 flex-col sm:flex-row justify-center content-center gap-3">
@@ -192,7 +196,7 @@
 		<div class="text-center">
 			<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				Kein Turnier für Import vorhanden.
+				{alertMsg}
 			</h3>
 			<Button color="alternative">Schließen</Button>
 		</div>
