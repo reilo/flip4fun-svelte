@@ -14,6 +14,7 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
+- !!! Bug: Liga beenden direkt nach Spieltag beenden --> Ergebnisse werden nicht in Turnier übernommen
 - Ergebnis-PDF -> mehrere Seiten pro Spieler (bei vielen Spielen)
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken, auch PDF Export
 -- Gesamtspiele

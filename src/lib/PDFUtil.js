@@ -333,7 +333,6 @@ export function generatePlayersPDF(title, playerIDs, allPlayers) {
     playerIDs.forEach((id, i) => {
         const name = getPlayerName(id, allPlayers);
         doc.text(x, y, name);
-        console.log(id);
         const player = allPlayers.find((item) => item.id === id);
         const email = player ? player.email : "";
         if (email) {

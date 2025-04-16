@@ -3,7 +3,6 @@
 	import Players from '$lib/components/Players.svelte';
 
 	let { data } = $props();
-	console.log(data);
 
 	const description = [
 		'Hier kannst du Spieler zum Liga-Finale hinzufügen.',
