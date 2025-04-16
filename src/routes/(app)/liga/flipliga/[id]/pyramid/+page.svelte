@@ -85,7 +85,7 @@
 					rowIndex = 1;
 					y += imageHeigth + imageVSpacing;
 					ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
-					ctx.fillRect(0, y - delta, 1240, imageHeigth + 2 * delta);
+					ctx.fillRect(0, y - delta, hsize, imageHeigth + 2 * delta);
 				} else {
 					rowIndex++;
 				}
