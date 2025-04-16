@@ -82,20 +82,17 @@
 	initPage();
 </script>
 
-<Heading tag="h5">Spieler-Statistiken</Heading>
-<br />
+<Heading tag="h5">Spieler-Statistiken für:</Heading>
+
 
 <div>
-	<Label>
-		Spieler auswählen
 		<Select
-			class="mt-2"
+			class="mt-2 w-fit"
 			placeholder="Auswählen ..."
 			items={playerMap}
 			bind:value={selected}
 			on:change={playerChanged}
 		/>
-	</Label>
 </div>
 <br />
 

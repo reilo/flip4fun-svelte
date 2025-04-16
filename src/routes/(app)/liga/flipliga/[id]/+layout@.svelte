@@ -16,19 +16,18 @@
 		? [
 				{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 				{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
-				{ link: '/liga/flipliga/' + id + '/pyramid', name: 'Pyramide' },
+				{ link: '/liga/flipliga/' + id + '/pyramid', name: 'Spielstärken' },
 				{ link: '/liga/flipliga/' + id + '/draw', name: 'Lostrommel' },
 				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
-				{ link: '/liga/flipliga/' + id + '/extended', name: 'Erweitert' },
 				{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
 				{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 				{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
-				{ link: '/liga/flipliga/' + id + '/pyramid', name: 'Pyramide' },
+				{ link: '/liga/flipliga/' + id + '/pyramid', name: 'Spielstärken' },
 				{ link: '/liga/flipliga/' + id + '/draw', name: 'Lostrommel' },
 				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
-				{ link: '/liga/flipliga/' + id + '/extended', name: 'Erweitert' }
+				{ link: '/liga/flipliga/' + id + '/extended', name: 'Export' }
 			];
 
 	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;

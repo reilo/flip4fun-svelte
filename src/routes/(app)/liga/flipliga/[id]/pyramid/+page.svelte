@@ -1,5 +1,5 @@
 <script>
-	import { Button } from 'flowbite-svelte';
+	import { P } from 'flowbite-svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 
@@ -24,12 +24,7 @@
 			if (round.status === 'Completed') {
 				ranking = round.results.rankFinal;
 			} else {
-				ranking = _calcRanking(
-					round.rid,
-					round.settings.rankInit,
-					round.matches,
-					tournament.settings
-				);
+				ranking = round.settings.rankInit;
 			}
 		}
 
@@ -102,7 +97,11 @@
 </script>
 
 <div>
-	<!--Button class="w-fit" on:click={() => drawPyramid()}>Neu laden</Button>
-	<br /><br /-->
+	{#if round.status === 'Completed'}
+		<P>Spielstärken am Ende des Spieltags.</P>
+	{:else}
+		<P>Spielstärken zu Beginn des Spieltags.</P>
+	{/if}
+	<br />
 	<canvas id="myCanvas" width={hsize} height={vsize}></canvas>
 </div>
