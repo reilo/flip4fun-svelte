@@ -17,6 +17,7 @@
 
 	const roundStatus = data.round ? mapTourStatus(data.round.status) : null;
 	const tournamentStatus = mapTourStatus(data.tournament.status);
+	const roundStatusInternal = data.round ? data.round.status : null;
 
 	const links = import.meta.env.VITE_APP_FULL
 		? [
@@ -27,7 +28,7 @@
 				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
 				{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 			]
-		: roundStatus === 'Completed'
+		: roundStatusInternal !== 'Active'
 			? [
 					{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 					{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },

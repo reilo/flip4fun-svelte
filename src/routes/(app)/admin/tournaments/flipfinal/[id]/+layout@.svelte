@@ -25,7 +25,7 @@
 		{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Einstellungen' },
 		{ link: '/admin/tournaments/flipfinal/' + id + '/players', name: 'Spieler' },
 		{ link: '/admin/tournaments/flipfinal/' + id + '/rounds', name: 'Spieltag' },
-		{ link: '/liga/flipfinal/' + id + '/ranking', name: 'zur Liga' }
+		{ link: '/liga/flipfinal/' + id + '/ranking', name: 'zum Turnier' }
 	];
 
 	let loading = $state('');
