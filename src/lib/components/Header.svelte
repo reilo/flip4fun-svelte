@@ -36,7 +36,7 @@
 	let activeUrl = $derived(page.url.pathname);
 </script>
 
-<header class="flex justify-between p-4 w-full max-w-full sm:max-w-7xl mx-auto">
+<header class="flex justify-between p-2 w-full max-w-full sm:max-w-7xl mx-auto">
 	<Navbar let:hidden let:toggle class="bg-gray-50 dark:bg-gray-800">
 		<NavBrand href="/">
 			<HomeSolid class="w-5 h-5 mb-1 text-gray-500 dark:text-gray-400" />

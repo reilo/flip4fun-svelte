@@ -14,7 +14,9 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
-- Ergebnis-PDF -> mehrere Seiten pro Spieler (bei vielen Spielen)
+- Ergebnis-PDF -> 
+-- mehrere Seiten pro Spieler (bei vielen Spielen)
+-- Pyramide
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken, auch PDF Export
 -- Gesamtspiele
 -- Flipperstatistiken

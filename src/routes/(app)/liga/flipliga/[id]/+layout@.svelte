@@ -5,7 +5,10 @@
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { mapTourStatus } from '$lib/TourUtil';
+
+	let buttonSize = $derived(innerWidth.current <= 1024 ? 'xs' : 'sm');
 
 	let { data, children } = $props();
 
@@ -48,13 +51,11 @@
 {#snippet headerLink(d)}
 	<NavLi>
 		{#if loading === d.link}
-			<Button size='sm' outline>
+			<Button size={buttonSize} outline>
 				<Spinner class="me-3" size="4" color="white" />Laden ...
 			</Button>
 		{:else}
-			<Button size='sm' outline on:click={() => loadPage(d)}
-				>{d.name}</Button
-			>
+			<Button size={buttonSize} outline on:click={() => loadPage(d)}>{d.name}</Button>
 		{/if}
 	</NavLi>
 {/snippet}
