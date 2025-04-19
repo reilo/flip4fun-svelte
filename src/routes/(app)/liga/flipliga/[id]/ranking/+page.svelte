@@ -1,5 +1,5 @@
 <script>
-	import { Heading, P } from 'flowbite-svelte';
+	import { Heading, P, Spinner } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/state';
@@ -15,6 +15,8 @@
 	let { data } = $props();
 
 	const round = $derived(data.round);
+
+	let showProgress = $state(-1);
 
 	const players = data.players;
 	const tournament = data.tournament;
@@ -104,9 +106,11 @@
 				<TableBodyRow class={getRowColor(i)}>
 					<TableBodyCell>{i + 1}</TableBodyCell>
 					<TableBodyCell>
-						<a href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
-							>{getPlayerName(rank.player, players)}</a
+						<a
+							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
+							onclick={(showProgress = i)}>{getPlayerName(rank.player, players)}</a
 						>
+						<Spinner size=4 class={showProgress === i ? '' : 'hidden'} />
 					</TableBodyCell>
 					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">
