@@ -232,7 +232,7 @@
 		</Modal>
 	</div>
 
-	<Table hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>Typ</TableHeadCell>

@@ -3,6 +3,7 @@
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { page } from '$app/state';
+	import { afterNavigate } from '$app/navigation';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
@@ -70,6 +71,10 @@
 		return ranking;
 	};
 
+	afterNavigate(async () => {
+		showProgress = -1;
+	});
+
 	let ranking = $state([]);
 	ranking = calcRanking();
 </script>
@@ -110,7 +115,7 @@
 							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
 							onclick={(showProgress = i)}>{getPlayerName(rank.player, players)}</a
 						>
-						<Spinner size=4 class={showProgress === i ? '' : 'hidden'} />
+						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
 					</TableBodyCell>
 					{#if !tourCompleted && !isPhone}
 						<TableBodyCell tdClass="text-center">

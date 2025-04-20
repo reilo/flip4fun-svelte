@@ -14,9 +14,10 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
+- !!! Kombinierte View Matches & Ranking breit
 - Ergebnis-PDF -> 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
--- Pyramide
+-- !!! Pyramide
 - Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken, auch PDF Export
 -- Gesamtspiele
 -- Flipperstatistiken
@@ -29,5 +30,6 @@ FLIP-Final
 - Admin: Runde starten / beenden, implizit Turnier beenden, wenn letzte Runde
 - Admin: Rundenzettel ausdrucken?
 - Admin: PDF Export
-- Liga: Ranking, Darstellung wer zuletzt aufgestiegen
-- Liga: 2 Matches pro Gruppe, Reihenfolge zum Anclicken, mit Admin-Rechten Resultat resetbar
+- Canvas Komplett-View (inkl. Admin)
+-- Ranking, Darstellung wer zuletzt aufgestiegen
+-- 2 Matches pro Gruppe, Reihenfolge zum Anclicken, mit Admin-Rechten Resultat resetbar

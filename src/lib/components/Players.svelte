@@ -1,5 +1,5 @@
 <script>
-	import { P, Card, Button, Label, Select, Modal } from 'flowbite-svelte';
+	import { P, Card, Button, Label, Select, Modal, A } from 'flowbite-svelte';
 	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 	import { generatePlayersPDF } from '$lib/PDFUtil';
@@ -90,6 +90,10 @@
 		showSelect = false;
 	};
 
+	const getEnabledStyle = (enabled) => {
+		return enabled ? '' : 'pointer-events-none';
+	};
+
 	const initPlayers = (players) => {
 		let unusedPlayers2 = [];
 		let usedPlayers2 = [];
@@ -131,9 +135,9 @@
 						Teilnehmende Spieler
 					</h5>
 					{#each usedPlayers as player, i}
-						<Button disabled={!delEnabled} outline size="xs" on:click={() => delPlayer(player)}>
+						<A class={getEnabledStyle(delEnabled)} onclick={() => delPlayer(player)}>
 							{player}
-						</Button>
+						</A>
 					{/each}
 				</Card>
 			</div>
@@ -143,9 +147,9 @@
 						Verfügbare Spieler
 					</h5>
 					{#each unusedPlayers as player, i}
-						<Button disabled={!addEnabled} outline size="xs" on:click={() => addPlayer(player)}>
+						<A class={getEnabledStyle(addEnabled)} onclick={() => addPlayer(player)}>
 							{player}
-						</Button>
+						</A>
 					{/each}
 				</Card>
 			</div>

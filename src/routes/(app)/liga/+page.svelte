@@ -33,7 +33,7 @@
 	<Heading tag="h5">Aktive Turniere</Heading>
 	<br />
 
-	<Table class="table-fixed" shadow hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			{#if import.meta.env.VITE_APP_FULL}
@@ -77,7 +77,7 @@
 	<Heading tag="h5">Turnier-Historie</Heading>
 	<br />
 
-	<Table class="table-fixed" shadow hoverable={true}>
+	<Table shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			{#if import.meta.env.VITE_APP_FULL}
