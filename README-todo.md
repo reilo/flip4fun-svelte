@@ -14,7 +14,6 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
-- !!! Kombinierte View Matches & Ranking breit
 - Ergebnis-PDF -> 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- !!! Pyramide

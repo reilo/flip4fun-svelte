@@ -5,10 +5,12 @@
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
-	import { innerWidth } from 'svelte/reactivity/window';
+	import { innerWidth, outerWidth } from 'svelte/reactivity/window';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let buttonSize = $derived(innerWidth.current <= 1024 ? 'xs' : 'sm');
+	let largeScreen = $derived(outerWidth.current >= 1920); // full hd
+	let isMatches = $derived(page.url.pathname.endsWith('matches'));
 
 	let { data, children } = $props();
 
@@ -70,7 +72,11 @@
 
 <Header headerLinks={links} {headerLink} />
 
-<main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
+<main
+	class={largeScreen && isMatches
+		? 'grid grid-cols-2 max-w-full p-4 gap-3'
+		: 'flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto'}
+>
 	{#if tournament.status === 'Active'}
 		<Heading tag="h4">{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading>
 	{:else}
