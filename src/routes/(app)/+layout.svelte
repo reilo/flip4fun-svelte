@@ -52,7 +52,7 @@
 <div class="flex flex-col min-h-screen">
 	<Header headerLinks={links} {headerLink} />
 
-	<main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
+	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
 		{@render children?.()}
 	</main>
 

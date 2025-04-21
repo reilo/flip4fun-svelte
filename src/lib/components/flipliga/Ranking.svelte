@@ -11,13 +11,14 @@
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { logInfo } from '$lib/LogUtil';
 
-	let isPhone = $derived(innerWidth.current <= 480);
-
 	let { data } = $props();
 
-	const round = $derived(data.round);
-
 	let showProgress = $state(-1);
+
+	let isPhone = $derived(innerWidth.current <= 480);
+	let round = $derived(data.round);
+
+	const py = 'py-1.5';
 
 	const players = data.players;
 	const tournament = data.tournament;
@@ -107,21 +108,21 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
 				<TableBodyRow class={getRowColor(i)}>
-					<TableBodyCell>{i + 1}</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell class={py}>{i + 1}</TableBodyCell>
+					<TableBodyCell class={py}>
 						<a
 							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
-							onclick={(showProgress = i)}>{getPlayerName(rank.player, players)}</a
+							onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a
 						>
 						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
 					</TableBodyCell>
 					{#if !tourCompleted && !isPhone}
-						<TableBodyCell tdClass="text-center">
+						<TableBodyCell class={py} tdClass="text-center">
 							{getStrength(rank.player)}
 						</TableBodyCell>
 					{/if}
 					{#if !tourCompleted && !isPhone}
-						<TableBodyCell tdClass="text-center">
+						<TableBodyCell class={py} tdClass="text-center">
 							{#if rank.rankChange < 0}
 								<div style="color:red">
 									{rank.rankChange}
@@ -135,21 +136,21 @@
 							{/if}
 						</TableBodyCell>
 					{/if}
-					<TableBodyCell tdClass="text-center">
+					<TableBodyCell class={py} tdClass="text-center">
 						{roundNumberToStrg(rank.points)}
 					</TableBodyCell>
 					{#if !tourCompleted && !isPhone}
-						<TableBodyCell tdClass="text-center">
+						<TableBodyCell class={py} tdClass="text-center">
 							{roundNumberToStrg(getPlayerScoring(rank.player))}
 						</TableBodyCell>
 					{/if}
 					{#if !tourCompleted && !isPhone}
-						<TableBodyCell tdClass="text-center">
+						<TableBodyCell class={py} tdClass="text-center">
 							{getCountMatches(rank.player)}
 						</TableBodyCell>
 					{/if}
 					{#if !isPhone}
-						<TableBodyCell tdClass="text-center">
+						<TableBodyCell class={py} tdClass="text-center">
 							{getTotalCountMatches(rank.player)}
 						</TableBodyCell>
 					{/if}

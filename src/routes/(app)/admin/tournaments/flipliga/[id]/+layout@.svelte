@@ -57,7 +57,7 @@
 
 <Header headerLinks={links} {headerLink} />
 
-<main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
+<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
 	<Heading tag="h3">{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading>
 	<br />
 

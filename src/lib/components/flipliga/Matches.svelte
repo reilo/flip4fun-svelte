@@ -13,9 +13,11 @@
 	import { getPinName } from '$lib/PinUtil';
 	import { logInfo } from '$lib/LogUtil';
 
+	let { data } = $props();
+
 	let isPhone = $derived(innerWidth.current <= 480);
 
-	let { data } = $props();
+	const py = 'py-1';
 
 	let accessValue = $state(ReadAccess);
 	access.subscribe((value) => {
@@ -336,7 +338,7 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each [...matches].reverse() as match, i}
 				<TableBodyRow>
-					<TableBodyCell>
+					<TableBodyCell class={py}>
 						<div style={getPlayer1ColorStyle(match)}>
 							{#if isPhone}
 								{getPlayerName(match.player1, true)}
@@ -345,7 +347,7 @@
 							{/if}
 						</div>
 					</TableBodyCell>
-					<TableBodyCell>
+					<TableBodyCell class={py}>
 						<div style={getPlayer2ColorStyle(match)}>
 							{#if isPhone}
 								{getPlayerName(match.player2, true)}
@@ -354,20 +356,20 @@
 							{/if}
 						</div>
 					</TableBodyCell>
-					<TableBodyCell align="left">
+					<TableBodyCell class={py} align="left">
 						{formatResultString(match.score1, match.score2)}
 					</TableBodyCell>
 					{#if !isPhone}
-						<TableBodyCell align="left">
+						<TableBodyCell class={py} align="left">
 							{formatResultString(
 								roundNumberToStrg(getPoints(match, 1)),
 								roundNumberToStrg(getPoints(match, 2))
 							)}
 						</TableBodyCell>
-						<TableBodyCell>
+						<TableBodyCell class={py}>
 							{getPinName(match.pin, data.pins)}
 						</TableBodyCell>
-						<TableBodyCell>
+						<TableBodyCell class={py}>
 							{#if accessValue >= AdminAccess}
 								{#if data.round.status === 'Active'}
 									<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>

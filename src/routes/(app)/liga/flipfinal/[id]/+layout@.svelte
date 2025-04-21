@@ -55,7 +55,7 @@
 
 <Header headerLinks={links} {headerLink} />
 
-<main class="flex flex-1 flex-col p-4 w-full max-w-7xl mx-auto">
+<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
 	{#if tournament.status === 'Active'}
 		<Heading tag="h4">{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading>
 	{:else}
