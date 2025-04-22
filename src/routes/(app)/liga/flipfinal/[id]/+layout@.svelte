@@ -53,19 +53,21 @@
 	</NavLi>
 {/snippet}
 
-<Header headerLinks={links} {headerLink} />
+<div class="flex flex-col min-h-screen">
+	<Header headerLinks={links} {headerLink} />
 
-<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
-	{#if tournament.status === 'Active'}
-		<Heading tag="h4">{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading>
-	{:else}
-		<Heading tag="h4">{tournament.name} ({tournamentStatus})</Heading>
-	{/if}
-	<br />
+	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
+		{#if tournament.status === 'Active'}
+			<Heading tag="h4">{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading>
+		{:else}
+			<Heading tag="h4">{tournament.name} ({tournamentStatus})</Heading>
+		{/if}
+		<br />
 
-	{@render children?.()}
-</main>
+		{@render children?.()}
+	</main>
 
-<Footer>
-	<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
-</Footer>
+	<Footer>
+		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
+	</Footer>
+</div>

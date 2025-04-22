@@ -70,23 +70,24 @@
 	</NavLi>
 {/snippet}
 
-<Header headerLinks={links} {headerLink} />
+<div class="flex flex-col min-h-screen">
+	<Header headerLinks={links} {headerLink} />
 
-<main
-	class={largeScreen && isMatches
-		? 'grid grid-cols-2 max-w-full p-4 gap-3'
-		: 'flex flex-1 flex-col p-4 max-w-7xl mx-auto'}
->
-	{#if tournament.status === 'Active'}
-		<Heading tag="h4">{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading>
-	{:else}
-		<Heading tag="h4">{tournament.name} ({tournamentStatus})</Heading>
-	{/if}
-	<br />
+	<main
+		class={largeScreen && isMatches
+			? 'grid grid-cols-2 max-w-full p-4 gap-3'
+			: 'flex flex-1 flex-col p-4 max-w-7xl mx-auto'}
+	>
+		{#if tournament.status === 'Active'}
+			<Heading tag="h4">{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading>
+		{:else}
+			<Heading tag="h4">{tournament.name} ({tournamentStatus})</Heading>
+		{/if}
+		<br />
+		{@render children?.()}
+	</main>
 
-	{@render children?.()}
-</main>
-
-<Footer>
-	<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
-</Footer>
+	<Footer>
+		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
+	</Footer>
+</div>

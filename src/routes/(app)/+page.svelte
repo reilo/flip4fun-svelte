@@ -30,7 +30,7 @@
 
 <!--Heading tag="h1">Willkommen in der Pinball Lounge</Heading>
 <br /-->
-<div class="flex flex-col sm:flex-row justify-center content-center gap-3">
+<div class="flex flex-col md:flex-row justify-center content-center gap-3">
 	<div>
 		<Card>
 			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

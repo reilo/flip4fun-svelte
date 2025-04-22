@@ -119,7 +119,7 @@
 	initPlayers(tournament.players);
 </script>
 
-<div class="flex-1 flex-col sm:flex-row justify-center content-center gap-3">
+<div class="flex-1 flex-col md:flex-row justify-center content-center gap-3">
 	<div>
 		{#each description as line}
 			<P class="py-1">{line}</P>

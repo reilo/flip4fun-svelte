@@ -9,7 +9,7 @@
 </script>
 
 {#if accessValue >= AdminAccess}
-	<div class="flex flex-col sm:flex-row gap-3">
+	<div class="flex flex-col md:flex-row gap-3 mx-auto">
 		{@render children?.()}
 	</div>
 {:else}

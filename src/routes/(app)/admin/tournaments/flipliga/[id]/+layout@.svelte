@@ -55,21 +55,22 @@
 	</NavLi>
 {/snippet}
 
-<Header headerLinks={links} {headerLink} />
+<div class="flex flex-col min-h-screen">
+	<Header headerLinks={links} {headerLink} />
 
-<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
-	<Heading tag="h3">{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading>
-	<br />
+	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
+		<Heading tag="h3">{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading>
+		<br />
+		{#if accessValue >= AdminAccess}
+			<div class="flex flex-col md:flex-row gap-3 mx-auto">
+				{@render children?.()}
+			</div>
+		{:else}
+			<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
+		{/if}
+	</main>
 
-	{#if accessValue >= AdminAccess}
-		<div class="flex flex-col sm:flex-row gap-3">
-			{@render children?.()}
-		</div>
-	{:else}
-		<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
-	{/if}
-</main>
-
-<Footer>
-	<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
-</Footer>
+	<Footer>
+		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
+	</Footer>
+</div>
