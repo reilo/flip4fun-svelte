@@ -6,7 +6,8 @@
 
 	const description = [
 		'Hier kannst du Spieler zum Liga-Finale hinzufügen.',
-		'Klicke die Spieler in der Reihenfolge des finalen Liga-Rankings an.'
+		'Klicke die Spieler in der Reihenfolge des finalen Liga-Rankings an.',
+		'Oder besser noch, importiere die Liste direkt aus der vorangegangenen Liga.'
 	];
 
 	async function updatePlayers(players) {

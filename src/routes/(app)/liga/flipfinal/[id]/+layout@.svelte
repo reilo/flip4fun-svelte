@@ -18,11 +18,13 @@
 	const links = import.meta.env.VITE_APP_FULL
 		? [
 				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Ranking' },
+				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Stand' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' },
 				{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
 				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Ranking' },
+				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Stand' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' }
 			];
 
@@ -57,7 +59,7 @@
 	<Header headerLinks={links} {headerLink} />
 
 	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
-		{#if tournament.status === 'Active'}
+		{#if tournament.status === 'Active' && data.round}
 			<Heading tag="h4" class="mb-3"
 				>{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading
 			>

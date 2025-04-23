@@ -50,7 +50,7 @@
 
 		<Label class="mb-3">
 			Welche Flipper-Kombination soll für jedes Double-Match gelost werden?
-			<Select class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
+			<Select disabled={!settingsEnabled} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
 		</Label>
 
 		{#if settingsEnabled}
