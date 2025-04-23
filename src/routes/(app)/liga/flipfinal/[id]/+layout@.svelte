@@ -58,11 +58,12 @@
 
 	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
 		{#if tournament.status === 'Active'}
-			<Heading tag="h4">{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading>
+			<Heading tag="h4" class="mb-3"
+				>{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading
+			>
 		{:else}
-			<Heading tag="h4">{tournament.name} ({tournamentStatus})</Heading>
+			<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
 		{/if}
-		<br />
 
 		{@render children?.()}
 	</main>

@@ -8,15 +8,14 @@
 </script>
 
 <div class="flex max-w-3xl flex-col justify-center m-0">
-	<Heading tag="h4" class="mb-4">Info über diese App</Heading>
+	<Heading tag="h4" class="mb-3">Info über diese App</Heading>
 
-	<P
+	<P class="mb-3"
 		>Diese App wurde mit modernsten JavaScript-Technologien erstellt und ist unter <A
 			target="_blank"
 			href="https://github.com/reilo/flip4fun-svelte">Github</A
 		> veröffentlicht.</P
 	>
-	<br />
 
 	<Timeline>
 		<TimelineItem title="Svelte & Svelte Kit">
@@ -77,7 +76,7 @@
 		</TimelineItem>
 	</Timeline>
 
-	<Heading tag="h4" class="mb-4">Geräteeigenschaften</Heading>
+	<Heading tag="h4" class="mb-3">Geräteeigenschaften</Heading>
 	<P>innerWidth = {innerWidth.current}</P>
 	<P>innerHeight = {innerHeight.current}</P>
 	<P>outerWidth = {outerWidth.current}</P>

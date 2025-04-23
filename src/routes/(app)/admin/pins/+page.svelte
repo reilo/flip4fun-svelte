@@ -229,13 +229,15 @@
 </script>
 
 {#if showError}
-	<Alert border color="red">
+	<Alert border color="red" class="mb-3">
 		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-medium">Interner Fehler!</span>
-		<br />
-		{data.message}
-		<br />
-		{data.error}
+		<span class="font-bold">Interner Fehler!</span>
+		<P>
+			{data.message}
+		</P>
+		<P>
+			{data.error}
+		</P>
 	</Alert>
 {/if}
 <br />

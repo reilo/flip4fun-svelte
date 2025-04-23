@@ -37,13 +37,12 @@
 
 <form>
 	<div>
-		<Label>
+		<Label class="mb-3">
 			<span>Basispunkte für jeden Spieler zu Saisonbeginn</span>
 			<NumberInput disabled={!settingsEnabled} min="30" max="60" bind:value={settings.baseline} />
 		</Label>
-		<br />
 
-		<Label>
+		<Label class="mb-3">
 			<span>Wie oft darf der gleiche Gegner je Saison gefordert werden</span>
 			<NumberInput
 				disabled={!settingsEnabled}
@@ -52,31 +51,26 @@
 				bind:value={settings.challengeSame}
 			/>
 		</Label>
-		<br />
 
-		<Label>
+		<Label class="mb-3">
 			<span>Bonuspunkt(e) für jedes absolvierte Match</span>
 			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchBonus} />
 		</Label>
-		<br />
 		
-		<Label>
+		<Label class="mb-3">
 			<span>Strafpunkt(e) für Fehlmatches pro Spieltag</span>
 			<NumberInput disabled={!settingsEnabled} min="-1" max="3" bind:value={settings.matchPenalty} />
 		</Label>
-		<br />
 
-		<Label>
+		<Label class="mb-3">
 			<span>Wie viele Matches muss ein Spieler pro Spieltag spielen?</span>
 			<NumberInput disabled={!settingsEnabled} min="1" max="5" bind:value={settings.minMatchesRound} />
 		</Label>
-		<br />
 
-		<Label>
+		<Label class="mb-3">
 			<span>Ab welcher Runde erfolgen Punktabzüge?</span>
 			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.penaltyFirstRound} />
 		</Label>
-		<br />
 
 		{#if settingsEnabled}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>

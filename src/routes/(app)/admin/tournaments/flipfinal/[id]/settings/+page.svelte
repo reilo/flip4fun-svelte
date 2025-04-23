@@ -43,17 +43,15 @@
 
 <form>
 	<div>
-		<Label>
+		<Label class="mb-3">
 			<span>Wieviele Spieler sollen in die oberste Ebene aufsteigen?</span>
 			<NumberInput disabled={!settingsEnabled} min="3" max="4" bind:value={settings.numFinalists} />
 		</Label>
-		<br />
 
-		<Label>
+		<Label class="mb-3">
 			Welche Flipper-Kombination soll für jedes Double-Match gelost werden?
 			<Select class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
-		  </Label>
-		<br />
+		</Label>
 
 		{#if settingsEnabled}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>

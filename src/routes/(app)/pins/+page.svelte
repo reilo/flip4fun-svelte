@@ -49,35 +49,36 @@
 </script>
 
 {#if showError}
-	<Alert border color="red">
+	<Alert border color="red" class="mb-3">
 		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-medium">Interner Fehler!</span>
-		<br />
-		{data.message}
-		<br />
-		{data.error}
+		<span class="font-bold">Interner Fehler!</span>
+		<P>
+			{data.message}
+		</P>
+		<P>
+			{data.error}
+		</P>
 	</Alert>
-	<br />
 {/if}
 
 <Heading tag="h5"
-	>Flipperliste - insgesamt {data.pins.reduce((sum, pin) => {
-		return sum + (!pin.deleted && pin.id !== 'muma' ? 1 : 0);
-	}, 0)}, spielbereit {data.pins.reduce((sum, pin) => {
-		return sum + (pin.active && !pin.deleted && pin.id !== 'muma' ? 1 : 0);
-	}, 0)}</Heading
+	>Flipperliste - insgesamt {data.pins
+		? data.pins.reduce((sum, pin) => {
+				return sum + (!pin.deleted && pin.id !== 'muma' ? 1 : 0);
+			}, 0)
+		: '?'}, spielbereit {data.pins
+		? data.pins.reduce((sum, pin) => {
+				return sum + (pin.active && !pin.deleted && pin.id !== 'muma' ? 1 : 0);
+			}, 0)
+		: '?'}</Heading
 >
 
 <TableSearch hoverable={true} placeholder="Suchen nach Name" bind:inputValue={searchTerm}>
 	<caption
 		class="px-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800"
 	>
-		<p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-			Durchgestrichene Geräte sind derzeit nicht spielbereit.
-			<br />
-			Klicke die Spaltentitel an zum Sortieren.
-		</p>
-		<br />
+		<P class="mb-1">Durchgestrichene Geräte sind derzeit nicht spielbereit.</P>
+		<P class="mb-3">Klicke die Spaltentitel an zum Sortieren.</P>
 	</caption>
 	<TableHead>
 		<TableHeadCell on:click={() => sortTable('name')}>Name</TableHeadCell>

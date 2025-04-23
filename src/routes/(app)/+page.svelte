@@ -28,8 +28,7 @@
 	<meta name="description" content="Flipper-App" />
 </svelte:head>
 
-<!--Heading tag="h1">Willkommen in der Pinball Lounge</Heading>
-<br /-->
+<!--Heading tag="h1" class="mb-3">Willkommen in der Pinball Lounge</Heading -->
 <div class="flex flex-col md:flex-row justify-center content-center gap-3">
 	<div>
 		<Card>

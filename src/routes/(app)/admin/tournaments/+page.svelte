@@ -1,5 +1,5 @@
 <script>
-	import { Heading, Modal } from 'flowbite-svelte';
+	import { Heading, Modal, P } from 'flowbite-svelte';
 	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
@@ -130,13 +130,15 @@
 </script>
 
 {#if showError}
-	<Alert border color="red">
+	<Alert border color="red" class="mb-3">
 		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-medium">Interner Fehler!</span>
-		<br />
-		{data.message}
-		<br />
-		{data.error}
+		<span class="font-bold">Interner Fehler!</span>
+		<P>
+			{data.message}
+		</P>
+		<P>
+			{data.error}
+		</P>
 	</Alert>
 {/if}
 <br />
