@@ -2,6 +2,7 @@
 	import { P } from 'flowbite-svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { calcRanking as _calcRanking } from '$lib/MatchUtil';
+	import { calcStrength } from '$lib/TourUtil';
 
 	let { data } = $props();
 
@@ -37,7 +38,7 @@
 		const imageHeigth = imageWidth * 1.33;
 		const imageHSpacing = [18, 24, 30, 39, 48][idx];
 		const imageVSpacing = [3, 5, 6, 8, 10][idx];
-		const totalRows = 8;
+		const totalRows = calcStrength(1, tournament.players.length);
 		const colorLightGray = '#eeeeee';
 		const colorDarkGray = '#dddddd';
 		const colorText = 'black';
