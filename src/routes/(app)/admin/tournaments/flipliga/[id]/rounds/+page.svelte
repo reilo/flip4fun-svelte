@@ -1,5 +1,5 @@
 <script>
-	import { Modal, Label, Button, Card } from 'flowbite-svelte';
+	import { Heading, Modal, Label, Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline, QuestionCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { calcStrength } from '$lib/TourUtil';
@@ -249,9 +249,9 @@
 
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Spieltag starten
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler
 			hinzugefügt werden.
@@ -264,9 +264,9 @@
 
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Spieltag beenden
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert
 			werden.
@@ -279,9 +279,9 @@
 
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Ergebnis-PDF generieren
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Generiere hier das PDF mit Ergebnissen und Statistiken für alle Spieltage.
 		</p>
@@ -293,9 +293,9 @@
 
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Liga beenden
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet
 			werden.
@@ -323,9 +323,9 @@
 	<Modal bind:open={startSuccess} size="xs" autoclose>
 		<div class="text-center">
 			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 				Der Spieltag wurde erfolgreich gestartet!
-			</h3>
+			</Heading>
 			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>
@@ -348,9 +348,9 @@
 	<Modal bind:open={endSuccess} size="xs" autoclose>
 		<div class="text-center">
 			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 				Der Spieltag wurde erfolgreich beendet!
-			</h3>
+			</Heading>
 			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>
@@ -373,9 +373,9 @@
 	<Modal bind:open={endLigaSuccess} size="xs" autoclose>
 		<div class="text-center">
 			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 				Die Liga wurde erfolgreich beendet!
-			</h3>
+			</Heading>
 			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>

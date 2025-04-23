@@ -1,5 +1,5 @@
 <script>
-	import { P, Card, Button, Label, Select, Modal, A } from 'flowbite-svelte';
+	import { P, Card, Button, Label, Select, Modal, A, Heading } from 'flowbite-svelte';
 	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 	import { generatePlayersPDF } from '$lib/PDFUtil';
@@ -122,18 +122,17 @@
 <div class="flex-1 flex-col md:flex-row justify-center content-center gap-3">
 	<div>
 		{#each description as line}
-			<P class="py-1">{line}</P>
+			<P class="mb-1">{line}</P>
 		{/each}
-		<br />
 	</div>
 
 	<form>
-		<div class="flex gap-3">
+		<div class="flex gap-3 mt-3">
 			<div>
 				<Card>
-					<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+					<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 						Teilnehmende Spieler
-					</h5>
+					</Heading>
 					{#each usedPlayers as player, i}
 						<A class={getEnabledStyle(delEnabled)} onclick={() => delPlayer(player)}>
 							{player}
@@ -143,9 +142,9 @@
 			</div>
 			<div>
 				<Card>
-					<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+					<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 						Verfügbare Spieler
-					</h5>
+					</Heading>
 					{#each unusedPlayers as player, i}
 						<A class={getEnabledStyle(addEnabled)} onclick={() => addPlayer(player)}>
 							{player}
@@ -155,14 +154,13 @@
 			</div>
 			<div>
 				<Card>
-					<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
-					<br />
-					<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
-					<br />
-					<Button disabled={!addEnabled || !importFrom} on:click={prepareImport}>Importieren</Button
+					<Button class="mb-3" disabled={!changed} on:click={updateSettings}>Speichern</Button>
+					<Button class="mb-3" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+					<Button class="mb-3" disabled={!addEnabled || !importFrom} on:click={prepareImport}
+						>Importieren</Button
 					>
-					<br />
 					<Button
+						class="mb-3"
 						disabled={changed}
 						on:click={() =>
 							generatePlayersPDF(tournament.name + ' - Spieler', tournament.players, allPlayers)}
@@ -199,9 +197,9 @@
 	<Modal bind:open={showNone} size="xs" autoclose>
 		<div class="text-center">
 			<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 				{alertMsg}
-			</h3>
+			</Heading>
 			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>

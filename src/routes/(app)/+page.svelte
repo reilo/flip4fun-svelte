@@ -32,9 +32,9 @@
 <div class="flex flex-col md:flex-row justify-center content-center gap-3">
 	<div>
 		<Card>
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Lostrommel 2.0
-			</h5>
+			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 				Hier kannst du nach dem Zufallsprinzip einen Flipper auslosen.
 			</p>
@@ -51,9 +51,9 @@
 	</div>
 	<div>
 		<Card>
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Flipperliste
-			</h5>
+			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 				Hier findest du die Liste aller Flipper, die zum Spiel bereitstehen.
 			</p>
@@ -70,9 +70,9 @@
 	</div>
 	<div>
 		<Card>
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 				Flipperliga
-			</h5>
+			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 				Hier kommst du zur aktuellen Liga bzw. zum aktiven Turnier.
 			</p>

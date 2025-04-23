@@ -31,10 +31,9 @@
 {/if}
 
 <div>
-	<Heading tag="h5">Aktive Turniere</Heading>
-	<br />
+	<Heading tag="h5" class="mb-3">Aktive Turniere</Heading>
 
-	<Table shadow hoverable={true}>
+	<Table class="mb-3" shadow hoverable={true}>
 		<TableHead>
 			<TableHeadCell>Name</TableHeadCell>
 			{#if import.meta.env.VITE_APP_FULL}
@@ -72,11 +71,8 @@
 	</Table>
 </div>
 
-<br />
-
 <div>
-	<Heading tag="h5">Turnier-Historie</Heading>
-	<br />
+	<Heading tag="h5" class="mb-3">Turnier-Historie</Heading>
 
 	<Table shadow hoverable={true}>
 		<TableHead>

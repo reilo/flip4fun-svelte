@@ -7,6 +7,7 @@
 	const description = [
 		'Hier kannst du neue Spieler zur Liga hinzufügen.',
 		'Zum Ligastart klicke die Spieler in der Reihenfolge an, wie sie beim Start-Turnier ermittelt wurde.',
+		'Oder besser noch, importiere die Liste direkt aus dem vorangegangenen Start-Turnier.',
 		'Neue Spieler kannst du hier jederzeit ergänzen, diese werden aber erst zum Start des nächsten Spieltages berücksichtigt.'
 	];
 

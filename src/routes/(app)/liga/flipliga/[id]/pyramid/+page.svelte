@@ -99,10 +99,10 @@
 
 <div>
 	{#if round.status === 'Completed'}
-		<P>Spielstärken am Ende des Spieltags.</P>
+		<P class="mb-3">Spielstärken am Ende des Spieltags.</P>
 	{:else}
-		<P>Spielstärken zu Beginn des Spieltags.</P>
+		<P class="mb-3">Spielstärken zu Beginn des Spieltags.</P>
 	{/if}
-	<br />
+
 	<canvas id="myCanvas" width={hsize} height={vsize}></canvas>
 </div>

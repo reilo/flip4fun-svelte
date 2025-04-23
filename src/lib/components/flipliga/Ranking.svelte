@@ -81,8 +81,7 @@
 
 <div>
 	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
-	<P>Spielername anklicken für Statistiken.</P>
-	<br />
+	<P class="mb-3">Spielername anklicken für Statistiken.</P>
 
 	<Table shadow hoverable={true}>
 		<TableHead>

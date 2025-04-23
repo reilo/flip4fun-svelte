@@ -141,11 +141,9 @@
 		</P>
 	</Alert>
 {/if}
-<br />
 
 <div>
-	<Heading tag="h5">Turniere bearbeiten, starten oder beenden</Heading>
-	<br />
+	<Heading tag="h5" class="mb-3">Turniere bearbeiten, starten oder beenden</Heading>
 
 	<div>
 		<Button on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
@@ -166,15 +164,14 @@
 			</form>
 		</Modal>
 	</div>
-	<br />
 
 	<div>
 		<Modal bind:open={showAlert} size="xs" autoclose>
 			<div class="text-center">
 				<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage}
-				</h3>
+				</Heading>
 				<Button color="alternative">Schließen</Button>
 			</div>
 		</Modal>
@@ -186,9 +183,9 @@
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 				/>
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{newTourName + ' (' + mapTourType(newTourType) + ')'}
-				</h3>
+				</Heading>
 				<Button color="red" class="me-2" on:click={createTour}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
@@ -201,9 +198,12 @@
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 				/>
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					{alertMessage}<br />{alertMessage2}
-				</h3>
+				<Heading tag="h3" class="mb-3 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{alertMessage}
+				</Heading>
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					{alertMessage2}
+				</Heading>
 				<Button color="red" class="me-2" on:click={deleteTour}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
@@ -214,9 +214,9 @@
 		<Modal bind:open={deleteSuccess} size="xs" autoclose>
 			<div class="text-center">
 				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					Das Turnier wurde erfolgreich gelöscht!
-				</h3>
+				</Heading>
 				<Button color="alternative">Schließen</Button>
 			</div>
 		</Modal>
@@ -226,9 +226,9 @@
 		<Modal bind:open={createSuccess} size="xs" autoclose>
 			<div class="text-center">
 				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					Das Turnier wurde erfolgreich angelegt!
-				</h3>
+				</Heading>
 				<Button color="alternative">Schließen</Button>
 			</div>
 		</Modal>

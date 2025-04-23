@@ -87,14 +87,13 @@
 
 <div>
 		<Select
-			class="mt-2 w-fit"
+			class="mt-2 w-fit mb-3"
 			placeholder="Auswählen ..."
 			items={playerMap}
 			bind:value={selected}
 			on:change={playerChanged}
 		/>
 </div>
-<br />
 
 {#if selected}
 	<Table shadow hoverable={true}>
@@ -161,11 +160,9 @@
 			{/if}
 		</TableBody>
 	</Table>
-	<br />
 
 	<div>
-		<Heading tag="h6">Verfügbare Gegner</Heading>
-		<br />
+		<Heading tag="h6" class="mt-3 mb-3">Verfügbare Gegner</Heading>
 	</div>
 
 	<Table shadow hoverable={true}>

@@ -1,5 +1,5 @@
 <script>
-	import { Card, Button, Spinner } from 'flowbite-svelte';
+	import { Heading, Card, Button, Spinner } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { goto } from '$app/navigation';
 
@@ -25,9 +25,9 @@
 
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Flipperverwaltung
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Flipper aktiv oder inaktiv schalten.
 		</p>
@@ -44,9 +44,9 @@
 </div>
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Spielerverwaltung
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Spieler aktiv oder inaktiv schalten.
 		</p>
@@ -63,9 +63,9 @@
 </div>
 <div>
 	<Card>
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
 			Turnierverwaltung
-		</h5>
+		</Heading>
 		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 			Turniere bearbeiten, starten oder beenden.
 		</p>

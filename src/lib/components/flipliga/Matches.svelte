@@ -222,12 +222,11 @@
 </script>
 
 <div>
-	<Heading tag="h5"
+	<Heading tag="h5" class="mb-3"
 		>{tourCompleted
 			? 'Letzter Spieltag'
 			: 'Aktueller Spieltag' + ' - ' + matches.length + ' Matches'}</Heading
 	>
-	<br />
 
 	{#if addMatchEnabled}
 		<div>
@@ -292,9 +291,9 @@
 			<Modal bind:open={showAlert} size="xs" autoclose>
 				<div class="text-center">
 					<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 						{alertMessage}
-					</h3>
+					</Heading>
 					<Button color="alternative">Schließen</Button>
 				</div>
 			</Modal>
@@ -306,7 +305,7 @@
 					<ExclamationCircleOutline
 						class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 					/>
-					<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+					<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 						{getPlayerName(selPlayer1) +
 							' : ' +
 							getPlayerName(selPlayer2) +
@@ -314,14 +313,12 @@
 							selPoints1 +
 							' : ' +
 							selPoints2}
-					</h3>
+					</Heading>
 					<Button color="red" class="me-2" on:click={storeMatch}>Ja, ich bin sicher</Button>
 					<Button color="alternative">Nein, abbrechen</Button>
 				</div>
 			</Modal>
 		</div>
-
-		<br />
 	{/if}
 
 	<Table shadow hoverable={true}>
@@ -390,9 +387,9 @@
 				<ExclamationCircleOutline
 					class="mx-auto mb-4 text-green-700 w-12 h-12 dark:text-green-700"
 				/>
-				<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessageDelete}
-				</h3>
+				</Heading>
 				<Button color="red" class="me-2" on:click={deleteMatch}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
