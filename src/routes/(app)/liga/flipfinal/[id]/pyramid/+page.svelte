@@ -15,7 +15,7 @@
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
-		const imageBaseUrl = '/photos/';
+		const imageBaseUrl = '/photos/players/';
 		const imageExtension = '.jpg';
 		const totalRows = calcStrength(1, tournament.players.length);
 		const hOffset = 3.0;

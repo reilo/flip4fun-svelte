@@ -337,7 +337,6 @@
 
 	<Table class="mt-5" shadow hoverable={true}>
 		<TableHead>
-			<!--TableHeadCell></TableHeadCell-->
 			<TableHeadCell>Name</TableHeadCell>
 			<TableHeadCell>E-Mail</TableHeadCell>
 			<TableHeadCell>Aktiv</TableHeadCell>
@@ -348,9 +347,6 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each allPlayers as player, i}
 				<TableBodyRow>
-					<!--TableBodyCell class="py-0"
-						><Avatar src={'/photos/' + player.id + '.jpg'} /></TableBodyCell
-					-->
 					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
 					<TableBodyCell>{player.email}</TableBodyCell>
 					<TableBodyCell>

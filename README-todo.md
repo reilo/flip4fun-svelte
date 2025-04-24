@@ -17,12 +17,8 @@ FLIP-Liga
 - Ergebnis-PDF -> 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- !!! Pyramide
-- Turnier beendet - nicht Spieltag-bezogen anzeigen, Statistiken, auch PDF Export
--- Gesamtspiele
--- Flipperstatistiken
--- Ergebnisstatistiken
+- Statistiken
 -- Grafik Aktivität
--- Grafik Pins Rangliste
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final

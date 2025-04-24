@@ -32,7 +32,7 @@
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
-		const imageBaseUrl = '/photos/';
+		const imageBaseUrl = '/photos/players/';
 		const imageExtension = '.jpg';
 		const imageWidth = [36, 48, 60, 78, 96][idx];
 		const imageHeigth = imageWidth * 1.33;

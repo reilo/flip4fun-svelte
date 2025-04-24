@@ -40,8 +40,9 @@
 		countSets = 0;
 		pinActivity = [];
 		data.pins.forEach((pin) => {
-			pinActivity.push({ id: pin.id, count: 0 });
+			pinActivity.push({ id: pin.id, manu: pin.manu.toLowerCase(), count: 0 });
 		});
+		console.log(pinActivity);
 		roundActivity = [];
 		playerActivity = [];
 		data.tournament.players.forEach((player) => {
@@ -143,7 +144,7 @@
 			</div>
 			<Listgroup items={playerActivity} let:item class="border-0 dark:bg-transparent!">
 				<div class="flex items-center space-x-4 rtl:space-x-reverse">
-					<Avatar src={'/photos/' + item.id + '.jpg'} />
+					<Avatar src={'/photos/players/' + item.id + '.jpg'} />
 					<div class="flex-1 min-w-0">
 						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
 							{getPlayerName(item.id)}
@@ -168,7 +169,7 @@
 			</div>
 			<Listgroup items={pinActivity} let:item class="border-0 dark:bg-transparent!">
 				<div class="flex items-center space-x-4 rtl:space-x-reverse">
-					<Avatar src={'/favicon.png'} />
+					<Avatar src={'/photos/pins/' + item.manu + '.jpg'} />
 					<div class="flex-1 min-w-0">
 						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
 							{getPinName(item.id, data.pins)}
@@ -193,6 +194,7 @@
 			</div>
 			<Listgroup items={roundActivity} let:item class="border-0 dark:bg-transparent!">
 				<div class="flex items-center space-x-4 rtl:space-x-reverse">
+					<Avatar src={'/photos/bumper.jpg'} />
 					<div class="flex-1 min-w-0">
 						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
 							Spieltag {item.num}
