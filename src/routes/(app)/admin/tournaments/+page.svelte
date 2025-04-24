@@ -146,7 +146,7 @@
 	<Heading tag="h5" class="mb-3">Turniere bearbeiten, starten oder beenden</Heading>
 
 	<div>
-		<Button on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
+		<Button class="mb-3" on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
 		<Modal title="Neues Turnier anlegen" bind:open={newForm} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">
