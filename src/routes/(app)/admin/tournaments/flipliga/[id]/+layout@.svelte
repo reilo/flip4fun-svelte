@@ -55,18 +55,22 @@
 	</NavLi>
 {/snippet}
 
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen max-w-full md:max-w-7xl mx-auto">
 	<Header headerLinks={links} {headerLink} />
 
-	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
-		<Heading tag="h3" class="mb-3">{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading>
-		{#if accessValue >= AdminAccess}
-			<div class="flex flex-col md:flex-row gap-3 mx-auto">
-				{@render children?.()}
-			</div>
-		{:else}
-			<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
-		{/if}
+	<main class="flex flex-1 flex-col md:flex-row p-4">
+		<div>
+			<Heading tag="h3" class="mb-3"
+				>{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading
+			>
+			{#if accessValue >= AdminAccess}
+				<div class="flex flex-col md:flex-row gap-3 mx-auto">
+					{@render children?.()}
+				</div>
+			{:else}
+				<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
+			{/if}
+		</div>
 	</main>
 
 	<Footer>

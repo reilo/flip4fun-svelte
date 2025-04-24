@@ -1,5 +1,5 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, P } from 'flowbite-svelte';
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Select } from 'flowbite-svelte';
@@ -29,14 +29,15 @@
 	const tourPlayers = data.tournament.players;
 	sortPlayerIDs(tourPlayers, allPlayers);
 
-	let counts = $state([]);
+	let countMatches = $state(0);
+	let countSets = $state(0);
 	let pinActivity = $state([]);
 	let roundActivity = $state([]);
 	let playerActivity = $state([]);
 
 	const initData = () => {
-		let countMatches = 0;
-		let countSets = 0;
+		countMatches = 0;
+		countSets = 0;
 		pinActivity = [];
 		data.pins.forEach((pin) => {
 			pinActivity.push({ id: pin.id, count: 0 });
@@ -49,7 +50,7 @@
 
 		rounds.forEach((round, i) => {
 			countMatches += round.matches.length;
-			roundActivity.push({ num: i + 1, date: round.created, matches: round.matches.length });
+			roundActivity.push({ num: i + 1, date: round.created, count: round.matches.length });
 			round.matches.forEach((match) => {
 				countSets += match.score1 + match.score2;
 				pinActivity[pinActivity.findIndex((pin) => pin.id === match.pin)].count++;
@@ -70,11 +71,6 @@
 		if (roundActivity.length > 5) {
 			roundActivity.splice(5);
 		}
-
-		counts = [
-			{ name: 'Insgesamt gespielte Matches:', count: countMatches },
-			{ name: 'Insgesamt gespielte Sätze:', count: countSets }
-		];
 	};
 
 	const getPlayerName = (player, short) => {
@@ -132,60 +128,14 @@
 	initData();
 </script>
 
+<Heading tag="h5" class="mb-3"
+	>Bisher wurden {countMatches} Matches in {countSets} Sätzen gespielt!</Heading
+>
+
 <div class="flex flex-1 flex-col md:flex-row justify-center content-center gap-3">
-	<div>
-		<Card padding="xl" size="md">
-			<div class="flex justify-between items-center mb-4">
-				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-					Allgemeine Statistik
-				</h5>
-			</div>
-			<Listgroup items={counts} let:item class="border-0 dark:bg-transparent!">
-				<div class="flex items-center space-x-4 rtl:space-x-reverse">
-					<div class="flex-1 min-w-0">
-						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-							{item.name}
-						</p>
-					</div>
-					<div
-						class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-					>
-						{item.count}
-					</div>
-				</div>
-			</Listgroup>
-		</Card>
-	</div>
 
 	<div>
-		<Card padding="xl" size="md">
-			<div class="flex justify-between items-center mb-4">
-				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-					Aktivste Spieltage
-				</h5>
-			</div>
-			<Listgroup items={roundActivity} let:item class="border-0 dark:bg-transparent!">
-				<div class="flex items-center space-x-4 rtl:space-x-reverse">
-					<div class="flex-1 min-w-0">
-						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-							Spieltag {item.num}
-						</p>
-						<p class="text-sm text-gray-500 truncate dark:text-gray-400">
-							{mapDate(item.date)}
-						</p>
-					</div>
-					<div
-						class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
-					>
-						{item.matches} Matches
-					</div>
-				</div>
-			</Listgroup>
-		</Card>
-	</div>
-
-	<div>
-		<Card padding="xl" size="md">
+		<Card padding="xl" size="md" class="mb-3">
 			<div class="flex justify-between items-center mb-4">
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
 					Aktivste Spieler
@@ -210,7 +160,7 @@
 	</div>
 
 	<div>
-		<Card padding="xl" size="md">
+		<Card padding="xl" size="md" class="mb-3">
 			<div class="flex justify-between items-center mb-4">
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
 					Am häufigsten gespielte Flipper
@@ -228,6 +178,33 @@
 						class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
 					>
 						{item.count} mal gespielt
+					</div>
+				</div>
+			</Listgroup>
+		</Card>
+	</div>
+
+	<div>
+		<Card padding="xl" size="md" class="mb-3">
+			<div class="flex justify-between items-center mb-4">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+					Aktivste Spieltage
+				</h5>
+			</div>
+			<Listgroup items={roundActivity} let:item class="border-0 dark:bg-transparent!">
+				<div class="flex items-center space-x-4 rtl:space-x-reverse">
+					<div class="flex-1 min-w-0">
+						<p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+							Spieltag {item.num}
+						</p>
+						<p class="text-sm text-gray-500 truncate dark:text-gray-400">
+							{mapDate(item.date)}
+						</p>
+					</div>
+					<div
+						class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white"
+					>
+						{item.count} Matches
 					</div>
 				</div>
 			</Listgroup>

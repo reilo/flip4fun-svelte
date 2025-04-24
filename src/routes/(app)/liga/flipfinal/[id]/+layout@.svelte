@@ -55,19 +55,21 @@
 	</NavLi>
 {/snippet}
 
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen max-w-full md:max-w-7xl mx-auto">
 	<Header headerLinks={links} {headerLink} />
 
-	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
-		{#if tournament.status === 'Active' && data.round}
-			<Heading tag="h4" class="mb-3"
-				>{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading
-			>
-		{:else}
-			<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
-		{/if}
+	<main class="flex flex-1 flex-col md:flex-row p-4">
+		<div>
+			{#if tournament.status === 'Active' && data.round}
+				<Heading tag="h4" class="mb-3"
+					>{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading
+				>
+			{:else}
+				<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
+			{/if}
 
-		{@render children?.()}
+			{@render children?.()}
+		</div>
 	</main>
 
 	<Footer>

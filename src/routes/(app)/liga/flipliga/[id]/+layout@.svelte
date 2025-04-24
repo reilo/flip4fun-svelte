@@ -70,23 +70,29 @@
 	</NavLi>
 {/snippet}
 
-<div class="flex flex-col min-h-screen">
+<div
+	class={largeScreen && isMatches
+		? 'flex flex-col min-h-screen max-w-full mx-auto'
+		: 'flex flex-col min-h-screen max-w-full md:max-w-7xl mx-auto'}
+>
 	<Header headerLinks={links} {headerLink} />
 
-	<main class={'flex flex-1 flex-col p-4 max-w-7xl mx-auto'}>
-		{#if tournament.status === 'Active'}
-			<Heading tag="h4" class="mb-3"
-				>{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading
+	<main class="flex flex-1 flex-col md:flex-row p-4">
+		<div>
+			{#if tournament.status === 'Active'}
+				<Heading tag="h4" class="mb-3"
+					>{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading
+				>
+			{:else}
+				<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
+			{/if}
+			<div
+				class={largeScreen && isMatches
+					? 'grid grid-cols-2 max-w-full gap-3'
+					: 'flex flex-1 flex-col max-w-7xl'}
 			>
-		{:else}
-			<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
-		{/if}
-		<div
-			class={largeScreen && isMatches
-				? 'grid grid-cols-2 max-w-full p-4 gap-3'
-				: 'flex flex-1 flex-col p-4 max-w-7xl mx-auto'}
-		>
-			{@render children?.()}
+				{@render children?.()}
+			</div>
 		</div>
 	</main>
 

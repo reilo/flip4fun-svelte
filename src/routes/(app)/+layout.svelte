@@ -49,10 +49,10 @@
 	</NavLi>
 {/snippet}
 
-<div class="flex flex-col min-h-screen">
+<div class="flex flex-col min-h-screen max-w-full md:max-w-7xl mx-auto">
 	<Header headerLinks={links} {headerLink} />
 
-	<main class="flex flex-1 flex-col p-4 max-w-7xl mx-auto">
+	<main class="flex flex-1 flex-col md:flex-row p-4">
 		{@render children?.()}
 	</main>
 

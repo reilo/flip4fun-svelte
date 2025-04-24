@@ -29,10 +29,13 @@
 </svelte:head>
 
 <!--Heading tag="h1" class="mb-3">Willkommen in der Pinball Lounge</Heading -->
-<div class="flex flex-col md:flex-row justify-center content-center gap-3">
+<div class="flex flex-col md:flex-row gap-3">
 	<div>
 		<Card>
-			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading
+				tag="h5"
+				class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+			>
 				Lostrommel 2.0
 			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
@@ -51,7 +54,10 @@
 	</div>
 	<div>
 		<Card>
-			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading
+				tag="h5"
+				class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+			>
 				Flipperliste
 			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
@@ -70,7 +76,10 @@
 	</div>
 	<div>
 		<Card>
-			<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			<Heading
+				tag="h5"
+				class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+			>
 				Flipperliga
 			</Heading>
 			<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">

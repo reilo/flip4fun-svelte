@@ -1,5 +1,7 @@
 <script>
 	import { Heading, P, A } from 'flowbite-svelte';
+	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { TableBody, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
 	import { Timeline, TimelineItem, Button } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
@@ -77,9 +79,33 @@
 	</Timeline>
 
 	<Heading tag="h4" class="mb-3">Geräteeigenschaften</Heading>
-	<P>innerWidth = {innerWidth.current}</P>
-	<P>innerHeight = {innerHeight.current}</P>
-	<P>outerWidth = {outerWidth.current}</P>
-	<P>outerHeight = {outerHeight.current}</P>
-	<P>devicePixelRatio = {devicePixelRatio.current}</P>
+
+	<Table shadow hoverable={true}>
+		<TableHead>
+			<TableHeadCell>Parameter</TableHeadCell>
+			<TableHeadCell>Aktueller Wert</TableHeadCell>
+		</TableHead>
+		<TableBody tableBodyClass="divide-y">
+			<TableBodyRow>
+				<TableBodyCell>innerWidth</TableBodyCell>
+				<TableBodyCell>{innerWidth.current}</TableBodyCell>
+			</TableBodyRow>
+			<TableBodyRow>
+				<TableBodyCell>innerHeight</TableBodyCell>
+				<TableBodyCell>{innerHeight.current}</TableBodyCell>
+			</TableBodyRow>
+			<TableBodyRow>
+				<TableBodyCell>outerWidth</TableBodyCell>
+				<TableBodyCell>{outerWidth.current}</TableBodyCell>
+			</TableBodyRow>
+			<TableBodyRow>
+				<TableBodyCell>outerHeight</TableBodyCell>
+				<TableBodyCell>{outerHeight.current}</TableBodyCell>
+			</TableBodyRow>
+			<TableBodyRow>
+				<TableBodyCell>devicePixelRatio</TableBodyCell>
+				<TableBodyCell>{devicePixelRatio.current}</TableBodyCell>
+			</TableBodyRow>
+		</TableBody>
+	</Table>
 </div>
