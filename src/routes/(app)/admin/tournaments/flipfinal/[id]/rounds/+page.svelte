@@ -14,10 +14,13 @@
 	let startTourSuccess = $state(false);
 
 	async function startTour() {
+		let settings = tournament.settings;
+		settings.inactivePlayers = [];
 		const response = await fetch('/api/tournament/' + tournament.id, {
 			method: 'PUT',
 			body: JSON.stringify({
-				status: 'Active'
+				status: 'Active',
+				settings: settings
 			}),
 			headers: {
 				'Content-Type': 'application/json',

@@ -58,7 +58,9 @@
 				let img = new Image();
 				img.src = imageBaseUrl + player + imageExtension;
 				images.push(img);
+				ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player) ? 0.2 : 1.0;
 				ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
+				ctx.globalAlpha = 1.0;
 
 				if (rowIndex === row) {
 					row++;

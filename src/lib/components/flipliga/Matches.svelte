@@ -230,7 +230,7 @@
 
 	{#if addMatchEnabled}
 		<div>
-			<Button on:click={() => (newForm = true)}>Spieleingabe...</Button>
+			<Button class="mb-3" on:click={() => (newForm = true)}>Spieleingabe...</Button>
 
 			<Modal title="Spieleingabe" bind:open={newForm} autoclose={false} class="max-w-sm">
 				<form class="flex flex-col space-y-6" action="#">
