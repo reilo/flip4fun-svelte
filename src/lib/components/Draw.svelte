@@ -69,7 +69,7 @@
 
 	<div class="grid grid-flow-row gap-2 sm:gap-3">
 		<Toggle id="emToggle" checked={em} on:change={() => (em = !em)}
-			>Electromechanical (bis Ende 70er)</Toggle
+			>Elektromechanisch (bis Ende 70er)</Toggle
 		>
 		<Toggle id="eeToggle" checked={ee} on:change={() => (ee = !ee)}
 			>Early Electronic (bis Ende 80er)</Toggle
