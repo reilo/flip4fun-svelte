@@ -4,7 +4,6 @@
 	import { invalidateAll } from '$app/navigation';
 	import { calcStrength } from '$lib/TourUtil';
 	import { calcRanking } from '$lib/MatchUtil';
-	import { generateLigaResultsPDF } from '$lib/PDFUtil';
 
 	let { data } = $props();
 
@@ -28,7 +27,6 @@
 	let endLigaEnabled = $state(
 		data.round && data.round.status === 'Completed' && data.tournament.status === 'Active'
 	);
-	let pdfEnabled = $state(data.round && data.round.status === 'Completed');
 
 	const baseline = data.tournament.settings.baseline;
 
@@ -110,7 +108,7 @@
 		invalidateAll();
 
 		startForm = false;
-		startEnabled = endLigaEnabled = pdfEnabled = false;
+		startEnabled = endLigaEnabled = false;
 		endEnabled = true;
 
 		startSuccess = true;
@@ -129,7 +127,7 @@
 		invalidateAll();
 
 		endForm = false;
-		startEnabled = endLigaEnabled = pdfEnabled = true;
+		startEnabled = endLigaEnabled = true;
 		endEnabled = false;
 
 		endSuccess = true;
@@ -147,7 +145,6 @@
 
 		endLigaForm = false;
 		startEnabled = endEnabled = endLigaEnabled = false;
-		pdfEnabled = true;
 
 		endLigaSuccess = true;
 	}
@@ -235,16 +232,6 @@
 			alert(JSON.stringify(result));
 		}
 	}
-
-	const generateResults = () => {
-		generateLigaResultsPDF({
-			pins: data.pins,
-			players: data.players,
-			tournament: data.tournament,
-			round: data.round,
-			rounds: data.rounds
-		});
-	};
 </script>
 
 <div>
@@ -273,20 +260,6 @@
 		</p>
 		<Button disabled={!endEnabled} on:click={() => (endForm = true)} class="w-fit">
 			Beenden<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
-
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Ergebnis-PDF generieren
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das PDF mit Ergebnissen und Statistiken für alle Spieltage.
-		</p>
-		<Button disabled={!pdfEnabled} on:click={() => generateResults()} class="w-fit">
-			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 		</Button>
 	</Card>
 </div>
