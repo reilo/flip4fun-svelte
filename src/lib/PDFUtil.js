@@ -246,6 +246,7 @@ export function generatePinsPDF(pins) {
 
     let pinTypes = new Map();
     let pinOwners = new Map();
+    let pinsByOwner = new Map();
 
     doc.setFontSize(12);
     pins.forEach((pin) => {
@@ -264,6 +265,7 @@ export function generatePinsPDF(pins) {
             pinTypes.set(pin.type, pinTypes.has(pin.type) ? pinTypes.get(pin.type) + 1 : 1);
             if (pin.owner) {
                 pinOwners.set(pin.owner, pinOwners.has(pin.owner) ? pinOwners.get(pin.owner) + 1 : 1);
+                pinsByOwner.set(pin.owner, pinsByOwner.has(pin.owner) ? [...pinsByOwner.get(pin.owner), pin.id] : [pin.id]);
             }
         }
         if (num > 0 && num % 40 === 0) {
@@ -277,6 +279,70 @@ export function generatePinsPDF(pins) {
         }
     })
 
+    let owners = [];
+    pinOwners.forEach((value, key) => owners.push(key));
+    owners.sort();
+
+    doc.addPage();
+    pageNum = 1;
+    drawTitleSquare(doc);
+    writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+    writeSubtitle(doc, "nach Besitzer - Seite " + pageNum++);
+
+    x = 10;
+    y = 45;
+    num = 0;
+    let numByOwner = 0;
+    let firstOwner = true;
+
+    doc.setFontSize(12);
+    owners.forEach((owner) => {
+        numByOwner = 0;
+        if (firstOwner) {
+            firstOwner = false;
+        } else {
+            // Trennungslinie
+            doc.setLineWidth(0.1);
+            doc.line(x, y - 2, 200, y - 2);
+            num++;
+            y += 6;
+            if (num > 0 && num % 40 === 0) {
+                // next page
+                doc.addPage();
+                drawTitleSquare(doc);
+                writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+                writeSubtitle(doc, "Nach Besitzer - Seite " + pageNum++);
+                y = 45;
+                doc.setFontSize(12);
+            }
+        }
+        pinsByOwner.get(owner).forEach((pinID) => {
+            const pin = pins.find((pin) => pin.id === pinID);
+            console.log(num);
+            if (pin && !pin.deleted && pin.id !== 'muma') {
+                num++;
+                numByOwner += 1;
+                const numStrg = numByOwner.toString() + ".";
+                doc.text(x + 10 - doc.getTextWidth(numStrg), y, numStrg);
+                doc.text(x + 15, y, pin.name);
+                doc.text(x + 80, y, mapPinType(pin.type));
+                if (pin.owner) {
+                    doc.text(x + 110, y, pin.owner);
+                }
+                y += 6;
+            }
+            if (num > 0 && num % 40 === 0) {
+                // next page
+                doc.addPage();
+                drawTitleSquare(doc);
+                writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
+                writeSubtitle(doc, "Nach Besitzer - Seite " + pageNum++);
+                y = 45;
+                doc.setFontSize(12);
+            }
+        })
+    })
+
     doc.addPage();
     drawTitleSquare(doc);
     writeTitle(doc, "Pinball Lounge - Flipperliste", "Stand: " + mapDate(new Date));
@@ -286,9 +352,6 @@ export function generatePinsPDF(pins) {
     y = 45;
     doc.setFontSize(14);
 
-    let owners = [];
-    pinOwners.forEach((value, key) => owners.push(key));
-    owners.sort();
     owners.forEach((owner) => {
         doc.text(x, y, owner);
         const count = pinOwners.get(owner).toString();
