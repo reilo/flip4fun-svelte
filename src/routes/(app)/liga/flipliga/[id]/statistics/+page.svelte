@@ -42,7 +42,6 @@
 		data.pins.forEach((pin) => {
 			pinActivity.push({ id: pin.id, manu: pin.manu.toLowerCase(), count: 0 });
 		});
-		console.log(pinActivity);
 		roundActivity = [];
 		playerActivity = [];
 		data.tournament.players.forEach((player) => {

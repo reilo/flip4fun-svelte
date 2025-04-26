@@ -12,6 +12,8 @@
 	let settings = $derived(tournament.settings);
 	let allPlayers = $derived(data.players);
 
+	const settingsEnabled = $derived(tournament.status === 'Planned');
+
 	const py = 'py-1';
 
 	const description = [
@@ -96,9 +98,16 @@
 					<TableBodyCell class={py}>{getPlayerName(player, allPlayers)}</TableBodyCell>
 					<TableBodyCell class={py}>
 						{#if !settings.inactivePlayers.includes(player)}
-							<Checkbox checked on:change={() => updatePlayerStatus(player, false)} />
+							<Checkbox
+								checked
+								disabled={!settingsEnabled}
+								on:change={() => updatePlayerStatus(player, false)}
+							/>
 						{:else}
-							<Checkbox on:change={() => updatePlayerStatus(player, true)} />
+							<Checkbox
+								disabled={!settingsEnabled}
+								on:change={() => updatePlayerStatus(player, true)}
+							/>
 						{/if}
 					</TableBodyCell>
 				</TableBodyRow>

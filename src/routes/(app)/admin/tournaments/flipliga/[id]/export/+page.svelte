@@ -3,7 +3,6 @@
 	import { ArrowRightOutline, QuestionCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { generateLigaResultsPDF, generateCertificatePDF } from '$lib/PDFUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
-	import { mapDate } from '$lib/TypeUtil';
 
 	let { data } = $props();
 

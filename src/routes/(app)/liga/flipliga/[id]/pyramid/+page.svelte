@@ -41,8 +41,6 @@
 		let x = 0,
 			y = 0;
 
-		console.log(hsize);
-
 		const interval = setInterval(() => {
 			let row = 1;
 			let rowIndex = 1;

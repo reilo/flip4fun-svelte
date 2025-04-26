@@ -464,10 +464,10 @@ export function generateCertificatePDF(title, versions, lines, names) {
         y = 0;
         doc.addImage("/photos/urkunde.jpg", "JPEG", 0, 0, xmax, ymax);
 
-        y += 90;
+        y += 80;
         doc.addImage("/pinlounge.jpg", "JPEG", 60, y, xmax - 2 * 60, 45);
 
-        y += 60;
+        y += 70;
         doc.setFontSize(36);
         doc.text((xmax - doc.getTextWidth(title)) / 2, y, title);
 
