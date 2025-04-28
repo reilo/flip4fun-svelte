@@ -1,12 +1,12 @@
 Work in progress Tasks
 - Code kommentieren...
 - Fehlerbehandlung...
+-- jede Seite Fehlermeldung, falls kein DB-Zugriff
 - Unit Tests...
 
 Allgemein
 - Strings lokalisieren / aus Resourcen
 - Eingabefocus
-- kritische Dialoge --> Sicherheitsabfrage mit Eingabe
 - Turniername ändern
 - leere String in DB speichern?
 - optional: Flipper Abkürzung editierbar
@@ -19,9 +19,15 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Admin: Runde starten / beenden, implizit Turnier beenden, wenn letzte Runde
-- Admin: Rundenzettel ausdrucken?
-- Admin: PDF Export
-- Canvas View
+- Rest APIs matchn
+- Admin - Runde starten
+-- aktuelle Levels in Round Settings initialisieren
+-- Matches anlegenm (2 pro Gruppe)
+-- Rundenzettel PDFs generieren?
+- Match-Eingabe
+-- Reihenfolge zum Anclicken oder Selektieren
+-- mit Admin-Rechten Resultat resetbar
+- Admin - Runde beenden
 -- Ranking, Darstellung wer zuletzt aufgestiegen
--- 2 Matches pro Gruppe, Reihenfolge zum Anclicken, mit Admin-Rechten Resultat resetbar
+- Admin Turnier beenden
+- Admin: PDF Export 
