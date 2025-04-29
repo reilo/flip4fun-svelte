@@ -67,6 +67,17 @@ model match {
   pin       String
 }
 
+model frame {
+  id        String      @id @default(uuid())
+  created   DateTime    @default(now())
+  tid       String
+  rid       Int
+  name      String
+  players   String[]    @default([])
+  scores    Int[]       @default([])
+  pin       String
+}
+
 enum PinType {
   DataEast
   EM
