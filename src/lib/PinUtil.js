@@ -36,3 +36,22 @@ export function getPinTypeMap() {
 export function mapPinType(pinType) {
     return getPinTypeMap().find((item) => item.value === pinType).name;
 }
+
+export function randomPin(pins, em, ee, dmd, lcd ) {
+    const items = pins.filter(
+        (pin) =>
+            pin.active &&
+            ((em ? ['EM'].includes(pin.type) : false) ||
+                (ee ? ['EE', 'Sys11'].includes(pin.type) : false) ||
+                (dmd
+                    ? ['DataEast', 'Gottlieb', 'Pin2000', 'Whitestar', 'WPC', 'WPC95'].includes(pin.type)
+                    : false) ||
+                (lcd ? ['SAM', 'Spike'].includes(pin.type) : false))
+    );
+    if (items.length > 0) {
+        const num = Math.floor(Math.random() * items.length);
+        return items[num];
+    } else {
+        return null;
+    }
+}

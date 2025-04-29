@@ -2,6 +2,7 @@
 	import { P, Heading } from 'flowbite-svelte';
 	import { Toggle, Button, Alert, Spinner } from 'flowbite-svelte';
 	import { SearchSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { randomPin } from '$lib/PinUtil';
 	import { logInfo } from '$lib/LogUtil';
 
 	let { data } = $props();
@@ -20,19 +21,9 @@
 		progress = true;
 		let newPin;
 		let timeout = 1500;
-		let items = data.pins.filter(
-			(pin) =>
-				pin.active &&
-				((em ? ['EM'].includes(pin.type) : false) ||
-					(ee ? ['EE', 'Sys11'].includes(pin.type) : false) ||
-					(dmd
-						? ['DataEast', 'Gottlieb', 'Pin2000', 'Whitestar', 'WPC', 'WPC95'].includes(pin.type)
-						: false) ||
-					(lcd ? ['SAM', 'Spike'].includes(pin.type) : false))
-		);
-		if (items.length > 0) {
-			let num = Math.floor(Math.random() * items.length);
-			newPin = items[num].name;
+		const pin = randomPin(data.pins, em, ee, dmd, lcd);
+		if (pin) {
+			newPin = pin.name;
 		} else {
 			newPin = 'Kein Flipper verfügbar';
 			timeout = 0;
