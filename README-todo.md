@@ -19,7 +19,6 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Rest APIs matchn
 - Admin - Runde starten
 -- aktuelle Levels in Round Settings initialisieren
 -- Matches anlegenm (2 pro Gruppe)
@@ -31,3 +30,21 @@ FLIP-Final
 -- Ranking, Darstellung wer zuletzt aufgestiegen
 - Admin Turnier beenden
 - Admin: PDF Export 
+
+round --> settings {
+    rankInit: [
+        { 
+            level: 1, 
+            players: [
+                { id: relo, score: 1},
+                { id: crho, score: 0.5},
+                ...
+            ]
+        },
+        {
+            level : 2,
+            ...
+        },
+        ...
+    ]
+}
