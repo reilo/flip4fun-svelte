@@ -9,6 +9,7 @@ export async function load({ fetch, parent }) {
         }
     };
 
+    // We need the list of all tournaments to select one for players import
     const response = await fetch("/api/tournament", getParms);
     const responseData = await response.json();
 

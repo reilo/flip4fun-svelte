@@ -1,7 +1,7 @@
 <script>
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
-	import { Checkbox } from 'flowbite-svelte';
+	import { P, Checkbox } from 'flowbite-svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import Players from '$lib/components/Players.svelte';
@@ -9,10 +9,12 @@
 	let { data } = $props();
 
 	let tournament = $derived(data.tournament);
+	let round = $derived(data.round);
 	let settings = $derived(tournament.settings);
 	let allPlayers = $derived(data.players);
 
 	const settingsEnabled = $derived(tournament.status === 'Planned');
+	const playersEnabled = $derived(!round);
 
 	const py = 'py-1';
 
@@ -87,31 +89,36 @@
 		update={updatePlayers}
 	/>
 {:else}
-	<Table shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Aktiv</TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each tournament.players as player, i}
-				<TableBodyRow>
-					<TableBodyCell class={py}>{getPlayerName(player, allPlayers)}</TableBodyCell>
-					<TableBodyCell class={py}>
-						{#if !settings.inactivePlayers.includes(player)}
-							<Checkbox
-								checked
-								disabled={!settingsEnabled}
-								on:change={() => updatePlayerStatus(player, false)}
-							/>
-						{:else}
-							<Checkbox
-								disabled={!settingsEnabled}
-								on:change={() => updatePlayerStatus(player, true)}
-							/>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+	<div>
+		<P class="mb-3"
+			>Deaktiviere alle nicht anwesenden Spieler. Jeder Klick wird sofort gespeichert.</P
+		>
+		<Table shadow hoverable={true}>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Aktiv</TableHeadCell>
+			</TableHead>
+			<TableBody tableBodyClass="divide-y">
+				{#each tournament.players as player, i}
+					<TableBodyRow>
+						<TableBodyCell class={py}>{getPlayerName(player, allPlayers)}</TableBodyCell>
+						<TableBodyCell class={py}>
+							{#if !settings.inactivePlayers.includes(player)}
+								<Checkbox
+									checked
+									disabled={!playersEnabled}
+									on:change={() => updatePlayerStatus(player, false)}
+								/>
+							{:else}
+								<Checkbox
+									disabled={!playersEnabled}
+									on:change={() => updatePlayerStatus(player, true)}
+								/>
+							{/if}
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	</div>
 {/if}
