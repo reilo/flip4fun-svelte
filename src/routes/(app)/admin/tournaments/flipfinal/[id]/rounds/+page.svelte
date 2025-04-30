@@ -1,9 +1,10 @@
 <script>
-	import { Heading, P, Card, Button } from 'flowbite-svelte';
-	import { Modal, Label } from 'flowbite-svelte';
-	import { ArrowRightOutline, QuestionCircleOutline } from 'flowbite-svelte-icons';
-	import { ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
+	import { calcStrength } from '$lib/TourUtil';
+	import { roundNumberForDB } from '$lib/TypeUtil';
+	import Success from '$lib/components/dialogs/Success.svelte';
+	import Sure from '$lib/components/dialogs/Sure.svelte';
+	import Box from '$lib/components/Box.svelte';
 
 	let { data } = $props();
 
@@ -51,6 +52,47 @@
 	}
 
 	async function startRound() {
+		const rankInit = [];
+		const playingLevels = [];
+		const pcount = tournament.players.length;
+		const inactivePlayers = tournament.settings.inactivePlayers;
+		if (!round) {
+			// it is the first round of the tournament
+			let previousStrength = calcStrength(1, pcount);
+			let currentPlayers = [];
+			tournament.players.forEach((player, i) => {
+				const strength = calcStrength(++i, pcount);
+				if (strength === previousStrength) {
+					currentPlayers.push(player);
+				}
+				if (strength !== previousStrength || i === pcount - 1) {
+					let newPlayers = [];
+					const count = currentPlayers.length;
+					currentPlayers.forEach((player2, j) => {
+						newPlayers.push({
+							id: player2,
+							score: count === 1 ? 1 : roundNumberForDB((count - j - 1) / (count - 1))
+						});
+					});
+					rankInit.unshift({ level: previousStrength, players: newPlayers });
+					previousStrength = strength;
+					currentPlayers = [player];
+				}
+			});
+			rankInit.every((row) => {
+				row.players.every((player) => {
+					if (!inactivePlayers.includes(player.id)) {
+						playingLevels.push(row.level);
+						return false;
+					}
+					return true;
+				});
+				return playingLevels.length ? false : true;
+			});
+		} else {
+		}
+		console.log(rankInit);
+		console.log(playingLevels);
 		startRoundForm = false;
 		successForm = true;
 		successMessage = 'Die neue Runde wurde erfolgreich gestartet!';
@@ -65,95 +107,56 @@
 	}
 </script>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-			>Turnier starten</Heading
-		>
-		<P class="mb-3">
-			Sobald das Final-Turnier gestartet wurde, müssen nicht teilnehmende Spieler deaktiviert
-			werden.
-		</P>
-		<P class="mb-3">Anschließend kann die erste Runde gestartet werden.</P>
-		<Button disabled={!startTourEnabled} on:click={() => (startTourForm = true)} class="w-fit">
-			Starten<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Turnier starten'}
+	description={'Sobald das Final-Turnier gestartet wurde, müssen nicht teilnehmende Spieler deaktiviert werden. ' +
+		'Anschließend kann die erste Runde gestartet werden.'}
+	action={() => (startTourForm = true)}
+	enabled={startTourEnabled}
+	buttonOk={'Starten'}
+	loading={false}
+/>
 
-<div>
-	<Modal title="Turnier starten" bind:open={startTourForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll das Finalturnier wirklich gestartet werden?</Label>
-				<Button color="alternative" on:click={startTour}>Ja, starten</Button>
-				<Button color="primary" on:click={() => (startTourForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={startTourForm}
+	title={'Turnier starten'}
+	message={'Soll das Finalturnier wirklich gestartet werden?'}
+	action={startTour}
+	buttonOk={'Ja, starten'}
+/>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-			>Neue Runde starten</Heading
-		>
-		<P class="mb-3">
-			Matches für alle teilnehmenden Ebenen werden ausgelost und die Runde gestartet.
-		</P>
-		<Button disabled={!startRoundEnabled} on:click={() => (startRoundForm = true)} class="w-fit">
-			Starten<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Neue Runde starten'}
+	description={'Matches für alle teilnehmenden Ebenen werden ausgelost und die Runde gestartet.'}
+	action={() => (startRoundForm = true)}
+	enabled={startRoundEnabled}
+	buttonOk={'Starten'}
+	loading={false}
+/>
 
-<div>
-	<Modal title="Runde starten" bind:open={startRoundForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll wirklich eine neue Runde gestartet werden?</Label>
-				<Button color="alternative" on:click={startRound}>Ja, starten</Button>
-				<Button color="primary" on:click={() => (startRoundForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={startRoundForm}
+	title={'Runde starten'}
+	message={'Soll wirklich eine neue Runde gestartet werden?'}
+	action={startRound}
+	buttonOk={'Ja, starten'}
+/>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-			>Runde beenden</Heading
-		>
-		<P class="mb-3">Die aktuelle Runde wird beendet und die Ebenen neu berechnet.</P>
-		<Button disabled={!endRoundEnabled} on:click={() => (endRoundForm = true)} class="w-fit">
-			Starten<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Runde beenden'}
+	description={'Die aktuelle Runde wird beendet und die Ebenen neu berechnet.'}
+	action={() => (endRoundForm = true)}
+	enabled={endRoundEnabled}
+	buttonOk={'Beenden'}
+	loading={false}
+/>
 
-<div>
-	<Modal title="Runde starten" bind:open={endRoundForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll die aktuelle Runde wirklich beendet werden?</Label>
-				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
-				<Button color="primary" on:click={() => (endRoundForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={endRoundForm}
+	title={'Runde beenden'}
+	message={'Soll die aktuelle Runde wirklich beendet werden?'}
+	action={endRound}
+	buttonOk={'Ja, beenden'}
+/>
 
-<div>
-	<Modal bind:open={successForm} size="xs" autoclose>
-		<div class="text-center">
-			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				{successMessage}
-			</Heading>
-			<Button color="alternative">Schließen</Button>
-		</div>
-	</Modal>
-</div>
+<Success show={successForm} message={successMessage} />
