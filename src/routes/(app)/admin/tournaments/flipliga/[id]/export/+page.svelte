@@ -1,6 +1,6 @@
 <script>
 	import { Heading, Button, Card } from 'flowbite-svelte';
-	import { ArrowRightOutline, QuestionCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
+	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { generateLigaResultsPDF, generateCertificatePDF } from '$lib/PDFUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 

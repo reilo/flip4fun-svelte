@@ -4,11 +4,12 @@
 	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { CloseCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
+	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { mapDate } from '$lib/TypeUtil';
 	import { mapTourStatus, mapTourType, getTourTypeMap, getDefaultSettings } from '$lib/TourUtil';
 	import { cleanString } from '$lib/TypeUtil';
+	import Success from '$lib/components/dialogs/Success.svelte';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.tournaments);
@@ -192,6 +193,8 @@
 		</Modal>
 	</div>
 
+	<Success show={createSuccess} message={"Das Turnier wurde erfolgreich angelegt!"} />
+
 	<div>
 		<Modal bind:open={showSureDelete} size="xs" autoclose>
 			<div class="text-center">
@@ -210,29 +213,7 @@
 		</Modal>
 	</div>
 
-	<div>
-		<Modal bind:open={deleteSuccess} size="xs" autoclose>
-			<div class="text-center">
-				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Das Turnier wurde erfolgreich gelöscht!
-				</Heading>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
-
-	<div>
-		<Modal bind:open={createSuccess} size="xs" autoclose>
-			<div class="text-center">
-				<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-					Das Turnier wurde erfolgreich angelegt!
-				</Heading>
-				<Button color="alternative">Schließen</Button>
-			</div>
-		</Modal>
-	</div>
+	<Success show={deleteSuccess} message={"Das Turnier wurde erfolgreich gelöscht!"} />
 
 	<Table shadow hoverable={true}>
 		<TableHead>

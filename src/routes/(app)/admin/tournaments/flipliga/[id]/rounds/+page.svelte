@@ -1,9 +1,10 @@
 <script>
-	import { Heading, Modal, Label, Button, Card } from 'flowbite-svelte';
-	import { ArrowRightOutline, QuestionCircleOutline, ThumbsUpOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { calcStrength } from '$lib/TourUtil';
 	import { calcRanking } from '$lib/MatchUtil';
+	import Box from '$lib/components/Box.svelte';
+	import Sure from '$lib/components/dialogs/Sure.svelte';
+	import Success from '$lib/components/dialogs/Success.svelte';
 
 	let { data } = $props();
 
@@ -234,122 +235,59 @@
 	}
 </script>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Spieltag starten
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler
-			hinzugefügt werden.
-		</p>
-		<Button disabled={!startEnabled} on:click={() => (startForm = true)} class="w-fit">
-			Starten<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Spieltag starten'}
+	description={'Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler	hinzugefügt werden.'}
+	action={() => (startForm = true)}
+	enabled={startEnabled}
+	buttonOk={'Starten'}
+	loading={false}
+/>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Spieltag beenden
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert
-			werden.
-		</p>
-		<Button disabled={!endEnabled} on:click={() => (endForm = true)} class="w-fit">
-			Beenden<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Spieltag beenden'}
+	description={'Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert werden.'}
+	action={() => (endForm = true)}
+	enabled={endEnabled}
+	buttonOk={'Beenden'}
+	loading={false}
+/>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Liga beenden
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet
-			werden.
-		</p>
-		<Button disabled={!endLigaEnabled} on:click={() => (endLigaForm = true)} class="w-fit">
-			Beenden<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<Box
+	title={'Liga beenden'}
+	description={'Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet werden.'}
+	action={() => (endLigaForm = true)}
+	enabled={endLigaEnabled}
+	buttonOk={'Beenden'}
+	loading={false}
+/>
 
-<div>
-	<Modal title="Spieltag starten" bind:open={startForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll der {nextRound}. Spieltag wirklich gestartet werden?</Label>
-				<Button color="alternative" on:click={startRound}>Ja, starten</Button>
-				<Button color="primary" on:click={() => (startForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={startForm}
+	title={'Spieltag starten'}
+	message={'Soll der nächste Spieltag wirklich gestartet werden?'}
+	action={startRound}
+	buttonOk={'Ja, starten'}
+/>
 
-<div>
-	<Modal bind:open={startSuccess} size="xs" autoclose>
-		<div class="text-center">
-			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				Der Spieltag wurde erfolgreich gestartet!
-			</Heading>
-			<Button color="alternative">Schließen</Button>
-		</div>
-	</Modal>
-</div>
+<Success show={startSuccess} message={'Der Spieltag wurde erfolgreich gestartet!'} />
 
-<div>
-	<Modal title="Spieltag beenden" bind:open={endForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll der {nextRound - 1}. Spieltag wirklich beendet werden?</Label>
-				<Button color="alternative" on:click={endRound}>Ja, beenden</Button>
-				<Button color="primary" on:click={() => (endForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={endForm}
+	title={'Spieltag beenden'}
+	message={'Soll der aktuelle Spieltag wirklich beendet werden?'}
+	action={endRound}
+	buttonOk={'Ja, beenden'}
+/>
 
-<div>
-	<Modal bind:open={endSuccess} size="xs" autoclose>
-		<div class="text-center">
-			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				Der Spieltag wurde erfolgreich beendet!
-			</Heading>
-			<Button color="alternative">Schließen</Button>
-		</div>
-	</Modal>
-</div>
+<Success show={endSuccess} message={'Der Spieltag wurde erfolgreich beendet!'} />
 
-<div>
-	<Modal title="Liga beenden" bind:open={endLigaForm} autoclose={false} class="max-w-sm">
-		<div class="text-center">
-			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<form class="flex flex-col space-y-6" action="#">
-				<Label class="space-y-2">Soll diese Liga wirklich endgültig beendet werden?</Label>
-				<Button color="alternative" on:click={endLiga}>Ja, beenden</Button>
-				<Button color="primary" on:click={() => (endLigaForm = false)}>Nein, abbrechen</Button>
-			</form>
-		</div>
-	</Modal>
-</div>
+<Sure
+	show={endLigaForm}
+	title={'Liga beenden'}
+	message={'Soll diese Liga wirklich endgültig beendet werden?'}
+	action={endLiga}
+	buttonOk={'Ja, beenden'}
+/>
 
-<div>
-	<Modal bind:open={endLigaSuccess} size="xs" autoclose>
-		<div class="text-center">
-			<ThumbsUpOutline class="mx-auto mb-4 text-green-700 w-12 h-12 dark:green-red-700" />
-			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				Die Liga wurde erfolgreich beendet!
-			</Heading>
-			<Button color="alternative">Schließen</Button>
-		</div>
-	</Modal>
-</div>
+<Success show={endLigaSuccess} message={'Die Liga wurde erfolgreich beendet!'} />
