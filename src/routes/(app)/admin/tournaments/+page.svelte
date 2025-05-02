@@ -193,7 +193,11 @@
 		</Modal>
 	</div>
 
-	<Success show={createSuccess} message={"Das Turnier wurde erfolgreich angelegt!"} />
+	<Success
+		show={createSuccess}
+		message={'Das Turnier wurde erfolgreich angelegt!'}
+		onClose={() => (createSuccess = false)}
+	/>
 
 	<div>
 		<Modal bind:open={showSureDelete} size="xs" autoclose>
@@ -213,7 +217,11 @@
 		</Modal>
 	</div>
 
-	<Success show={deleteSuccess} message={"Das Turnier wurde erfolgreich gelöscht!"} />
+	<Success
+		show={deleteSuccess}
+		message={'Das Turnier wurde erfolgreich gelöscht!'}
+		onClose={() => (deleteSuccess = false)}
+	/>
 
 	<Table shadow hoverable={true}>
 		<TableHead>

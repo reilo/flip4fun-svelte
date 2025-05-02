@@ -2,7 +2,7 @@
 	import { Modal, Label, Button } from 'flowbite-svelte';
 	import { QuestionCircleOutline } from 'flowbite-svelte-icons';
 
-	let { show, title, message, action, buttonOk, buttonCancel } = $props();
+	let { show, title, message, actionOk, actionCancel, buttonOk, buttonCancel } = $props();
 </script>
 
 <div>
@@ -11,8 +11,8 @@
 			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">{message}</Label>
-				<Button color="alternative" on:click={action}>{buttonOk ? buttonOk : 'Ok'}</Button>
-				<Button color="primary" on:click={() => (show = false)}
+				<Button color="alternative" on:click={actionOk}>{buttonOk ? buttonOk : 'Ok'}</Button>
+				<Button color="primary" on:click={actionCancel}
 					>{buttonCancel ? buttonCancel : 'Nein, abbrechen!'}</Button
 				>
 			</form>

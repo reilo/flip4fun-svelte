@@ -238,7 +238,7 @@
 <Box
 	title={'Spieltag starten'}
 	description={'Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler	hinzugefügt werden.'}
-	action={() => (startForm = true)}
+	action={(startForm = true)}
 	enabled={startEnabled}
 	buttonOk={'Starten'}
 	loading={false}
@@ -247,7 +247,7 @@
 <Box
 	title={'Spieltag beenden'}
 	description={'Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert werden.'}
-	action={() => (endForm = true)}
+	action={(endForm = true)}
 	enabled={endEnabled}
 	buttonOk={'Beenden'}
 	loading={false}
@@ -256,7 +256,7 @@
 <Box
 	title={'Liga beenden'}
 	description={'Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet werden.'}
-	action={() => (endLigaForm = true)}
+	action={(endLigaForm = true)}
 	enabled={endLigaEnabled}
 	buttonOk={'Beenden'}
 	loading={false}
@@ -266,28 +266,43 @@
 	show={startForm}
 	title={'Spieltag starten'}
 	message={'Soll der nächste Spieltag wirklich gestartet werden?'}
-	action={startRound}
+	actionOk={startRound}
+	actionCancel={() => (startForm = false)}
 	buttonOk={'Ja, starten'}
 />
 
-<Success show={startSuccess} message={'Der Spieltag wurde erfolgreich gestartet!'} />
+<Success
+	show={startSuccess}
+	message={'Der Spieltag wurde erfolgreich gestartet!'}
+	onClose={() => (startSuccess = false)}
+/>
 
 <Sure
 	show={endForm}
 	title={'Spieltag beenden'}
 	message={'Soll der aktuelle Spieltag wirklich beendet werden?'}
-	action={endRound}
+	actionOk={endRound}
+	actionCancel={() => (endForm = false)}
 	buttonOk={'Ja, beenden'}
 />
 
-<Success show={endSuccess} message={'Der Spieltag wurde erfolgreich beendet!'} />
+<Success
+	show={endSuccess}
+	message={'Der Spieltag wurde erfolgreich beendet!'}
+	onClose={() => (endSuccess = false)}
+/>
 
 <Sure
 	show={endLigaForm}
 	title={'Liga beenden'}
 	message={'Soll diese Liga wirklich endgültig beendet werden?'}
-	action={endLiga}
+	actionOk={endLiga}
+	actionCancel={() => (endLigaForm = false)}
 	buttonOk={'Ja, beenden'}
 />
 
-<Success show={endLigaSuccess} message={'Die Liga wurde erfolgreich beendet!'} />
+<Success
+	show={endLigaSuccess}
+	message={'Die Liga wurde erfolgreich beendet!'}
+	onClose={() => (endLigaSuccess = false)}
+/>

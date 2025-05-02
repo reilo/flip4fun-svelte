@@ -37,10 +37,10 @@ export function mapPinType(pinType) {
     return getPinTypeMap().find((item) => item.value === pinType).name;
 }
 
-export function randomPin(pins, em, ee, dmd, lcd ) {
+export function randomPin(pins, em, ee, dmd, lcd, exclude) {
     const items = pins.filter(
         (pin) =>
-            pin.active &&
+            pin.active && !exclude.includes(pin.id) &&
             ((em ? ['EM'].includes(pin.type) : false) ||
                 (ee ? ['EE', 'Sys11'].includes(pin.type) : false) ||
                 (dmd
@@ -54,4 +54,12 @@ export function randomPin(pins, em, ee, dmd, lcd ) {
     } else {
         return null;
     }
+}
+
+export function getOldTypes() {
+    return ['EM', 'EE', 'Sys11'];
+}
+
+export function getNewTypes() {
+    return ['DataEast', 'Gottlieb', 'Pin2000', 'Whitestar', 'WPC', 'WPC95', 'SAM', 'Spike'];
 }

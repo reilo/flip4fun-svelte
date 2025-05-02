@@ -21,7 +21,7 @@
 		progress = true;
 		let newPin;
 		let timeout = 1500;
-		const pin = randomPin(data.pins, em, ee, dmd, lcd);
+		const pin = randomPin(data.pins, em, ee, dmd, lcd, []);
 		if (pin) {
 			newPin = pin.name;
 		} else {

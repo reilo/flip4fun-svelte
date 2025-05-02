@@ -2,6 +2,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { calcStrength } from '$lib/TourUtil';
 	import { roundNumberForDB } from '$lib/TypeUtil';
+	import { randomPin, getOldTypes, getNewTypes } from '$lib/PinUtil';
 	import Success from '$lib/components/dialogs/Success.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
 	import Box from '$lib/components/Box.svelte';
@@ -10,6 +11,7 @@
 
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
+	let pins = $derived(data.pins);
 
 	let startTourEnabled = $derived(tournament.status === 'Planned');
 	let startTourForm = $state(false);
@@ -60,6 +62,7 @@
 			// it is the first round of the tournament
 			let previousStrength = calcStrength(1, pcount);
 			let currentPlayers = [];
+			// generate initial ranking levels for next round
 			tournament.players.forEach((player, i) => {
 				const strength = calcStrength(++i, pcount);
 				if (strength === previousStrength) {
@@ -79,6 +82,7 @@
 					currentPlayers = [player];
 				}
 			});
+			// generate list of levels playing in next round
 			rankInit.every((row) => {
 				row.players.every((player) => {
 					if (!inactivePlayers.includes(player.id)) {
@@ -93,6 +97,34 @@
 		}
 		console.log(rankInit);
 		console.log(playingLevels);
+		// generate matches
+		const frames = [];
+		const usedPins = [];
+		const pinTypes = tournament.settings.pinTypes;
+		playingLevels.forEach((level) => {
+			const players = [];
+			rankInit[level - 1].players.forEach((item) => {
+				if (!inactivePlayers.includes(item.id)) {
+					players.push(item.id);
+				}
+			});
+			const frameName =
+				tournament.name +
+				' - Runde ' +
+				(round ? (round.rid + 1).toString() : '1') +
+				' - Ebene ' +
+				level.toString() +
+				' - Match ';
+			const pin1 = randomPin(pins, true, true, true, true, usedPins);
+			frames.push({ name: frameName + '1', pin: pin1.id, players: players });
+			usedPins.push(pin1.id);
+			const useOldPins = pinTypes === 0 || !getOldTypes().includes(pin1.type);
+			const useNewPins = pinTypes === 0 || pinTypes === 2 || !getNewTypes().includes(pin1.type);
+			const pin2 = randomPin(pins, useOldPins, useOldPins, useNewPins, useNewPins, usedPins);
+			frames.push({ name: frameName + '2', pin: pin2.id, players: players });
+			usedPins.push(pin2.id);
+		});
+		console.log(frames);
 		startRoundForm = false;
 		successForm = true;
 		successMessage = 'Die neue Runde wurde erfolgreich gestartet!';
@@ -121,7 +153,8 @@
 	show={startTourForm}
 	title={'Turnier starten'}
 	message={'Soll das Finalturnier wirklich gestartet werden?'}
-	action={startTour}
+	actionOk={startTour}
+	actionCancel={() => (startTourForm = false)}
 	buttonOk={'Ja, starten'}
 />
 
@@ -138,7 +171,8 @@
 	show={startRoundForm}
 	title={'Runde starten'}
 	message={'Soll wirklich eine neue Runde gestartet werden?'}
-	action={startRound}
+	actionOk={startRound}
+	actionCancel={() => (startRoundForm = false)}
 	buttonOk={'Ja, starten'}
 />
 
@@ -155,8 +189,9 @@
 	show={endRoundForm}
 	title={'Runde beenden'}
 	message={'Soll die aktuelle Runde wirklich beendet werden?'}
-	action={endRound}
+	actionOk={endRound}
+	actionCancel={() => (endRoundForm = false)}
 	buttonOk={'Ja, beenden'}
 />
 
-<Success show={successForm} message={successMessage} />
+<Success show={successForm} message={successMessage} onClose={() => (successForm = false)} />
