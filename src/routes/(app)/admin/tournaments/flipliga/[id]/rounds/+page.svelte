@@ -238,7 +238,7 @@
 <Box
 	title={'Spieltag starten'}
 	description={'Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler	hinzugefügt werden.'}
-	action={(startForm = true)}
+	action={() => (startForm = true)}
 	enabled={startEnabled}
 	buttonOk={'Starten'}
 	loading={false}
@@ -247,7 +247,7 @@
 <Box
 	title={'Spieltag beenden'}
 	description={'Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert werden.'}
-	action={(endForm = true)}
+	action={() => (endForm = true)}
 	enabled={endEnabled}
 	buttonOk={'Beenden'}
 	loading={false}
@@ -256,7 +256,7 @@
 <Box
 	title={'Liga beenden'}
 	description={'Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet werden.'}
-	action={(endLigaForm = true)}
+	action={() => (endLigaForm = true)}
 	enabled={endLigaEnabled}
 	buttonOk={'Beenden'}
 	loading={false}
