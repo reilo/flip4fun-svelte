@@ -27,7 +27,12 @@
 			round &&
 			round.status === 'Active' &&
 			frames.every((frame) => {
-				return frame.players.length === frame.scores.length;
+				return (
+					frame.players.length === frame.scores.length &&
+					frame.scores.some((score) => {
+						return score > 0;
+					})
+				);
 			})
 	);
 	let endRoundForm = $state(false);

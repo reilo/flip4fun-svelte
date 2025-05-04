@@ -24,7 +24,6 @@ FLIP-Final
 -- Nachfolgerunden
 -- Rundenzettel PDFs generieren?
 - Match-Eingabe
--- Reihenfolge durch Score-Eingabe (3 Stellen?)
 -- mit Admin-Rechten Resultat resetbar
 - Admin - Runde beenden
 -- Ranking, Darstellung wer zuletzt aufgestiegen
