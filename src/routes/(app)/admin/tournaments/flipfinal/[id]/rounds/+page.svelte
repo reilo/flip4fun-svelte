@@ -11,6 +11,7 @@
 
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
+	let frames = $derived(data.frames);
 	let pins = $derived(data.pins);
 
 	let startTourEnabled = $derived(tournament.status === 'Planned');
@@ -22,7 +23,12 @@
 	let startRoundForm = $state(false);
 
 	let endRoundEnabled = $derived(
-		tournament.status === 'Active' && round && round.status === 'Active'
+		tournament.status === 'Active' &&
+			round &&
+			round.status === 'Active' &&
+			frames.every((frame) => {
+				return frame.players.length === frame.scores.length;
+			})
 	);
 	let endRoundForm = $state(false);
 
@@ -58,6 +64,7 @@
 		const playingLevels = [];
 		const pcount = tournament.players.length;
 		const inactivePlayers = tournament.settings.inactivePlayers;
+		const roundPlayers = [];
 		if (!round) {
 			// it is the first round of the tournament
 			let previousStrength = calcStrength(1, pcount);
@@ -81,6 +88,9 @@
 					previousStrength = strength;
 					currentPlayers = [player];
 				}
+				if (!inactivePlayers.includes(player)) {
+					roundPlayers.push(player);
+				}
 			});
 			// generate list of levels playing in next round
 			rankInit.every((row) => {
@@ -97,7 +107,7 @@
 		}
 		console.log(rankInit);
 		console.log(playingLevels);
-		// generate matches
+		// generate all matches
 		const frames = [];
 		const usedPins = [];
 		const pinTypes = tournament.settings.pinTypes;
@@ -125,6 +135,29 @@
 			usedPins.push(pin2.id);
 		});
 		console.log(frames);
+		const rid = round ? round.rid + 1 : 1;
+		// push all changes to DB: new round, new frames
+		const response = await fetch('/api/tournament/' + tournament.id + '/round?addFrames', {
+			method: 'POST',
+			body: JSON.stringify({
+				tid: tournament.id,
+				rid: rid,
+				name: tournament.name + ' - Runde ' + rid.toString(),
+				status: 'Active',
+				players: roundPlayers,
+				settings: { rankInit: rankInit },
+				frames: frames
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		// close form and show success
 		startRoundForm = false;
 		successForm = true;
 		successMessage = 'Die neue Runde wurde erfolgreich gestartet!';
@@ -178,7 +211,8 @@
 
 <Box
 	title={'Runde beenden'}
-	description={'Die aktuelle Runde wird beendet und die Ebenen neu berechnet.'}
+	description={'Die aktuelle Runde wird beendet und die Ebenen neu berechnet. ' +
+		'Die Runde kann erst beendet werden, wenn die Ergebnisse für alle Matches eingetragen wurden.'}
 	action={() => (endRoundForm = true)}
 	enabled={endRoundEnabled}
 	buttonOk={'Beenden'}

@@ -66,9 +66,7 @@ export const POST = async ({ url, params, request }) => {
         }
 
         let round;
-        if (!url.searchParams.has("updateTournamentStatus")) {
-            round = await prisma.round.create({ data });
-        } else {
+        if (url.searchParams.has("updateTournamentStatus")) {
             // make sure that after the first round is started also the tournament is in status Active
             round = await prisma.$transaction(async (tx) => {
                 // create round
@@ -81,6 +79,25 @@ export const POST = async ({ url, params, request }) => {
                 });
                 return result;
             });
+        } else if (url.searchParams.has("addFrames")) {
+            // make sure that after creating the round all frames are created too
+            round = await prisma.$transaction(async (tx) => {
+                // create round
+                const result = await tx.round.create({
+                    data
+                });
+                // create frames
+                for (let idx = 0; idx < body.frames.length; idx++) {
+                    const frame = body.frames[idx];
+                    data = { tid: params.tid, rid: body.rid, name: frame.name, players: frame.players, pin: frame.pin }
+                    await tx.frame.create({
+                        data
+                    });
+                }
+                return result;
+            });
+        } else {
+            round = await prisma.round.create({ data });
         }
         return new Response(
             JSON.stringify({ round: round }),

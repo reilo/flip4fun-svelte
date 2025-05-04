@@ -14,17 +14,17 @@ Allgemein
 
 FLIP-Liga
 - Ergebnis-PDF -> 
+-- Matches Spieltag
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 -- !!! Pyramide
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
 - Admin - Runde starten
--- aktuelle Levels in Round Settings initialisieren
--- Matches anlegenm (2 pro Gruppe)
+-- Nachfolgerunden
 -- Rundenzettel PDFs generieren?
 - Match-Eingabe
--- Reihenfolge zum Anclicken oder Selektieren
+-- Reihenfolge durch Score-Eingabe (3 Stellen?)
 -- mit Admin-Rechten Resultat resetbar
 - Admin - Runde beenden
 -- Ranking, Darstellung wer zuletzt aufgestiegen

@@ -25,5 +25,16 @@ export async function load({ fetch, params }) {
         roundData = await roundsResponse.json();
     }
 
-    return { tournament: tData.tournament, players: plData.players, round: roundData ? roundData.round : null };
+    let framesData;
+    if (roundData) {
+        const framesResponse = await fetch("/api/frame?tid=" + tData.tournament.id + "&rid=" + roundData.round.rid.toString());
+        framesData = await framesResponse.json();
+    }
+
+    return {
+        tournament: tData.tournament,
+        players: plData.players,
+        round: roundData ? roundData.round : null,
+        frames: framesData ? framesData.frames : []
+    };
 }

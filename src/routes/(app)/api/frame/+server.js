@@ -11,7 +11,7 @@ export const GET = async ({ url }) => {
             if (!["pin", "tid", "rid"].includes(key)) {
                 throw key + " ist kein gültiger Suchparameter";
             } else {
-                fields[key] = value;
+                fields[key] = key === 'rid' ? parseInt(value) : value;
             }
         });
         const frames = await prisma.frame.findMany({
