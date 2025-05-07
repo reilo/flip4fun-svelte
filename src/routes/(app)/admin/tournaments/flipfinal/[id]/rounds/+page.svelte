@@ -28,8 +28,8 @@
 			round.status === 'Active' &&
 			frames.every((frame) => {
 				return (
-					frame.players.length === frame.scores.length &&
-					frame.scores.some((score) => {
+					frame.scores.length > 0 &&
+					frame.scores.every((score) => {
 						return score > 0;
 					})
 				);
@@ -86,7 +86,9 @@
 					currentPlayers.forEach((player2, j) => {
 						newPlayers.push({
 							id: player2,
-							score: count === 1 ? 1 : roundNumberForDB((count - j - 1) / (count - 1))
+							fine:
+								(count === 1 ? 1 : roundNumberForDB((count - j - 1) / (count - 1))) *
+								tournament.settings.maxStartBonus
 						});
 					});
 					rankInit.unshift({ level: previousStrength, players: newPlayers });
@@ -110,8 +112,6 @@
 			});
 		} else {
 		}
-		console.log(rankInit);
-		console.log(playingLevels);
 		// generate all matches
 		const frames = [];
 		const usedPins = [];
@@ -139,7 +139,6 @@
 			frames.push({ name: frameName + '2', pin: pin2.id, players: players });
 			usedPins.push(pin2.id);
 		});
-		console.log(frames);
 		const rid = round ? round.rid + 1 : 1;
 		// push all changes to DB: new round, new frames
 		const response = await fetch('/api/tournament/' + tournament.id + '/round?addFrames', {
@@ -150,7 +149,7 @@
 				name: tournament.name + ' - Runde ' + rid.toString(),
 				status: 'Active',
 				players: roundPlayers,
-				settings: { rankInit: rankInit },
+				settings: { rankInit: rankInit, playingLevels: playingLevels },
 				frames: frames
 			}),
 			headers: {
@@ -170,6 +169,63 @@
 	}
 
 	async function endRound() {
+		const playerResults = [];
+		// evaluate all played matches
+		frames.forEach((frame) => {
+			const playerScores = [];
+			frame.players.forEach((player, i) => {
+				playerScores.push({ player: player, score: frame.scores[i] });
+			});
+			playerScores.sort((a, b) => (a.score < b.score ? 1 : a.score > b.score ? -1 : 0));
+			let prevScore = 0;
+			let prevPos = 0;
+			const maxScore = playerScores[0].score;
+			playerScores.forEach((ps, i) => {
+				const pos = ps.score !== prevScore ? i + 1 : prevPos;
+				prevScore = ps.score;
+				prevPos = pos;
+				const pts = roundNumberForDB(ps.score / maxScore);
+				const idx = playerResults.findIndex((pr) => pr.player === ps.player);
+				if (idx === -1) {
+					playerResults.push({ player: ps.player, position: pos, fine: pts });
+				} else {
+					playerResults[idx].position += pos;
+					playerResults[idx].fine += pts;
+				}
+			});
+		});
+		// calculate new ranking
+		const rankInit = round.settings.rankInit;
+		const playingLevels = round.settings.playingLevels;
+		const rankFinal = JSON.parse(JSON.stringify(rankInit));
+		rankFinal.forEach((item, i) => {
+			if (playingLevels.includes(item.level)) {
+				item.players.forEach((player, j) => {
+					const result = playerResults.find((pr) => pr.player === player.id);
+					if (result) {
+						rankFinal[i].players[j].fine += result.fine;
+						rankFinal[i].players[j].position = result.position;
+					}
+				});
+			}
+		});
+		// push results to DB
+		const response = await fetch('/api/round/' + round.id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				results: { rankFinal: rankFinal },
+				status: 'Completed'
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		// close form and show success
 		endRoundForm = false;
 		successForm = true;
 		successMessage = 'Die Runde wurde erfolgreich beendet!';

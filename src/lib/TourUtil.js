@@ -62,7 +62,8 @@ export function getDefaultSettings(type) {
         case "flipfinal":
             return {
                 numFinalists: 4,
-                pinTypes: 0
+                pinTypes: 0,
+                maxStartBonus: 2
             };
         default:
             return {};

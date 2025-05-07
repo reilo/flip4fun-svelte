@@ -14,7 +14,6 @@
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
-	import Sure from '$lib/components/dialogs/Sure.svelte';
 
 	let { data } = $props();
 
@@ -23,8 +22,6 @@
 	let frames = $derived(data.frames);
 
 	let showForm = $state(false);
-	let showSure = $state(false);
-	let alertMessage = $state('');
 	let frameToUpdate = $state(null);
 	let scores = $state([]);
 
@@ -39,11 +36,6 @@
 				: Array(frame.players.length).fill(0);
 		showForm = true;
 		frameToUpdate = frame;
-	};
-
-	const verifyUpdateForm = () => {
-		alertMessage = 'Ergebnis wirklich speichern?';
-		showSure = true;
 	};
 
 	async function performUpdate() {
@@ -63,7 +55,7 @@
 			alert(JSON.stringify(result));
 		}
 		invalidateAll();
-		showSure = showForm = false;
+		showForm = false;
 	}
 
 	const cancelUpdateForm = () => {
@@ -102,7 +94,12 @@
 					{getPinName(frame.pin, pins)}
 				</TableBodyCell>
 				<TableBodyCell>
-					{frame.players.length === frame.scores.length ? 'Fertig' : 'Offen'}
+					{frame.scores.length > 0 &&
+					frame.scores.every((score) => {
+						return score > 0;
+					})
+						? 'Fertig'
+						: 'Offen'}
 				</TableBodyCell>
 				<TableBodyCell>
 					<Button on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
@@ -120,16 +117,7 @@
 				<Input type="number" bind:value={scores[i]} />
 			</Label>
 		{/each}
-		<Button color="alternative" on:click={verifyUpdateForm}>Speichern</Button>
+		<Button color="alternative" on:click={performUpdate}>Speichern</Button>
 		<Button color="primary" on:click={cancelUpdateForm}>Abbrechen</Button>
 	</form>
 </Modal>
-
-<Sure
-	show={showSure}
-	title={'Ergebnis speichern'}
-	message={alertMessage}
-	actionOk={performUpdate}
-	actionCancel={() => (showSure = false)}
-	buttonOk={'Ja, speichern'}
-/>

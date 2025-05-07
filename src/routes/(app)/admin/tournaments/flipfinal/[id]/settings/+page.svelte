@@ -53,6 +53,11 @@
 			<Select disabled={!settingsEnabled} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
 		</Label>
 
+		<Label class="mb-3">
+			<span>Wie hoch soll der maximale Start-Bonus sein?</span>
+			<NumberInput disabled={!settingsEnabled} min="0" max="5" bind:value={settings.maxStartBonus} />
+		</Label>
+
 		{#if settingsEnabled}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>

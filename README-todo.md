@@ -20,12 +20,12 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Admin - Runde starten
--- Nachfolgerunden
--- Rundenzettel PDFs generieren?
-- Match-Eingabe
--- mit Admin-Rechten Resultat resetbar
-- Admin - Runde beenden
+- Aktuelle Runde:
+-- Spielende Ebenen einrahmen
+-- Qualifizierter Spieler einrahmen grün
+-- Platzierungen darstellen
 -- Ranking, Darstellung wer zuletzt aufgestiegen
+- Nachfolgerunden
+- Rundenzettel PDFs generieren?
 - Admin Turnier beenden
 - Admin: PDF Export 
