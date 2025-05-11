@@ -111,6 +111,65 @@
 				return playingLevels.length ? false : true;
 			});
 		} else {
+			// it is the second or later round
+			let winnerId = null;
+			let previousWinnerId = null;
+			let nextEntry = null;
+			// generate initial ranking levels for next round
+			round.results.rankFinal.forEach((item) => {
+				if (round.settings.playingLevels.includes(item.level)) {
+					nextEntry = { level: item.level, players: [] };
+					item.players.forEach((player) => {
+						if (player.id !== item.winner) {
+							nextEntry.players.push({ id: player.id, fine: player.fine });
+						} else {
+							winnerId = player.id;
+						}
+					});
+				} else {
+					nextEntry = JSON.parse(JSON.stringify(item));
+				}
+				if (previousWinnerId) {
+					nextEntry.players.push({ id: previousWinnerId, fine: 0 });
+					previousWinnerId = null;
+				}
+				if (winnerId) {
+					previousWinnerId = winnerId;
+					winnerId = null;
+				}
+				nextEntry.players.sort((a, b) => (a.fine < b.fine ? 1 : b.fine < a.fine ? -1 : 0));
+				rankInit.push(nextEntry);
+			});
+			// generate list of levels playing in next round
+			playingLevels.push(...round.settings.playingLevels);
+			console.log(playingLevels);
+			let startAdd = false;
+			rankInit.every((row, i) => {
+				console.log(row);
+				if (playingLevels.includes(row.level)) {
+					startAdd = true;
+					let hasPlayers = false;
+					row.players.every((player) => {
+						if (!inactivePlayers.includes(player.id)) {
+							hasPlayers = true;
+							return false;
+						}
+						return true;
+					});
+					if (!hasPlayers) {
+						playingLevels.splice(playingLevels.indexOf(row.level), 1);
+					}
+				} else {
+					if (startAdd) {
+						if (i < rankInit.length - 1) {
+							playingLevels.push(row.level);
+						}
+						startAdd = false;
+						return false;
+					}
+				}
+				return true;
+			});
 		}
 		// generate all matches
 		const frames = [];
@@ -200,13 +259,20 @@
 		const rankFinal = JSON.parse(JSON.stringify(rankInit));
 		rankFinal.forEach((item, i) => {
 			if (playingLevels.includes(item.level)) {
+				let winner = null;
+				let bestPosition = 0;
 				item.players.forEach((player, j) => {
 					const result = playerResults.find((pr) => pr.player === player.id);
 					if (result) {
 						rankFinal[i].players[j].fine += result.fine;
 						rankFinal[i].players[j].position = result.position;
+						if (!winner || result.position < bestPosition) {
+							winner = player.id;
+							bestPosition = result.position;
+						}
 					}
 				});
+				rankFinal[i].winner = winner;
 			}
 		});
 		// push results to DB
