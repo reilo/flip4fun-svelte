@@ -1,8 +1,8 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
-	import { calcStrength } from '$lib/TourUtil';
-	import { roundNumberForDB } from '$lib/TypeUtil';
 	import { randomPin, getOldTypes, getNewTypes } from '$lib/PinUtil';
+	import { calcInitialLevels, calcPlayingLevels, calcFinalResults } from '$lib/TourUtil';
+	import { calcFrameResult } from '$lib/FrameUtil';
 	import Success from '$lib/components/dialogs/Success.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
 	import Box from '$lib/components/Box.svelte';
@@ -65,51 +65,21 @@
 	}
 
 	async function startRound() {
-		const rankInit = [];
-		const playingLevels = [];
-		const pcount = tournament.players.length;
+		let rankInit;
+		let playingLevels;
 		const inactivePlayers = tournament.settings.inactivePlayers;
 		const roundPlayers = [];
+		tournament.players.forEach((player, i) => {
+			if (!inactivePlayers.includes(player)) {
+				roundPlayers.push(player);
+			}
+		});
 		if (!round) {
 			// it is the first round of the tournament
-			let previousStrength = calcStrength(1, pcount);
-			let currentPlayers = [];
 			// generate initial ranking levels for next round
-			tournament.players.forEach((player, i) => {
-				const strength = calcStrength(++i, pcount);
-				if (strength === previousStrength) {
-					currentPlayers.push(player);
-				}
-				if (strength !== previousStrength || i === pcount - 1) {
-					let newPlayers = [];
-					const count = currentPlayers.length;
-					currentPlayers.forEach((player2, j) => {
-						newPlayers.push({
-							id: player2,
-							fine:
-								(count === 1 ? 1 : roundNumberForDB((count - j - 1) / (count - 1))) *
-								tournament.settings.maxStartBonus
-						});
-					});
-					rankInit.unshift({ level: previousStrength, players: newPlayers });
-					previousStrength = strength;
-					currentPlayers = [player];
-				}
-				if (!inactivePlayers.includes(player)) {
-					roundPlayers.push(player);
-				}
-			});
+			rankInit = calcInitialLevels(tournament.players, tournament.settings.maxStartBonus);
 			// generate list of levels playing in next round
-			rankInit.every((row) => {
-				row.players.every((player) => {
-					if (!inactivePlayers.includes(player.id)) {
-						playingLevels.push(row.level);
-						return false;
-					}
-					return true;
-				});
-				return playingLevels.length ? false : true;
-			});
+			playingLevels = calcPlayingLevels(rankInit, roundPlayers, round.settings.playingLevels);
 		} else {
 			// it is the second or later round
 			let winnerId = null;
@@ -141,38 +111,7 @@
 				rankInit.push(nextEntry);
 			});
 			// generate list of levels playing in next round
-			playingLevels.push(...round.settings.playingLevels);
-			let startAdd = false;
-			rankInit.every((row, i) => {
-				if (playingLevels.includes(row.level)) {
-					startAdd = true;
-					let hasPlayers = false;
-					row.players.every((player) => {
-						if (!inactivePlayers.includes(player.id)) {
-							hasPlayers = true;
-							return false;
-						}
-						return true;
-					});
-					if (!hasPlayers) {
-						playingLevels.splice(playingLevels.indexOf(row.level), 1);
-					}
-				} else {
-					if (startAdd) {
-						if (i < rankInit.length - 1) {
-							playingLevels.push(row.level);
-						}
-						startAdd = false;
-						return false;
-					}
-				}
-				return true;
-			});
-			tournament.players.forEach((player) => {
-				if (!inactivePlayers.includes(player)) {
-					roundPlayers.push(player);
-				}
-			});
+			playingLevels = calcPlayingLevels(rankInit, roundPlayers, round.settings.playingLevels);
 		}
 		// generate all matches
 		const frames = [];
@@ -231,53 +170,7 @@
 	}
 
 	async function endRound() {
-		const playerResults = [];
-		// evaluate all played matches
-		frames.forEach((frame) => {
-			const playerScores = [];
-			frame.players.forEach((player, i) => {
-				playerScores.push({ player: player, score: frame.scores[i] });
-			});
-			playerScores.sort((a, b) => (a.score < b.score ? 1 : a.score > b.score ? -1 : 0));
-			let prevScore = 0;
-			let prevPos = 0;
-			const maxScore = playerScores[0].score;
-			playerScores.forEach((ps, i) => {
-				const pos = ps.score !== prevScore ? i + 1 : prevPos;
-				prevScore = ps.score;
-				prevPos = pos;
-				const pts = roundNumberForDB(ps.score / maxScore);
-				const idx = playerResults.findIndex((pr) => pr.player === ps.player);
-				if (idx === -1) {
-					playerResults.push({ player: ps.player, position: pos, fine: pts });
-				} else {
-					playerResults[idx].position += pos;
-					playerResults[idx].fine += pts;
-				}
-			});
-		});
-		// calculate new ranking
-		const rankInit = round.settings.rankInit;
-		const playingLevels = round.settings.playingLevels;
-		const rankFinal = JSON.parse(JSON.stringify(rankInit));
-		rankFinal.forEach((item, i) => {
-			if (playingLevels.includes(item.level)) {
-				let winner = null;
-				let bestPosition = 0;
-				item.players.forEach((player, j) => {
-					const result = playerResults.find((pr) => pr.player === player.id);
-					if (result) {
-						rankFinal[i].players[j].fine += result.fine;
-						rankFinal[i].players[j].position = result.position;
-						if (!winner || result.position < bestPosition) {
-							winner = player.id;
-							bestPosition = result.position;
-						}
-					}
-				});
-				rankFinal[i].winner = winner;
-			}
-		});
+		let rankFinal = calcFinalResults(round.settings.rankInit, round.settings.playingLevels, frames);
 		// push results to DB
 		const response = await fetch('/api/round/' + round.id, {
 			method: 'PUT',

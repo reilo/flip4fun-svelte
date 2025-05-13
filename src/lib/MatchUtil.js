@@ -23,7 +23,7 @@ export function calcPoints(match, strength1, strength2) {
 }
 
 /**
- * Calculates final ranking data for a player for a completed round.
+ * Calculates final ranking data for a completed round.
  * @param {int} roundNum - number of the completed round
  * @param {array} rankInit - initial ranking data at the beginning of the round. Array of
  *            -- player: player ID,
