@@ -74,11 +74,11 @@
 				} else {
 					rowIndex++;
 				}
-			}, 1000);
-		});
+			});
+		}, 500);
 		setTimeout(() => {
 			clearInterval(interval);
-		}, 3000);
+		}, 1500);
 	};
 
 	$effect(() => {

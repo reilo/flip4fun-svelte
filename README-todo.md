@@ -25,7 +25,7 @@ FLIP-Final
 -- Qualifizierter Spieler einrahmen grün
 -- Platzierungen darstellen
 -- Ranking, Darstellung wer zuletzt aufgestiegen
-- Nachfolgerunden
+- Bis Finalistenzahl erreicht
 - Rundenzettel PDFs generieren?
 - Admin Turnier beenden
 - Admin: PDF Export 

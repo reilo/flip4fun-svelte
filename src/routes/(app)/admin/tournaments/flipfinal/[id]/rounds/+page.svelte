@@ -1,8 +1,12 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import { randomPin, getOldTypes, getNewTypes } from '$lib/PinUtil';
-	import { calcInitialLevels, calcPlayingLevels, calcFinalResults } from '$lib/TourUtil';
-	import { calcFrameResult } from '$lib/FrameUtil';
+	import {
+		calcInitialLevels,
+		calcPlayingLevels,
+		calcFinalResults,
+		calcNextLevels
+	} from '$lib/TourUtil';
 	import Success from '$lib/components/dialogs/Success.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
 	import Box from '$lib/components/Box.svelte';
@@ -67,10 +71,9 @@
 	async function startRound() {
 		let rankInit;
 		let playingLevels;
-		const inactivePlayers = tournament.settings.inactivePlayers;
 		const roundPlayers = [];
 		tournament.players.forEach((player, i) => {
-			if (!inactivePlayers.includes(player)) {
+			if (!tournament.settings.inactivePlayers.includes(player)) {
 				roundPlayers.push(player);
 			}
 		});
@@ -78,41 +81,16 @@
 			// it is the first round of the tournament
 			// generate initial ranking levels for next round
 			rankInit = calcInitialLevels(tournament.players, tournament.settings.maxStartBonus);
-			// generate list of levels playing in next round
-			playingLevels = calcPlayingLevels(rankInit, roundPlayers, round.settings.playingLevels);
 		} else {
 			// it is the second or later round
-			let winnerId = null;
-			let previousWinnerId = null;
-			let nextEntry = null;
-			// generate initial ranking levels for next round
-			round.results.rankFinal.forEach((item) => {
-				if (round.settings.playingLevels.includes(item.level)) {
-					nextEntry = { level: item.level, players: [] };
-					item.players.forEach((player) => {
-						if (player.id !== item.winner) {
-							nextEntry.players.push({ id: player.id, fine: player.fine });
-						} else {
-							winnerId = player.id;
-						}
-					});
-				} else {
-					nextEntry = JSON.parse(JSON.stringify(item));
-				}
-				if (previousWinnerId) {
-					nextEntry.players.push({ id: previousWinnerId, fine: 0 });
-					previousWinnerId = null;
-				}
-				if (winnerId) {
-					previousWinnerId = winnerId;
-					winnerId = null;
-				}
-				nextEntry.players.sort((a, b) => (a.fine < b.fine ? 1 : b.fine < a.fine ? -1 : 0));
-				rankInit.push(nextEntry);
-			});
-			// generate list of levels playing in next round
-			playingLevels = calcPlayingLevels(rankInit, roundPlayers, round.settings.playingLevels);
+			rankInit = calcNextLevels(round.results.rankFinal, round.settings.playingLevels);
 		}
+		// generate list of levels playing in next round
+		playingLevels = calcPlayingLevels(
+			rankInit,
+			roundPlayers,
+			round ? round.settings.playingLevels : []
+		);
 		// generate all matches
 		const frames = [];
 		const usedPins = [];
@@ -120,7 +98,7 @@
 		playingLevels.forEach((level) => {
 			const players = [];
 			rankInit[level - 1].players.forEach((item) => {
-				if (!inactivePlayers.includes(item.id)) {
+				if (roundPlayers.includes(item.id)) {
 					players.push(item.id);
 				}
 			});

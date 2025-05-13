@@ -1,6 +1,6 @@
 <script>
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
-	import { calcStrength } from '$lib/TourUtil';
+	import { calcStrength, calcInitialLevels } from '$lib/TourUtil';
 
 	let { data } = $props();
 
@@ -48,9 +48,20 @@
 
 			ctx.font = imageHeigth / 2 + 'px Georgia';
 
-			if (!round) {
-				tournament.players.forEach((player) => {
-					x = ((totalRows - row) / 2 + rowIndex) * (imageWidth + imageHSpacing);
+			let rankInit = round
+				? round.settings.rankInit
+				: calcInitialLevels(tournament.players, tournament.settings.maxStartBonus);
+			const activePlayers = round
+				? round.players
+				: tournament.players.filter(
+						(player) => !tournament.settings.inactivePlayers.includes(player)
+					);
+
+			for (let idx = rankInit.length - 1; idx >= 0; idx--) {
+				const level = rankInit[idx];
+				level.players.forEach((player, i) => {
+					rowIndex = i + 1;
+					x = ((totalRows - level.players.length) / 2 + rowIndex) * (imageWidth + imageHSpacing);
 
 					if (rowIndex === 1) {
 						ctx.fillStyle = colorText;
@@ -58,46 +69,16 @@
 					}
 
 					let img = new Image();
-					img.src = imageBaseUrl + player + imageExtension;
+					img.src = imageBaseUrl + player.id + imageExtension;
 					images.push(img);
-					ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player) ? 0.2 : 1.0;
+					ctx.globalAlpha = activePlayers.includes(player.id) ? 1.0 : 0.2;
 					ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
 					ctx.globalAlpha = 1.0;
-
-					if (rowIndex === row) {
-						row++;
-						rowIndex = 1;
-						y += imageHeigth + imageVSpacing;
-						ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
-						ctx.fillRect(0, y, hsize, imageHeigth);
-					} else {
-						rowIndex++;
-					}
 				});
-			} else {
-				for (let idx = round.settings.rankInit.length - 1; idx >= 0; idx--) {
-					const level = round.settings.rankInit[idx];
-					level.players.forEach((player, i) => {
-						rowIndex = i + 1;
-						x = ((totalRows - level.players.length) / 2 + rowIndex) * (imageWidth + imageHSpacing);
-
-						if (rowIndex === 1) {
-							ctx.fillStyle = colorText;
-							ctx.fillText((totalRows - row + 1).toString(), hOffset, y + imageHeigth / 1.75);
-						}
-
-						let img = new Image();
-						img.src = imageBaseUrl + player.id + imageExtension;
-						images.push(img);
-						ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player.id) ? 0.2 : 1.0;
-						ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
-						ctx.globalAlpha = 1.0;
-					});
-					row++;
-					y += imageHeigth + imageVSpacing;
-					ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
-					ctx.fillRect(0, y, hsize, imageHeigth);
-				}
+				row++;
+				y += imageHeigth + imageVSpacing;
+				ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
+				ctx.fillRect(0, y, hsize, imageHeigth);
 			}
 		}, 500);
 		setTimeout(() => {

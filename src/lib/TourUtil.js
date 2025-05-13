@@ -249,3 +249,52 @@ export function calcFinalResults(rankInit, playingLevels, frames) {
     });
     return rankFinal;
 }
+
+/**
+ * Calculate initial levels for next round from final ranking of previous round.
+ * @param {array} rankFinal - final ranking from previous round. Array of:
+ *                            -- level: level/strength value
+ *                            -- winner: winner of the level
+ *                            -- players: the players within a level, not yet sorted by ranking: Array of
+ *                               --- id: player ID
+ *                               --- fine: fine score updated from round results
+ *                               --- position: accumulated position from round frames
+ * @param {array} playingLevels - level numbers of previous round
+ * @retuns rankInit - initial levels for next round
+ *                    -- level: level/strength value
+ *                     -- players: the players within a level sorted by ranking: Array of
+ *                        --- id: player ID
+ *                        --- fine: fine score depending on ranking within level
+ */
+export function calcNextLevels(rankFinal, playingLevels) {
+    const rankInit = [];
+    let winnerId = null;
+    let previousWinnerId = null;
+    let nextEntry = null;
+    // generate initial ranking levels for next round
+    rankFinal.forEach((item) => {
+        if (playingLevels.includes(item.level)) {
+            nextEntry = { level: item.level, players: [] };
+            item.players.forEach((player) => {
+                if (player.id !== item.winner) {
+                    nextEntry.players.push({ id: player.id, fine: player.fine });
+                } else {
+                    winnerId = player.id;
+                }
+            });
+        } else {
+            nextEntry = JSON.parse(JSON.stringify(item));
+        }
+        if (previousWinnerId) {
+            nextEntry.players.push({ id: previousWinnerId, fine: 0 });
+            previousWinnerId = null;
+        }
+        if (winnerId) {
+            previousWinnerId = winnerId;
+            winnerId = null;
+        }
+        nextEntry.players.sort((a, b) => (a.fine < b.fine ? 1 : b.fine < a.fine ? -1 : 0));
+        rankInit.push(nextEntry);
+    });
+    return rankInit;
+}
