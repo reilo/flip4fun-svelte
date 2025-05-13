@@ -142,10 +142,8 @@
 			});
 			// generate list of levels playing in next round
 			playingLevels.push(...round.settings.playingLevels);
-			console.log(playingLevels);
 			let startAdd = false;
 			rankInit.every((row, i) => {
-				console.log(row);
 				if (playingLevels.includes(row.level)) {
 					startAdd = true;
 					let hasPlayers = false;
@@ -169,6 +167,11 @@
 					}
 				}
 				return true;
+			});
+			tournament.players.forEach((player) => {
+				if (!inactivePlayers.includes(player)) {
+					roundPlayers.push(player);
+				}
 			});
 		}
 		// generate all matches

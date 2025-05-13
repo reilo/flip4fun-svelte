@@ -4,7 +4,8 @@
 
 	let { data } = $props();
 
-	let tournament = data.tournament;
+	let tournament = $derived(data.tournament);
+	let round = $derived(data.round);
 
 	let hsize = $derived(Math.min(1280, innerWidth.current));
 	let vsize = $derived(innerHeight.current);
@@ -47,35 +48,61 @@
 
 			ctx.font = imageHeigth / 2 + 'px Georgia';
 
-			tournament.players.forEach((player) => {
-				x = ((totalRows - row) / 2 + rowIndex) * (imageWidth + imageHSpacing);
+			if (!round) {
+				tournament.players.forEach((player) => {
+					x = ((totalRows - row) / 2 + rowIndex) * (imageWidth + imageHSpacing);
 
-				if (rowIndex === 1) {
-					ctx.fillStyle = colorText;
-					ctx.fillText((totalRows - row + 1).toString(), hOffset, y + imageHeigth / 1.75);
-				}
+					if (rowIndex === 1) {
+						ctx.fillStyle = colorText;
+						ctx.fillText((totalRows - row + 1).toString(), hOffset, y + imageHeigth / 1.75);
+					}
 
-				let img = new Image();
-				img.src = imageBaseUrl + player + imageExtension;
-				images.push(img);
-				ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player) ? 0.2 : 1.0;
-				ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
-				ctx.globalAlpha = 1.0;
+					let img = new Image();
+					img.src = imageBaseUrl + player + imageExtension;
+					images.push(img);
+					ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player) ? 0.2 : 1.0;
+					ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
+					ctx.globalAlpha = 1.0;
 
-				if (rowIndex === row) {
+					if (rowIndex === row) {
+						row++;
+						rowIndex = 1;
+						y += imageHeigth + imageVSpacing;
+						ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
+						ctx.fillRect(0, y, hsize, imageHeigth);
+					} else {
+						rowIndex++;
+					}
+				});
+			} else {
+				for (let idx = round.settings.rankInit.length - 1; idx >= 0; idx--) {
+					const level = round.settings.rankInit[idx];
+					level.players.forEach((player, i) => {
+						rowIndex = i + 1;
+						x = ((totalRows - level.players.length) / 2 + rowIndex) * (imageWidth + imageHSpacing);
+
+						if (rowIndex === 1) {
+							ctx.fillStyle = colorText;
+							ctx.fillText((totalRows - row + 1).toString(), hOffset, y + imageHeigth / 1.75);
+						}
+
+						let img = new Image();
+						img.src = imageBaseUrl + player.id + imageExtension;
+						images.push(img);
+						ctx.globalAlpha = tournament.settings.inactivePlayers.includes(player.id) ? 0.2 : 1.0;
+						ctx.drawImage(images[images.length - 1], x, y, imageWidth, imageHeigth);
+						ctx.globalAlpha = 1.0;
+					});
 					row++;
-					rowIndex = 1;
 					y += imageHeigth + imageVSpacing;
 					ctx.fillStyle = row % 2 == 0 ? colorLightGray : colorDarkGray;
 					ctx.fillRect(0, y, hsize, imageHeigth);
-				} else {
-					rowIndex++;
 				}
-			}, 1000);
-		});
+			}
+		}, 500);
 		setTimeout(() => {
 			clearInterval(interval);
-		}, 3000);
+		}, 1500);
 	};
 
 	$effect(() => {
