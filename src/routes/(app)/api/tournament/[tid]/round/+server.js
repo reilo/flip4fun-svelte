@@ -8,7 +8,7 @@ export const GET = async ({ url, params }) => {
     try {
         const options = {
             where: { tid: params.tid },
-            select: { id: true, created: true, tid: true, rid: true, name: true, status: true },
+            select: { id: true, created: true, tid: true, rid: true, name: true, status: true, settings: true },
             orderBy: [{ created: 'asc' }]
         };
         const rounds = await prisma.round.findMany(options);

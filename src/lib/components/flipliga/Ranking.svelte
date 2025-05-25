@@ -24,9 +24,16 @@
 	const tournament = data.tournament;
 	const tourCompleted = data.tournament.status === 'Completed';
 
-	const getStrength = (id) => {
+	const getOldStrength = (id) => {
 		const player = round.settings.rankInit.find((item) => item.player === id);
 		return player.strength;
+	};
+
+	const getNewStrength = (id) => {
+		const index = ranking.findIndex((item) => item.player === id);
+		if (index >= 0) {
+			return calcStrength(index + 1, ranking.length);
+		}
 	};
 
 	const getPlayerScoring = (playerID) => {
@@ -85,14 +92,19 @@
 
 	<Table shadow hoverable={true}>
 		<TableHead>
-			<TableHeadCell></TableHeadCell>
+			<TableHeadCell>Platz</TableHeadCell>
+			{#if !tourCompleted && !isPhone}
+				<TableHeadCell class="text-center">Ten<br />denz</TableHeadCell>
+			{/if}
 			<TableHeadCell>Spieler</TableHeadCell>
 			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Spiel<br />stärke</TableHeadCell>
+				<TableHeadCell class="text-center">Spiel<br />stärke<br />alt</TableHeadCell>
 			{/if}
+			<!--
 			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Tendenz</TableHeadCell>
-			{/if}
+				<TableHeadCell class="text-center">Spiel<br />stärke<br />neu</TableHeadCell>
+			{/if} 
+			-->
 			<TableHeadCell class="text-center">Punkte</TableHeadCell>
 			{#if !tourCompleted && !isPhone}
 				<TableHeadCell class="text-center">Punkt<br />gewinn</TableHeadCell>
@@ -107,19 +119,7 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each ranking as rank, i}
 				<TableBodyRow class={getRowColor(i)}>
-					<TableBodyCell class={py}>{i + 1}</TableBodyCell>
-					<TableBodyCell class={py}>
-						<a
-							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
-							onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a
-						>
-						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
-					</TableBodyCell>
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{getStrength(rank.player)}
-						</TableBodyCell>
-					{/if}
+					<TableBodyCell class={py + ' text-center'}>{i + 1}</TableBodyCell>
 					{#if !tourCompleted && !isPhone}
 						<TableBodyCell class={py} tdClass="text-center">
 							{#if rank.rankChange < 0}
@@ -135,6 +135,25 @@
 							{/if}
 						</TableBodyCell>
 					{/if}
+					<TableBodyCell class={py}>
+						<a
+							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
+							onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a
+						>
+						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
+					</TableBodyCell>
+					{#if !tourCompleted && !isPhone}
+						<TableBodyCell class={py} tdClass="text-center">
+							{getOldStrength(rank.player)}
+						</TableBodyCell>
+					{/if}
+					<!--
+					{#if !tourCompleted && !isPhone}
+						<TableBodyCell class={py} tdClass="text-center">
+							{getNewStrength(rank.player)}
+						</TableBodyCell>
+					{/if}
+					-->
 					<TableBodyCell class={py} tdClass="text-center">
 						{roundNumberToStrg(rank.points)}
 					</TableBodyCell>

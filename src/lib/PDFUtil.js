@@ -2,6 +2,7 @@ import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
 import { getPinName, mapPinType } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from './TypeUtil';
+import { calcPoints } from './MatchUtil';
 
 const drawSquare = (doc, x, y, w, h, color) => {
     doc.setDrawColor(0);
@@ -28,6 +29,14 @@ const writeSubtitle = (doc, strg) => {
     doc.text(10, 30, strg);
 }
 
+const writePlayerSquare = (doc) => {
+    drawSquare(doc, 5, 37.5, 200, 12, "0.90");
+}
+
+const getStrength = (player, round) => {
+    const rank = round.settings.rankInit.find((item) => item.player === player);
+    return rank != null ? rank.strength : 0;
+};
 
 export function generateLigaResultsPDF(data) {
 
@@ -123,7 +132,76 @@ export function generateLigaResultsPDF(data) {
         y += dy;
     })
 
-    // Seite 2 bis n+1 - Spieler-Statistiken
+    // Seite 2 - Matches aktueller Spieltag
+
+    doc.addPage();
+
+    drawTitleSquare(doc);
+    writeTitle(doc, data.tournament.name);
+
+    let totalMatches = 0;
+    data.rounds.forEach((round) => {
+        round.matches.forEach((match) => {
+            totalMatches++;
+        })
+    });
+    const subTitle1 = "Matches Spieltag " + roundNum + " (" + roundDate + ")";
+    const subTitle2 = data.round.matches.length.toString() + " von " + totalMatches.toString() + " Gesamt";
+    writeSubtitle(doc, subTitle1 + " - " + subTitle2);
+
+    x = 10;
+    y = 45;
+
+    // Titelzeile
+    doc.setFontSize(10);
+    // Ergebnis
+    doc.text(x + 0, y, "Sätze");
+    // total points
+    doc.text(x + 60 - doc.getTextWidth("Duell") / 2, y, "Duell");
+    // matches in round
+    doc.text(x + 125 - doc.getTextWidth("Punkte") / 2, y, "Punkte");
+    // total matches
+    doc.text(200 - doc.getTextWidth("Flipper"), y, "Flipper");
+
+    y += 3;
+    // Trennungslinie
+    doc.setLineWidth(0.1);
+    doc.line(x, y, 200, y);
+
+    doc.setFontSize(12);
+    y += 7;
+    dy = 6;
+
+    data.round.matches.forEach((match) => {
+        const strength1 = getStrength(match.player1, data.round);
+        const strength2 = getStrength(match.player2, data.round);
+        const player1 = getPlayerName(match.player1, data.players) + " (" + strength1.toString() + ")";
+        const player2 = getPlayerName(match.player2, data.players) + " (" + strength2.toString() + ")";;
+        const result = calcPoints(match, strength1, strength2);
+        const result1 = roundNumberToStrg(result.player1).toString();
+        const result2 = roundNumberToStrg(result.player2).toString();
+        const pinText = getPinName(match.pin, data.pins);
+        doc.text(x + 0, y, match.score1.toString() + ":" + match.score2.toString());
+        const xpos1 = x + 58 - doc.getTextWidth(player1);
+        doc.text(xpos1, y, player1);
+        if (result.player1 > result.player2) {
+            doc.line(xpos1, y + 1, xpos1 + doc.getTextWidth(player1), y + 1);
+        }
+        doc.text(x + 60 - doc.getTextWidth(":") / 2, y, ":");
+        const xpos2 = x + 62;
+        doc.text(xpos2, y, player2);
+        if (result.player1 < result.player2) {
+            doc.line(xpos2, y + 1, xpos2 + doc.getTextWidth(player2), y + 1);
+        }
+        doc.text(x + 123 - doc.getTextWidth(result1), y, result1);
+        doc.text(x + 125 - doc.getTextWidth(":") / 2, y, ":");
+        doc.text(x + 127, y, result2);
+        doc.text(200 - doc.getTextWidth(pinText), y, pinText);
+
+        y += dy;
+    })
+
+    // Seite 3 bis n+1 - Spieler-Statistiken
 
     let players = data.tournament.players.slice();
     sortPlayerIDs(players, data.players);
@@ -142,7 +220,7 @@ export function generateLigaResultsPDF(data) {
             round.matches.forEach((match) => {
                 if (match.player1 === player || match.player2 === player) {
                     let newMatch = JSON.parse(JSON.stringify(match));
-                    newMatch.round = round.rid;
+                    newMatch.round = round;
                     matches.push(newMatch);
                     totalMatches++;
                 }
@@ -165,15 +243,17 @@ export function generateLigaResultsPDF(data) {
             }
         });
 
+        writePlayerSquare(doc);
+
         // Spielername
         y = 45;
         doc.setFontSize(16);
         doc.text(x, y, getPlayerName(player, data.players));
 
-        // zusammenfassene Daten
+        // zusammenfassende Daten
         doc.setFontSize(12);
         const matchesStrg = "Matches: " + totalMatches;
-        doc.text(x + 85 - doc.getTextWidth(matchesStrg), y, matchesStrg);
+        doc.text(x + 87 - doc.getTextWidth(matchesStrg), y, matchesStrg);
         const pointsStrg = "Punkte: " + roundNumberToStrg(playerPoints).toString();
         doc.text(x + 115 - doc.getTextWidth(pointsStrg), y, pointsStrg);
         //const rankingText = playerRanking + ". Platz";
@@ -182,43 +262,65 @@ export function generateLigaResultsPDF(data) {
         const penaltyStrg = "Passivitätsabzüge: " + playerPenalty.toString();
         doc.text(x + 190 - doc.getTextWidth(penaltyStrg), y, penaltyStrg);
 
+        // Titelzeile
+        y += 10;
+        doc.setFontSize(10);
+        doc.text(x + 0, y, "Spieltag");
+        doc.text(x + 28, y, "Spieler 1");
+        doc.text(x + 68, y, "Spieler 2");
+        doc.text(x + 110, y, "Sätze");
+        doc.text(x + 130 - doc.getTextWidth("Punkte") / 2, y, "Punkte");
+        doc.text(200 - doc.getTextWidth("Flipper"), y, "Flipper");
+
         // Trennungslinie
-        y += 3;
+        y += 2;
         doc.setLineWidth(0.1);
         doc.line(x, y, 200, y);
 
         // Liste der Matches
-        doc.setFontSize(11);
-        y += 8;
+        doc.setFontSize(10);
+        y += 6;
         if (!matches.length) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
             matches.forEach((match) => {
                 // Nummer des Spieltags + Spieldatum
-                doc.text(x + 0, y, "(" + match.round.toString() + ") " + mapDate(match.created));
+                doc.text(x + 0, y, "(" + match.round.rid.toString() + ") " + mapDate(match.created));
                 // Spieler 1
                 const player1 = getPlayerName(match.player1, data.players)
-                doc.text(x + 30, y, player1);
+                const strength1 = getStrength(match.player1, match.round);
+                const suffix1 = "(" + strength1.toString() + ")";
+                doc.text(x + 28, y, player1 + " " + suffix1);
                 // Spieler 1 ggf. unterstreichen
                 if (match.score1 > match.score2) {
-                    doc.line(x + 30, y + 1, x + 30 + doc.getTextWidth(player1), y + 1);
+                    doc.line(x + 28, y + 1, x + 28 + doc.getTextWidth(player1), y + 1);
                 }
                 // Match-Trenner
-                doc.text(x + 67, y, ":");
+                doc.text(x + 65, y, ":");
                 // Spieler 2
                 const player2 = getPlayerName(match.player2, data.players);
-                doc.text(x + 70, y, player2);
+                const strength2 = getStrength(match.player2, match.round);
+                const suffix2 = "(" + strength2.toString() + ")";
+                doc.text(x + 68, y, player2 + " " + suffix2);
                 // Spieler 2 ggf. unterstreichen
                 if (match.score1 < match.score2) {
-                    doc.line(x + 70, y + 1, x + 70 + doc.getTextWidth(player2), y + 1);
+                    doc.line(x + 68, y + 1, x + 68 + doc.getTextWidth(player2), y + 1);
                 }
                 // Spielergebnis
-                doc.text(x + 115, y, match.score1.toString() + " : " + match.score2.toString());
+                doc.text(x + 110, y, match.score1.toString() + " : " + match.score2.toString());
+                // Punkte
+                const xpos = 130;
+                const result = calcPoints(match, strength1, strength2);
+                const result1 = roundNumberToStrg(result.player1).toString();
+                const result2 = roundNumberToStrg(result.player2).toString();
+                doc.text(x + xpos - 1 - doc.getTextWidth(result1), y, result1);
+                doc.text(x + xpos, y, ":");
+                doc.text(x + xpos + 7 - doc.getTextWidth(result2), y, result2);
                 // Flipper
                 const pinText = getPinName(match.pin, data.pins);
                 doc.text(200 - doc.getTextWidth(pinText), y, pinText);
 
-                y += 6;
+                y += 5.5;
             })
         }
     })
@@ -446,11 +548,6 @@ export function generatePlayersPDF(title, playerIDs, allPlayers) {
 }
 
 export function generateCertificatePDF(title, versions, lines, names) {
-
-    console.log(title);
-    console.log(versions);
-    console.log(lines);
-    console.log(names);
 
     const xmax = 210;
     const ymax = 297;

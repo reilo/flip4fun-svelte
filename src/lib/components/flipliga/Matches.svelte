@@ -70,7 +70,7 @@
 
 	const getPoints = (match, num) => {
 		const result = calcPoints(match, getStrength(match.player1), getStrength(match.player2));
-		return (num == 1 ? result.player1 : result.player2) + settings.matchBonus;
+		return (num == 1 ? result.player1 : result.player2);// + settings.matchBonus;
 	};
 
 	const matchLimitReached = (player1, player2) => {
