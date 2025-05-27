@@ -24,24 +24,23 @@
 			access.set(ReadAccess);
 		} else {
 			formModal = true;
+			password = '';
 			await tick();
 			passwordRef?.focus();
 		}
 	}
 
-	function adminClicked() {
+	function adminClicked(event) {
+		event?.preventDefault(); 
 		if (accessValue >= AdminAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
 			access.set(AdminAccess);
-			password = '';
 			formModal = false;
 		} else {
-			password = '';
 			alert('Bitte gültiges Password eingeben!');
 		}
 	}
 
 	function cancelClicked() {
-		password = '';
 		formModal = false;
 	}
 
@@ -74,7 +73,7 @@
 			autoclose={false}
 			class="max-w-sm"
 		>
-			<form class="flex flex-col space-y-6" action="#">
+			<form class="flex flex-col space-y-6" action="#" method="POST" onsubmit={adminClicked}>
 				<Label class="space-y-2">
 					<span>Passwort:</span>
 					<input
@@ -86,8 +85,8 @@
 						placeholder=""
 					/>
 				</Label>
-				<Button color="alternative" on:click={adminClicked}>Ok</Button>
-				<Button color="primary" on:click={cancelClicked}>Abbrechen</Button>
+				<Button color="primary" on:click={adminClicked}>Ok</Button>
+				<Button color="alternative" on:click={cancelClicked}>Abbrechen</Button>
 			</form>
 		</Modal>
 		<DarkMode />
