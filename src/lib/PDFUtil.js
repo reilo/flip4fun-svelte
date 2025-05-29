@@ -4,14 +4,24 @@ import { getPinName, mapPinType } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from './TypeUtil';
 import { calcPoints } from './MatchUtil';
 
-const drawSquare = (doc, x, y, w, h, color) => {
+const darkblue = [153, 181, 199];
+const midblue = [204, 217, 227];
+const liteblue = [227, 237, 240];
+const litegreen = [180, 218, 180];
+const litered = [218, 180, 180];
+
+const drawSquare = (doc, x, y, w, h, c1, c2, c3) => {
     doc.setDrawColor(0);
-    doc.setFillColor(color);
+    doc.setFillColor(c1, c2, c3);
     doc.rect(x, y, w, h, 'F');
 }
 
-const drawTitleSquare = (doc) => {
-    drawSquare(doc, 5, 5, 200, 30, "0.80");
+const drawTitleSquare = (doc, color) => {
+    if (color) {
+        drawSquare(doc, 5, 5, 200, 30, ...darkblue);
+    } else {
+        drawSquare(doc, 5, 5, 200, 30, "0.80");
+    }
     doc.addImage("/pinlounge.gif", "JPEG", 160, 10, 40, 20);
 }
 
@@ -29,8 +39,12 @@ const writeSubtitle = (doc, strg) => {
     doc.text(10, 30, strg);
 }
 
-const writePlayerSquare = (doc) => {
-    drawSquare(doc, 5, 37.5, 200, 12, "0.90");
+const writePlayerSquare = (doc, color) => {
+    if (color) {
+        drawSquare(doc, 5, 37.5, 200, 12, ...midblue);
+    } else {
+        drawSquare(doc, 5, 37.5, 200, 12, "0.90");
+    }
 }
 
 const getStrength = (player, round) => {
@@ -38,7 +52,7 @@ const getStrength = (player, round) => {
     return rank != null ? rank.strength : 0;
 };
 
-export function generateLigaResultsPDF(data) {
+export function generateLigaResultsPDF(data, color = true) {
 
     const doc = new jsPDF();
     doc.setFont("times");
@@ -49,9 +63,11 @@ export function generateLigaResultsPDF(data) {
     const rankFinal = data.round.results.rankFinal;
     const rankInit = data.round.settings.rankInit;
 
+    let alternate = false;
+
     // Seite 1 - aktueller Tabellenstand mit Details
 
-    drawTitleSquare(doc);
+    drawTitleSquare(doc, color);
     writeTitle(doc, data.tournament.name);
     writeSubtitle(doc, "Tabelle nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -106,7 +122,11 @@ export function generateLigaResultsPDF(data) {
         });
         // alternating background
         if (highlight.includes(i + 1)) {
-            drawSquare(doc, x, y - dy + 2, 190, dy, "0.90");
+            if (color) {
+                drawSquare(doc, x, y - dy + 2, 190, dy, ...liteblue);
+            } else {
+                drawSquare(doc, x, y - dy + 2, 190, dy, "0.95");
+            }
         }
         // current rank
         doc.text(x, y, (i + 1).toString() + ".");
@@ -136,7 +156,7 @@ export function generateLigaResultsPDF(data) {
 
     doc.addPage();
 
-    drawTitleSquare(doc);
+    drawTitleSquare(doc, color);
     writeTitle(doc, data.tournament.name);
 
     let totalMatches = 0;
@@ -172,6 +192,8 @@ export function generateLigaResultsPDF(data) {
     y += 7;
     dy = 6;
 
+    alternate = false;
+
     data.round.matches.forEach((match) => {
         const strength1 = getStrength(match.player1, data.round);
         const strength2 = getStrength(match.player2, data.round);
@@ -181,18 +203,34 @@ export function generateLigaResultsPDF(data) {
         const result1 = roundNumberToStrg(result.player1).toString();
         const result2 = roundNumberToStrg(result.player2).toString();
         const pinText = getPinName(match.pin, data.pins);
+        if (alternate) {
+            if (color) {
+                drawSquare(doc, x, y - 4, 200 - x, 5, ...liteblue);
+            } else {
+                drawSquare(doc, x, y - 4, 200 - x, 5, "0.95");
+            }
+        }
+        alternate = !alternate;
         doc.text(x + 0, y, match.score1.toString() + ":" + match.score2.toString());
         const xpos1 = x + 58 - doc.getTextWidth(player1);
-        doc.text(xpos1, y, player1);
         if (result.player1 > result.player2) {
-            doc.line(xpos1, y + 1, xpos1 + doc.getTextWidth(player1), y + 1);
+            if (color) {
+                drawSquare(doc, xpos1, y - 4, doc.getTextWidth(player1), 5, ...litegreen);
+            } else {
+                doc.line(xpos1, y + 1, xpos1 + doc.getTextWidth(player1), y + 1);
+            }
         }
+        doc.text(xpos1, y, player1);
         doc.text(x + 60 - doc.getTextWidth(":") / 2, y, ":");
         const xpos2 = x + 62;
-        doc.text(xpos2, y, player2);
         if (result.player1 < result.player2) {
-            doc.line(xpos2, y + 1, xpos2 + doc.getTextWidth(player2), y + 1);
+            if (color) {
+                drawSquare(doc, xpos2, y - 4, doc.getTextWidth(player2), 5, ...litegreen)
+            } else {
+                doc.line(xpos2, y + 1, xpos2 + doc.getTextWidth(player2), y + 1);
+            }
         }
+        doc.text(xpos2, y, player2);
         doc.text(x + 123 - doc.getTextWidth(result1), y, result1);
         doc.text(x + 125 - doc.getTextWidth(":") / 2, y, ":");
         doc.text(x + 127, y, result2);
@@ -209,7 +247,7 @@ export function generateLigaResultsPDF(data) {
     players.forEach((player) => {
         doc.addPage();
 
-        drawTitleSquare(doc);
+        drawTitleSquare(doc, color);
         writeTitle(doc, data.tournament.name);
         writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -243,7 +281,7 @@ export function generateLigaResultsPDF(data) {
             }
         });
 
-        writePlayerSquare(doc);
+        writePlayerSquare(doc, color);
 
         // Spielername
         y = 45;
@@ -283,7 +321,23 @@ export function generateLigaResultsPDF(data) {
         if (!matches.length) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
+            alternate = false;
             matches.forEach((match) => {
+                if (alternate) {
+                    if (color) {
+                        drawSquare(doc, x, y - 4, 200 - x, 5, ...liteblue);
+                    } else {
+                        drawSquare(doc, x, y - 4, 200 - x, 5, "0.95");
+                    }
+                }
+                alternate = !alternate;
+                if (color) {
+                    if (player === match.player1 && match.score1 > match.score2 || player === match.player2 && match.score2 > match.score1) {
+                        drawSquare(doc, x + 28, y - 3, 110, 4, ...litegreen);
+                    } else {
+                        drawSquare(doc, x + 28, y - 3, 110, 4, ...litered);
+                    }
+                }
                 // Nummer des Spieltags + Spieldatum
                 doc.text(x + 0, y, "(" + match.round.rid.toString() + ") " + mapDate(match.created));
                 // Spieler 1
@@ -292,7 +346,7 @@ export function generateLigaResultsPDF(data) {
                 const suffix1 = "(" + strength1.toString() + ")";
                 doc.text(x + 28, y, player1 + " " + suffix1);
                 // Spieler 1 ggf. unterstreichen
-                if (match.score1 > match.score2) {
+                if (!color && match.score1 > match.score2) {
                     doc.line(x + 28, y + 1, x + 28 + doc.getTextWidth(player1), y + 1);
                 }
                 // Match-Trenner
@@ -303,7 +357,7 @@ export function generateLigaResultsPDF(data) {
                 const suffix2 = "(" + strength2.toString() + ")";
                 doc.text(x + 68, y, player2 + " " + suffix2);
                 // Spieler 2 ggf. unterstreichen
-                if (match.score1 < match.score2) {
+                if (!color && match.score1 < match.score2) {
                     doc.line(x + 68, y + 1, x + 68 + doc.getTextWidth(player2), y + 1);
                 }
                 // Spielergebnis
