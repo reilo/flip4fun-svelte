@@ -75,7 +75,8 @@ export function generateLigaResultsPDF(data, color = true) {
         writeTitle(doc, data.tournament.name);
         writeSubtitle(doc, "Spielstärken nach Spieltag " + roundNum + " (" + roundDate + ")");
 
-        const layout = getPyramidLayout(8, 170, 210, 1.5);
+        const rowNum = 8;
+        const layout = getPyramidLayout(rowNum, 170, 210, 1.5);
         if (layout.valid) {
 
             const imageWidth = layout.imageWidth;
@@ -84,7 +85,7 @@ export function generateLigaResultsPDF(data, color = true) {
             alternate = false;
             x = 5;
             y = 45;
-            for (let idx = 0; idx < layout.rpos.length; ++idx) {
+            for (let idx = 0; idx < rowNum; ++idx) {
                 doc.setFontSize(32);
                 if (alternate) {
                     drawSquare(doc, x, y + layout.rpos[idx] - 1, 200, imageHeight + 2, ...liteblue);
@@ -92,7 +93,7 @@ export function generateLigaResultsPDF(data, color = true) {
                     drawSquare(doc, x, y + layout.rpos[idx] - 1, 200, imageHeight + 2, ...midblue);
 
                 }
-                doc.text(x + 2, y + layout.rpos[idx] + imageHeight - 5, (idx + 1).toString());
+                doc.text(x + 2, y + layout.rpos[idx] + imageHeight - 5, (rowNum - idx).toString());
                 alternate = !alternate;
             }
 
@@ -133,10 +134,10 @@ export function generateLigaResultsPDF(data, color = true) {
 
     // Titelzeile 2
     y += 4;
-    // player name
-    doc.text(x + 10, y, "Spieler");
     // rank change
-    doc.text(x + 75 - doc.getTextWidth("Tendenz"), y, "Tendenz");
+    doc.text(x + 25 - doc.getTextWidth("Tendenz"), y, "Tendenz");
+    // player name
+    doc.text(x + 40, y, "Spieler");
     // gained points
     doc.text(x + 105 - doc.getTextWidth("Spieltag"), y, "Spieltag");
     // total points
@@ -176,12 +177,20 @@ export function generateLigaResultsPDF(data, color = true) {
         }
         // current rank
         doc.text(x, y, (i + 1).toString() + ".");
-        // player name
-        doc.text(x + 10, y, getPlayerName(item.player, data.players));
         // rank change
         const diffRank = initItemIndex - i;
+        if (color) {
+            const bgWidth = doc.getTextWidth("234");
+            if (diffRank > 0) {
+                drawSquare(doc, x + 25 - bgWidth, y - 4, bgWidth, 5, ...litegreen);
+            } else if (diffRank < 0) {
+                drawSquare(doc, x + 25 - bgWidth, y - 4, bgWidth, 5, ...litered);
+            }
+        }
         const diffRankStrg = diffRank ? (diffRank > 0 ? "+" : "") + diffRank.toString() : "";
-        doc.text(x + 75 - doc.getTextWidth(diffRankStrg), y, diffRankStrg);
+        doc.text(x + 25 - doc.getTextWidth(diffRankStrg), y, diffRankStrg);
+        // player name
+        doc.text(x + 40, y, getPlayerName(item.player, data.players));
         // gained points
         const diffPoints = roundNumberToStrg(item.points - initItem.points);
         const diffPointsStrg = diffPoints ? (diffPoints > 0 ? "+" : "") + diffPoints.toString() : "";
