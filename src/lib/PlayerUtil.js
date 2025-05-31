@@ -1,3 +1,5 @@
+import { roundNumberForDB } from "./TypeUtil";
+
 export function sortPlayerIDs(playerIDs, allPlayers) {
 
     playerIDs.sort((p1, p2) => {
@@ -22,7 +24,37 @@ export function formatPlayerName(player, id, short = false) {
 export function formatPlayerNameExt(player, id) {
     if (player) {
         return `${player.forename} ${player.surname}` + (player.shortname ? ` (${player.shortname})` : "");
-    } else{
-         return `Unbekannt (${id})`;
+    } else {
+        return `Unbekannt (${id})`;
+    }
+}
+
+export function getPyramidLayout(rows, width, height, aspectRatio) {
+    const vSpacing = 3;
+    const imageHeight = (height - (rows - 1) * vSpacing) / rows;
+    const imageWidth = imageHeight / aspectRatio;
+    const hSpacing = (width - rows * imageWidth) / (rows - 1);
+    const xpos = [];
+    const ypos = [];
+    const rpos = [];
+    for (let row = 1; row <= rows; ++row) {
+        const left = width / 2 - row * imageWidth / 2 - (row - 1) * hSpacing / 2;
+        const top = (row - 1) * (imageHeight + vSpacing);
+        for (let idx = 1; idx <= row; ++idx) {
+            xpos.push(roundNumberForDB(left + (idx - 1) * (imageWidth + hSpacing)));
+            ypos.push(roundNumberForDB(top));
+        }
+        rpos.push(roundNumberForDB(top));
+    }
+    const valid = imageHeight > 0 && imageWidth > 0;
+    return {
+        valid: valid,
+        imageHeight: roundNumberForDB(imageHeight),
+        imageWidth: roundNumberForDB(imageWidth),
+        hSpacing: roundNumberForDB(hSpacing),
+        vSpacing: roundNumberForDB(vSpacing),
+        xpos: xpos,
+        ypos: ypos,
+        rpos: rpos
     }
 }

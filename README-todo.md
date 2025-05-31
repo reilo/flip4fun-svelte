@@ -16,7 +16,6 @@ FLIP-Liga
 - !!! Pyramide: Namen anclickbar
 - Ergebnis-PDF -> 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
--- !!! Pyramide
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final

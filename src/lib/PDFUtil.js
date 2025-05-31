@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { sortPlayerIDs, getPlayerName } from "./PlayerUtil";
+import { sortPlayerIDs, getPlayerName, getPyramidLayout } from "./PlayerUtil";
 import { getPinName, mapPinType } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from './TypeUtil';
 import { calcPoints } from './MatchUtil';
@@ -65,14 +65,60 @@ export function generateLigaResultsPDF(data, color = true) {
 
     let alternate = false;
 
+    let x = 0;
+    let y = 0;
+
+    // Seite 0 - Spielstärken
+
+    if (color) {
+        drawTitleSquare(doc, color);
+        writeTitle(doc, data.tournament.name);
+        writeSubtitle(doc, "Spielstärken nach Spieltag " + roundNum + " (" + roundDate + ")");
+
+        const layout = getPyramidLayout(8, 170, 210, 1.5);
+        if (layout.valid) {
+
+            const imageWidth = layout.imageWidth;
+            const imageHeight = layout.imageHeight;
+
+            alternate = false;
+            x = 5;
+            y = 45;
+            for (let idx = 0; idx < layout.rpos.length; ++idx) {
+                doc.setFontSize(32);
+                if (alternate) {
+                    drawSquare(doc, x, y + layout.rpos[idx] - 1, 200, imageHeight + 2, ...liteblue);
+                } else {
+                    drawSquare(doc, x, y + layout.rpos[idx] - 1, 200, imageHeight + 2, ...midblue);
+
+                }
+                doc.text(x + 2, y + layout.rpos[idx] + imageHeight - 5, (idx + 1).toString());
+                alternate = !alternate;
+            }
+
+            x = 25;
+            rankFinal.forEach((item, i) => {
+                const photo = "/photos/players/" + item.player + ".jpg";
+                const xpos = x + layout.xpos[i];
+                const ypos = y + layout.ypos[i];
+                doc.addImage(photo, "JPEG", xpos, ypos, imageWidth, imageWidth * 1.25);
+                doc.setFontSize(11);
+                const playerName = getPlayerName(item.player, data.players, true);
+                doc.text(xpos + (imageWidth - doc.getTextWidth(playerName)) / 2, ypos + imageHeight, playerName);
+            });
+        }
+
+        doc.addPage();
+    }
+
     // Seite 1 - aktueller Tabellenstand mit Details
 
     drawTitleSquare(doc, color);
     writeTitle(doc, data.tournament.name);
     writeSubtitle(doc, "Tabelle nach Spieltag " + roundNum + " (" + roundDate + ")");
 
-    let x = 10;
-    let y = 45;
+    x = 10;
+    y = 45;
 
     // Titelzeile 1
     doc.setFontSize(10);
@@ -380,9 +426,9 @@ export function generateLigaResultsPDF(data, color = true) {
     })
 
     // Seite n+2 bis 2n+1
-    // Verfügbare Gegener
+    // Verfügbare Gegner
 
-    doc.save(data.tournament.name + " Spieltag " + data.round.rid + '.pdf');
+    doc.save(data.tournament.name + " Spieltag " + data.round.rid + (color ? "" : " Print") + '.pdf');
 }
 
 export function generatePinsPDF(pins) {
