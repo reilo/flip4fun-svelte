@@ -238,6 +238,9 @@ Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von loka
 ```bash
 \copy (SELECT * FROM match) to '..\match.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
 ```
+```bash
+\copy (SELECT * FROM frame) to '..\frame.csv' WITH CSV DELIMITER '|' QUOTE '^' HEADER ENCODING 'UTF8'
+```
 
 Dabei folgendes beachten:
 - Als Delimiter immer ein Zeichen angeben, das in den Daten mit Sicherheit nicht benutzt wird. Am besten '|'. Auf keinen Fall ',' verwenden, da es in JSON-Elemente vorkommt.
@@ -254,6 +257,7 @@ DELETE FROM player;
 DELETE FROM tourney;
 DELETE FROM round;
 DELETE FROM match;
+DELETE FROM frame;
 ```
 
 - Zielsystem: Import via psql-Kommandos:
@@ -272,6 +276,9 @@ DELETE FROM match;
 ```
 ```bash
 \copy match FROM '..\match.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+```
+```bash
+\copy frame FROM '..\frame.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
 ```
 
 Dabei folgendes beachten:
