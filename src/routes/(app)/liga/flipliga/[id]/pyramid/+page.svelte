@@ -72,10 +72,10 @@
 
 				clickAreas.push({ player: rank.player, x: x, y: y, w: imageWidth, h: imageHeight });
 			});
-		}, 100);
+		}, 500);
 		setTimeout(() => {
 			clearInterval(interval);
-		}, 300);
+		}, 1500);
 	};
 
 	const handleClick = (e) => {
