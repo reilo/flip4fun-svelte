@@ -13,7 +13,6 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
-- !!! Pyramide: Namen anclickbar
 - Ergebnis-PDF -> 
 -- mehrere Seiten pro Spieler (bei vielen Spielen)
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
