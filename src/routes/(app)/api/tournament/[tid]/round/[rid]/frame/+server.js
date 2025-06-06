@@ -50,6 +50,8 @@ export const POST = async ({ url, params, request }) => {
         let data = {
             tid: params.tid,
             rid: parseInt(params.rid),
+            lid: parseInt(params.lid),
+            mid: parseInt(params.mid),
             name: body.name,
             players: body.players,
             scores: body.scores,

@@ -89,7 +89,7 @@ export const POST = async ({ url, params, request }) => {
                 // create frames
                 for (let idx = 0; idx < body.frames.length; idx++) {
                     const frame = body.frames[idx];
-                    data = { tid: params.tid, rid: body.rid, name: frame.name, players: frame.players, pin: frame.pin }
+                    data = { tid: params.tid, rid: body.rid, lid: frame.lid, mid: frame.mid, name: frame.name, players: frame.players, pin: frame.pin }
                     await tx.frame.create({
                         data
                     });

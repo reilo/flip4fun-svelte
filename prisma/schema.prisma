@@ -72,6 +72,8 @@ model frame {
   created   DateTime    @default(now())
   tid       String
   rid       Int
+  lid       Int
+  mid       Int
   name      String
   players   String[]    @default([])
   scores    Int[]       @default([])

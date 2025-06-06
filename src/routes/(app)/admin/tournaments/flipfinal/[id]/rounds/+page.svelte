@@ -110,12 +110,12 @@
 				level.toString() +
 				' - Match ';
 			const pin1 = randomPin(pins, true, true, true, true, usedPins);
-			frames.push({ name: frameName + '1', pin: pin1.id, players: players });
+			frames.push({ lid: level, mid: 1, name: frameName + '1', pin: pin1.id, players: players });
 			usedPins.push(pin1.id);
 			const useOldPins = pinTypes === 0 || !getOldTypes().includes(pin1.type);
 			const useNewPins = pinTypes === 0 || pinTypes === 2 || !getNewTypes().includes(pin1.type);
 			const pin2 = randomPin(pins, useOldPins, useOldPins, useNewPins, useNewPins, usedPins);
-			frames.push({ name: frameName + '2', pin: pin2.id, players: players });
+			frames.push({ lid: level, mid: 2, name: frameName + '2', pin: pin2.id, players: players });
 			usedPins.push(pin2.id);
 		});
 		const rid = round ? round.rid + 1 : 1;
