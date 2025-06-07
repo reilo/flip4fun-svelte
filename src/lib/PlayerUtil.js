@@ -58,3 +58,34 @@ export function getPyramidLayout(rows, width, height, aspectRatio) {
         rpos: rpos
     }
 }
+
+export function getPyramidLayoutEx(rows, width, height, aspectRatio) {
+    const vSpacing = 3;
+    const imageHeight = (height - (rows.length - 1) * vSpacing) / rows.length;
+    const imageWidth = imageHeight / aspectRatio;
+    const hSpacing = (width - rows.length * imageWidth) / (rows.length - 1);
+    const xpos = [];
+    const ypos = [];
+    const rpos = [];
+    for (let i = 0; i < rows.length; ++i) {
+        const row = rows[i];
+        const left = width / 2 - row * imageWidth / 2 - (row - 1) * hSpacing / 2;
+        const top = i * (imageHeight + vSpacing);
+        for (let idx = 1; idx <= row; ++idx) {
+            xpos.push(roundNumberForDB(left + (idx - 1) * (imageWidth + hSpacing)));
+            ypos.push(roundNumberForDB(top));
+        }
+        rpos.push(roundNumberForDB(top));
+    }
+    const valid = imageHeight > 0 && imageWidth > 0;
+    return {
+        valid: valid,
+        imageHeight: roundNumberForDB(imageHeight),
+        imageWidth: roundNumberForDB(imageWidth),
+        hSpacing: roundNumberForDB(hSpacing),
+        vSpacing: roundNumberForDB(vSpacing),
+        xpos: xpos,
+        ypos: ypos,
+        rpos: rpos
+    }
+}
