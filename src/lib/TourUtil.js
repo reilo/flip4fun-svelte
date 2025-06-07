@@ -1,5 +1,5 @@
 import { roundNumberForDB } from "./TypeUtil";
-import { calcFrameResult } from "./FrameUtil";
+import { calcFrameResult, hasFrameResult } from "./FrameUtil";
 
 export function mapTourStatus(status) {
     let mapped;
@@ -204,97 +204,82 @@ export function calcPlayingLevels(rankInit, activePlayers, previousLevels) {
  *                              --- fine: fine score depending on ranking within level 
  * @param {array} playingLevels - level numbers of current round
  * @param {array} frames - all played frames
- * @returns rankFinal - final results based on rankInit, not yet sorted, winner indicated. Array of
+ * @returns {object}
+ *          levelResults - all playing levels with accumulated results of played frames.
+ *                      Array of
  *                      -- level: level/strength value
- *                      -- winner: winner of the level
- *                      -- players: the players within a level, not yet sorted by ranking: Array of
+ *                      -- matches: count of completed frames
+ *                      -- players: the active players within a level, sorted by accumulated position:
+ *                        Array of:
+ *                        --- id: player ID
+ *                        --- score: accumulated position from completed frames
+ *                        --- fineNew: fine score newly gained from completed frames
+ *          rankFinal - final results based on rankInit, all frame results added, levels update and sorted.
+ *                      Array of
+ *                      -- level: level/strength value
+ *                      -- players: the players within a level, sorted by ranking: Array of
  *                        --- id: player ID
  *                        --- fine: fine score updated from round results
- *                        --- position: accumulated position from round frames
  */
-export function calcFinalResults(rankInit, playingLevels, frames) {
-    const playerResults = [];
-    // evaluate all played matches
+export function calcFinalResults(round, frames) {
+    const rankInit = round.settings.rankInit;
+    const playingLevels = round.settings.playingLevels;
+    const activePlayers = round.players;
+    // set up initial level results for all playing levels with score = 0 for each player.
+    const levelResults = [];
+    playingLevels.forEach((level) => {
+        const index = rankInit.findIndex((rank) => rank.level === level);
+        if (index >= 0) {
+            const players = [];
+            rankInit[index].players.forEach((player) => {
+                if (activePlayers.includes(player.id)) {
+                    players.push({ id: player.id, score: 0, fineNew: 0 });
+                }
+            });
+            levelResults.push({ level: level, players: players, matches: 0 });
+        }
+    })
+    // evaluate all played matches and add scores to level results.
     frames.forEach((frame) => {
-        const playerScores = calcFrameResult(frame);
-        playerScores.forEach((ps) => {
-            const idx = playerResults.findIndex((pr) => pr.player === ps.player);
-            if (idx === -1) {
-                playerResults.push({ player: ps.player, position: ps.pos, fine: ps.fine });
-            } else {
-                playerResults[idx].position += ps.pos;
-                playerResults[idx].fine += ps.fine;
+        if (hasFrameResult(frame)) {
+            const level = frame.lid;
+            const levelResult = levelResults.find((item) => item.level === level);
+            if (levelResult) {
+                levelResult.matches += 1;
+                const playerScores = calcFrameResult(frame);
+                playerScores.forEach((playerScore) => {
+                    const player = levelResult.players.find((item) => item.id === playerScore.player);
+                    if (player) {
+                        player.score += playerScore.pos;
+                        player.fineNew += playerScore.fine;
+                    }
+                })
+                levelResult.players.sort((a, b) => (a.score > b.score ? 1 : a.score < b.score ? -1 : 0));
             }
-        });
+        }
     });
     // calculate new ranking
     const rankFinal = JSON.parse(JSON.stringify(rankInit));
     rankFinal.forEach((item, i) => {
         if (playingLevels.includes(item.level)) {
-            let winner = null;
-            let bestPosition = 0;
-            item.players.forEach((player, j) => {
-                const result = playerResults.find((pr) => pr.player === player.id);
-                if (result) {
-                    rankFinal[i].players[j].fine += result.fine;
-                    rankFinal[i].players[j].position = result.position;
-                    if (!winner || result.position < bestPosition) {
-                        winner = player.id;
-                        bestPosition = result.position;
+            const nextItem = rankFinal[i + 1];
+            const levelResult = levelResults.find((levelResult) => levelResult.level === item.level);
+            if (levelResult) {
+                const winner = levelResult.players[0];
+                nextItem.players.push({ id: winner.id, fine: 0 });
+                const index = item.players.findIndex((player) => player.id === winner.id);
+                if (index >= 0) {
+                    item.players.splice(index, 1);
+                }
+                item.players.forEach((player) => {
+                    const playerResult = levelResult.players.find((playerResult) => playerResult.id === player.id);
+                    if (playerResult) {
+                        player.fine += playerResult.fineNew;
                     }
-                }
-            });
-            rankFinal[i].winner = winner;
+                })
+                item.players.sort((a, b) => (a.fine < b.fine ? 1 : a.fine > b.fine ? -1 : 0))
+            }
         }
     });
-    return rankFinal;
-}
-
-/**
- * Calculate initial levels for next round from final ranking of previous round.
- * @param {array} rankFinal - final ranking from previous round. Array of:
- *                            -- level: level/strength value
- *                            -- winner: winner of the level
- *                            -- players: the players within a level, not yet sorted by ranking: Array of
- *                               --- id: player ID
- *                               --- fine: fine score updated from round results
- *                               --- position: accumulated position from round frames
- * @param {array} playingLevels - level numbers of previous round
- * @retuns rankInit - initial levels for next round
- *                    -- level: level/strength value
- *                     -- players: the players within a level sorted by ranking: Array of
- *                        --- id: player ID
- *                        --- fine: fine score depending on ranking within level
- */
-export function calcNextLevels(rankFinal, playingLevels) {
-    const rankInit = [];
-    let winnerId = null;
-    let previousWinnerId = null;
-    let nextEntry = null;
-    // generate initial ranking levels for next round
-    rankFinal.forEach((item) => {
-        if (playingLevels.includes(item.level)) {
-            nextEntry = { level: item.level, players: [] };
-            item.players.forEach((player) => {
-                if (player.id !== item.winner) {
-                    nextEntry.players.push({ id: player.id, fine: player.fine });
-                } else {
-                    winnerId = player.id;
-                }
-            });
-        } else {
-            nextEntry = JSON.parse(JSON.stringify(item));
-        }
-        if (previousWinnerId) {
-            nextEntry.players.push({ id: previousWinnerId, fine: 0 });
-            previousWinnerId = null;
-        }
-        if (winnerId) {
-            previousWinnerId = winnerId;
-            winnerId = null;
-        }
-        nextEntry.players.sort((a, b) => (a.fine < b.fine ? 1 : b.fine < a.fine ? -1 : 0));
-        rankInit.push(nextEntry);
-    });
-    return rankInit;
+    return { levelResults, rankFinal };
 }

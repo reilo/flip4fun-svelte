@@ -1,5 +1,14 @@
 import { roundNumberForDB } from "./TypeUtil";
 
+export function hasFrameResult(frame) {
+    return (
+        frame.scores.length === frame.players.length &&
+        frame.scores.every((score) => {
+            return score > 0;
+        })
+    );
+}
+
 export function calcFrameResult(frame) {
     const playerScores = [];
     frame.players.forEach((player, i) => {

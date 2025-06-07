@@ -1,12 +1,8 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import { randomPin, getOldTypes, getNewTypes } from '$lib/PinUtil';
-	import {
-		calcInitialLevels,
-		calcPlayingLevels,
-		calcFinalResults,
-		calcNextLevels
-	} from '$lib/TourUtil';
+	import { calcInitialLevels, calcPlayingLevels, calcFinalResults } from '$lib/TourUtil';
+	import { hasFrameResult } from '$lib/FrameUtil';
 	import Success from '$lib/components/dialogs/Success.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
 	import Box from '$lib/components/Box.svelte';
@@ -31,12 +27,7 @@
 			round &&
 			round.status === 'Active' &&
 			frames.every((frame) => {
-				return (
-					frame.scores.length > 0 &&
-					frame.scores.every((score) => {
-						return score > 0;
-					})
-				);
+				return hasFrameResult(frame);
 			})
 	);
 	let endRoundForm = $state(false);
@@ -83,7 +74,7 @@
 			rankInit = calcInitialLevels(tournament.players, tournament.settings.maxStartBonus);
 		} else {
 			// it is the second or later round
-			rankInit = calcNextLevels(round.results.rankFinal, round.settings.playingLevels);
+			rankInit = JSON.parse(JSON.stringify(round.results.rankFinal));
 		}
 		// generate list of levels playing in next round
 		playingLevels = calcPlayingLevels(
@@ -148,12 +139,12 @@
 	}
 
 	async function endRound() {
-		let rankFinal = calcFinalResults(round.settings.rankInit, round.settings.playingLevels, frames);
+		const results = calcFinalResults(round, frames);
 		// push results to DB
 		const response = await fetch('/api/round/' + round.id, {
 			method: 'PUT',
 			body: JSON.stringify({
-				results: { rankFinal: rankFinal },
+				results: { rankFinal: results.rankFinal },
 				status: 'Completed'
 			}),
 			headers: {
