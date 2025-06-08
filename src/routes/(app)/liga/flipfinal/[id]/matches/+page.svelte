@@ -14,6 +14,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
+	import { hasFrameResult } from '$lib/FrameUtil';
 
 	let { data } = $props();
 
@@ -27,6 +28,18 @@
 
 	const getFrameName = (frame) => {
 		return frame ? frame.name.substring(frame.name.indexOf('Ebene')) : '';
+	};
+
+	const sortFrameByResult = (frame) => {
+		const sortedFrame = [];
+		for (let idx = 0; idx < frame.players.length; idx++) {
+			sortedFrame.push({
+				player: frame.players[idx],
+				score: frame.scores.length > idx ? frame.scores[idx] : 0
+			});
+		}
+		sortedFrame.sort((a, b) => (a.score < b.score ? 1 : a.score > b.score ? -1 : 0));
+		return sortedFrame;
 	};
 
 	const prepareUpdateForm = (frame) => {
@@ -79,14 +92,14 @@
 					{getFrameName(frame)}
 				</TableBodyCell>
 				<TableBodyCell>
-					{#each frame.players as player}
-						{getPlayerName(player, players)}<br />
+					{#each sortFrameByResult(frame) as item}
+						{getPlayerName(item.player, players)}<br />
 					{/each}
 				</TableBodyCell>
-				<TableBodyCell>
+				<TableBodyCell tdClass="text-center">
 					{#if frame.scores.length === frame.players.length}
-						{#each frame.scores as score}
-							{score}<br />
+						{#each sortFrameByResult(frame) as item}
+							{item.score}<br />
 						{/each}
 					{/if}
 				</TableBodyCell>
@@ -94,12 +107,7 @@
 					{getPinName(frame.pin, pins)}
 				</TableBodyCell>
 				<TableBodyCell>
-					{frame.scores.length > 0 &&
-					frame.scores.every((score) => {
-						return score > 0;
-					})
-						? 'Fertig'
-						: 'Offen'}
+					{hasFrameResult(frame) ? 'Fertig' : 'Offen'}
 				</TableBodyCell>
 				<TableBodyCell>
 					<Button on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
