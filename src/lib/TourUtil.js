@@ -104,7 +104,7 @@ export function calcInitialLevels(players, maxStartBonus) {
         currentPlayers.forEach((player, j) => {
             newPlayers.push({
                 id: player,
-                fine: (count === 1 ? 1 : roundNumberForDB((count - j - 1) / (count - 1))) * maxStartBonus
+                fine: (count === 1 ? 1 : roundNumberForDB((count - j) / (count))) * maxStartBonus
             });
         });
         return newPlayers;

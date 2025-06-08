@@ -21,9 +21,10 @@ test('Verify TourUtil.calcStrength', () => {
 test('Verify TourUtil.calcInitialLevels(7,2)', () => {
     const players = ["a", "b", "c", "d", "e", "f", "g"];
     const rankInit = calcInitialLevels(players, 2);
+
     expect(rankInit.length).toBe(4);
-    rankInit.forEach((item, i)=>{
-        expect(item.level).toBe(i+1);
+    rankInit.forEach((item, i) => {
+        expect(item.level).toBe(i + 1);
     })
     expect(rankInit[0].players.length).toBe(1);
     expect(rankInit[0].players[0].id).toBe("g");
@@ -33,13 +34,13 @@ test('Verify TourUtil.calcInitialLevels(7,2)', () => {
     expect(rankInit[1].players[1].id).toBe("e");
     expect(rankInit[1].players[2].id).toBe("f");
     expect(rankInit[1].players[0].fine).toBe(2);
-    expect(rankInit[1].players[1].fine).toBe(1);
-    expect(rankInit[1].players[2].fine).toBe(0);
+    expect(rankInit[1].players[1].fine).toBeOneOf([1.3333, 1.3334]);
+    expect(rankInit[1].players[2].fine).toBeOneOf([0.6666, 0.6667]);
     expect(rankInit[2].players.length).toBe(2);
     expect(rankInit[2].players[0].id).toBe("b");
     expect(rankInit[2].players[1].id).toBe("c");
     expect(rankInit[2].players[0].fine).toBe(2);
-    expect(rankInit[2].players[1].fine).toBe(0);
+    expect(rankInit[2].players[1].fine).toBe(1);
     expect(rankInit[3].players.length).toBe(1);
     expect(rankInit[3].players[0].id).toBe("a");
     expect(rankInit[3].players[0].fine).toBe(2);
