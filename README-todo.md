@@ -18,12 +18,6 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Schema-Erweiterung für Frame
-- Aktuelle Runde:
--- Spielende Ebenen einrahmen
--- Qualifizierter Spieler einrahmen grün
--- Platzierungen darstellen
--- Ranking, Darstellung wer zuletzt aufgestiegen
 - Bis Finalistenzahl erreicht
 - Rundenzettel PDFs generieren?
 - Admin Turnier beenden

@@ -238,7 +238,7 @@ export function calcFinalResults(round, frames) {
             });
             levelResults.push({ level: level, players: players, matches: 0 });
         }
-    })
+    });
     // evaluate all played matches and add scores to level results.
     frames.forEach((frame) => {
         if (hasFrameResult(frame)) {
@@ -254,7 +254,9 @@ export function calcFinalResults(round, frames) {
                         player.fineNew += playerScore.fine;
                     }
                 })
-                levelResult.players.sort((a, b) => (a.score > b.score ? 1 : a.score < b.score ? -1 : 0));
+                if (levelResult.matches === 2) {
+                    levelResult.players.sort((a, b) => (a.score - b.score));
+                }
             }
         }
     });
@@ -277,7 +279,7 @@ export function calcFinalResults(round, frames) {
                         player.fine += playerResult.fineNew;
                     }
                 })
-                item.players.sort((a, b) => (a.fine < b.fine ? 1 : a.fine > b.fine ? -1 : 0))
+                item.players.sort((a, b) => (a.fine - b.fine))
             }
         }
     });
