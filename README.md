@@ -8,20 +8,29 @@ Foldende Konstanten können bzw. müssen in der Datei .env im Root-Verzeichnis d
  - **VITE_ADMIN_PASSWORD**: Admin-Passwort.
  - **VITE_APP_FULL**: wenn nicht gesetzt, läuft die App im Readonly-Modus (für die Web-Version gedacht), andernfalls volle Funktionalität.
  - **VITE_KEEP_ADMIN**: wenn nicht gesetzt, springt die App in Read-Modus zurück beim Verlassen des Liga-Admin-Bereichs.
+ - **VITE_INCLUDE_TEST**: wenn nicht gesetzt, werden Test-Turniere (enthalten "Test" im Namen) nicht angezeigt.
 
 ## Datenbank
 
 Alle Daten werden in der lokalen Postgres-Datenbank gespeichert. Die Umgebungsvariable ist entsprechend - siehe oben - auf localhost gesetzt.
 
-Für die Web-Version der App müssen die Daten manuell in die unter NeonDB gehosteten Datenbank importiert werden. Die benötigte Url steht ebenfalls in der env-Datei (auskommentiert).
+Für die Web-Version der App müssen die Daten manuell in die unter NeonDB gehosteten Datenbank importiert werden. Die benötigte Url steht auskommentiert in der .env-Datei.
 
 Es ist zu empfehlen, regelmäßig manuell ein Backup der Datenbank zu erstellen bzw. die Tabellen nach csv zu exportieren. Vor allem nach einem abgeschlossenen Spieltag sollte das gemacht werden. Anleitung siehe weiter unten.
 
 ## Applikation starten
 
-Die App läuft normalerweise unter localhost:5173. Ein entsprechender Service ist eingerichtet.
+Die App läuft in der Entwicklungsumgebung - Starten aus VS Code per 'npm run dev' - unter localhost:5173.
 
-Sollte sie nicht laufen, kann sie aus dem Entwicklungsverzeichnis 'flip4fun-svelte' heraus durch das Kommando 'npm run' gestartet werden.
+In der Produktiv-Version - Kompilieren mit 'npm run build' und Starten per 'npm run preview'. Ein entsprechender Service ist per nssm eingerichtet (Service-Name 'isaramper').
+
+Sollte die App wider Erwarten nicht laufen, kann sie aus dem Verzeichnis 'c:/flip4fun-svelte' heraus durch das Kommando 'npm run preview' manuell gestartet werden.
+
+## Svelte Adapter
+
+Im Repository is der Svelte-Adapter auf 'adapter-auto' eingestellt. Das muss auch so bleiben, damit die unter Vercel gehostete Version funktioniert.
+
+Auf dem System, wo das Projekt kompiliert und für den Service vorbereitet wird, muss der Adapter auf 'adapter-node' eingestellt werden.
 
 # Infos für Entwickler
 
@@ -218,6 +227,8 @@ npx prisma db push
 ```
 
 ## Daten exportieren / importieren
+
+(Die unten angegebenen psql-Kommandos sind auch unter im 'psql'-Verzeichnis zu finden.)
 
 Um Daten von einer Datenbank in eine andere Datenbank zu bringen, z. B. von lokal nach remote, folgendermaßen vorgehen:
 

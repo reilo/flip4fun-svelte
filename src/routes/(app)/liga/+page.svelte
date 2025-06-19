@@ -43,7 +43,7 @@
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.tournaments as tournament, i}
-				{#if import.meta.env.VITE_APP_FULL || !tournament.name.includes('Test')}
+				{#if import.meta.env.VITE_INCLUDE_TEST || !tournament.name.includes('Test')}
 					{#if tournament.status == 'Active'}
 						<TableBodyRow>
 							<TableBodyCell>
@@ -84,7 +84,7 @@
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each data.tournaments as tournament, i}
-				{#if import.meta.env.VITE_APP_FULL || !tournament.name.includes('Test')}
+				{#if import.meta.env.VITE_INCLUDE_TEST || !tournament.name.includes('Test')}
 					{#if tournament.status == 'Completed'}
 						<TableBodyRow>
 							<TableBodyCell>
