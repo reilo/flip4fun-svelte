@@ -279,7 +279,7 @@ export function calcFinalResults(round, frames) {
                         player.fine += playerResult.fineNew;
                     }
                 })
-                item.players.sort((a, b) => (a.fine - b.fine))
+                item.players.sort((a, b) => (b.fine - a.fine))
             }
         }
     });

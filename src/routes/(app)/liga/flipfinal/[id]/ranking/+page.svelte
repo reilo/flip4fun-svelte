@@ -18,6 +18,7 @@
 	let players = $derived(data.players);
 
 	const py = 'py-1';
+	const pygray = 'py-1 text-gray-400 dark:text-gray-400';
 
 	let progress = $derived(round && round.status === 'Active');
 	let title = $derived(
@@ -58,8 +59,15 @@
 			{#each level.players as player}
 				<TableBodyRow class={getRowColor(i)}>
 					<TableBodyCell class={py} tdClass="text-center">{increment()}</TableBodyCell>
-					<TableBodyCell class={py}>{getPlayerName(player.id, players)}</TableBodyCell>
-					<TableBodyCell class={py} tdClass="text-center">{player.fine.toFixed(2)}</TableBodyCell>
+					{#if round.players.includes(player.id)}
+						<TableBodyCell class={py}>{getPlayerName(player.id, players)}</TableBodyCell>
+						<TableBodyCell class={py} tdClass="text-center">{player.fine.toFixed(2)}</TableBodyCell>
+					{:else}
+						<TableBodyCell class={pygray}>{getPlayerName(player.id, players)}</TableBodyCell>
+						<TableBodyCell class={pygray} tdClass="text-center"
+							>{player.fine.toFixed(2)}</TableBodyCell
+						>
+					{/if}
 				</TableBodyRow>
 			{/each}
 		{/each}
