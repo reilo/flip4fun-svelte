@@ -263,7 +263,7 @@
 							></Select>
 						</Label>
 						<Label>
-							Punkte 1:
+							Punkte 2:
 							<Select
 								class="mt-4 w-40 p-3 space-y-3 text-sm"
 								items={pointsMap}
