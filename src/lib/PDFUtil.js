@@ -52,6 +52,17 @@ const getStrength = (player, round) => {
     return rank != null ? rank.strength : 0;
 };
 
+const writePlayerMatchesHeader = (doc, x, y) => {
+    doc.setFontSize(10);
+    doc.text(x + 0, y, "Spieltag");
+    doc.text(x + 28, y, "Spieler 1");
+    doc.text(x + 68, y, "Spieler 2");
+    doc.text(x + 110, y, "Sätze");
+    doc.text(x + 130 - doc.getTextWidth("Punkte") / 2, y, "Punkte");
+    doc.text(200 - doc.getTextWidth("Flipper"), y, "Flipper");
+
+};
+
 export function generateLigaResultsPDF(data, color = true) {
 
     const doc = new jsPDF();
@@ -300,11 +311,6 @@ export function generateLigaResultsPDF(data, color = true) {
     sortPlayerIDs(players, data.players);
 
     players.forEach((player) => {
-        doc.addPage();
-
-        drawTitleSquare(doc, color);
-        writeTitle(doc, data.tournament.name);
-        writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
 
         // alle Spieltag-Matches ermitteln
         let matches = [];
@@ -336,6 +342,12 @@ export function generateLigaResultsPDF(data, color = true) {
             }
         });
 
+        doc.addPage();
+
+        drawTitleSquare(doc, color);
+        writeTitle(doc, data.tournament.name);
+        writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
+
         writePlayerSquare(doc, color);
 
         // Spielername
@@ -357,27 +369,27 @@ export function generateLigaResultsPDF(data, color = true) {
 
         // Titelzeile
         y += 10;
-        doc.setFontSize(10);
-        doc.text(x + 0, y, "Spieltag");
-        doc.text(x + 28, y, "Spieler 1");
-        doc.text(x + 68, y, "Spieler 2");
-        doc.text(x + 110, y, "Sätze");
-        doc.text(x + 130 - doc.getTextWidth("Punkte") / 2, y, "Punkte");
-        doc.text(200 - doc.getTextWidth("Flipper"), y, "Flipper");
+        writePlayerMatchesHeader(doc, x, y);
 
         // Trennungslinie
         y += 2;
         doc.setLineWidth(0.1);
         doc.line(x, y, 200, y);
 
-        // Liste der Matches
+        // Vorbereitung Matches
         doc.setFontSize(10);
         y += 6;
+
+        // Liste der Matches
         if (!matches.length) {
             doc.text(x, y, "noch keine Matches absolviert");
         } else {
+            let matchCount = 0;
+            let pageCount = 0;
             alternate = false;
             matches.forEach((match) => {
+                matchCount++;
+
                 if (alternate) {
                     if (color) {
                         drawSquare(doc, x, y - 4, 200 - x, 5, ...liteblue);
@@ -430,6 +442,41 @@ export function generateLigaResultsPDF(data, color = true) {
                 doc.text(200 - doc.getTextWidth(pinText), y, pinText);
 
                 y += 5.5;
+
+                if (matchCount % 40 === 0) {
+                    pageCount++;
+
+                    doc.addPage();
+
+                    drawTitleSquare(doc, color);
+                    writeTitle(doc, data.tournament.name);
+                    writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
+
+                    writePlayerSquare(doc, color);
+
+                    // Spielername
+                    y = 45;
+                    doc.setFontSize(16);
+                    doc.text(x, y, getPlayerName(player, data.players));
+
+                    // zusammenfassende Daten
+                    doc.setFontSize(12);
+                    const pageString = "Seite " + (pageCount + 1).toString()
+                    doc.text(x + 190 - doc.getTextWidth(pageString), y, pageString);
+
+                    // Titelzeile
+                    y += 10;
+                    writePlayerMatchesHeader(doc, x, y);
+
+                    // Trennungslinie
+                    y += 2;
+                    doc.setLineWidth(0.1);
+                    doc.line(x, y, 200, y);
+
+                    // Vorbereitung Matches
+                    doc.setFontSize(10);
+                    y += 6;
+                }
             })
         }
     })
