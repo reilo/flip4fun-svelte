@@ -105,7 +105,7 @@
 				img.src = imageBaseUrl + player + imageExtension;
 				ctx.globalAlpha = activePlayers.includes(player) ? 1.0 : 0.2;
 				ctx.drawImage(img, x, y, imageWidth, imageHeight);
-				if (winners.includes(player)) {
+				if (tournament.status === 'Active' && winners.includes(player)) {
 					ctx.strokeStyle = colorFrame;
 					ctx.lineWidth = delta;
 					ctx.beginPath();
