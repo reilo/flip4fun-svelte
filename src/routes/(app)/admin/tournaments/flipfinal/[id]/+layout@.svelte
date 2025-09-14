@@ -23,8 +23,8 @@
 
 	const links = [
 		{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Einstellungen' },
-		{ link: '/admin/tournaments/flipfinal/' + id + '/players', name: 'Spieler' },
-		{ link: '/admin/tournaments/flipfinal/' + id + '/rounds', name: 'Spieltag' },
+		{ link: '/admin/tournaments/flipfinal/' + id + '/players', name: 'Spielerverwaltung' },
+		{ link: '/admin/tournaments/flipfinal/' + id + '/rounds', name: 'Rundenverwaltung' },
 		{ link: '/liga/flipfinal/' + id + '/ranking', name: 'zum Turnier' }
 	];
 

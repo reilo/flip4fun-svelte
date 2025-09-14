@@ -17,14 +17,14 @@
 
 	const links = import.meta.env.VITE_APP_FULL
 		? [
-				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Ranking' },
-				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Stand' },
+				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Tabelle' },
+				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Ebenen' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' },
 				{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
-				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Ranking' },
-				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Stand' },
+				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Tabelle' },
+				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Ebenen' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' }
 			];
 
