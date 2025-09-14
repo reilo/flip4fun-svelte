@@ -18,7 +18,9 @@
 	let startTourForm = $state(false);
 
 	let startRoundEnabled = $derived(
-		tournament.status === 'Active' && (!round || round.status === 'Completed')
+		tournament.status === 'Active' &&
+			(!round || round.status === 'Completed') &&
+			!maxFinalistsReached(round, tournament)
 	);
 	let startRoundForm = $state(false);
 
@@ -31,6 +33,14 @@
 			})
 	);
 	let endRoundForm = $state(false);
+
+	let endTourEnabled = $derived(
+		tournament.status === 'Active' &&
+			round &&
+			round.status === 'Completed' &&
+			maxFinalistsReached(round, tournament)
+	);
+	let endTourForm = $state(false);
 
 	let successForm = $state(false);
 	let successMessage = $state('');
@@ -100,14 +110,33 @@
 				' - Ebene ' +
 				level.toString() +
 				' - Match ';
-			const pin1 = randomPin(pins, true, true, true, true, usedPins);
-			frames.push({ lid: level, mid: 1, name: frameName + '1', pin: pin1.id, players: players });
-			usedPins.push(pin1.id);
-			const useOldPins = pinTypes === 0 || !getOldTypes().includes(pin1.type);
-			const useNewPins = pinTypes === 0 || pinTypes === 2 || !getNewTypes().includes(pin1.type);
-			const pin2 = randomPin(pins, useOldPins, useOldPins, useNewPins, useNewPins, usedPins);
-			frames.push({ lid: level, mid: 2, name: frameName + '2', pin: pin2.id, players: players });
-			usedPins.push(pin2.id);
+			if (players.length > 1) {
+				const pin1 = randomPin(pins, true, true, true, true, usedPins);
+				frames.push({ lid: level, mid: 1, name: frameName + '1', pin: pin1.id, players: players });
+				usedPins.push(pin1.id);
+				const useOldPins = pinTypes === 0 || !getOldTypes().includes(pin1.type);
+				const useNewPins = pinTypes === 0 || pinTypes === 2 || !getNewTypes().includes(pin1.type);
+				const pin2 = randomPin(pins, useOldPins, useOldPins, useNewPins, useNewPins, usedPins);
+				frames.push({ lid: level, mid: 2, name: frameName + '2', pin: pin2.id, players: players });
+				usedPins.push(pin2.id);
+			} else {
+				frames.push({
+					lid: level,
+					mid: 1,
+					name: frameName + '1',
+					pin: '',
+					players: players,
+					scores: [1]
+				});
+				frames.push({
+					lid: level,
+					mid: 2,
+					name: frameName + '2',
+					pin: '',
+					players: players,
+					scores: [1]
+				});
+			}
 		});
 		const rid = round ? round.rid + 1 : 1;
 		// push all changes to DB: new round, new frames
@@ -162,6 +191,39 @@
 		successMessage = 'Die Runde wurde erfolgreich beendet!';
 		invalidateAll();
 	}
+
+	async function endTour() {
+		const response = await fetch('/api/tournament/' + tournament.id, {
+			method: 'PUT',
+			body: JSON.stringify({
+				status: 'Completed'
+			}),
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		});
+		const result = await response.json();
+		if (response.status !== 200) {
+			alert(JSON.stringify(result));
+		}
+		endTourForm = false;
+		successForm = true;
+		successMessage = 'Das Start-Turnier wurde erfolgreich beendet!';
+		invalidateAll();
+	}
+
+	const maxFinalistsReached = (round, tournament) => {
+		let result = false;
+		if (round && round.results && round.results.rankFinal) {
+			const levels = round.results.rankFinal;
+			const level = levels[levels.length - 1];
+			if (tournament && tournament.settings && tournament.settings.numFinalists) {
+				result = level.players.length === tournament.settings.numFinalists;
+			}
+		}
+		return result;
+	};
 </script>
 
 <Box
@@ -221,3 +283,21 @@
 />
 
 <Success show={successForm} message={successMessage} onClose={() => (successForm = false)} />
+
+<Box
+	title={'Turnier beenden'}
+	description={'Das Final-Turnier kann beendet wurden, sobald alle Runden abgeschlossen sind.'}
+	action={() => (endTourForm = true)}
+	enabled={endTourEnabled}
+	buttonOk={'Beenden'}
+	loading={false}
+/>
+
+<Sure
+	show={endTourForm}
+	title={'Turnier beenden'}
+	message={'Soll das Finalturnier wirklich beendet werden?'}
+	actionOk={endTour}
+	actionCancel={() => (endTourForm = false)}
+	buttonOk={'Ja, beenden'}
+/>

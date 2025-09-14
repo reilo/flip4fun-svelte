@@ -13,12 +13,10 @@ Allgemein
 - optional: Mehr Pin-Details - Auflage, Designer, Art Designer, Link zu ipdb
 
 FLIP-Liga
-- Ergebnis-PDF -> 
--- mehrere Seiten pro Spieler (bei vielen Spielen)
+- optional: Animation beim Flipper losen
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Bis Finalistenzahl erreicht
 - Rundenzettel PDFs generieren?
-- Admin Turnier beenden
 - Admin: PDF Export 
+- optional: Aktuelle Rangfolge

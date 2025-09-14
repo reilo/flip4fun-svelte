@@ -21,6 +21,7 @@
 	let players = $derived(data.players);
 	let pins = $derived(data.pins);
 	let frames = $derived(data.frames);
+	let round = $derived(data.round);
 
 	let showForm = $state(false);
 	let frameToUpdate = $state(null);
@@ -99,18 +100,22 @@
 				<TableBodyCell tdClass="text-center">
 					{#if frame.scores.length === frame.players.length}
 						{#each sortFrameByResult(frame) as item}
-							{item.score}<br />
+							{frame.players.length > 1 ? item.score : ''}<br />
 						{/each}
 					{/if}
 				</TableBodyCell>
 				<TableBodyCell class="py-0">
-					{getPinName(frame.pin, pins)}
+					{frame.players.length > 1 ? getPinName(frame.pin, pins) : '(Freirunde)'}
 				</TableBodyCell>
 				<TableBodyCell>
 					{hasFrameResult(frame) ? 'Fertig' : 'Offen'}
 				</TableBodyCell>
 				<TableBodyCell>
-					<Button on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
+					{#if round && round.status === 'Active' && frame.players.length > 1}
+						<Button on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
+					{:else}
+						<Button disabled>Bearbeiten</Button>
+					{/if}
 				</TableBodyCell>
 			</TableBodyRow>
 		{/each}
