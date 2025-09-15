@@ -17,6 +17,7 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
+- Flipper neu auslosen/eintragen
 - Rundenzettel PDFs generieren?
+-- Gruppen auslosen oder offen lassen
 - Admin: PDF Export 
-- optional: Aktuelle Rangfolge

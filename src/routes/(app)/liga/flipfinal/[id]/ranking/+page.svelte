@@ -59,7 +59,7 @@
 			{#each level.players as player}
 				<TableBodyRow class={getRowColor(i)}>
 					<TableBodyCell class={py} tdClass="text-center">{increment()}</TableBodyCell>
-					{#if round.players.includes(player.id)}
+					{#if round && round.players.includes(player.id)}
 						<TableBodyCell class={py}>{getPlayerName(player.id, players)}</TableBodyCell>
 						<TableBodyCell class={py} tdClass="text-center">{player.fine.toFixed(2)}</TableBodyCell>
 					{:else}
