@@ -17,7 +17,8 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Flipper neu auslosen/eintragen
-- Rundenzettel PDFs generieren?
--- Gruppen auslosen oder offen lassen
-- Admin: PDF Export 
+- Flipper ändern
+- Rundenzettel PDFs generieren
+-- Spieler offen lassen
+- Urkunden PDFs generieren
+- optional: Admin - PDF Export 

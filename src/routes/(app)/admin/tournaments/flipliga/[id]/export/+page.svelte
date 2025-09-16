@@ -23,9 +23,9 @@
 
 	const generateCertificates = () => {
 		let playerIDs = [];
-		playerIDs.push(data.round.results.rankFinal[0].player);
-		playerIDs.push(data.round.results.rankFinal[1].player);
-		playerIDs.push(data.round.results.rankFinal[2].player);
+		//playerIDs.push(data.round.results.rankFinal[0].player);
+		//playerIDs.push(data.round.results.rankFinal[1].player);
+		//playerIDs.push(data.round.results.rankFinal[2].player);
 
 		let maxMatches = 0;
 		data.round.results.rankFinal.forEach((item) => {
@@ -43,7 +43,8 @@
 
 		const title = data.tournament.name;
 
-		const versions = ['1. Platz', '2. Platz', '3. Platz'];
+		//const versions = ['1. Platz', '2. Platz', '3. Platz'];
+		const versions = [];
 		mostActivePlayerIDs.forEach((item) => {
 			versions.push('Aktivster Spieler');
 			playerIDs.push(item);

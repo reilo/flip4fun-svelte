@@ -209,7 +209,7 @@
 		}
 		endTourForm = false;
 		successForm = true;
-		successMessage = 'Das Start-Turnier wurde erfolgreich beendet!';
+		successMessage = 'Das Finalturnier wurde erfolgreich beendet!';
 		invalidateAll();
 	}
 
@@ -228,7 +228,7 @@
 
 <Box
 	title={'Turnier starten'}
-	description={'Sobald das Final-Turnier gestartet wurde, müssen nicht teilnehmende Spieler deaktiviert werden. ' +
+	description={'Sobald das Finalturnier gestartet wurde, müssen nicht teilnehmende Spieler deaktiviert werden. ' +
 		'Anschließend kann die erste Runde gestartet werden.'}
 	action={() => (startTourForm = true)}
 	enabled={startTourEnabled}
