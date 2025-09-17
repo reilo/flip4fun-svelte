@@ -20,5 +20,6 @@ FLIP-Final
 - Flipper ändern
 - Rundenzettel PDFs generieren
 -- Spieler offen lassen
-- Urkunden PDFs generieren
-- optional: Admin - PDF Export 
+- Admin: PDF Export 
+
+Urkundengenerator...
