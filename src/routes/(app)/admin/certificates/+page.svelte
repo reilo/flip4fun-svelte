@@ -13,6 +13,8 @@
 	let selPlayer = $state('');
 	let tourName = $state('Isar-Amper-Liga ' + new Date().getFullYear());
 	let rankName = $state('1. Platz');
+	let line1 = $state('Wir gratulieren zur hervorragenden Leistung');
+	let line2 = $state('und überreichen die Urkunde an');
 
 	const ranks = [
 		'1. Platz',
@@ -29,7 +31,7 @@
 		const playerName = selPlayer
 			? playerMap.find((p) => p.value === selPlayer)?.name
 			: 'Max Mustermann';
-		const lines = ['Wir gratulieren zur hervorragenden Leistung', 'und überreichen die Urkunde an'];
+		const lines = [line1, line2];
 
 		generateCertificatePDF(title, [version], lines, [playerName]);
 	};
@@ -50,7 +52,7 @@
 <div>
 	<Heading tag="h5">Urkunden-PDF generieren</Heading>
 
-	<P class="mb-3">Gebe die notwendigen Daten ein und generiere deine Urkunde.</P>
+	<P class="mb-3">Gebe alle Daten ein und generiere die Urkunde.</P>
 
 	<div class="grid gap-6 mb-3 md:grid-cols-2">
 		<Label class="space-y-2">
@@ -70,11 +72,25 @@
 		<Label>
 			Spieler:
 			<Select
-				class="mt-4 w-40 p-3 space-y-3 text-sm"
+				class="mt-4 p-3 space-y-3 text-sm"
 				items={playerMap}
 				bind:value={selPlayer}
 				placeholder="Spieler"
 			></Select>
+		</Label>
+	</div>
+
+	<div class="grid gap-6 mb-3">
+		<Label class="space-y-2">
+			<span>Zeile 1</span>
+			<Input clearable bind:value={line1} placeholder="" />
+		</Label>
+	</div>
+
+	<div class="grid gap-6 mb-3">
+		<Label class="space-y-2">
+			<span>Zeile 2</span>
+			<Input clearable bind:value={line2} placeholder="" />
 		</Label>
 	</div>
 
