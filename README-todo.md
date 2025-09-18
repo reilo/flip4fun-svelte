@@ -17,9 +17,6 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Flipper ändern
 - Rundenzettel PDFs generieren
 -- Spieler offen lassen
-- Admin: PDF Export 
-
-Urkundengenerator...
+- Admin: PDF Export

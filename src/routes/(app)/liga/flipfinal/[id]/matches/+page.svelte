@@ -1,16 +1,7 @@
 <script>
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Modal,
-		Label,
-		Input,
-		Button
-	} from 'flowbite-svelte';
+	import { Table, TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { TableHead, TableHeadCell } from 'flowbite-svelte';
+	import { Modal, Label, Input, Button, Select } from 'flowbite-svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
@@ -18,14 +9,20 @@
 
 	let { data } = $props();
 
-	let players = $derived(data.players);
-	let pins = $derived(data.pins);
 	let frames = $derived(data.frames);
 	let round = $derived(data.round);
 
 	let showForm = $state(false);
 	let frameToUpdate = $state(null);
 	let scores = $state([]);
+	let playedPin = $state('');
+
+	const pinMap = [];
+	data.pins.forEach((item) => {
+		if (item.active) {
+			pinMap.push({ name: item.name, value: item.id });
+		}
+	});
 
 	const getFrameName = (frame) => {
 		return frame ? frame.name.substring(frame.name.indexOf('Ebene')) : '';
@@ -48,13 +45,15 @@
 			frame.players.length === frame.scores.length
 				? [...frame.scores]
 				: Array(frame.players.length).fill(0);
+		playedPin = frame.pin;
 		showForm = true;
 		frameToUpdate = frame;
 	};
 
 	async function performUpdate() {
 		const data = {
-			scores: scores
+			scores: scores,
+			pin: playedPin
 		};
 		const response = await fetch('/api/frame/' + frameToUpdate.id, {
 			method: 'PUT',
@@ -94,7 +93,7 @@
 				</TableBodyCell>
 				<TableBodyCell>
 					{#each sortFrameByResult(frame) as item}
-						{getPlayerName(item.player, players)}<br />
+						{getPlayerName(item.player, data.players)}<br />
 					{/each}
 				</TableBodyCell>
 				<TableBodyCell tdClass="text-center">
@@ -105,7 +104,7 @@
 					{/if}
 				</TableBodyCell>
 				<TableBodyCell class="py-0">
-					{frame.players.length > 1 ? getPinName(frame.pin, pins) : '(Freirunde)'}
+					{frame.players.length > 1 ? getPinName(frame.pin, data.pins) : '(Freirunde)'}
 				</TableBodyCell>
 				<TableBodyCell>
 					{hasFrameResult(frame) ? 'Fertig' : 'Offen'}
@@ -126,10 +125,14 @@
 	<form class="flex flex-col space-y-2" action="#">
 		{#each frameToUpdate.players as player, i}
 			<Label class="space-y-2">
-				<span>{getPlayerName(player, players)}</span>
+				<span>{getPlayerName(player, data.players)}</span>
 				<Input type="number" bind:value={scores[i]} />
 			</Label>
 		{/each}
+		<Label>
+			Gespielter Flipper
+			<Select class="mt-4 mb-4 p-3 space-y-3 text-sm" items={pinMap} bind:value={playedPin}></Select>
+		</Label>
 		<Button color="alternative" on:click={performUpdate}>Speichern</Button>
 		<Button color="primary" on:click={cancelUpdateForm}>Abbrechen</Button>
 	</form>
