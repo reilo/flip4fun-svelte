@@ -20,12 +20,14 @@
 				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Tabelle' },
 				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Ebenen' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' },
+				{ link: '/liga/flipfinal/' + id + '/draw', name: 'Lostrommel' },
 				{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
 				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Tabelle' },
 				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Ebenen' },
-				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' }
+				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' },
+				{ link: '/liga/flipfinal/' + id + '/draw', name: 'Lostrommel' }
 			];
 
 	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;
