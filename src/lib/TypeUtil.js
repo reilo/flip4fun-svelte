@@ -23,6 +23,19 @@ export function mapDate(value) {
     return day + "." + month + "." + year;
 }
 
+export function formatDateNow() {
+    const now = new Date();
+
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Monate: 0–11
+    const day = String(now.getDate()).padStart(2, '0');
+    const year = now.getFullYear();
+
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
+}
+
 /**
  * Round number for UI - 1 decimal place
  * @param {*} num The input float number, e.g. 2,666666666667

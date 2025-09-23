@@ -25,6 +25,7 @@
 		{ link: '/admin/tournaments/flipfinal/' + id + '/settings', name: 'Einstellungen' },
 		{ link: '/admin/tournaments/flipfinal/' + id + '/players', name: 'Spielerverwaltung' },
 		{ link: '/admin/tournaments/flipfinal/' + id + '/rounds', name: 'Rundenverwaltung' },
+		{ link: '/admin/tournaments/flipfinal/' + id + '/export', name: 'Export' },
 		{ link: '/liga/flipfinal/' + id + '/ranking', name: 'zum Turnier' }
 	];
 

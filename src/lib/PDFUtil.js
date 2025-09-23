@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName, getPyramidLayout } from "./PlayerUtil";
 import { getPinName, mapPinType } from "./PinUtil";
-import { mapDate, roundNumberToStrg } from './TypeUtil';
+import { mapDate, formatDateNow, roundNumberToStrg } from './TypeUtil';
 import { calcPoints } from './MatchUtil';
 
 const darkblue = [153, 181, 199];
@@ -16,27 +16,27 @@ const drawSquare = (doc, x, y, w, h, c1, c2, c3) => {
     doc.rect(x, y, w, h, 'F');
 }
 
-const drawTitleSquare = (doc, color) => {
-    if (color) {
-        drawSquare(doc, 5, 5, 200, 30, ...darkblue);
-    } else {
-        drawSquare(doc, 5, 5, 200, 30, "0.80");
-    }
+const drawTitleSquare = (doc, color = ["0.80"]) => {
+    drawSquare(doc, 5, 5, 200, 30, ...color);
     doc.addImage("/pinlounge.gif", "JPEG", 160, 10, 40, 20);
 }
 
-const writeTitle = (doc, title1, title2) => {
-    doc.setFontSize(20);
+const writeTitle = (doc, title1, title2, fontSize1 = 20, fontSize2 = 16) => {
+    doc.setFontSize(fontSize1);
     doc.text(10, 15, title1);
     if (title2) {
-        doc.setFontSize(16);
+        doc.setFontSize(fontSize2);
         doc.text(150 - doc.getTextWidth(title2), 15, title2);
     }
 }
 
-const writeSubtitle = (doc, strg) => {
+const writeSubtitle = (doc, strg1, strg2 = "") => {
     doc.setFontSize(16);
-    doc.text(10, 30, strg);
+    doc.text(10, 30, strg1);
+    if (strg2) {
+        //doc.setFontSize(12);
+        doc.text(150 - doc.getTextWidth(strg2), 30, strg2);
+    }
 }
 
 const writePlayerSquare = (doc, color) => {
@@ -82,7 +82,7 @@ export function generateLigaResultsPDF(data, color = true) {
     // Seite 0 - Spielstärken
 
     if (color) {
-        drawTitleSquare(doc, color);
+        drawTitleSquare(doc, darkblue);
         writeTitle(doc, data.tournament.name);
         writeSubtitle(doc, "Spielstärken nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -125,7 +125,7 @@ export function generateLigaResultsPDF(data, color = true) {
 
     // Seite 1 - aktueller Tabellenstand mit Details
 
-    drawTitleSquare(doc, color);
+    drawTitleSquare(doc, color ? darkblue : ["0.80"]);
     writeTitle(doc, data.tournament.name);
     writeSubtitle(doc, "Tabelle nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -222,7 +222,7 @@ export function generateLigaResultsPDF(data, color = true) {
 
     doc.addPage();
 
-    drawTitleSquare(doc, color);
+    drawTitleSquare(doc, color ? darkblue : ["0.80"]);
     writeTitle(doc, data.tournament.name);
 
     let totalMatches = 0;
@@ -344,7 +344,7 @@ export function generateLigaResultsPDF(data, color = true) {
 
         doc.addPage();
 
-        drawTitleSquare(doc, color);
+        drawTitleSquare(doc, color ? darkblue : ["0.80"]);
         writeTitle(doc, data.tournament.name);
         writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -448,7 +448,7 @@ export function generateLigaResultsPDF(data, color = true) {
 
                     doc.addPage();
 
-                    drawTitleSquare(doc, color);
+                    drawTitleSquare(doc, color ? darkblue : ["0.80"]);
                     writeTitle(doc, data.tournament.name);
                     writeSubtitle(doc, "Spielerstatistik nach Spieltag " + roundNum + " (" + roundDate + ")");
 
@@ -759,4 +759,79 @@ export function generateCertificatePDF(title, versions, lines, names) {
     })
 
     doc.save("Urkunden " + title + '.pdf');
+}
+
+export function generateMatchCardsPDF(tourName, round, matches, pins) {
+
+    const doc = new jsPDF({
+        orientation: 'landscape',
+        format: 'a5',
+    });
+    doc.setFont("times");
+
+    matches.forEach((match, i) => {
+        for (let j = 1; j <= match.count; j++) {
+
+            drawTitleSquare(doc, ["0.90"]);
+            writeTitle(doc, tourName, "");
+            writeSubtitle(doc, "Ergebniszettel - " + formatDateNow());
+
+            const xmin = 5;
+            const xmax = 205;
+            let y = 45;
+            doc.setFontSize(18);
+            doc.setLineWidth(0.1);
+
+            // Header: Runde - Ebene - Gruppe
+            drawSquare(doc, xmin, y - 8, xmax - xmin, 12, "0.90");
+            const txtRunde = "Runde " + round.toString();
+            //doc.text(xmin + (xmax - xmin) / 6 - doc.getTextWidth(txtRunde) / 2, y, txtRunde);
+            const txtEbene = "Ebene " + match.level.toString();
+            //doc.text(xmin + (xmax - xmin) / 2 - doc.getTextWidth(txtEbene) / 2, y, txtEbene);
+            const txtGruppe = "Gruppe " + j.toString();
+            //doc.text(xmin + 5 * (xmax - xmin) / 6 - doc.getTextWidth(txtGruppe) / 2, y, txtGruppe);
+            const txtAll = txtRunde + "    -    " + txtEbene + "    -    " + txtGruppe
+            doc.text(txtAll, xmin + 5, y);
+
+            y += 16;
+            const txtSpieler = "Spieler";
+            doc.text(xmin + (xmax - xmin) / 6 - doc.getTextWidth(txtSpieler) / 2, y, txtSpieler);
+            const txtPin1 = getPinName(match.pin1, pins);
+            doc.text(xmin + (xmax - xmin) / 2 - doc.getTextWidth(txtPin1) / 2, y, txtPin1);
+            const txtPin2 = getPinName(match.pin2, pins);
+            doc.text(xmin + 5 * (xmax - xmin) / 6 - doc.getTextWidth(txtPin2) / 2, y, txtPin2);
+            doc.line(xmin, y - 8, xmax, y - 8);
+            doc.line(xmin, y + 4, xmax, y + 4);
+
+            for (let k = 0; k < 4; k++) {
+                y += 12;
+                doc.line(xmin, y + 4, xmax, y + 4);
+            }
+
+            doc.line(xmin, y - 4 * 12 - 8, xmin, y + 4);
+            doc.line(xmin + (xmax - xmin) / 3, y - 4 * 12 - 8, xmin + (xmax - xmin) / 3, y + 4);
+            doc.line(xmin + 2 * (xmax - xmin) / 3, y - 4 * 12 - 8, xmin + 2 * (xmax - xmin) / 3, y + 4);
+            doc.line(xmax, y - 4 * 12 - 8, xmax, y + 4);
+
+            y += 12;
+            doc.setFontSize(12);
+            let line = "Ablauf einer Runde:";
+            doc.text(xmin, y, line);
+            doc.line(xmin, y + 1, xmin + doc.getTextWidth(line), y + 1);
+            y += 6;
+            doc.text(xmin, y, "1. Verteilt euch in gleich großen Gruppen auf die beiden Flipper.");
+            y += 5;
+            doc.text(xmin, y, "2. Spielt an dem einen Flipper euer Spiel und tragt eure Namen und die Scores ein.");
+            y += 5;
+            doc.text(xmin, y, "3. Wechselt auf den anderen Flipper und erspielt euch auch dort einen Score - diesen ebenfalls notieren.");
+            y += 5;
+            doc.text(xmin, y, "4. Tragt die Scores im Liga-Programm ein - die Runden-Ergebnisse werden automatisch berechnet.");
+
+            if (i < matches.length - 1) {
+                doc.addPage("a5", "landscape");
+            }
+        }
+    });
+
+    doc.save("Matchcards - " + "Runde " + round.toString() + '.pdf');
 }
