@@ -821,13 +821,13 @@ export function generateMatchCardsPDF(tourName, round, matches, pins) {
             y += 6;
             doc.text(xmin, y, "1. Verteilt euch in gleich großen Gruppen auf die beiden Flipper.");
             y += 5;
-            doc.text(xmin, y, "2. Spielt an dem einen Flipper euer Spiel und tragt eure Namen und die Scores ein.");
+            doc.text(xmin, y, "2. Spielt an dem ersten Flipper euer Spiel und tragt eure Namen und die Scores ein.");
             y += 5;
             doc.text(xmin, y, "3. Wechselt auf den anderen Flipper und erspielt euch auch dort einen Score - diesen ebenfalls notieren.");
             y += 5;
             doc.text(xmin, y, "4. Tragt die Scores im Liga-Programm ein - die Runden-Ergebnisse werden automatisch berechnet.");
 
-            if (i < matches.length - 1) {
+            if (i < matches.length - 1 || j < match.count) {
                 doc.addPage("a5", "landscape");
             }
         }
