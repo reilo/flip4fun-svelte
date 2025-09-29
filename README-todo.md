@@ -17,5 +17,6 @@ FLIP-Liga
 - optional: Toasts mit Zufallssprüchen nach Matcheingabe
 
 FLIP-Final
-- Spieler nachträglich rausnehmen/reinnehmen
+- Scorecard
+-- bei Freilos kein Zettel
 - Admin: PDF Export
