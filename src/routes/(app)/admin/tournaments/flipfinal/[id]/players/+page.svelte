@@ -13,8 +13,7 @@
 	let settings = $derived(tournament.settings);
 	let allPlayers = $derived(data.players);
 
-	const settingsEnabled = $derived(tournament.status === 'Planned');
-	const playersEnabled = $derived(!round);
+	const playersEnabled = $derived(!round || round.status === 'Completed');
 
 	const py = 'py-1';
 
