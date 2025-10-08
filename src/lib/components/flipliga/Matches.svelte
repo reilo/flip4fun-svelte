@@ -281,8 +281,8 @@
 							placeholder="Flipper"
 						></Select>
 					</Label>
-					<Button color="alternative" on:click={checkMatch}>Anlegen</Button>
-					<Button color="primary" on:click={cancelAddMatch}>Abbrechen</Button>
+					<Button color="primary" on:click={checkMatch}>Speichern</Button>
+					<Button color="alternative" on:click={cancelAddMatch}>Abbrechen</Button>
 				</form>
 			</Modal>
 		</div>
