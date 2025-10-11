@@ -239,7 +239,9 @@
 {/if}
 
 <div>
-	<Heading tag="h5">Spieler hinzufügen oder aktiv/inaktiv schalten</Heading>
+	<Heading tag="h5"
+		>Gästeliste/Spielerliste - {allPlayers.length} insgesamt, {allPlayers.filter((p) => p.active).length} Ligaspieler</Heading>
+	<P class="mt-3">Spieler hinzufügen oder aktiv/inaktiv schalten</P>
 	<P class="mb-3">Jeder Klick auf eine Checkbox wird sofort gespeichert!</P>
 
 	<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
