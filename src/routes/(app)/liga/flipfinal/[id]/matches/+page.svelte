@@ -99,7 +99,7 @@
 				<TableBodyCell tdClass="text-center">
 					{#if frame.scores.length === frame.players.length}
 						{#each sortFrameByResult(frame) as item}
-							{frame.players.length > 1 ? item.score : ''}<br />
+							{frame.players.length > 1 ? item.score.toLocaleString() : ''}<br />
 						{/each}
 					{/if}
 				</TableBodyCell>
