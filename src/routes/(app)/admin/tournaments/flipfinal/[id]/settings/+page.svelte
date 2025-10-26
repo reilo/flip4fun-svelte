@@ -5,7 +5,7 @@
 	let { data } = $props();
 
 	const status = data.tournament.status;
-	const settingsEnabled = status == 'Planned';
+	const settingsEnabled = status == 'Planned'; // some settings remain enabled during tournament
 	let originalSettings = $state(data.tournament.settings);
 	let settings = $state(data.tournament.settings);
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
@@ -45,12 +45,12 @@
 	<div>
 		<Label class="mb-3">
 			<span>Wieviele Spieler sollen in die oberste Ebene aufsteigen?</span>
-			<NumberInput disabled={!settingsEnabled} min="3" max="4" bind:value={settings.numFinalists} />
+			<NumberInput disabled={false/*!settingsEnabled*/} min="3" max="4" bind:value={settings.numFinalists} />
 		</Label>
 
 		<Label class="mb-3">
 			Welche Flipper-Kombination soll für jedes Double-Match gelost werden?
-			<Select disabled={!settingsEnabled} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
+			<Select disabled={false/*!settingsEnabled*/} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
 		</Label>
 
 		<Label class="mb-3">
@@ -58,7 +58,7 @@
 			<NumberInput disabled={!settingsEnabled} min="0" max="5" bind:value={settings.maxStartBonus} />
 		</Label>
 
-		{#if settingsEnabled}
+		{#if true/*settingsEnabled*/}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 		{/if}
