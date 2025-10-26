@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf';
 import { sortPlayerIDs, getPlayerName, getPyramidLayout } from "./PlayerUtil";
 import { getPinName, mapPinType } from "./PinUtil";
-import { mapDate, formatDateNow, roundNumberToStrg } from './TypeUtil';
+import { mapDate, formatDate, roundNumberToStrg } from './TypeUtil';
 import { calcPoints } from './MatchUtil';
 
 const darkblue = [153, 181, 199];
@@ -771,10 +771,10 @@ export function generateMatchCardsPDF(tourName, round, matches, pins) {
 
     matches.forEach((match, i) => {
         for (let j = 1; j <= match.count; j++) {
-
+ 
             drawTitleSquare(doc, ["0.90"]);
             writeTitle(doc, tourName, "");
-            writeSubtitle(doc, "Ergebniszettel - " + formatDateNow());
+            writeSubtitle(doc, "Ergebniszettel - " + formatDate(match.created));
 
             const xmin = 5;
             const xmax = 205;

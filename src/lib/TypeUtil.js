@@ -23,8 +23,9 @@ export function mapDate(value) {
     return day + "." + month + "." + year;
 }
 
-export function formatDateNow() {
-    const now = new Date();
+export function formatDate(date) {
+
+    const now = date ? new Date(date) : new Date();
 
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Monate: 0–11
     const day = String(now.getDate()).padStart(2, '0');

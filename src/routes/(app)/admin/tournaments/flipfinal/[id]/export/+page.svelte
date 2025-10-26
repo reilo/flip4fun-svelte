@@ -20,6 +20,7 @@
 				} else {
 					item.pin2 = frame.pin;
 				}
+				item.created = frame.created;
 				matches.push(item);
 			} else {
 				item = matches[idx];
