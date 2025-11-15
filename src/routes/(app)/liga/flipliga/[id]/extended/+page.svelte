@@ -1,7 +1,7 @@
 <script>
 	import { Heading, Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-	import { generateLigaResultsPDF } from '$lib/PDFUtil';
+	import { generateLigaResultsPDF } from '$lib/PDFLigaUtil';
 	let { data } = $props();
 	let pdfEnabled = data.round && data.round.status === 'Completed';
 </script>

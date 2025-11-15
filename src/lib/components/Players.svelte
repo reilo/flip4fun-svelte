@@ -2,7 +2,7 @@
 	import { P, Card, Button, Label, Select, Modal, A, Heading } from 'flowbite-svelte';
 	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
-	import { generatePlayersPDF } from '$lib/PDFUtil';
+	import { generatePlayersPDF } from '$lib/pdf/PDFPlayerUtil';
 
 	let {
 		tournament,

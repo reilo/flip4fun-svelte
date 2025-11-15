@@ -1,7 +1,7 @@
 <script>
 	import { Heading, Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-	import { generateMatchCardsPDF } from '$lib/PDFUtil';
+	import { generateMatchCardsPDF } from '$lib/PDFFinalUtil';
 
 	let { data } = $props();
 

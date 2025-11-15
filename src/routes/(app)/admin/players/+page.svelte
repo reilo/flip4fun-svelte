@@ -9,7 +9,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { formatPlayerName } from '$lib/PlayerUtil';
 	import { cleanString } from '$lib/TypeUtil';
-	import { generatePlayersPDF } from '$lib/PDFUtil';
+	import { generatePlayersPDF } from '$lib/PDFPlayerUtil';
 
 	let { data } = $props();
 	let showError = $derived(!data || !data.players);

@@ -6,7 +6,7 @@
 	import { Input } from 'flowbite-svelte';
 	import { P } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
-	import { generateCertificatePDF } from '$lib/PDFUtil';
+	import { generateCertificatePDF } from '$lib/PDFCertUtil';
 
 	let { data } = $props();
 

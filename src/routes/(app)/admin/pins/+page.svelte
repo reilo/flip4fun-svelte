@@ -7,7 +7,7 @@
 	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinManuMap, getPinTypeMap } from '$lib/PinUtil';
-	import { generatePinsPDF } from '$lib/PDFUtil';
+	import { generatePinsPDF } from '$lib/PDFPinUtil';
 	import { cleanString } from '$lib/TypeUtil';
 
 	let { data } = $props();
