@@ -4,7 +4,7 @@ import { isValidTourType, calcStrength, calcInitialLevels } from './TourUtil';
 test('Verify TourUtil.isValidTourType', () => {
     expect(isValidTourType("flipliga")).toBeTruthy;
     expect(isValidTourType("flipfinal")).toBeTruthy;
-    expect(isValidTourType("fliptwin")).toBeTruthy;
+    expect(isValidTourType("twinpin")).toBeTruthy;
     expect(isValidTourType("flipnone")).toBeFalsy;
 });
 

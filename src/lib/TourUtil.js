@@ -22,7 +22,7 @@ export function mapTourStatus(status) {
 export function mapTourType(ttype) {
     let mapped;
     switch (ttype) {
-        case "fliptwin":
+        case "twinpin":
             mapped = "TwinPin";
             break;
         case "flipliga":
@@ -39,19 +39,19 @@ export function mapTourType(ttype) {
 
 export function getTourTypeMap() {
     return [
-        { 'name': 'TwinPin', 'value': 'fliptwin' },
+        { 'name': 'TwinPin', 'value': 'twinpin' },
         { 'name': 'FLIP-Liga', 'value': 'flipliga' },
         { 'name': 'FLIP-Finale', 'value': 'flipfinal' },
     ]
 }
 
 export function isValidTourType(type) {
-    return ["fliptwin", "flipliga", "flipfinal"].includes(type);
+    return ["twinpin", "flipliga", "flipfinal"].includes(type);
 }
 
 export function getDefaultSettings(type) {
     switch (type) {
-        case "fliptwin":
+        case "twinpin":
             return {};
         case "flipliga":
             return {
