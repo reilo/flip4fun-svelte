@@ -89,6 +89,6 @@
 	</main>
 
 	<Footer>
-		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2025'} />
+		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2026'} />
 	</Footer>
 </div>
