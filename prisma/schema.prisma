@@ -67,6 +67,19 @@ model match {
   pin       String
 }
 
+model matchn {
+  id        String      @id @default(uuid())
+  created   DateTime    @default(now())
+  tid       String
+  rid       Int
+  name      String
+  team1     String[]    @default([])
+  team2     String[]    @default([])
+  score1    Int
+  score2    Int
+  pin       String
+}
+
 model frame {
   id        String      @id @default(uuid())
   created   DateTime    @default(now())
