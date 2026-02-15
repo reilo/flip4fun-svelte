@@ -29,10 +29,7 @@
 	let tourToDelete = $state('');
 
 	const verifyTour = () => {
-		if (newTourType === 'fliptwin') {
-			alertMessage = 'Dieser Turniertyp wird zur Zeit nicht unterstützt. Bitte ändern!';
-			showAlert = true;
-		} else if (!newTourName || !newTourType) {
+		if (!newTourName || !newTourType) {
 			alertMessage = 'Daten sind fehlerhaft oder unvollständig. Bitte korrigieren!';
 			showAlert = true;
 		} else if (tournaments.find((tour) => tour.name === newTourName)) {
