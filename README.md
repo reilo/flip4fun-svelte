@@ -22,7 +22,7 @@ Es ist zu empfehlen, regelmäßig manuell ein Backup der Datenbank zu erstellen 
 
 Die App läuft in der Entwicklungsumgebung - Starten aus VS Code per 'npm run dev' - unter localhost:5173.
 
-In der Produktiv-Version - Kompilieren mit 'npm run build' und Starten per 'npm run preview'. Ein entsprechender Service ist per nssm eingerichtet (Service-Name 'isaramper').
+In der Produktiv-Version - Kompilieren mit 'npm run build' und Starten per 'npm run preview'. Ein entsprechender Service ist per nssm eingerichtet (Service-Name 'isaramper'). In dem Fall läuft die App unter localhost:4173.
 
 Sollte die App wider Erwarten nicht laufen, kann sie aus dem Verzeichnis 'c:/flip4fun-svelte' heraus durch das Kommando 'npm run preview' manuell gestartet werden.
 
