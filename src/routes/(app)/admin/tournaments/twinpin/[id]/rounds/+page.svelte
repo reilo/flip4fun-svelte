@@ -11,7 +11,7 @@
 
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
-    let pins = $derived(data.pins);
+	let pins = $derived(data.pins);
 
 	let startTourEnabled = $derived(tournament.status === 'Planned');
 	let startTourForm = $state(false);
@@ -81,8 +81,8 @@
 		// create matchns: 2v2 as much as possible, then 2v1, 1v1, or bye
 		const rest = roundPlayers.length % 4;
 		const fullMatchCount = (roundPlayers.length - rest) / 4;
-		
-        const rid = round ? round.rid + 1 : 1;
+
+		const rid = round ? round.rid + 1 : 1;
 
 		// Generate 2v2 matches
 		for (let i = 0; i < fullMatchCount; i++) {
@@ -94,7 +94,7 @@
 				usedPins.push(pin.id);
 			}
 			matchns.push({
-                name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
 				team1: team1,
 				team2: team2,
 				score1: 0,
@@ -102,7 +102,7 @@
 				pin: pin.id
 			});
 		}
-		
+
 		// Handle remaining players
 		const remainingStart = fullMatchCount * 4;
 		if (rest === 3) {
@@ -112,7 +112,7 @@
 				usedPins.push(pin.id);
 			}
 			matchns.push({
-                name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
 				team1: [roundPlayers[remainingStart], roundPlayers[remainingStart + 1]],
 				team2: [roundPlayers[remainingStart + 2]],
 				score1: 0,
@@ -126,7 +126,7 @@
 				usedPins.push(pin.id);
 			}
 			matchns.push({
-                name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
 				team1: [roundPlayers[remainingStart]],
 				team2: [roundPlayers[remainingStart + 1]],
 				score1: 0,
@@ -136,7 +136,7 @@
 		} else if (rest === 1) {
 			// Bye (Freilos)
 			matchns.push({
-                name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
 				team1: [roundPlayers[remainingStart]],
 				team2: [],
 				score1: 1,
@@ -145,20 +145,16 @@
 			});
 		}
 
-		// create rankInit: map of player to {player, score}
-		const rankInit = [];
-		roundPlayers.forEach(player => rankInit.push( { player: player, score: 0 }));
-
- 		// create round
+		// create round
 		const response = await fetch('/api/tournament/' + tournament.id + '/round?addMatches', {
 			method: 'POST',
 			body: JSON.stringify({
 				tid: tournament.id,
-                rid: rid,
+				rid: rid,
 				name: tournament.name + ' - Runde ' + rid.toString(),
-                status: 'Active',
-                players: roundPlayers,
-                settings: { rankInit: rankInit },
+				status: 'Active',
+				players: [],
+				settings: {},
 				matches: matchns
 			}),
 			headers: {
@@ -178,29 +174,11 @@
 	}
 
 	async function endRound() {
-		// For TwinPin, simple ranking based on match results
-		const playerScores = {};
-		round.matches.forEach((match) => {
-			match.team1.forEach((player) => {
-				if (!playerScores[player]) playerScores[player] = 0;
-				playerScores[player] += match.score1;
-			});
-			match.team2.forEach((player) => {
-				if (!playerScores[player]) playerScores[player] = 0;
-				playerScores[player] += match.score2;
-			});
-		});
-		const rankFinal = Object.keys(playerScores).map(player => ({
-			id: player,
-			score: playerScores[player]
-		})).sort((a, b) => b.score - a.score);
-		const response = await fetch('/api/round/' + round.rid, {
+		const response = await fetch('/api/round/' + round.id, {
 			method: 'PUT',
 			body: JSON.stringify({
 				status: 'Completed',
-				results: {
-					rankFinal: rankFinal
-				}
+				results: {}
 			}),
 			headers: {
 				'Content-Type': 'application/json',
@@ -268,7 +246,7 @@
 
 <Sure
 	show={startTourForm}
-    title={'Turnier starten'}
+	title={'Turnier starten'}
 	message="Soll das Start-Turnier wirklich gestartet werden?"
 	actionOk={startTour}
 	actionCancel={() => (startTourForm = false)}
