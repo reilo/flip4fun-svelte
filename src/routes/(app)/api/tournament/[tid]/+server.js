@@ -93,6 +93,10 @@ export const DELETE = async ({ url, params }) => {
                 await tx.frame.deleteMany({
                     where: { tid: params.tid },
                 });
+                // delete matchns of this tournament
+                await tx.matchn.deleteMany({
+                    where: { tid: params.tid },
+                });
                 return result;
             });
         }
