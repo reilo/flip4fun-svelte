@@ -285,3 +285,42 @@ export function calcFinalResults(round, frames) {
     });
     return { levelResults, rankFinal };
 }
+
+export function calcTwinpinRanking(players, rounds) {
+		const playerScores = {};
+		players.forEach((player) => {
+			playerScores[player] = 0;
+		});
+
+		// Sum up scores from all rounds and their matches
+		rounds.forEach((r) => {
+			if (r.matches) {
+				r.matches.forEach((match) => {
+					// Add scores for team1 players
+					if (match.team1) {
+						match.team1.forEach((player) => {
+							if (playerScores.hasOwnProperty(player)) {
+								playerScores[player] += match.score1 || 0;
+							}
+						});
+					}
+					// Add scores for team2 players
+					if (match.team2) {
+						match.team2.forEach((player) => {
+							if (playerScores.hasOwnProperty(player)) {
+								playerScores[player] += match.score2 || 0;
+							}
+						});
+					}
+				});
+			}
+		});
+
+		// Convert to array and sort by score descending
+		return Object.keys(playerScores)
+			.map((player) => ({
+				player: player,
+				score: playerScores[player]
+			}))
+			.sort((a, b) => b.score - a.score);
+}
