@@ -6,31 +6,43 @@ Foldende Konstanten können bzw. müssen in der Datei .env im Root-Verzeichnis d
 - **DATABASE_URL**: Url zur Postgres-Datenbank nach dem Format:\
  postgresql://\<DB-Owner\>:\<DB-Passwort\>\@\<server\>:\<port\>/\<DB-Name\>.
  - **VITE_ADMIN_PASSWORD**: Admin-Passwort.
- - **VITE_APP_FULL**: wenn nicht gesetzt, läuft die App im Readonly-Modus (für die Web-Version gedacht), andernfalls volle Funktionalität.
- - **VITE_KEEP_ADMIN**: wenn nicht gesetzt, springt die App in Read-Modus zurück beim Verlassen des Liga-Admin-Bereichs.
- - **VITE_INCLUDE_TEST**: wenn nicht gesetzt, werden Test-Turniere (enthalten "Test" im Namen) nicht angezeigt.
+ - **VITE_APP_FULL**: wenn auf beliebigen Wert gesetzt, läuft die App mit voller Funktionalität, andernfalls im Readonly-Modus (für die Web-Version gedacht).
+ - **VITE_KEEP_ADMIN**: wenn auf beliebigen Wert gesetzt, bleibt die App - nach einmaligen Einloggen - dauerhaft im Admin-Modus, andernfalls springt die App beim Verlassen des Liga-Admin-Bereichs in Read-Modus zurück.
+ - **VITE_INCLUDE_TEST**: wenn auf beliebigen Wert gesetzt, werden auch Test-Turniere (enthalten "Test" im Namen) angezeigt, andernfalls nicht.
 
 ## Datenbank
 
-Alle Daten werden in der lokalen Postgres-Datenbank gespeichert. Die Umgebungsvariable ist entsprechend - siehe oben - auf localhost gesetzt.
+Im normalen Spielbetrieb werden die Daten in der lokalen Postgres‑Datenbank gespeichert.
+Die entsprechende Umgebungsvariable ist – wie oben beschrieben – auf `localhost` gesetzt.
 
-Für die Web-Version der App müssen die Daten manuell in die unter NeonDB gehosteten Datenbank importiert werden. Die benötigte Url steht auskommentiert in der .env-Datei.
+Es wird empfohlen, regelmäßig manuell ein Backup der Datenbank zu erstellen bzw. die Tabellen als CSV zu exportieren.  
+Insbesondere nach einem abgeschlossenen Spieltag sollte dies unbedingt durchgeführt werden.  
+Eine detaillierte Anleitung findet sich weiter unten.
 
-Es ist zu empfehlen, regelmäßig manuell ein Backup der Datenbank zu erstellen bzw. die Tabellen nach csv zu exportieren. Vor allem nach einem abgeschlossenen Spieltag sollte das gemacht werden. Anleitung siehe weiter unten.
-
+Für die Web‑Version der App müssen die Daten manuell in die bei **NeonDB** gehostete Datenbank importiert werden.  
+Die dafür benötigte URL kann auf der NeonDB‑Website eingesehen werden, sofern man über gültige Zugangsdaten verfügt.
+``
 ## Applikation starten
 
-Die App läuft in der Entwicklungsumgebung - Starten aus VS Code per 'npm run dev' - unter localhost:5173.
+Die App läuft in der Entwicklungsumgebung – gestartet aus VS Code über `npm run dev` – unter **http://localhost:5173**.
 
-In der Produktiv-Version - Kompilieren mit 'npm run build' und Starten per 'npm run preview'. Ein entsprechender Service ist per nssm eingerichtet (Service-Name 'isaramper'). In dem Fall läuft die App unter localhost:4173.
+In der Produktivumgebung – kompiliert mit `npm run build` und gestartet über `npm run preview` – ist die App unter **http://localhost:4173** erreichbar.  
+Ein entsprechender Dienst wurde mit **nssm** eingerichtet (Service-Name: *isaramper*).
 
-Sollte die App wider Erwarten nicht laufen, kann sie aus dem Verzeichnis 'c:/flip4fun-svelte' heraus durch das Kommando 'npm run preview' manuell gestartet werden.
+Sollte die App wider Erwarten nicht laufen, kann sie im Verzeichnis  
+`C:/flip4fun-svelte`  
+manuell durch das Kommando
+
+```sh
+npm run preview
+```
+gestartet werden
 
 ## Svelte Adapter
 
-Im Repository is der Svelte-Adapter auf 'adapter-auto' eingestellt. Das muss auch so bleiben, damit die unter Vercel gehostete Version funktioniert.
+Im Repository ist der Svelte‑Adapter auf adapter-auto eingestellt. Diese Einstellung muss beibehalten werden, damit die unter Vercel gehostete Version korrekt funktioniert.
 
-Auf dem System, wo das Projekt kompiliert und für den Service vorbereitet wird, muss der Adapter auf 'adapter-node' eingestellt werden.
+Auf dem System, auf dem das Projekt kompiliert, für den Service vorbereitet und im Ligabetrieb verwendet wird, muss der Adapter hingegen auf adapter-node umgestellt werden.
 
 # Infos für Entwickler
 
@@ -48,8 +60,9 @@ Markdown: https://www.markdownguide.org/cheat-sheet/#overview
 
 ## svelte-Projekte
 
-Diese Informationen wurden für die Entwicklung mit Svelte 4 zusammengestellt.\
-Da das Projekt inzwischen auf Svelte 5 umgestellt wurde, sind die Informationen u. U. teilweise nicht mehr aktuell.
+Diese Informationen wurden für die Entwicklung mit Svelte 4 zusammengestellt.\
+Da das Projekt inzwischen auf Svelte 5 umgestellt wurde, könnten Teile der Angaben nicht mehr aktuell sein.\
+Es wird daher empfohlen, die neuesten Informationen im Internet nachzuschlagen.
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
