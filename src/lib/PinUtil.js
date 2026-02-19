@@ -37,7 +37,7 @@ export function mapPinType(pinType) {
     return getPinTypeMap().find((item) => item.value === pinType).name;
 }
 
-export function randomPin(pins, em, ee, dmd, lcd, exclude) {
+export function filterPins(pins, em, ee, dmd, lcd, exclude = []) {
     const items = pins.filter(
         (pin) =>
             pin.active && !exclude.includes(pin.id) &&
@@ -48,6 +48,11 @@ export function randomPin(pins, em, ee, dmd, lcd, exclude) {
                     : false) ||
                 (lcd ? ['SAM', 'Spike'].includes(pin.type) : false))
     );
+    return items;
+}
+
+export function randomPin(pins, em, ee, dmd, lcd, exclude) {
+    const items = filterPins(pins, em, ee, dmd, lcd, exclude);
     if (items.length > 0) {
         const num = Math.floor(Math.random() * items.length);
         return items[num];
