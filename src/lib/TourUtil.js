@@ -286,10 +286,29 @@ export function calcFinalResults(round, frames) {
     return { levelResults, rankFinal };
 }
 
-export function calcTwinpinRanking(players, rounds) {
+export function calcTwinpinRanking(rounds) {
 		const playerScores = {};
-		players.forEach((player) => {
-			playerScores[player] = 0;
+		rounds.forEach((r) => {
+			if (r.matches) {
+				r.matches.forEach((match) => {
+					// Add scores for team1 players
+					if (match.team1) {
+						match.team1.forEach((player) => {
+							if (!playerScores.hasOwnProperty(player)) {
+								playerScores[player] = 0;
+							}
+						});
+					}
+					// Add scores for team2 players
+					if (match.team2) {
+						match.team2.forEach((player) => {
+							if (!playerScores.hasOwnProperty(player)) {
+								playerScores[player] = 0;
+							}
+						});
+					}
+				});
+			}
 		});
 
 		// Sum up scores from all rounds and their matches
@@ -316,11 +335,16 @@ export function calcTwinpinRanking(players, rounds) {
 			}
 		});
 
-		// Convert to array and sort by score descending
+		// Convert to array and sort by score descending, then alphabetically by player name
 		return Object.keys(playerScores)
 			.map((player) => ({
 				player: player,
 				score: playerScores[player]
 			}))
-			.sort((a, b) => b.score - a.score);
+			.sort((a, b) => {
+				if (b.score !== a.score) {
+					return b.score - a.score;
+				}
+				return a.player.localeCompare(b.player);
+			});
 }

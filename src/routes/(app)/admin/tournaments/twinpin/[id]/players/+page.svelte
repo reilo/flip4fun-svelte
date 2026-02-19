@@ -35,8 +35,8 @@
 	tournament={data.tournament}
 	allPlayers={data.players}
 	{description}
-	addEnabled={data.tournament.status !== 'Completed'}
-	delEnabled={data.tournament.status === 'Planned'}
+	addEnabled={data.tournament.status === 'Planned'}
+	delEnabled={data.tournament.status !== 'Completed' && (!data.round || data.round.status !== 'Active')}
 	update={updatePlayers}
     importFrom={''}
 />

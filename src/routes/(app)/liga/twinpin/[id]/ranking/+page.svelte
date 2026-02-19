@@ -27,7 +27,7 @@
 	let ranking = $derived(
 		!round
 			? tournament.players.map((p) => ({ player: p, score: 0 }))
-			: calcTwinpinRanking(tournament.players, rounds)
+			: calcTwinpinRanking(rounds)
 	);
 
 	let counter = 0;
@@ -51,10 +51,12 @@
 	</TableHead>
 	<TableBody tableBodyClass="divide-y">
 		{#each ranking as rank, i}
+			{@const isInTournament = tournament.players.includes(rank.player)}
+			{@const cellClass = isInTournament ? py : pygray}
 			<TableBodyRow class={getRowColor(i)}>
-				<TableBodyCell class={py} tdClass="text-center">{increment()}</TableBodyCell>
-				<TableBodyCell class={py}>{getPlayerName(rank.player, players)}</TableBodyCell>
-				<TableBodyCell class={py} tdClass="text-right font-mono">{rank.score}</TableBodyCell>
+				<TableBodyCell class={cellClass} tdClass="text-center">{increment()}</TableBodyCell>
+				<TableBodyCell class={cellClass}>{getPlayerName(rank.player, players)}</TableBodyCell>
+				<TableBodyCell class={cellClass} tdClass="text-right font-mono">{rank.score}</TableBodyCell>
 			</TableBodyRow>
 		{/each}
 	</TableBody>
