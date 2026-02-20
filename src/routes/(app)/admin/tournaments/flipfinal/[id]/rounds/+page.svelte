@@ -65,7 +65,7 @@
 		}
 		startTourForm = false;
 		successForm = true;
-		successMessage = 'Das Start-Turnier wurde erfolgreich gestartet!';
+		successMessage = 'Das Turnier wurde erfolgreich gestartet!';
 		invalidateAll();
 	}
 

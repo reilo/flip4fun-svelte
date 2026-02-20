@@ -25,8 +25,7 @@
 		{ link: '/admin/tournaments/twinpin/' + id + '/settings', name: 'Einstellungen' },
 		{ link: '/admin/tournaments/twinpin/' + id + '/players', name: 'Spieler' },
 		{ link: '/admin/tournaments/twinpin/' + id + '/rounds', name: 'Runde' },
-		{ link: '/admin/tournaments/twinpin/' + id + '/export', name: 'Export' },
-		{ link: '/liga/twinpin/' + id + '/ranking', name: 'zum Startturnier' }
+		{ link: '/liga/twinpin/' + id + '/ranking', name: 'zum Turnier' }
 	];
 
 	let loading = $state('');

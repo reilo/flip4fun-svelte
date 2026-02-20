@@ -59,7 +59,7 @@
 		}
 		startTourForm = false;
 		successForm = true;
-		successMessage = 'Das Start-Turnier wurde erfolgreich gestartet!';
+		successMessage = 'Das Turnier wurde erfolgreich gestartet!';
 		invalidateAll();
 	}
 
@@ -236,7 +236,7 @@
 
 <Box
 	title={'Turnier starten'}
-	description={'Wenn das Start-Turnier gestartet wurde, kann die Spielerliste noch geändert werden. ' +
+	description={'Wenn das Turnier gestartet wurde, kann die Spielerliste noch geändert werden. ' +
 		'Ab sofort kann die erste Runde gestartet werden.'}
 	action={() => (startTourForm = true)}
 	enabled={startTourEnabled}
@@ -247,7 +247,7 @@
 <Sure
 	show={startTourForm}
 	title={'Turnier starten'}
-	message="Soll das Start-Turnier wirklich gestartet werden?"
+	message="Soll das Turnier wirklich gestartet werden?"
 	actionOk={startTour}
 	actionCancel={() => (startTourForm = false)}
 	buttonOk={'Ja, starten'}
@@ -292,7 +292,7 @@
 
 <Box
 	title={'Turnier beenden'}
-	description={'Das Start-Turnier kann beendet wurden, wenn keine neue Runde mehr gespielt werden soll.'}
+	description={'Das Turnier kann beendet wurden, wenn keine neue Runde mehr gespielt werden soll.'}
 	action={() => (endTourForm = true)}
 	enabled={endTourEnabled}
 	buttonOk={'Beenden'}
@@ -302,7 +302,7 @@
 <Sure
 	show={endTourForm}
 	title={'Turnier beenden'}
-	message={'Soll das Start-Turnier wirklich beendet werden?'}
+	message={'Soll das Turnier wirklich beendet werden?'}
 	actionOk={endTour}
 	actionCancel={() => (endTourForm = false)}
 	buttonOk={'Ja, beenden'}
