@@ -6,7 +6,7 @@
 
 	const description = [
 		'Hier kannst du neue Spieler zum Turnier hinzufügen.',
-		'Klicke die Spieler an, die am Turnier teilnehmen sollen. Die Reihenfolge spielt keine Rolle.',
+		'Klicke die Spieler an, die am Turnier teilnehmen sollen. Die Reihenfolge spielt keine Rolle.'
 	];
 
 	async function updatePlayers(players) {
@@ -35,8 +35,10 @@
 	tournament={data.tournament}
 	allPlayers={data.players}
 	{description}
-	addEnabled={data.tournament.status === 'Planned'}
-	delEnabled={data.tournament.status !== 'Completed' && (!data.round || data.round.status !== 'Active')}
+	addEnabled={data.tournament.status !== 'Completed' &&
+		(!data.round || data.round.status !== 'Active')}
+	delEnabled={data.tournament.status !== 'Completed' &&
+		(!data.round || data.round.status !== 'Active')}
 	update={updatePlayers}
-    importFrom={''}
+	importFrom={''}
 />
