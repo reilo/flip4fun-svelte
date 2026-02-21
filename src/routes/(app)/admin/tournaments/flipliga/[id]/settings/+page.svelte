@@ -1,5 +1,5 @@
 <script>
-	import { Button, NumberInput, Label } from 'flowbite-svelte';
+	import { Button, NumberInput, Label, Checkbox } from 'flowbite-svelte';
 	import { page } from '$app/state';
 
 	let { data } = $props();
@@ -56,7 +56,7 @@
 			<span>Bonuspunkt(e) für jedes absolvierte Match</span>
 			<NumberInput disabled={!settingsEnabled} min="0" max="3" bind:value={settings.matchBonus} />
 		</Label>
-		
+
 		<Label class="mb-3">
 			<span>Strafpunkt(e) für Fehlmatches pro Spieltag</span>
 			<NumberInput disabled={!settingsEnabled} min="-1" max="3" bind:value={settings.matchPenalty} />
@@ -72,6 +72,11 @@
 			<NumberInput disabled={!settingsEnabled} min="3" max="8" bind:value={settings.penaltyFirstRound} />
 		</Label>
 
+		<Label class="mb-3 flex items-center gap-2">
+			<Checkbox disabled={!settingsEnabled} bind:checked={settings.showToast} />
+			<span>Toast-Benachrichtigungen anzeigen</span>
+		</Label>
+		
 		{#if settingsEnabled}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>

@@ -116,3 +116,44 @@ export function calcRanking(roundNum, rankInit, matches, settings) {
 
     return ranking2;
 }
+
+const looserMessages = [
+    "Das war wohl nichts, {looser} - mehr üben!",
+    "Knapp vorbei ist auch daneben, {looser}!",
+    "Das nächste Mal klappt es bestimmt, {looser}!",
+    "Du hast konstant gespielt, {looser} - konstant schlecht!",
+    "Das war mutig, {looser} - erfolglos, aber mutig!",
+    "Gut, dass du nicht um Geld gespielt hast, {looser}!",
+    "Das war knapp, {looser}! Knapp an gut vorbei.",
+    "Das war wohl nichts, {looser} - das passiert den Besten!",
+    "Highscore ist einfach nicht dein Ding, {looser}!",
+    "Du hast Erfahrung gesammelt, {looser} - das ist doch auch was!",
+    "Der Gegner hat gespielt, {looser} - du warst dabei!",
+    "Das war ein pädagogisch wertvolles Match, {looser}!",
+];
+
+const winnerMessages = [
+    "Saubere Leistung, {winner} - weiter so!",
+    "Match gewonnen, {winner} - Glückwunsch!",
+    "Das war eine starke Leistung, {winner} - weiter so!",
+    "Das war kein Sieg, {winner} - das war eine Demonstration!",
+    "Du hast den Gegner dominiert, {winner} - Respekt!",
+    "Das war eine beeindruckende Leistung, {winner} - weiter so!",
+    "Du hast den Gegner überrollt, {winner} - Respekt!",
+    "Das war ein souveräner Sieg, {winner} - weiter so!",
+];
+
+export function getMatchToastMessage(player1, player2, score1, score2) {
+    let txt = 'Eingabe erfolgreich!';
+    const rnd = Math.floor(Math.random() * 10);
+    const winner = score1 > score2 ? player1 : player2;
+    const looser = score1 > score2 ? player2 : player1;
+    if (rnd < 3) {
+        const msg = winnerMessages[Math.floor(Math.random() * winnerMessages.length)];
+        txt = msg.replace('{winner}', winner).replace('{looser}', looser);
+    } else if (rnd < 6) {
+        const msg = looserMessages[Math.floor(Math.random() * looserMessages.length)];
+        txt = msg.replace('{looser}', looser).replace('{winner}', winner);
+    }
+    return txt;
+}

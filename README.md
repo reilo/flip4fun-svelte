@@ -322,6 +322,7 @@ Dabei folgendes beachten:
 -    `challengeSame`:     Wie oft darf der gleiche Gegner je Saison gefordert werden
 -    `matchBonus`:        Bonuspunkt(e) für jedes absolvierte Match
 -    `matchPenalty`:      Strafpunkt(e) für Fehlmatches pro Spieltag (neu)
+-    `showToast`:         Toast-Benachrichtigungen nach Match-Eingabe anzeigen
 -    `minMatchesRound`:   Wie viele Matches muss ein Spieler pro Spieltag spielen?
 -    `penaltyFirstRound`: Ab welcher Runde erfolgen Punktabzüge?
 

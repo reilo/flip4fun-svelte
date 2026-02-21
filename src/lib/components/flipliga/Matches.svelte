@@ -7,7 +7,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
-	import { calcPoints } from '$lib/MatchUtil';
+	import { calcPoints, getMatchToastMessage } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
@@ -30,6 +30,8 @@
 	let showSure = $state(false);
 	let alertMessageDelete = $state('');
 	let showSureDelete = $state(false);
+	let showToast = $state(false);
+	let toastMessage = $state('');
 
 	let matches = $derived(data.round ? data.round.matches : []);
 
@@ -136,6 +138,17 @@
 		if (matchResponse.status !== 200) {
 			alert(JSON.stringify(matchResult));
 		}
+		if (settings.showToast) {
+			showToast = true;
+			toastMessage = getMatchToastMessage(
+				data.players.find((p) => p.id === selPlayer1)?.forename ?? selPlayer1,
+				data.players.find((p) => p.id === selPlayer2)?.forename ?? selPlayer2,
+				selPoints1,
+				selPoints2
+			);
+			setTimeout(() => (showToast = false), 5000);
+		}
+
 		logInfo('Angelegt: ' + matchName + ' - ' + selPoints1 + ' : ' + selPoints2);
 		invalidateAll();
 
@@ -286,6 +299,12 @@
 				</form>
 			</Modal>
 		</div>
+
+		{#if showToast}
+			<div class="mb-3 px-4 py-3 rounded-lg bg-orange-400 text-white font-semibold text-sm">
+			{toastMessage}
+		</div>
+		{/if}
 
 		<div>
 			<Modal bind:open={showAlert} size="xs" autoclose>
