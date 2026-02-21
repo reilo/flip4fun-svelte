@@ -14,7 +14,13 @@
 		data.frames.forEach((frame) => {
 			let idx = matches.findIndex((m) => m.level === frame.lid);
 			if (idx === -1) {
-				item = { level: frame.lid, count: frame.players.length > 3 ? 2 : 1 };
+				let count = 0;
+				if (frame.players.length > 3) {
+					count = 2;
+				} else if (frame.players.length > 1) {
+					count = 1;
+				}
+				item = { level: frame.lid, count: count };
 				if (frame.mid === 1) {
 					item.pin1 = frame.pin;
 				} else {
