@@ -15,7 +15,21 @@
 	let showForm = $state(false);
 	let frameToUpdate = $state(null);
 	let scores = $state([]);
+	let scoreDisplays = $state([]);
 	let playedPin = $state('');
+
+	const formatScore = (value) => {
+		const num = parseInt(String(value).replace(/\D/g, ''), 10);
+		return isNaN(num) ? '' : num.toLocaleString('de-DE');
+	};
+
+	const onScoreInput = (i, event) => {
+		const raw = event.target.value.replace(/\D/g, '');
+		const num = parseInt(raw, 10);
+		scores[i] = isNaN(num) ? 0 : num;
+		scoreDisplays[i] = isNaN(num) ? '' : num.toLocaleString('de-DE');
+		event.target.value = scoreDisplays[i];
+	};
 
 	const pinMap = [];
 	data.pins.forEach((item) => {
@@ -45,6 +59,7 @@
 			frame.players.length === frame.scores.length
 				? [...frame.scores]
 				: Array(frame.players.length).fill(0);
+		scoreDisplays = scores.map(formatScore);
 		playedPin = frame.pin;
 		showForm = true;
 		frameToUpdate = frame;
@@ -96,7 +111,7 @@
 						{getPlayerName(item.player, data.players)}<br />
 					{/each}
 				</TableBodyCell>
-				<TableBodyCell tdClass="text-center">
+				<TableBodyCell tdClass="text-right">
 					{#if frame.scores.length === frame.players.length}
 						{#each sortFrameByResult(frame) as item}
 							{frame.players.length > 1 ? item.score.toLocaleString() : ''}<br />
@@ -126,7 +141,12 @@
 		{#each frameToUpdate.players as player, i}
 			<Label class="space-y-2">
 				<span>{getPlayerName(player, data.players)}</span>
-				<Input type="number" bind:value={scores[i]} />
+				<Input
+					type="text"
+					inputmode="numeric"
+					value={scoreDisplays[i]}
+					oninput={(e) => onScoreInput(i, e)}
+				/>
 			</Label>
 		{/each}
 		<Label>
