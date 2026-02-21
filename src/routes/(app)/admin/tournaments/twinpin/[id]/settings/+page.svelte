@@ -1,11 +1,11 @@
 <script>
-	import { Button, Label } from 'flowbite-svelte';
+	import { Button, Label, Checkbox } from 'flowbite-svelte';
 	import { page } from '$app/state';
 
 	let { data } = $props();
 
 	const status = data.tournament.status;
-	const settingsEnabled = status == 'Planned';
+	const settingsEnabled = status === 'Planned';
 	let originalSettings = $state(data.tournament.settings);
 	let settings = $state(data.tournament.settings);
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
@@ -38,10 +38,12 @@
 <form>
 	<div>
 		<Label class="mb-3">
-			<span>Es gibt noch keine Einstellungen für dieses Turnier.</span>
+			<Checkbox disabled={!settingsEnabled} bind:checked={settings.allowBye}
+				>Freilos erlauben bei 4n+1 Teilnehmern</Checkbox
+			>
 		</Label>
 
-		{#if true/*settingsEnabled*/}
+		{#if true}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 		{/if}

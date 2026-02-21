@@ -331,6 +331,12 @@ Dabei folgendes beachten:
 -    `numFinalists`:      Wieviele Spieler sollen in die Finalebene aufrücken
 -    `pinTypes`:          Welche Art von Flipper sollen beim Double-Match gewählt werden
                           (0 = beliebig, 1 = 1xDMD, 1xEarly, 2 = mindestens 1xDMD)
+-    `maxStartBonus`:     Wie hoch soll der maximale Startbonus sein
+
+#### Twinpin
+
+`tournament.settings`
+-    `allowBye`:      Freilos erlauben bei 4n+1 Spielern
 
 ### Tabelle "Round"
 

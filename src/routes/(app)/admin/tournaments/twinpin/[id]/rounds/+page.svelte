@@ -41,7 +41,6 @@
 
 	async function startTour() {
 		let settings = tournament.settings;
-		settings.inactivePlayers = [];
 		const response = await fetch('/api/tournament/' + tournament.id, {
 			method: 'PUT',
 			body: JSON.stringify({
@@ -66,9 +65,7 @@
 	async function startRound() {
 		const roundPlayers = [];
 		tournament.players.forEach((player, i) => {
-			if (!tournament.settings.inactivePlayers.includes(player)) {
-				roundPlayers.push(player);
-			}
+			roundPlayers.push(player);
 		});
 		// shuffle players
 		for (let i = roundPlayers.length - 1; i > 0; i--) {
@@ -79,8 +76,13 @@
 		const matchns = [];
 		const usedPins = [];
 		// create matchns: 2v2 as much as possible, then 2v1, 1v1, or bye
+		const allowBye = tournament.settings.allowBye;
 		const rest = roundPlayers.length % 4;
-		const fullMatchCount = (roundPlayers.length - rest) / 4;
+		// If bye is not allowed and we'd have 1 leftover, steal one 2v2 group to get 5 remaining
+		const byeCase = rest === 1 && !allowBye;
+		const fullMatchCount = byeCase
+			? (roundPlayers.length - 5) / 4
+			: (roundPlayers.length - rest) / 4;
 
 		const rid = round ? round.rid + 1 : 1;
 
@@ -105,7 +107,33 @@
 
 		// Handle remaining players
 		const remainingStart = fullMatchCount * 4;
-		if (rest === 3) {
+		if (byeCase) {
+			// 5 remaining: split into 2v1 + 1v1 (no bye)
+			let pin1 = randomPin(pins, true, true, true, true, usedPins);
+			if (pin1) {
+				usedPins.push(pin1.id);
+			}
+			matchns.push({
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				team1: [roundPlayers[remainingStart], roundPlayers[remainingStart + 1]],
+				team2: [roundPlayers[remainingStart + 2]],
+				score1: 0,
+				score2: 0,
+				pin: pin1.id
+			});
+			let pin2 = randomPin(pins, true, true, true, true, usedPins);
+			if (pin2) {
+				usedPins.push(pin2.id);
+			}
+			matchns.push({
+				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
+				team1: [roundPlayers[remainingStart + 3]],
+				team2: [roundPlayers[remainingStart + 4]],
+				score1: 0,
+				score2: 0,
+				pin: pin2.id
+			});
+		} else if (rest === 3) {
 			// 2v1 match
 			let pin = randomPin(pins, true, true, true, true, usedPins);
 			if (pin) {
@@ -134,7 +162,7 @@
 				pin: pin.id
 			});
 		} else if (rest === 1) {
-			// Bye (Freilos)
+			// Bye (Freilos) — only reached when allowBye is true
 			matchns.push({
 				name: tournament.name + ' - Runde ' + rid.toString() + ' - Match ' + (matchns.length + 1),
 				team1: [roundPlayers[remainingStart]],
