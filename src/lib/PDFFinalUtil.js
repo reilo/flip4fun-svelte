@@ -1,7 +1,8 @@
 import jsPDF from "jspdf";
-import { drawTitleSquare, writeTitle, writeSubtitle, drawSquare } from "./PDFUtil.js";  
-import { formatDate } from "./TypeUtil.js";
+import { drawTitleSquare, writeTitle, writeSubtitle, drawSquare } from "./PDFUtil.js";
+import { formatDate, mapDate } from "./TypeUtil.js";
 import { getPinName } from "./PinUtil.js";
+import { getPlayerName } from "./PlayerUtil.js";
 
 export function generateMatchCardsPDF(tourName, round, matches, pins) {
 
@@ -76,4 +77,160 @@ export function generateMatchCardsPDF(tourName, round, matches, pins) {
     });
 
     doc.save("Matchcards - " + "Runde " + round.toString() + '.pdf');
+}
+
+const darkblue = [153, 181, 199];
+const midblue = [204, 217, 227];
+const liteblue = [227, 237, 240];
+const litegreen = [180, 218, 180];
+
+export function generateFinalResultsPDF(data, color = true) {
+    const doc = new jsPDF();
+    doc.setFont("times");
+
+    const headerColor = color ? darkblue : ["0.80"];
+
+    const round = data.round;
+    const rankFinal = round && round.results ? round.results.rankFinal : null;
+
+    // ---- Seite 1: Gesamtwertung ----
+    drawTitleSquare(doc, headerColor);
+    writeTitle(doc, data.tournament.name);
+    const roundLabel = round ? 'nach ' + round.rid.toString() + ' Runden (' + mapDate(round.created) + ')' : '';
+    writeSubtitle(doc, 'Gesamtwertung ' + roundLabel);
+
+    let x = 10;
+    let y = 45;
+
+    if (rankFinal) {
+        // rankFinal: index 0 = lowest level → reverse for display (1st place first)
+        const levelsDesc = rankFinal.slice().reverse();
+        let place = 1;
+        levelsDesc.forEach((level, li) => {
+            level.players.forEach((player, pi) => {
+                const alternate = place % 2 === 0;
+                if (alternate) {
+                    if (color) {
+                        drawSquare(doc, x, y - 5, 190, 6, ...liteblue);
+                    } else {
+                        drawSquare(doc, x, y - 5, 190, 6, "0.95");
+                    }
+                }
+                doc.setFontSize(12);
+                const placeStr = place.toString() + '.';
+                doc.text(x, y, placeStr);
+                doc.text(x + 20, y, getPlayerName(player.id, data.players));
+                place++;
+                y += 6;
+                if (y > 280) {
+                    doc.addPage();
+                    drawTitleSquare(doc, headerColor);
+                    writeTitle(doc, data.tournament.name);
+                    writeSubtitle(doc, 'Gesamtwertung ' + roundLabel + ' (Fortsetzung)');
+                    y = 45;
+                }
+            });
+        });
+    } else {
+        doc.setFontSize(12);
+        doc.text(x, y, 'Noch kein abgeschlossenes Ergebnis vorhanden.');
+    }
+
+    // ---- Seite pro Runde: Rundendetails ----
+    if (data.rounds && data.rounds.length > 0) {
+        data.rounds.forEach((r) => {
+            doc.addPage();
+            drawTitleSquare(doc, headerColor);
+            writeTitle(doc, data.tournament.name);
+            writeSubtitle(doc, 'Ergebnisse Runde ' + r.rid.toString());
+
+            x = 10;
+            y = 45;
+
+            // Header
+            doc.setFontSize(10);
+            doc.setLineWidth(0.1);
+            doc.text(x, y, 'Match');
+            doc.text(x + 40, y, 'Spieler');
+            doc.text(x + 130 - doc.getTextWidth('Score'), y, 'Score');
+            doc.text(x + 140, y, 'Flipper');
+            y += 3;
+            doc.line(x, y, 200, y);
+            y += 5;
+
+            if (!r.frames || r.frames.length === 0) {
+                doc.text(x, y, 'Keine Matches.');
+            } else {
+                // Sort frames by level then match
+                const sortedFrames = r.frames.slice().sort((a, b) =>
+                    a.lid !== b.lid ? a.lid - b.lid : a.mid - b.mid
+                );
+                // Collect sorted players per frame by score
+                const sortByScore = (frame) => {
+                    const items = frame.players.map((p, i) => ({
+                        player: p,
+                        score: frame.scores && frame.scores.length > i ? frame.scores[i] : 0
+                    }));
+                    items.sort((a, b) => b.score - a.score);
+                    return items;
+                };
+
+                let alternate = false;
+                sortedFrames.forEach((frame) => {
+                    const frameName = frame.name ? frame.name.substring(frame.name.indexOf('Ebene')) : (frame.lid ? ('Ebene ' + frame.lid) : '');
+                    const isBye = frame.players.length <= 1;
+                    const pinText = isBye ? '(Freirunde)' : getPinName(frame.pin, data.pins);
+                    const sorted = sortByScore(frame);
+                    const rowHeight = sorted.length * 5 + 3;
+
+                    if (y + rowHeight > 280) {
+                        doc.addPage();
+                        drawTitleSquare(doc, headerColor);
+                        writeTitle(doc, data.tournament.name);
+                        writeSubtitle(doc, 'Ergebnisse Runde ' + r.rid.toString() + ' (Fortsetzung)');
+                        x = 10;
+                        y = 45;
+                        doc.setFontSize(10);
+                        doc.setLineWidth(0.1);
+                        doc.text(x, y, 'Match');
+                        doc.text(x + 40, y, 'Spieler');
+                        doc.text(x + 130 - doc.getTextWidth('Score'), y, 'Score');
+                        doc.text(x + 140, y, 'Flipper');
+                        y += 3;
+                        doc.line(x, y, 200, y);
+                        y += 5;
+                    }
+
+                    if (alternate) {
+                        if (color) {
+                            drawSquare(doc, x, y - 5, 190, rowHeight, ...liteblue);
+                        } else {
+                            drawSquare(doc, x, y - 5, 190, rowHeight, "0.95");
+                        }
+                    }
+                    alternate = !alternate;
+
+                    doc.setFontSize(10);
+                    doc.text(x, y, frameName);
+                    doc.text(x + 140, y, pinText);
+
+                    sorted.forEach((item, idx) => {
+                        const playerName = getPlayerName(item.player, data.players);
+                        doc.text(x + 40, y, playerName);
+                        if (!isBye && frame.scores && frame.scores.length === frame.players.length) {
+                            const scoreStr = item.score.toLocaleString();
+                            if (idx === 0 && color) {
+                                drawSquare(doc, x + 130 - doc.getTextWidth(scoreStr) - 1, y - 4, doc.getTextWidth(scoreStr) + 2, 5, ...litegreen);
+                            }
+                            doc.text(x + 130 - doc.getTextWidth(scoreStr), y, scoreStr);
+                        }
+                        if (idx < sorted.length - 1) y += 5;
+                    });
+                    y += 8;
+                });
+            }
+        });
+    }
+
+    doc.save(data.tournament.name + ' Ergebnisse' + (color ? '' : ' Print') + '.pdf');
 }
