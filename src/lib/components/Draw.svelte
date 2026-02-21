@@ -123,9 +123,9 @@
 			</Button>
 		</div>
 		<div class="flex flex-col items-start mt-2">
-			<div class="wheel-single w-full flex items-center justify-start h-16 select-none">
+			<div class="wheel-single dark:!bg-none dark:bg-gray-800 w-full flex items-center justify-start h-16 select-none">
 				{#if progress}
-					<span class="text-2xl font-semibold animate-reel-spin">{animName}</span>
+					<span class="text-2xl font-semibold animate-reel-spin dark:text-gray-100">{animName}</span>
 				{:else if selectedPin}
 					<span class="text-3xl font-extrabold text-blue-900 dark:text-blue-200">{selectedPin}</span>
 				{/if}
