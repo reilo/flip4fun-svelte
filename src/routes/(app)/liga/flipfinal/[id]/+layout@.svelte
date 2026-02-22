@@ -27,7 +27,8 @@
 				{ link: '/liga/flipfinal/' + id + '/ranking', name: 'Tabelle' },
 				{ link: '/liga/flipfinal/' + id + '/pyramid', name: 'Ebenen' },
 				{ link: '/liga/flipfinal/' + id + '/matches', name: 'Matches' },
-				{ link: '/liga/flipfinal/' + id + '/draw', name: 'Lostrommel' }
+				{ link: '/liga/flipfinal/' + id + '/draw', name: 'Lostrommel' },
+				{ link: '/liga/flipfinal/' + id + '/extended', name: 'Export' }
 			];
 
 	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;
