@@ -11,6 +11,14 @@
 
 	let loadingTournamentID = $state('');
 
+	let hasActiveTournaments = $derived(
+		data.tournaments?.some(
+			(t) =>
+				t.status === 'Active' &&
+				(import.meta.env.VITE_INCLUDE_TEST || !t.name.includes('Test'))
+		) ?? false
+	);
+
 	const loadTournament = (tournament) => {
 		loadingTournamentID = tournament.id;
 		goto('/liga/' + tournament.type + '/' + tournament.id + '/ranking');
@@ -30,6 +38,7 @@
 	</Alert>
 {/if}
 
+{#if hasActiveTournaments}
 <div>
 	<Heading tag="h5" class="mb-3">Aktive Turniere</Heading>
 
@@ -70,6 +79,7 @@
 		</TableBody>
 	</Table>
 </div>
+{/if}
 
 <div>
 	<Heading tag="h5" class="mb-3">Turnier-Historie</Heading>
