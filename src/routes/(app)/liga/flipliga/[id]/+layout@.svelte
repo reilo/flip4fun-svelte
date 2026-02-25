@@ -1,6 +1,6 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
-	import { Heading, Button, Spinner } from 'flowbite-svelte';
+	import { Heading, Button, Spinner, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
@@ -26,14 +26,28 @@
 				{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
 				{ link: '/liga/flipliga/' + id + '/pyramid', name: 'Spielstärken' },
 				{ link: '/liga/flipliga/' + id + '/draw', name: 'Lostrommel' },
-				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
+				{
+					link: '/liga/flipliga/' + id + '/statistics',
+					name: 'Statistik',
+					dropdown: [
+						{ link: '/liga/flipliga/' + id + '/statistics/general', name: 'Allgemein' },
+						{ link: '/liga/flipliga/' + id + '/statistics/player', name: 'Spieler' }
+					]
+				},
 				{ link: '/admin/tournaments/flipliga/' + id + '/settings', name: 'Liga-Admin' }
 			]
 		: [
 				{ link: '/liga/flipliga/' + id + '/ranking', name: 'Ranking' },
 				{ link: '/liga/flipliga/' + id + '/matches', name: 'Matches' },
 				{ link: '/liga/flipliga/' + id + '/draw', name: 'Lostrommel' },
-				{ link: '/liga/flipliga/' + id + '/statistics', name: 'Statistik' },
+			{
+				link: '/liga/flipliga/' + id + '/statistics',
+				name: 'Statistik',
+				dropdown: [
+					{ link: '/liga/flipliga/' + id + '/statistics/general', name: 'Allgemein' },
+					{ link: '/liga/flipliga/' + id + '/statistics/player', name: 'Spieler' }
+				]
+			},
 				{ link: '/liga/flipliga/' + id + '/extended', name: 'Export' }
 			];
 	let loading = $state('');
@@ -50,7 +64,20 @@
 
 {#snippet headerLink(d)}
 	<NavLi>
-		{#if loading === d.link}
+		{#if d.dropdown}
+			{#if d.dropdown.some((sub) => sub.link === loading)}
+				<Button size={buttonSize} outline>
+					<Spinner class="me-3" size="4" color="white" />Laden ...
+				</Button>
+			{:else}
+				<Button id="dd-{d.name}" size={buttonSize} outline>{d.name} ▾</Button>
+				<Dropdown triggeredBy="#dd-{d.name}">
+					{#each d.dropdown as sub}
+						<DropdownItem onclick={() => loadPage(sub)}>{sub.name}</DropdownItem>
+					{/each}
+				</Dropdown>
+			{/if}
+		{:else if loading === d.link}
 			<Button size={buttonSize} outline>
 				<Spinner class="me-3" size="4" color="white" />Laden ...
 			</Button>

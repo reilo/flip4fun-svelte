@@ -137,7 +137,7 @@
 					{/if}
 					<TableBodyCell class={py}>
 						<a
-							href={'/liga/flipliga/' + page.params.id + '/statistics?player=' + rank.player}
+							href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + rank.player}
 							onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a
 						>
 						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
