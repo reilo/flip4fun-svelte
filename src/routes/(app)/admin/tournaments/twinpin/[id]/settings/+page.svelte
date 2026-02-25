@@ -4,8 +4,23 @@
 
 	let { data } = $props();
 
-	const status = data.tournament.status;
-	const settingsEnabled = status === 'Planned';
+	const tourStatus = data.tournament.status;
+	const roundStatus = data.round?.status ?? null;
+
+	const settingsRules = {
+		allowBye: { tourStatus: ['Planned', 'Active'], roundStatus: [null, 'Completed'] }
+	};
+
+	function isEditable(settingKey) {
+		const rule = settingsRules[settingKey];
+		if (!rule) return false;
+		if (!rule.tourStatus.includes(tourStatus)) return false;
+		if (rule.roundStatus && !rule.roundStatus.includes(roundStatus)) return false;
+		return true;
+	}
+
+	const anyEditable = Object.keys(settingsRules).some(isEditable);
+
 	let originalSettings = $state(data.tournament.settings);
 	let settings = $state(data.tournament.settings);
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
@@ -38,12 +53,12 @@
 <form>
 	<div>
 		<Label class="mb-3">
-			<Checkbox disabled={!settingsEnabled} bind:checked={settings.allowBye}
+			<Checkbox disabled={!isEditable('allowBye')} bind:checked={settings.allowBye}
 				>Freilos erlauben bei 4n+1 Teilnehmern</Checkbox
 			>
 		</Label>
 
-		{#if true}
+		{#if anyEditable}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 		{/if}
