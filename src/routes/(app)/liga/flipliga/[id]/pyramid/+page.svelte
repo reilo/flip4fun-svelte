@@ -18,7 +18,17 @@
 
 	const clickAreas = [];
 
-	const drawPyramid = () => {
+	let isDark = $state(document.documentElement.classList.contains('dark'));
+
+	$effect(() => {
+		const observer = new MutationObserver(() => {
+			isDark = document.documentElement.classList.contains('dark');
+		});
+		observer.observe(document.documentElement, { attributeFilter: ['class'] });
+		return () => observer.disconnect();
+	});
+
+	const drawPyramid = (isDark) => {
 		let ranking = [];
 		if (round) {
 			if (round.status === 'Completed') {
@@ -40,9 +50,9 @@
 		const xpos = layout.xpos;
 		const ypos = layout.ypos;
 		const rpos = layout.rpos;
-		const colorLightGray = '#eeeeee';
-		const colorDarkGray = '#dddddd';
-		const colorText = 'black';
+		const colorLightGray = isDark ? '#374151' : '#eeeeee';
+		const colorDarkGray  = isDark ? '#1f2937' : '#dddddd';
+		const colorText      = isDark ? '#e5e7eb' : 'black';
 
 		let x = 0,
 			y = 0;
@@ -92,7 +102,7 @@
 	};
 
 	$effect(() => {
-		drawPyramid();
+		drawPyramid(isDark);
 	});
 </script>
 

@@ -14,7 +14,17 @@
 	let hsize = $derived(Math.min(1280, innerWidth.current));
 	let vsize = $derived(innerHeight.current * 0.8);
 
-	const drawPyramid = () => {
+	let isDark = $state(document.documentElement.classList.contains('dark'));
+
+	$effect(() => {
+		const observer = new MutationObserver(() => {
+			isDark = document.documentElement.classList.contains('dark');
+		});
+		observer.observe(document.documentElement, { attributeFilter: ['class'] });
+		return () => observer.disconnect();
+	});
+
+	const drawPyramid = (isDark) => {
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
@@ -69,12 +79,12 @@
 			});
 		}
 
-		const colorLightGray = '#eeeeee';
-		const colorDarkGray = '#dddddd';
-		const colorLightGreen = '#ddeedd';
-		const colorDarkGreen = '#ccddcc';
-		const colorText = 'black';
-		const colorFrame = '#0a4f29';
+		const colorLightGray  = isDark ? '#374151' : '#eeeeee';
+		const colorDarkGray   = isDark ? '#1f2937' : '#dddddd';
+		const colorLightGreen = isDark ? '#14532d' : '#ddeedd';
+		const colorDarkGreen  = isDark ? '#166534' : '#ccddcc';
+		const colorText       = isDark ? '#e5e7eb' : 'black';
+		const colorFrame      = isDark ? '#4ade80' : '#0a4f29';
 
 		let x = 0,
 			y = 0;
@@ -120,7 +130,7 @@
 	};
 
 	$effect(() => {
-		drawPyramid();
+		drawPyramid(isDark);
 	});
 </script>
 
