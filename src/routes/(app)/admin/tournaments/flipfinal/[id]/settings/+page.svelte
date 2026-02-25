@@ -4,8 +4,35 @@
 
 	let { data } = $props();
 
-	const status = data.tournament.status;
-	const settingsEnabled = status == 'Planned'; // some settings remain enabled during tournament
+	const tourStatus = data.tournament.status;
+	const roundStatus = data.round?.status ?? null;
+
+	/**
+	 * Per-setting editability rules.
+	 * Each key corresponds to a setting property.
+	 * `tourStatus` defines in which tournament statuses the setting is editable.
+	 * `roundStatus` (optional) additionally restricts to specific round statuses.
+	 *   - If omitted or null, the round status is not checked.
+	 *   - Use [null] to require that no round exists yet.
+	 *   - Use [null, 'Completed'] to allow editing when no round exists OR round is completed.
+	 */
+	const settingsRules = {
+		numFinalists:  { tourStatus: ['Planned', 'Active'], roundStatus: [null, 'Completed'] },
+		pinTypes:      { tourStatus: ['Planned', 'Active'], roundStatus: [null, 'Completed'] },
+		maxStartBonus: { tourStatus: ['Planned'] }
+	};
+
+	/** Check if a specific setting is editable based on current tournament/round status */
+	function isEditable(settingKey) {
+		const rule = settingsRules[settingKey];
+		if (!rule) return false;
+		if (!rule.tourStatus.includes(tourStatus)) return false;
+		if (rule.roundStatus && !rule.roundStatus.includes(roundStatus)) return false;
+		return true;
+	}
+
+	const anyEditable = Object.keys(settingsRules).some(isEditable);
+
 	let originalSettings = $state(data.tournament.settings);
 	let settings = $state(data.tournament.settings);
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
@@ -45,20 +72,20 @@
 	<div>
 		<Label class="mb-3">
 			<span>Wieviele Spieler sollen in die oberste Ebene aufsteigen?</span>
-			<NumberInput disabled={false/*!settingsEnabled*/} min="3" max="4" bind:value={settings.numFinalists} />
+			<NumberInput disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} />
 		</Label>
 
 		<Label class="mb-3">
 			Welche Flipper-Kombination soll für jedes Double-Match gelost werden?
-			<Select disabled={false/*!settingsEnabled*/} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
+			<Select disabled={!isEditable('pinTypes')} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
 		</Label>
 
 		<Label class="mb-3">
 			<span>Wie hoch soll der maximale Start-Bonus sein?</span>
-			<NumberInput disabled={!settingsEnabled} min="0" max="5" bind:value={settings.maxStartBonus} />
+			<NumberInput disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} />
 		</Label>
 
-		{#if true/*settingsEnabled*/}
+		{#if anyEditable}
 			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
 			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
 		{/if}
