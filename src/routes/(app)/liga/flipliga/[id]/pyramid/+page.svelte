@@ -88,13 +88,22 @@
 		}, 1500);
 	};
 
+	const handleMouseMove = (e) => {
+		const x = parseInt(e.offsetX);
+		const y = parseInt(e.offsetY);
+		const hit = clickAreas.some(
+			(area) => x >= area.x && x <= area.x + area.w && y > area.y && y <= area.y + area.h
+		);
+		e.target.style.cursor = hit ? 'pointer' : 'default';
+	};
+
 	const handleClick = (e) => {
 		const x = parseInt(e.offsetX);
 		const y = parseInt(e.offsetY);
 		clickAreas.forEach((area) => {
 			if (x >= area.x && x <= area.x + area.w && y > area.y && y <= area.y + area.h) {
 				goto(
-					'/liga/' + tournament.type + '/' + tournament.id + '/statistics?player=' + area.player
+					'/liga/' + tournament.type + '/' + tournament.id + '/statistics/player?player=' + area.player
 				);
 				return;
 			}
@@ -114,5 +123,5 @@
 	{/if}
 	<P class="mb-3">Spielerfoto anklicken für Statistiken.</P>
 
-	<canvas id="myCanvas" width={hsize} height={vsize} onmousedown={handleClick}></canvas>
+	<canvas id="myCanvas" width={hsize} height={vsize} onmousemove={handleMouseMove} onmousedown={handleClick}></canvas>
 </div>

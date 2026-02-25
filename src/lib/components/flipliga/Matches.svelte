@@ -5,6 +5,7 @@
 	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/state';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { calcPoints, getMatchToastMessage } from '$lib/MatchUtil';
@@ -356,20 +357,24 @@
 				<TableBodyRow>
 					<TableBodyCell class={py}>
 						<div style={getPlayer1ColorStyle(match)}>
+						<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player1}>
 							{#if isPhone}
 								{getPlayerName(match.player1, true)}
 							{:else}
 								{getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}
 							{/if}
-						</div>
-					</TableBodyCell>
-					<TableBodyCell class={py}>
-						<div style={getPlayer2ColorStyle(match)}>
+						</a>
+					</div>
+				</TableBodyCell>
+				<TableBodyCell class={py}>
+					<div style={getPlayer2ColorStyle(match)}>
+						<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player2}>
 							{#if isPhone}
 								{getPlayerName(match.player2, true)}
 							{:else}
 								{getPlayerName(match.player2) + ' (' + getStrength(match.player2) + ')'}
 							{/if}
+						</a>
 						</div>
 					</TableBodyCell>
 					<TableBodyCell class={py} align="left">
