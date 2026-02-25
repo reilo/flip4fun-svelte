@@ -90,6 +90,6 @@
 			</form>
 		</Modal>
 		<DarkMode />
-		<img src="/pinlounge_trans.gif" width="128" alt="Logo" />
+		<img src="/pinlounge_trans.gif" width="128" alt="Logo" class="dark:invert" />
 	</Navbar>
 </header>
