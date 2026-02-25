@@ -1,6 +1,5 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
-	import { Footer, FooterCopyright } from 'flowbite-svelte';
 	import { Heading, Button, Spinner } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { page } from '$app/state';
@@ -72,7 +71,7 @@
 		</div>
 	</main>
 
-	<Footer>
-		<FooterCopyright href="/about" by="Reinhard Loch." year={'2023-2026'} />
-	</Footer>
+	<footer class="p-4 text-xs text-gray-400 dark:text-gray-500 border-t border-gray-200 dark:border-gray-700">
+		&copy; 2023-{new Date().getFullYear()} reilo &mdash; MIT License
+	</footer>
 </div>
