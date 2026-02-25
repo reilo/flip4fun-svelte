@@ -63,7 +63,8 @@ export function getDefaultSettings(type) {
                 matchBonus: 1,
                 matchPenalty: 1,
                 minMatchesRound: 1,
-                challengeSame: 1
+                challengeSame: 1,
+                showToast: false
             };
         case "flipfinal":
             return {
