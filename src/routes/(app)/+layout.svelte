@@ -4,6 +4,7 @@
 	import { Button, Spinner } from 'flowbite-svelte';
 	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 	import { goto, afterNavigate } from '$app/navigation';
+	import { page } from '$app/state';
 	import { innerWidth } from 'svelte/reactivity/window';
 
 	let buttonSize = $derived(innerWidth.current <= 1024 ? 'xs' : 'sm');
@@ -40,11 +41,16 @@
 {#snippet headerLink(d)}
 	<NavLi>
 		{#if loading === d.link}
-			<Button size={buttonSize} outline>
-				<Spinner class="me-3" size="4" color="white" />Laden ...
+			<Button size={buttonSize} class="rounded-full">
+				<Spinner class="me-2" size="4" color="white" />Laden ...
 			</Button>
 		{:else}
-			<Button size={buttonSize} outline on:click={() => loadPage(d)}>{d.name}</Button>
+			<Button
+				size={buttonSize}
+				color={page.url.pathname.startsWith(d.link === '/' ? '/__never__' : d.link) ? 'primary' : 'alternative'}
+				class="rounded-full"
+				on:click={() => loadPage(d)}
+			>{d.name}</Button>
 		{/if}
 	</NavLi>
 {/snippet}
@@ -56,7 +62,7 @@
 		{@render children?.()}
 	</main>
 
-	<footer class="p-4 text-xs text-gray-400 dark:text-gray-500 border-t border-gray-200 dark:border-gray-700">
-		&copy; 2023-{new Date().getFullYear()} reilo &mdash; MIT License
+	<footer class="px-4 py-3 text-center text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
+		<span>&copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
 	</footer>
 </div>
