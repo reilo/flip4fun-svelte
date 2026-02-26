@@ -1,35 +1,58 @@
 <script>
-	import { Heading, Button, Card } from 'flowbite-svelte';
-	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	import { Heading, Button, Card, Badge } from 'flowbite-svelte';
+	import { FilePdfOutline } from 'flowbite-svelte-icons';
 	import { generateLigaResultsPDF } from '$lib/PDFLigaUtil';
 	let { data } = $props();
 	let pdfEnabled = data.round && data.round.status === 'Completed';
 </script>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Ergebnis-PDF generieren
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das PDF mit Ergebnissen und Statistiken für alle Spieltage.
-		</p>
-		<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, true)} class="w-fit">
-			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
-</div>
+<div class="space-y-6">
+	<!-- Action Cards -->
+	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+						<FilePdfOutline class="w-5 h-5 text-blue-600 dark:text-blue-300" />
+					</div>
+					<Heading tag="h5" class="text-xl font-bold text-gray-900 dark:text-white">
+						Ergebnis-PDF generieren
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Generiere das PDF mit Ergebnissen und Statistiken für alle Spieltage.
+				</p>
+				{#if !pdfEnabled}
+					<Badge color="gray" class="mb-3">Liga nicht abgeschlossen</Badge>
+				{/if}
+				<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, true)} class="w-full mt-auto text-base">
+					<FilePdfOutline class="w-4 h-4 mr-2" />
+					Generiere PDF
+				</Button>
+			</div>
+		</Card>
 
-<div>
-	<Card>
-		<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Ergebnis-PDF - Druckversion
-		</Heading>
-		<p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-			Generiere hier das Ergebnis-PDF in Graustufendarstellung für die Druckausgabe.
-		</p>
-		<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, false)} class="w-fit">
-			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</Card>
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+						<FilePdfOutline class="w-5 h-5 text-gray-600 dark:text-gray-300" />
+					</div>
+					<Heading tag="h5" class="text-xl font-bold text-gray-900 dark:text-white">
+						Ergebnis-PDF – Druckversion
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Generiere das Ergebnis-PDF in Graustufendarstellung für die Druckausgabe.
+				</p>
+				{#if !pdfEnabled}
+					<Badge color="gray" class="mb-3">Liga nicht abgeschlossen</Badge>
+				{/if}
+				<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, false)} class="w-full mt-auto text-base">
+					<FilePdfOutline class="w-4 h-4 mr-2" />
+					Generiere PDF
+				</Button>
+			</div>
+		</Card>
+	</div>
 </div>
