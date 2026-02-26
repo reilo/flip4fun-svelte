@@ -1,11 +1,12 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import { randomPin, getOldTypes, getNewTypes } from '$lib/PinUtil';
-	import { calcInitialLevels, calcPlayingLevels, calcFinalResults } from '$lib/TourUtil';
+	import { calcInitialLevels, calcPlayingLevels, calcFinalResults, mapTourStatus } from '$lib/TourUtil';
 	import { hasFrameResult } from '$lib/FrameUtil';
 	import Success from '$lib/components/dialogs/Success.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
-	import Box from '$lib/components/Box.svelte';
+	import { Card, Badge, Heading } from 'flowbite-svelte';
+	import { PlayOutline, CheckCircleOutline, FlagOutline } from 'flowbite-svelte-icons';
 
 	let { data } = $props();
 
@@ -226,78 +227,189 @@
 	};
 </script>
 
-<Box
-	title={'Turnier starten'}
-	description={'Sobald das Finalturnier gestartet wurde, müssen nicht teilnehmende Spieler deaktiviert werden. ' +
-		'Anschließend kann die erste Runde gestartet werden.'}
-	action={() => (startTourForm = true)}
-	enabled={startTourEnabled}
-	buttonOk={'Starten'}
-	loading={false}
-/>
+<div class="space-y-6">
+	<!-- Status Summary -->
+	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700">
+		<div class="flex items-start justify-between">
+			<div>
+				<p class="text-lg text-gray-600 dark:text-gray-300">
+					{#if round}
+						<span class="font-semibold">Aktuelle Runde:</span> {round.rid} / Status: <Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
+					{:else}
+						<span class="font-semibold">Status:</span> <Badge color={tournament.status === 'Planned' ? 'yellow' : 'green'}>{mapTourStatus(tournament.status)}</Badge>
+					{/if}
+				</p>
+			</div>
+		</div>
+	</Card>
 
-<Sure
-	show={startTourForm}
-	title={'Turnier starten'}
-	message={'Soll das Finalturnier wirklich gestartet werden?'}
-	actionOk={startTour}
-	actionCancel={() => (startTourForm = false)}
-	buttonOk={'Ja, starten'}
-/>
+	<!-- Action Cards Grid -->
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+		<!-- Start Tour Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+						<PlayOutline class="w-5 h-5 text-blue-600 dark:text-blue-300" />
+					</div>
+					<Heading tag="h5" class="text-lg font-bold text-gray-900 dark:text-white">
+						Turnier starten
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Nicht teilnehmende Spieler deaktivieren. Erste Runde starten.
+				</p>
+				{#if !startTourEnabled}
+					<Badge color="gray" class="mb-3">Nicht verfügbar</Badge>
+				{/if}
+				<button 
+					disabled={!startTourEnabled}
+					onclick={() => (startTourForm = true)}
+					class="w-full px-4 py-2 text-base font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg flex items-center justify-center gap-2 mt-auto"
+				>
+					<PlayOutline class="w-4 h-4" />
+					Starten
+				</button>
+			</div>
+		</Card>
 
-<Box
-	title={'Neue Runde starten'}
-	description={'Matches für alle teilnehmenden Ebenen werden ausgelost und die Runde gestartet.'}
-	action={() => (startRoundForm = true)}
-	enabled={startRoundEnabled}
-	buttonOk={'Starten'}
-	loading={false}
-/>
+		<!-- Start Round Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+						<PlayOutline class="w-5 h-5 text-green-600 dark:text-green-300" />
+					</div>
+					<Heading tag="h5" class="text-lg font-bold text-gray-900 dark:text-white">
+						Neue Runde
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Matches auslosen und Runde starten.
+				</p>
+				{#if !startRoundEnabled}
+					<Badge color="gray" class="mb-3">
+						{#if tournament.status !== 'Active'}
+							Warte auf Turnier-Start
+						{:else if round && round.status === 'Active'}
+							Runde noch aktiv
+						{:else}
+							Nicht verfügbar
+						{/if}
+					</Badge>
+				{/if}
+				<button 
+					disabled={!startRoundEnabled}
+					onclick={() => (startRoundForm = true)}
+					class="w-full px-4 py-2 text-base font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg flex items-center justify-center gap-2 mt-auto"
+				>
+					<PlayOutline class="w-4 h-4" />
+					Starten
+				</button>
+			</div>
+		</Card>
 
-<Sure
-	show={startRoundForm}
-	title={'Runde starten'}
-	message={'Soll wirklich eine neue Runde gestartet werden?'}
-	actionOk={startRound}
-	actionCancel={() => (startRoundForm = false)}
-	buttonOk={'Ja, starten'}
-/>
+		<!-- End Round Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
+						<CheckCircleOutline class="w-5 h-5 text-amber-600 dark:text-amber-300" />
+					</div>
+					<Heading tag="h5" class="text-lg font-bold text-gray-900 dark:text-white">
+						Runde beenden
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Ebenen neu berechnen. Alle Matches müssen komplett sein.
+				</p>
+				{#if !endRoundEnabled}
+					<Badge color="gray" class="mb-3">
+						{#if !round}
+							Keine aktive Runde
+						{:else}
+							Nicht alle Matches fertig
+						{/if}
+					</Badge>
+				{/if}
+				<button 
+					disabled={!endRoundEnabled}
+					onclick={() => (endRoundForm = true)}
+					class="w-full px-4 py-2 text-base font-medium text-white bg-amber-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg flex items-center justify-center gap-2 mt-auto"
+				>
+					<CheckCircleOutline class="w-4 h-4" />
+					Beenden
+				</button>
+			</div>
+		</Card>
 
-<Box
-	title={'Runde beenden'}
-	description={'Die aktuelle Runde wird beendet und die Ebenen neu berechnet. ' +
-		'Die Runde kann erst beendet werden, wenn die Ergebnisse für alle Matches eingetragen wurden.'}
-	action={() => (endRoundForm = true)}
-	enabled={endRoundEnabled}
-	buttonOk={'Beenden'}
-	loading={false}
-/>
+		<!-- End Tour Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
+						<FlagOutline class="w-5 h-5 text-purple-600 dark:text-purple-300" />
+					</div>
+					<Heading tag="h5" class="text-lg font-bold text-gray-900 dark:text-white">
+						Turnier beenden
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Finalturnier abschließen. Alle Runden müssen komplett sein.
+				</p>
+				{#if !endTourEnabled}
+					<Badge color="gray" class="mb-3">
+						Warte auf Rundenabschluss
+					</Badge>
+				{/if}
+				<button 
+					disabled={!endTourEnabled}
+					onclick={() => (endTourForm = true)}
+					class="w-full px-4 py-2 text-base font-medium text-white bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg flex items-center justify-center gap-2 mt-auto"
+				>
+					<FlagOutline class="w-4 h-4" />
+					Beenden
+				</button>
+			</div>
+		</Card>
+	</div>
 
-<Sure
-	show={endRoundForm}
-	title={'Runde beenden'}
-	message={'Soll die aktuelle Runde wirklich beendet werden?'}
-	actionOk={endRound}
-	actionCancel={() => (endRoundForm = false)}
-	buttonOk={'Ja, beenden'}
-/>
+	<!-- Dialogs -->
+	<Sure
+		show={startTourForm}
+		title={'Turnier starten'}
+		message={'Soll das Finalturnier wirklich gestartet werden?'}
+		actionOk={startTour}
+		actionCancel={() => (startTourForm = false)}
+		buttonOk={'Ja, starten'}
+	/>
 
-<Success show={successForm} message={successMessage} onClose={() => (successForm = false)} />
+	<Sure
+		show={startRoundForm}
+		title={'Runde starten'}
+		message={'Soll wirklich eine neue Runde gestartet werden?'}
+		actionOk={startRound}
+		actionCancel={() => (startRoundForm = false)}
+		buttonOk={'Ja, starten'}
+	/>
 
-<Box
-	title={'Turnier beenden'}
-	description={'Das Final-Turnier kann beendet wurden, sobald alle Runden abgeschlossen sind.'}
-	action={() => (endTourForm = true)}
-	enabled={endTourEnabled}
-	buttonOk={'Beenden'}
-	loading={false}
-/>
+	<Sure
+		show={endRoundForm}
+		title={'Runde beenden'}
+		message={'Soll die aktuelle Runde wirklich beendet werden?'}
+		actionOk={endRound}
+		actionCancel={() => (endRoundForm = false)}
+		buttonOk={'Ja, beenden'}
+	/>
 
-<Sure
-	show={endTourForm}
-	title={'Turnier beenden'}
-	message={'Soll das Finalturnier wirklich beendet werden?'}
-	actionOk={endTour}
-	actionCancel={() => (endTourForm = false)}
-	buttonOk={'Ja, beenden'}
-/>
+	<Success show={successForm} message={successMessage} onClose={() => (successForm = false)} />
+
+	<Sure
+		show={endTourForm}
+		title={'Turnier beenden'}
+		message={'Soll das Finalturnier wirklich beendet werden?'}
+		actionOk={endTour}
+		actionCancel={() => (endTourForm = false)}
+		buttonOk={'Ja, beenden'}
+	/>
+</div>

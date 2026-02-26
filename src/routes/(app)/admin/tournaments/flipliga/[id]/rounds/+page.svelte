@@ -1,10 +1,12 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
-	import { calcStrength } from '$lib/TourUtil';
+	import { calcStrength, mapTourStatus } from '$lib/TourUtil';
 	import { calcRanking } from '$lib/MatchUtil';
 	import Box from '$lib/components/Box.svelte';
 	import Sure from '$lib/components/dialogs/Sure.svelte';
 	import Success from '$lib/components/dialogs/Success.svelte';
+	import { Card, Button, Badge, Heading } from 'flowbite-svelte';
+	import { PlayOutline, CheckCircleOutline, FlagOutline } from 'flowbite-svelte-icons';
 
 	let { data } = $props();
 
@@ -235,74 +237,152 @@
 	}
 </script>
 
-<Box
-	title={'Spieltag starten'}
-	description={'Sobald der Spieltag gestartet wurde, können im laufenden Spieltag keine neuen Spieler	hinzugefügt werden.'}
-	action={() => (startForm = true)}
-	enabled={startEnabled}
-	buttonOk={'Starten'}
-	loading={false}
-/>
+<div class="space-y-6">
+	<!-- Status Summary -->
+	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700">
+		<div class="flex items-start justify-between">
+			<div>
+				<p class="text-lg text-gray-600 dark:text-gray-300">
+					{#if round}
+						<span class="font-semibold">Aktuelle Runde:</span> {round.rid} / Status: <Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
+					{:else}
+						<span class="font-semibold">Status:</span> <Badge color={tournament.status === 'Planned' ? 'yellow' : 'green'}>{mapTourStatus(tournament.status)}</Badge>
+					{/if}
+				</p>
+			</div>
+		</div>
+	</Card>
 
-<Box
-	title={'Spieltag beenden'}
-	description={'Sobald der Spieltag beendet wurde, können keine Matches mehr nachgetragen oder korrigiert werden.'}
-	action={() => (endForm = true)}
-	enabled={endEnabled}
-	buttonOk={'Beenden'}
-	loading={false}
-/>
+	<!-- Action Cards Grid -->
+	<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+		<!-- Start Round Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+						<PlayOutline class="w-5 h-5 text-blue-600 dark:text-blue-300" />
+					</div>
+					<Heading tag="h5" class="text-xl font-bold text-gray-900 dark:text-white">
+						Spieltag starten
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Sobald der Spieltag gestartet wurde, können keine neuen Spieler hinzugefügt werden.
+				</p>
+				{#if !startEnabled}
+					<Badge color="gray" class="mb-3">
+						{#if data.round && data.round.status !== 'Completed'}
+							Warte auf Rundenende
+						{:else if !data.round && data.tournament.players.length < 4}
+							Mind. 4 Spieler erforderlich
+						{:else}
+							Nicht verfügbar
+						{/if}
+					</Badge>
+				{/if}
+			<Button disabled={!startEnabled} on:click={() => (startForm = true)} class="w-full mt-auto text-base">
+					<PlayOutline class="w-4 h-4 mr-2" />
+					Starten
+				</Button>
+			</div>
+		</Card>
 
-<Box
-	title={'Liga beenden'}
-	description={'Hiermit wird die Liga abgeschlossen. Danach können keine weiteren Spieltage mehr gestartet werden.'}
-	action={() => (endLigaForm = true)}
-	enabled={endLigaEnabled}
-	buttonOk={'Beenden'}
-	loading={false}
-/>
+		<!-- End Round Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+						<CheckCircleOutline class="w-5 h-5 text-green-600 dark:text-green-300" />
+					</div>
+					<Heading tag="h5" class="text-xl font-bold text-gray-900 dark:text-white">
+						Spieltag beenden
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Sobald beendet, können keine Matches mehr nachgetragen oder korrigiert werden.
+				</p>
+				{#if !endEnabled}
+					<Badge color="gray" class="mb-3">
+						Kein aktiver Spieltag
+					</Badge>
+				{/if}
+			<Button disabled={!endEnabled} on:click={() => (endForm = true)} class="w-full mt-auto text-base">
+					<CheckCircleOutline class="w-4 h-4 mr-2" />
+					Beenden
+				</Button>
+			</div>
+		</Card>
 
-<Sure
-	show={startForm}
-	title={'Spieltag starten'}
-	message={'Soll der nächste Spieltag wirklich gestartet werden?'}
-	actionOk={startRound}
-	actionCancel={() => (startForm = false)}
-	buttonOk={'Ja, starten'}
-/>
+		<!-- End Liga Card -->
+		<Card class="hover:shadow-lg transition-shadow">
+			<div class="flex flex-col h-full">
+				<div class="flex items-center gap-3 mb-3">
+					<div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
+						<FlagOutline class="w-5 h-5 text-purple-600 dark:text-purple-300" />
+					</div>
+					<Heading tag="h5" class="text-xl font-bold text-gray-900 dark:text-white">
+						Liga abschließen
+					</Heading>
+				</div>
+				<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
+					Die Liga wird endgültig abgeschlossen. Keine weiteren Spieltage möglich.
+				</p>
+				{#if !endLigaEnabled}
+					<Badge color="gray" class="mb-3">
+						Warte auf Rundenende
+					</Badge>
+				{/if}
+				<Button disabled={!endLigaEnabled} on:click={() => (endLigaForm = true)} class="w-full mt-auto bg-purple-600 hover:bg-purple-700 text-base">
+				<FlagOutline class="w-4 h-4 mr-2" />
+				Abschließen
+			</Button>
+			</div>
+		</Card>
+	</div>
 
-<Success
-	show={startSuccess}
-	message={'Der Spieltag wurde erfolgreich gestartet!'}
-	onClose={() => (startSuccess = false)}
-/>
+	<!-- Dialogs -->
+	<Sure
+		show={startForm}
+		title={'Spieltag starten'}
+		message={'Soll der nächste Spieltag wirklich gestartet werden?'}
+		actionOk={startRound}
+		actionCancel={() => (startForm = false)}
+		buttonOk={'Ja, starten'}
+	/>
 
-<Sure
-	show={endForm}
-	title={'Spieltag beenden'}
-	message={'Soll der aktuelle Spieltag wirklich beendet werden?'}
-	actionOk={endRound}
-	actionCancel={() => (endForm = false)}
-	buttonOk={'Ja, beenden'}
-/>
+	<Success
+		show={startSuccess}
+		message={'Der Spieltag wurde erfolgreich gestartet!'}
+		onClose={() => (startSuccess = false)}
+	/>
 
-<Success
-	show={endSuccess}
-	message={'Der Spieltag wurde erfolgreich beendet!'}
-	onClose={() => (endSuccess = false)}
-/>
+	<Sure
+		show={endForm}
+		title={'Spieltag beenden'}
+		message={'Soll der aktuelle Spieltag wirklich beendet werden?'}
+		actionOk={endRound}
+		actionCancel={() => (endForm = false)}
+		buttonOk={'Ja, beenden'}
+	/>
 
-<Sure
-	show={endLigaForm}
-	title={'Liga beenden'}
-	message={'Soll diese Liga wirklich endgültig beendet werden?'}
-	actionOk={endLiga}
-	actionCancel={() => (endLigaForm = false)}
-	buttonOk={'Ja, beenden'}
-/>
+	<Success
+		show={endSuccess}
+		message={'Der Spieltag wurde erfolgreich beendet!'}
+		onClose={() => (endSuccess = false)}
+	/>
 
-<Success
-	show={endLigaSuccess}
-	message={'Die Liga wurde erfolgreich beendet!'}
-	onClose={() => (endLigaSuccess = false)}
-/>
+	<Sure
+		show={endLigaForm}
+		title={'Liga beenden'}
+		message={'Soll diese Liga wirklich endgültig beendet werden?'}
+		actionOk={endLiga}
+		actionCancel={() => (endLigaForm = false)}
+		buttonOk={'Ja, beenden'}
+	/>
+
+	<Success
+		show={endLigaSuccess}
+		message={'Die Liga wurde erfolgreich beendet!'}
+		onClose={() => (endLigaSuccess = false)}
+	/>
+</div>
