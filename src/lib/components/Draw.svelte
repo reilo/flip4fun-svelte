@@ -1,7 +1,7 @@
 <script>
-	import { P, Heading } from 'flowbite-svelte';
+	import { Heading } from 'flowbite-svelte';
 	import { Toggle, Button, Alert, Spinner } from 'flowbite-svelte';
-	import { SearchSolid, InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { ArrowsRepeatOutline, InfoCircleSolid, CheckCircleOutline } from 'flowbite-svelte-icons';
 	import { filterPins, randomPin } from '$lib/PinUtil';
 	import { logInfo } from '$lib/LogUtil';
 
@@ -80,71 +80,106 @@
 	}
 </script>
 
-<div>
+<div class="max-w-xl mx-auto space-y-8">
 	{#if showError}
-		<Alert border color="red" class="mb-3">
+		<Alert border color="red">
 			<InfoCircleSolid slot="icon" class="w-5 h-5" />
 			<span class="font-bold">Interner Fehler!</span>
-			<P>
-				{data.message}
-			</P>
-			<P>
-				{data.error}
-			</P>
+			<p>{data.message}</p>
+			<p>{data.error}</p>
 		</Alert>
 	{/if}
 
-	<Heading tag="h5" class="mb-3">Flipper losen</Heading>
+	<!-- Hero -->
+	<div class="text-center space-y-3">
+		<Heading tag="h2" class="text-3xl font-extrabold text-gray-900 dark:text-white">
+			Lostrommel
+		</Heading>
+		<p class="text-gray-500 dark:text-gray-400">
+			Aktiviere deine gewünschten Flippertypen und lass das Schicksal entscheiden!
+		</p>
+	</div>
 
-	<P class="mb-1">Klicke auf Start, um einen Flipper auszulosen.</P>
-	<P class="mb-3">
-		Um deine Auswahl auf bestimmte Flippertypen einzuschränken, aktiviere bzw. deaktiviere die
-		entsprechenden Optionen.
-	</P>
-
-	<div class="grid grid-flow-row gap-2 sm:gap-3">
-		<Toggle id="emToggle" checked={em} on:change={() => (em = !em)}
-			>Elektromechanisch (bis Ende 70er)</Toggle
-		>
-		<Toggle id="eeToggle" checked={ee} on:change={() => (ee = !ee)}
-			>Early Electronic (bis Ende 80er)</Toggle
-		>
-		<Toggle id="dmdToggle" checked={dmd} on:change={() => (dmd = !dmd)}
-			>DMD-Flipper (bis 2005, WPC)</Toggle
-		>
-		<Toggle id="lcdToggle" checked={lcd} on:change={() => (lcd = !lcd)}
-			>Moderne Flipper (SAM, Spike)</Toggle
-		>
-		<div>
-			<Button class="mb-3 mt-3" disabled={showError} size="xl" on:click={selectPin}>
-				<Spinner class="mr-3 {progress ? '' : 'hidden'}" size="4" />
-				<SearchSolid class="w-3.5 h-3.5 mr-2 {progress ? 'hidden' : ''}" />
-				Starten
-			</Button>
-		</div>
-		<div class="flex flex-col items-start mt-2">
-			<div class="wheel-single dark:!bg-none dark:bg-gray-800 w-full flex items-center justify-start h-16 select-none">
-				{#if progress}
-					<span class="text-2xl font-semibold animate-reel-spin dark:text-gray-100">{animName}</span>
-				{:else if selectedPin}
-					<span class="text-3xl font-extrabold text-blue-900 dark:text-blue-200">{selectedPin}</span>
-				{/if}
+	<!-- Filter -->
+	<div class="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-6">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">
+			Flipper-Typen filtern
+		</p>
+		<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
+				{em ? 'border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-blue-900/30' : 'border-gray-200 dark:border-gray-700'}">
+				<Toggle checked={em} on:change={() => (em = !em)} />
+				<div class="min-w-0">
+					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Elektromechanisch</p>
+					<p class="text-xs text-gray-400">bis Ende 70er</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
+				{ee ? 'border-purple-400 bg-purple-50 dark:border-purple-500 dark:bg-purple-900/30' : 'border-gray-200 dark:border-gray-700'}">
+				<Toggle checked={ee} on:change={() => (ee = !ee)} />
+				<div class="min-w-0">
+					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Early Electronic</p>
+					<p class="text-xs text-gray-400">bis Ende 80er</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
+				{dmd ? 'border-amber-400 bg-amber-50 dark:border-amber-500 dark:bg-amber-900/30' : 'border-gray-200 dark:border-gray-700'}">
+				<Toggle checked={dmd} on:change={() => (dmd = !dmd)} />
+				<div class="min-w-0">
+					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">DMD-Flipper</p>
+					<p class="text-xs text-gray-400">bis 2005, WPC</p>
+				</div>
+			</div>
+			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
+				{lcd ? 'border-green-400 bg-green-50 dark:border-green-500 dark:bg-green-900/30' : 'border-gray-200 dark:border-gray-700'}">
+				<Toggle checked={lcd} on:change={() => (lcd = !lcd)} />
+				<div class="min-w-0">
+					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Moderne Flipper</p>
+					<p class="text-xs text-gray-400">SAM, Spike</p>
+				</div>
 			</div>
 		</div>
 	</div>
-<style>
-.wheel-single {
-	min-height: 3.5rem;
-	background: linear-gradient(90deg, #f3f4f6 0%, #fff 50%, #f3f4f6 100%);
-	border-radius: 0.5rem;
-	box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
-	font-family: inherit;
-	letter-spacing: 0.01em;
-	padding: 0.5rem 1.5rem 0.5rem 1rem;
-}
-.animate-reel-spin {
-	transition: color 0.18s cubic-bezier(.4,0,.2,1);
-	will-change: text-shadow, color;
-}
-</style>
+
+	<!-- Button -->
+	<div class="flex justify-center">
+		<Button
+			size="xl"
+			disabled={showError}
+			on:click={selectPin}
+			class="px-12 text-lg font-bold shadow-lg hover:shadow-xl transition-all"
+		>
+			{#if progress}
+				<Spinner class="mr-3" size="5" color="white" />
+				Läuft...
+			{:else}
+				<ArrowsRepeatOutline class="w-5 h-5 mr-2" />
+				Starten!
+			{/if}
+		</Button>
+	</div>
+
+	<!-- Result -->
+	{#if progress || selectedPin}
+		<div class="rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-600 to-purple-700 p-8 text-center select-none">
+			<p class="text-white/60 text-xs font-semibold uppercase tracking-widest mb-3">
+				{progress ? 'Auslosung läuft ...' : 'Dein Flipper'}
+			</p>
+			{#if progress}
+				<p class="text-2xl font-bold text-white animate-reel-spin">{animName}</p>
+			{:else if selectedPin}
+				<div class="flex flex-col items-center gap-3">
+					<CheckCircleOutline class="w-10 h-10 text-white/80" />
+					<p class="text-3xl font-extrabold text-white">{selectedPin}</p>
+				</div>
+			{/if}
+		</div>
+	{/if}
 </div>
+
+<style>
+	.animate-reel-spin {
+		transition: color 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+		will-change: color;
+	}
+</style>
