@@ -28,7 +28,7 @@
 		return () => observer.disconnect();
 	});
 
-	const drawPyramid = (isDark) => {
+	const drawPyramid = async (isDark) => {
 		let ranking = [];
 		if (round) {
 			if (round.status === 'Completed') {
@@ -57,35 +57,38 @@
 		let x = 0,
 			y = 0;
 
-		const interval = setInterval(() => {
-			ctx.clearRect(0, 0, hsize, vsize);
-			let alternate = false;
-			ctx.font = imageHeight / 1.5 + 'px Georgia';
+		clickAreas.splice(0, clickAreas.length);
 
-			for (let idx = 0; idx < totalRows; ++idx) {
-				ctx.fillStyle = alternate ? colorDarkGray : colorLightGray;
-				alternate = !alternate;
-				ctx.fillRect(0, rpos[idx], hsize, imageHeight);
-				ctx.fillStyle = colorText;
-				ctx.fillText((totalRows - idx).toString(), 3, rpos[idx] + imageHeight - 20);
-			}
+		const images = await Promise.all(
+			ranking.map(
+				(rank) =>
+					new Promise((resolve) => {
+						const img = new Image();
+						img.onload = () => resolve({ rank, img });
+						img.onerror = () => resolve({ rank, img });
+						img.src = imageBaseUrl + rank.player + imageExtension;
+					})
+			)
+		);
 
-			clickAreas.splice(0, clickAreas.length);
+		ctx.clearRect(0, 0, hsize, vsize);
+		let alternate = false;
+		ctx.font = imageHeight / 1.5 + 'px Georgia';
 
-			ranking.forEach((rank, i) => {
-				x = hOffset + xpos[i];
-				y = ypos[i];
+		for (let idx = 0; idx < totalRows; ++idx) {
+			ctx.fillStyle = alternate ? colorDarkGray : colorLightGray;
+			alternate = !alternate;
+			ctx.fillRect(0, rpos[idx], hsize, imageHeight);
+			ctx.fillStyle = colorText;
+			ctx.fillText((totalRows - idx).toString(), 3, rpos[idx] + imageHeight - 20);
+		}
 
-				let img = new Image();
-				img.src = imageBaseUrl + rank.player + imageExtension;
-				ctx.drawImage(img, x, y, imageWidth, imageHeight);
-
-				clickAreas.push({ player: rank.player, x: x, y: y, w: imageWidth, h: imageHeight });
-			});
-		}, 500);
-		setTimeout(() => {
-			clearInterval(interval);
-		}, 1500);
+		images.forEach(({ rank, img }, i) => {
+			x = hOffset + xpos[i];
+			y = ypos[i];
+			ctx.drawImage(img, x, y, imageWidth, imageHeight);
+			clickAreas.push({ player: rank.player, x: x, y: y, w: imageWidth, h: imageHeight });
+		});
 	};
 
 	const handleMouseMove = (e) => {

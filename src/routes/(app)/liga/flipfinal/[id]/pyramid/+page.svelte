@@ -24,7 +24,7 @@
 		return () => observer.disconnect();
 	});
 
-	const drawPyramid = (isDark) => {
+	const drawPyramid = async (isDark) => {
 		const canvas = document.getElementById('myCanvas');
 		const ctx = canvas.getContext('2d');
 
@@ -89,44 +89,49 @@
 		let x = 0,
 			y = 0;
 
-		const interval = setInterval(() => {
-			ctx.clearRect(0, 0, hsize, vsize);
-			let alternate = false;
-			ctx.font = imageHeight / 1.5 + 'px Georgia';
+		const images = await Promise.all(
+			usedPlayers.map(
+				(player) =>
+					new Promise((resolve) => {
+						const img = new Image();
+						img.onload = () => resolve({ player, img });
+						img.onerror = () => resolve({ player, img });
+						img.src = imageBaseUrl + player + imageExtension;
+					})
+			)
+		);
 
-			for (let idx = 0; idx < totalRows; ++idx) {
-				ctx.globalAlpha = 1.0;
-				if (playingLevels.includes(totalRows - idx)) {
-					ctx.fillStyle = alternate ? colorDarkGreen : colorLightGreen;
-				} else {
-					ctx.fillStyle = alternate ? colorDarkGray : colorLightGray;
-				}
-				alternate = !alternate;
-				ctx.fillRect(0, rpos[idx], hsize, imageHeight);
-				ctx.fillStyle = colorText;
-				ctx.fillText((totalRows - idx).toString(), 3, rpos[idx] + imageHeight - 20);
+		ctx.clearRect(0, 0, hsize, vsize);
+		let alternate = false;
+		ctx.font = imageHeight / 1.5 + 'px Georgia';
+
+		for (let idx = 0; idx < totalRows; ++idx) {
+			ctx.globalAlpha = 1.0;
+			if (playingLevels.includes(totalRows - idx)) {
+				ctx.fillStyle = alternate ? colorDarkGreen : colorLightGreen;
+			} else {
+				ctx.fillStyle = alternate ? colorDarkGray : colorLightGray;
 			}
+			alternate = !alternate;
+			ctx.fillRect(0, rpos[idx], hsize, imageHeight);
+			ctx.fillStyle = colorText;
+			ctx.fillText((totalRows - idx).toString(), 3, rpos[idx] + imageHeight - 20);
+		}
 
-			usedPlayers.forEach((player, i) => {
-				x = hOffset + xpos[i];
-				y = ypos[i];
-				const delta = 6;
-				let img = new Image();
-				img.src = imageBaseUrl + player + imageExtension;
-				ctx.globalAlpha = activePlayers.includes(player) ? 1.0 : 0.2;
-				ctx.drawImage(img, x, y, imageWidth, imageHeight);
-				if (tournament.status === 'Active' && winners.includes(player)) {
-					ctx.strokeStyle = colorFrame;
-					ctx.lineWidth = delta;
-					ctx.beginPath();
-					ctx.rect(x + delta / 2, y + delta / 2, imageWidth - delta, imageHeight - delta);
-					ctx.stroke();
-				}
-			});
-		}, 500);
-		setTimeout(() => {
-			clearInterval(interval);
-		}, 1500);
+		images.forEach(({ player, img }, i) => {
+			x = hOffset + xpos[i];
+			y = ypos[i];
+			const delta = 6;
+			ctx.globalAlpha = activePlayers.includes(player) ? 1.0 : 0.2;
+			ctx.drawImage(img, x, y, imageWidth, imageHeight);
+			if (tournament.status === 'Active' && winners.includes(player)) {
+				ctx.strokeStyle = colorFrame;
+				ctx.lineWidth = delta;
+				ctx.beginPath();
+				ctx.rect(x + delta / 2, y + delta / 2, imageWidth - delta, imageHeight - delta);
+				ctx.stroke();
+			}
+		});
 	};
 
 	$effect(() => {
