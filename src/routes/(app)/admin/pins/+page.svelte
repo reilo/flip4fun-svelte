@@ -1,7 +1,5 @@
 <script>
-	import { Heading, P, Button, Checkbox, Alert } from 'flowbite-svelte';
-	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { Heading, P, Button, Checkbox, Alert, Badge } from 'flowbite-svelte';
 	import { Label, Input, Select, Modal } from 'flowbite-svelte';
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
@@ -228,28 +226,39 @@
 	}
 </script>
 
-{#if showError}
-	<Alert border color="red" class="mb-3">
-		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-bold">Interner Fehler!</span>
-		<P>
-			{data.message}
-		</P>
-		<P>
-			{data.error}
-		</P>
-	</Alert>
-{/if}
+<div class="space-y-4">
+	{#if showError}
+		<Alert border color="red">
+			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			<span class="font-bold">Interner Fehler!</span>
+			<P>{data.message}</P>
+			<P>{data.error}</P>
+		</Alert>
+	{/if}
 
-<div>
-	<Heading tag="h5">Flipper hinzufügen oder aktiv/inaktiv schalten</Heading>
-	<P class="mb-3">Jeder Klick auf eine Checkbox wird sofort gespeichert!</P>
+	<div class="grid grid-cols-2 gap-3">
+		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Gesamt</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPins.filter(p => !p.deleted).length}</p>
+			</div>
+		</div>
+		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Spielbereit</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPins.filter(p => p.active && !p.deleted).length}</p>
+			</div>
+		</div>
+	</div>
 
-	<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
-
-	<Button on:click={() => generatePinsPDF(data.pins)} class="w-fit">
+	<div class="flex gap-2 flex-wrap">
+		<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
+		<Button on:click={() => generatePinsPDF(data.pins)} class="w-fit">
 		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />PDF Export
 	</Button>
+	</div>
 
 	<Modal
 		title={pinToUpdate ? 'Flipper bearbeiten' : 'Neuen Flipper anlegen'}
@@ -349,64 +358,42 @@
 		</Modal>
 	</div>
 
-	<Table class="mt-5" shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Spiel<br />bereit</TableHeadCell>
-			<TableHeadCell>In der<br />Lounge</TableHeadCell>
-			<TableHeadCell>Besitzer</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each data.pins as pin, i}
-				<TableBodyRow>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Flipperliste</p>
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-[1fr_5rem_5rem_8rem_7rem_6rem] bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Name</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Spiel-<br/>bereit</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">In der<br/>Lounge</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Besitzer</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"></div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"></div>
+		</div>
+		{#each data.pins as pin, i}
+			<div class="grid grid-cols-[1fr_5rem_5rem_8rem_7rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white">
 					{#if i > 0 && pin.name == data.pins[i - 1].name}
-						{#if pin.manu != data.pins[i - 1].manu}
-							<TableBodyCell class="py-0">{pin.name} ({pin.manu})</TableBodyCell>
-						{:else}
-							<TableBodyCell class="py-0">{pin.name} ({pin.owner})</TableBodyCell>
-						{/if}
+						<span class={pin.deleted ? 'line-through text-gray-400' : pin.active ? '' : 'italic text-gray-500'}>{pin.name} ({pin.manu != data.pins[i - 1].manu ? pin.manu : pin.owner})</span>
 					{:else if i < data.pins.length - 1 && pin.name == data.pins[i + 1].name}
-						{#if pin.manu != data.pins[i + 1].manu}
-							<TableBodyCell class="py-0">{pin.name} ({pin.manu})</TableBodyCell>
-						{:else}
-							<TableBodyCell class="py-0">{pin.name} ({pin.owner})</TableBodyCell>
-						{/if}
+						<span class={pin.deleted ? 'line-through text-gray-400' : pin.active ? '' : 'italic text-gray-500'}>{pin.name} ({pin.manu != data.pins[i + 1].manu ? pin.manu : pin.owner})</span>
 					{:else}
-						<TableBodyCell class="py-0">
-							{#if pin.active}
-								<P class={pin.deleted ? 'line-through' : ''}>{pin.name}</P>
-							{:else}
-								<P italic class={pin.deleted ? 'line-through' : ''}>{pin.name}</P>
-							{/if}
-						</TableBodyCell>
+						<span class={pin.deleted ? 'line-through text-gray-400' : pin.active ? '' : 'italic text-gray-500'}>{pin.name}</span>
 					{/if}
-					<TableBodyCell>
-						{#if pin.active == true}
-							<Checkbox checked on:change={() => updatePinStatus(pin.id, !pin.active)} />
-						{:else}
-							<Checkbox on:change={() => updatePinStatus(pin.id, !pin.active)} />
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if pin.deleted == false}
-							<Checkbox checked on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
-						{:else}
-							<Checkbox on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>
-						{pin.owner}
-					</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<Button on:click={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>
-					</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<Button on:click={() => prepareFormForDelete(pin)} size="xs">Löschen</Button>
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+				</div>
+				<div class="px-4 py-2 flex justify-center">
+					<Checkbox checked={pin.active == true} on:change={() => updatePinStatus(pin.id, !pin.active)} />
+				</div>
+				<div class="px-4 py-2 flex justify-center">
+					<Checkbox checked={pin.deleted == false} on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
+				</div>
+				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{pin.owner ?? ''}</div>
+				<div class="px-4 py-2">
+					<Button on:click={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>
+				</div>
+				<div class="px-4 py-2">
+					<Button on:click={() => prepareFormForDelete(pin)} size="xs" color="red">Löschen</Button>
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>
+	

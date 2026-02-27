@@ -1,7 +1,5 @@
 <script>
-	import { Heading, Modal, P } from 'flowbite-svelte';
-	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { Heading, Modal, P, Badge } from 'flowbite-svelte';
 	import { Button, Label, Input, Select, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { CloseCircleOutline } from 'flowbite-svelte-icons';
@@ -127,21 +125,39 @@
 	};
 </script>
 
-{#if showError}
-	<Alert border color="red" class="mb-3">
-		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-bold">Interner Fehler!</span>
-		<P>
-			{data.message}
-		</P>
-		<P>
-			{data.error}
-		</P>
-	</Alert>
-{/if}
+<div class="space-y-4">
+	{#if showError}
+		<Alert border color="red">
+			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			<span class="font-bold">Interner Fehler!</span>
+			<P>{data.message}</P>
+			<P>{data.error}</P>
+		</Alert>
+	{/if}
 
-<div>
-	<Heading tag="h5" class="mb-3">Turniere bearbeiten, starten oder beenden</Heading>
+	<div class="grid grid-cols-3 gap-3">
+		<div class="bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-yellow-400 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-yellow-600 dark:text-yellow-400 uppercase tracking-wide font-semibold">In Planung</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Planned').length}</p>
+			</div>
+		</div>
+		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Aktiv</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Active').length}</p>
+			</div>
+		</div>
+		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Beendet</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Completed').length}</p>
+			</div>
+		</div>
+	</div>
 
 	<div>
 		<Button class="mb-3" on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
@@ -220,45 +236,37 @@
 		onClose={() => (deleteSuccess = false)}
 	/>
 
-	<Table shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Typ</TableHeadCell>
-			<TableHeadCell>Status</TableHeadCell>
-			<TableHeadCell>Datum</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-		</TableHead>
-
-		<TableBody tableBodyClass="divide-y">
-			{#each tournaments as tournament, i}
-				<TableBodyRow>
-					<TableBodyCell>
-						{tournament.name}
-					</TableBodyCell>
-					<TableBodyCell>
-						{mapTourType(tournament.type)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{mapTourStatus(tournament.status)}
-					</TableBodyCell>
-					<TableBodyCell>
-						{mapDate(tournament.created)}
-					</TableBodyCell>
-					<TableBodyCell>
-						<Button href="/admin/tournaments/{tournament.type}/{tournament.id}/settings"
-							>Öffnen</Button
-						>
-					</TableBodyCell>
-					<TableBodyCell>
-						{#if tournament.name.toLowerCase().includes('test')}
-							<Button on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
-						{:else}
-							<Button disabled>Löschen</Button>
-						{/if}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Alle Turniere</p>
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-[1fr_8rem_8rem_8rem_6rem_6rem] bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Name</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Typ</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Status</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Datum</div>
+			<div class="px-4 py-2"></div>
+			<div class="px-4 py-2"></div>
+		</div>
+		{#each tournaments as tournament, i}
+			<div class="grid grid-cols-[1fr_8rem_8rem_8rem_6rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white truncate">{tournament.name}</div>
+				<div class="px-4 py-2">
+					<Badge color={tournament.type === 'twinpin' ? 'blue' : tournament.type === 'flipliga' ? 'purple' : 'green'} class="text-xs">{mapTourType(tournament.type)}</Badge>
+				</div>
+				<div class="px-4 py-2">
+					<Badge color={tournament.status === 'Active' ? 'green' : tournament.status === 'Planned' ? 'yellow' : 'dark'} class="text-xs">{mapTourStatus(tournament.status)}</Badge>
+				</div>
+				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{mapDate(tournament.created)}</div>
+				<div class="px-4 py-2">
+					<Button size="xs" href="/admin/tournaments/{tournament.type}/{tournament.id}/settings">Öffnen</Button>
+				</div>
+				<div class="px-4 py-2">
+					{#if tournament.name.toLowerCase().includes('test')}
+						<Button size="xs" color="red" on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
+					{:else}
+						<Button size="xs" disabled>Löschen</Button>
+					{/if}
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>

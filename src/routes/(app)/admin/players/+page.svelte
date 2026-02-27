@@ -1,8 +1,6 @@
 <script>
-	import { Heading, P, Button, Avatar } from 'flowbite-svelte';
+	import { Heading, P, Button, Badge } from 'flowbite-svelte';
 	import { Modal, Label, Input } from 'flowbite-svelte';
-	import { Table, TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { Checkbox, Alert } from 'flowbite-svelte';
 	import { InfoCircleSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { CloseCircleOutline, FilePdfOutline } from 'flowbite-svelte-icons';
@@ -225,26 +223,35 @@
 	};
 </script>
 
-{#if showError}
-	<Alert border color="red" class="mb-3">
-		<InfoCircleSolid slot="icon" class="w-5 h-5" />
-		<span class="font-bold">Interner Fehler!</span>
-		<P>
-			{data.message}
-		</P>
-		<P>
-			{data.error}
-		</P>
-	</Alert>
-{/if}
+<div class="space-y-4">
+	{#if showError}
+		<Alert border color="red">
+			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			<span class="font-bold">Interner Fehler!</span>
+			<P>{data.message}</P>
+			<P>{data.error}</P>
+		</Alert>
+	{/if}
 
-<div>
-	<Heading tag="h5"
-		>Gästeliste/Spielerliste - {allPlayers.length} insgesamt, {allPlayers.filter((p) => p.active).length} Ligaspieler</Heading>
-	<P class="mt-3">Spieler hinzufügen oder aktiv/inaktiv schalten</P>
-	<P class="mb-3">Jeder Klick auf eine Checkbox wird sofort gespeichert!</P>
+	<div class="grid grid-cols-2 gap-3">
+		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Gesamt</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPlayers.length}</p>
+			</div>
+		</div>
+		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
+			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div>
+				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Ligaspieler</p>
+				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPlayers.filter(p => p.active).length}</p>
+			</div>
+		</div>
+	</div>
 
-	<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
+	<div class="flex gap-2 flex-wrap">
+		<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
 	<Button
 		on:click={() =>
 			generatePlayersPDF(
@@ -258,6 +265,7 @@
 	>
 		PDF Export
 	</Button>
+	</div>
 
 	<Modal
 		title={playerToUpdate ? 'Spieler bearbeiten' : 'Neuen Spieler anlegen'}
@@ -337,36 +345,31 @@
 		</Modal>
 	</div>
 
-	<Table class="mt-5" shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>E-Mail</TableHeadCell>
-			<TableHeadCell>Aktiv</TableHeadCell>
-			<TableHeadCell>ID</TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-			<TableHeadCell></TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each allPlayers as player, i}
-				<TableBodyRow>
-					<TableBodyCell>{formatPlayerName(player)}</TableBodyCell>
-					<TableBodyCell>{player.email}</TableBodyCell>
-					<TableBodyCell>
-						{#if player.active == true}
-							<Checkbox checked on:change={() => updatePlayerStatus(player.id, !player.active)} />
-						{:else}
-							<Checkbox on:change={() => updatePlayerStatus(player.id, !player.active)} />
-						{/if}
-					</TableBodyCell>
-					<TableBodyCell>{player.id}</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<Button on:click={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
-					</TableBodyCell>
-					<TableBodyCell class="py-0">
-						<Button on:click={() => prepareFormForDelete(player)} size="xs">Löschen</Button>
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Spielerliste</p>
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-[1fr_12rem_4rem_5rem_7rem_6rem] bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Name</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">E-Mail</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Aktiv</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">ID</div>
+			<div class="px-4 py-2"></div>
+			<div class="px-4 py-2"></div>
+		</div>
+		{#each allPlayers as player, i}
+			<div class="grid grid-cols-[1fr_12rem_4rem_5rem_7rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white">{formatPlayerName(player)}</div>
+				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 truncate">{player.email ?? ''}</div>
+				<div class="px-4 py-2 flex justify-center">
+					<Checkbox checked={player.active == true} on:change={() => updatePlayerStatus(player.id, !player.active)} />
+				</div>
+				<div class="px-4 py-2 text-xs font-mono text-gray-500 dark:text-gray-400">{player.id}</div>
+				<div class="px-4 py-2">
+					<Button on:click={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
+				</div>
+				<div class="px-4 py-2">
+					<Button on:click={() => prepareFormForDelete(player)} size="xs" color="red">Löschen</Button>
+				</div>
+			</div>
+		{/each}
+	</div>
 </div>
