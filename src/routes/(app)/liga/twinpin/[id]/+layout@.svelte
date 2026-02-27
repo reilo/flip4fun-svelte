@@ -24,7 +24,8 @@
 		: [
 				{ link: '/liga/twinpin/' + id + '/ranking', name: 'Tabelle' },
 				{ link: '/liga/twinpin/' + id + '/matches', name: 'Matches' },
-				{ link: '/liga/twinpin/' + id + '/draw', name: 'Lostrommel' }
+				{ link: '/liga/twinpin/' + id + '/draw', name: 'Lostrommel' },
+				{ link: '/liga/twinpin/' + id + '/extended', name: 'Export' }
 			];
 
 	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;
