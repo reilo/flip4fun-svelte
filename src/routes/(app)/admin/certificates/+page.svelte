@@ -1,10 +1,5 @@
 <script>
-	import { Button } from 'flowbite-svelte';
-	import { Heading } from 'flowbite-svelte';
-	import { Label } from 'flowbite-svelte';
-	import { Select } from 'flowbite-svelte';
-	import { Input } from 'flowbite-svelte';
-	import { P } from 'flowbite-svelte';
+	import { Button, Label, Select, Input } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { generateCertificatePDF } from '$lib/PDFCertUtil';
 
@@ -49,54 +44,47 @@
 	});
 </script>
 
-<div>
-	<Heading tag="h5">Urkunden-PDF generieren</Heading>
+<div class="space-y-4">
 
-	<P class="mb-3">Gebe alle Daten ein und generiere die Urkunde.</P>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Urkundendaten</p>
 
-	<div class="grid gap-6 mb-3 md:grid-cols-2">
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm p-5 space-y-4">
+		<div class="grid gap-4 md:grid-cols-2">
+			<Label class="space-y-2">
+				<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Turnier-Name</span>
+				<Input clearable bind:value={tourName} placeholder="" />
+			</Label>
+			<Label class="space-y-2">
+				<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Titel / Platzierung</span>
+				<Input clearable bind:value={rankName} placeholder="" />
+			</Label>
+		</div>
+
 		<Label class="space-y-2">
-			<span>Turnier-Name</span>
-			<Input clearable bind:value={tourName} placeholder="" />
-		</Label>
-	</div>
-
-	<div class="grid gap-6 mb-3 md:grid-cols-2">
-		<Label class="space-y-2">
-			<span>Titel / Platzierung</span>
-			<Input data={ranks} clearable bind:value={rankName} placeholder="" />
-		</Label>
-	</div>
-
-	<div class="grid gap-6 mb-3 md:grid-cols-2">
-		<Label>
-			Spieler:
+			<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler</span>
 			<Select
-				class="mt-4 p-3 space-y-3 text-sm"
+				class="p-3 text-sm"
 				items={playerMap}
 				bind:value={selPlayer}
-				placeholder="Spieler"
-			></Select>
+				placeholder="Spieler auswählen …"
+			/>
 		</Label>
-	</div>
 
-	<div class="grid gap-6 mb-3">
+		<hr class="border-gray-200 dark:border-gray-700" />
+
 		<Label class="space-y-2">
-			<span>Zeile 1</span>
+			<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Zeile 1</span>
 			<Input clearable bind:value={line1} placeholder="" />
 		</Label>
-	</div>
 
-	<div class="grid gap-6 mb-3">
 		<Label class="space-y-2">
-			<span>Zeile 2</span>
+			<span class="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Zeile 2</span>
 			<Input clearable bind:value={line2} placeholder="" />
 		</Label>
 	</div>
 
-	<div class="grid gap-6 mb-3 mt-6 md:grid-cols-2">
-		<Button on:click={() => generateCertificates()}>
-			Generiere PDF<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-		</Button>
-	</div>
+	<Button on:click={() => generateCertificates()}>
+		Generiere PDF <ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
+	</Button>
+
 </div>
