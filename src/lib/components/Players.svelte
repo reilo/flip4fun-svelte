@@ -1,5 +1,5 @@
 <script>
-	import { P, Card, Button, Label, Select, Modal, A, Heading } from 'flowbite-svelte';
+	import { Card, Button, Label, Select, Modal } from 'flowbite-svelte';
 	import { CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { getPlayerName, formatPlayerName } from '$lib/PlayerUtil';
 	import { generatePlayersPDF } from '$lib/PDFPlayerUtil';
@@ -90,10 +90,6 @@
 		showSelect = false;
 	};
 
-	const getEnabledStyle = (enabled) => {
-		return enabled ? '' : 'pointer-events-none';
-	};
-
 	const initPlayers = (players) => {
 		let unusedPlayers2 = [];
 		let usedPlayers2 = [];
@@ -120,52 +116,69 @@
 </script>
 
 <div class="flex-1 flex-col md:flex-row justify-center content-center gap-3">
-	<div>
+	<div class="mb-3">
 		{#each description as line}
-			<P class="mb-1">{line}</P>
+			<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">{line}</p>
 		{/each}
 	</div>
 
 	<form>
 		<div class="flex gap-3 mt-3">
 			<div>
-				<Card>
-					<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-						Teilnehmende Spieler
-					</Heading>
-					{#each usedPlayers as player, i}
-						<A class={getEnabledStyle(delEnabled)} onclick={() => delPlayer(player)}>
-							{player}
-						</A>
-					{/each}
+				<Card class="!p-3 min-w-[160px]">
+					<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Teilnehmende Spieler</p>
+					<div class="flex flex-col gap-0.5">
+						{#each usedPlayers as player}
+							<button
+								type="button"
+								class="text-left text-sm px-2 py-1 rounded transition-colors text-gray-800 dark:text-gray-200"
+								class:hover:bg-blue-50={delEnabled}
+								class:dark:hover:bg-blue-900={delEnabled}
+								class:cursor-pointer={delEnabled}
+								class:opacity-40={!delEnabled}
+								class:pointer-events-none={!delEnabled}
+								onclick={() => delPlayer(player)}
+							>
+								{player}
+							</button>
+						{/each}
+					</div>
 				</Card>
 			</div>
 			<div>
-				<Card>
-					<Heading tag="h5" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-						Verfügbare Spieler
-					</Heading>
-					{#each unusedPlayers as player, i}
-						<A class={getEnabledStyle(addEnabled)} onclick={() => addPlayer(player)}>
-							{player}
-						</A>
-					{/each}
+				<Card class="!p-3 min-w-[160px]">
+					<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Verfügbare Spieler</p>
+					<div class="flex flex-col gap-0.5">
+						{#each unusedPlayers as player}
+							<button
+								type="button"
+								class="text-left text-sm px-2 py-1 rounded transition-colors text-gray-800 dark:text-gray-200"
+								class:hover:bg-blue-50={addEnabled}
+								class:dark:hover:bg-blue-900={addEnabled}
+								class:cursor-pointer={addEnabled}
+								class:opacity-40={!addEnabled}
+								class:pointer-events-none={!addEnabled}
+								onclick={() => addPlayer(player)}
+							>
+								{player}
+							</button>
+						{/each}
+					</div>
 				</Card>
 			</div>
 			<div>
-				<Card>
-					<Button class="mb-3" disabled={!changed} on:click={updateSettings}>Speichern</Button>
-					<Button class="mb-3" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
-					<Button class="mb-3" disabled={!addEnabled || !importFrom} on:click={prepareImport}
-						>Importieren</Button
-					>
-					<Button
-						class="mb-3"
-						disabled={changed}
-						on:click={() =>
-							generatePlayersPDF(tournament.name + ' - Spieler', tournament.players, allPlayers)}
-						>PDF Export
-					</Button>
+				<Card class="!p-3">
+					<div class="flex flex-col gap-2">
+						<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
+						<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+						<Button size="sm" color="alternative" disabled={!addEnabled || !importFrom} on:click={prepareImport}>Importieren</Button>
+						<Button
+							size="sm"
+							color="alternative"
+							disabled={changed}
+							on:click={() => generatePlayersPDF(tournament.name + ' - Spieler', tournament.players, allPlayers)}
+						>PDF Export</Button>
+					</div>
 				</Card>
 			</div>
 		</div>
@@ -197,9 +210,7 @@
 	<Modal bind:open={showNone} size="xs" autoclose>
 		<div class="text-center">
 			<CloseCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
-			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-				{alertMsg}
-			</Heading>
+			<p class="mb-5 text-base text-gray-500 dark:text-gray-400">{alertMsg}</p>
 			<Button color="alternative">Schließen</Button>
 		</div>
 	</Modal>

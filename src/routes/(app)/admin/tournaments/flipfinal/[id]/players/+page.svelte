@@ -1,7 +1,5 @@
 <script>
-	import { Table, TableHead, TableBody } from 'flowbite-svelte';
-	import { TableHeadCell, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
-	import { P, Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { Checkbox, Card, Badge } from 'flowbite-svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
 	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName } from '$lib/PlayerUtil';
@@ -15,8 +13,6 @@
 	let allPlayers = $derived(data.players);
 
 	const playersEnabled = $derived(tournament.status !== 'Completed' && (!round || round.status === 'Completed'));
-
-	const py = 'py-1';
 
 	const description = [
 		'Hier kannst du Spieler zum Liga-Finale hinzufügen.',
@@ -108,36 +104,29 @@
 	/>
 {:else}
 	<div>
-		<P class="mb-3"
-			>Deaktiviere alle nicht anwesenden Spieler. Jeder Klick wird sofort gespeichert.</P
-		>
-		<Table shadow hoverable={true}>
-			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Aktiv</TableHeadCell>
-			</TableHead>
-			<TableBody tableBodyClass="divide-y">
-				{#each tournament.players as player, i}
-					<TableBodyRow>
-						<TableBodyCell class={py}>{getPlayerName(player, allPlayers)}</TableBodyCell>
-						<TableBodyCell class={py}>
-							{#if !settings.inactivePlayers.includes(player)}
-								<Checkbox
-									checked
-									disabled={!playersEnabled}
-									on:change={() => updatePlayerStatus(player, false)}
-								/>
-							{:else}
-								<Checkbox
-									disabled={!playersEnabled}
-									on:change={() => updatePlayerStatus(player, true)}
-								/>
-							{/if}
-						</TableBodyCell>
-					</TableBodyRow>
-				{/each}
-			</TableBody>
-		</Table>
+		<p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Deaktiviere alle nicht anwesenden Spieler. Jeder Klick wird sofort gespeichert.</p>
+		<div class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+			<div class="grid grid-cols-[1fr_auto] text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-800 px-3 py-2 border-b border-gray-200 dark:border-gray-700">
+				<span>Name</span>
+				<span>Aktiv</span>
+			</div>
+			{#each tournament.players as player, i}
+				<div
+					class="grid grid-cols-[1fr_auto] items-center px-3 py-1.5 text-sm"
+					class:bg-white={i % 2 === 0}
+					class:dark:bg-gray-900={i % 2 === 0}
+					class:bg-gray-50={i % 2 !== 0}
+					class:dark:bg-gray-800={i % 2 !== 0}
+				>
+					<span class="text-gray-800 dark:text-gray-200">{getPlayerName(player, allPlayers)}</span>
+					<Checkbox
+						checked={!settings.inactivePlayers.includes(player)}
+						disabled={!playersEnabled}
+						on:change={(e) => updatePlayerStatus(player, e.target.checked)}
+					/>
+				</div>
+			{/each}
+		</div>
 	</div>
 {/if}
 </div>
