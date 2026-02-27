@@ -1,7 +1,5 @@
 <script>
-	import { Heading, P, Spinner } from 'flowbite-svelte';
-	import { Table, TableHead, TableBody } from 'flowbite-svelte';
-	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { Spinner } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { afterNavigate } from '$app/navigation';
 	import { innerWidth } from 'svelte/reactivity/window';
@@ -81,99 +79,73 @@
 
 	let ranking = $derived(calcRanking());
 
+	let cols = $derived(
+		isPhone
+			? 'grid-cols-[3rem_1fr_5rem]'
+			: tourCompleted
+				? 'grid-cols-[3rem_1fr_6rem_7rem]'
+				: 'grid-cols-[3rem_4rem_1fr_5rem_6rem_6rem_6rem_6rem]'
+	);
+
 	afterNavigate(async () => {
 		showProgress = -1;
 	});
 </script>
 
-<div>
-	<Heading tag="h5">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</Heading>
-	<P class="mb-3">Spielername anklicken für Statistiken.</P>
+<div class="space-y-2">
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">{'Rangfolge' + (!tourCompleted ? ' Spieltag' : '')}</p>
+	<p class="text-xs text-gray-400 dark:text-gray-500">Spielername anklicken für Statistiken.</p>
 
-	<Table shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Platz</TableHeadCell>
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<!-- Header -->
+		<div class="grid {cols} bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">#</div>
 			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Ten<br />denz</TableHeadCell>
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Δ</div>
 			{/if}
-			<TableHeadCell>Spieler</TableHeadCell>
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler</div>
 			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Spiel<br />stärke<br />alt</TableHeadCell>
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Stärke</div>
 			{/if}
-			<!--
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Punkte</div>
 			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Spiel<br />stärke<br />neu</TableHeadCell>
-			{/if} 
-			-->
-			<TableHeadCell class="text-center">Punkte</TableHeadCell>
-			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Punkt<br />gewinn</TableHeadCell>
-			{/if}
-			{#if !tourCompleted && !isPhone}
-				<TableHeadCell class="text-center">Matches<br />Spieltag</TableHeadCell>
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Pkt±</div>
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">M Tag</div>
 			{/if}
 			{#if !isPhone}
-				<TableHeadCell class="text-center">Matches<br />Gesamt</TableHeadCell>
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">M Ges.</div>
 			{/if}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each ranking as rank, i}
-				<TableBodyRow class={getRowColor(i)}>
-					<TableBodyCell class={py + ' text-center'}>{i + 1}</TableBodyCell>
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{#if rank.rankChange < 0}
-								<div style="color:red">
-									{rank.rankChange}
-								</div>
-							{:else if rank.rankChange > 0}
-								<div style="color:green;">
-									+{rank.rankChange}
-								</div>
-							{:else}
-								<div style="color:default"></div>
-							{/if}
-						</TableBodyCell>
-					{/if}
-					<TableBodyCell class={py}>
-						<a
-							href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + rank.player}
-							onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a
-						>
-						<Spinner size="4" class={showProgress === i ? '' : 'hidden'} />
-					</TableBodyCell>
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{getOldStrength(rank.player)}
-						</TableBodyCell>
-					{/if}
-					<!--
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{getNewStrength(rank.player)}
-						</TableBodyCell>
-					{/if}
-					-->
-					<TableBodyCell class={py} tdClass="text-center">
-						{roundNumberToStrg(rank.points)}
-					</TableBodyCell>
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{roundNumberToStrg(getPlayerScoring(rank.player))}
-						</TableBodyCell>
-					{/if}
-					{#if !tourCompleted && !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{getCountMatches(rank.player)}
-						</TableBodyCell>
-					{/if}
-					{#if !isPhone}
-						<TableBodyCell class={py} tdClass="text-center">
-							{getTotalCountMatches(rank.player)}
-						</TableBodyCell>
-					{/if}
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+		</div>
+		<!-- Rows -->
+		{#each ranking as rank, i}
+			<div class="grid {cols} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">{i + 1}</div>
+				{#if !tourCompleted && !isPhone}
+					<div class="px-3 py-2 text-xs text-center font-semibold {rank.rankChange < 0 ? 'text-red-500' : rank.rankChange > 0 ? 'text-green-500' : 'text-gray-400'}">
+						{rank.rankChange > 0 ? '+' : ''}{rank.rankChange !== 0 ? rank.rankChange : '—'}
+					</div>
+				{/if}
+				<div class="px-3 py-2 text-sm">
+					<a
+						href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + rank.player}
+						class="text-blue-600 dark:text-blue-400 hover:underline"
+						onclick={() => (showProgress = i)}>{getPlayerName(rank.player, players)}</a>
+					<Spinner size="4" class={showProgress === i ? 'inline ml-1' : 'hidden'} />
+				</div>
+				{#if !tourCompleted && !isPhone}
+					<div class="px-3 py-2 text-sm text-center text-gray-600 dark:text-gray-300">{getOldStrength(rank.player)}</div>
+				{/if}
+				<div class="px-3 py-2 text-sm text-center font-mono text-gray-900 dark:text-white">{roundNumberToStrg(rank.points)}</div>
+				{#if !tourCompleted && !isPhone}
+					<div class="px-3 py-2 text-sm text-center font-mono {getPlayerScoring(rank.player) > 0 ? 'text-green-600' : getPlayerScoring(rank.player) < 0 ? 'text-red-500' : 'text-gray-400'}">
+						{roundNumberToStrg(getPlayerScoring(rank.player))}
+					</div>
+					<div class="px-3 py-2 text-sm text-center text-gray-600 dark:text-gray-300">{getCountMatches(rank.player)}</div>
+				{/if}
+				{#if !isPhone}
+					<div class="px-3 py-2 text-sm text-center text-gray-600 dark:text-gray-300">{getTotalCountMatches(rank.player)}</div>
+				{/if}
+			</div>
+		{/each}
+	</div>
 </div>

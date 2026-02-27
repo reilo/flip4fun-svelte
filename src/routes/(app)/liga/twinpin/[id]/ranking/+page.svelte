@@ -1,6 +1,5 @@
 <script>
-	import { Table, TableHead, TableBody, TableHeadCell, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
-	import { Heading, P, Card, Badge } from 'flowbite-svelte';
+	import { Card, Badge } from 'flowbite-svelte';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { calcTwinpinRanking, mapTourStatus } from '$lib/TourUtil';
 
@@ -11,9 +10,6 @@
 	let rounds = $derived(data.rounds);
 	let players = $derived(data.players);
 
-	const py = 'py-1';
-	const pygray = 'py-1 text-gray-400 dark:text-gray-400';
-
 	let progress = $derived(round && round.status === 'Active');
 	let title = "Aktuelle Rangfolge";
 
@@ -23,15 +19,6 @@
 			: calcTwinpinRanking(rounds)
 	);
 
-	let counter = 0;
-	const increment = () => {
-		counter++;
-		return counter;
-	};
-
-	const getRowColor = (i) => {
-		return i % 2 ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800';
-	};
 </script>
 
 <div class="space-y-4">
@@ -51,23 +38,21 @@
 		</div>
 	</Card>
 
-	<Heading tag="h5">{title}</Heading>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">{title}</p>
 
-<Table class="mt-3" shadow hoverable={true}>
-	<TableHead>
-		<TableHeadCell>Platz</TableHeadCell>
-		<TableHeadCell>Spieler</TableHeadCell>
-		<TableHeadCell>Punkte</TableHeadCell>
-	</TableHead>
-	<TableBody tableBodyClass="divide-y">
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-[3rem_1fr_6rem] bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">#</div>
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler</div>
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-right">Punkte</div>
+		</div>
 		{#each ranking as rank, i}
-			{@const isInTournament = tournament.players.includes(rank.player)}
-			{@const cellClass = isInTournament ? py : pygray}
-			<TableBodyRow class={getRowColor(i)}>
-				<TableBodyCell class={cellClass} tdClass="text-center">{increment()}</TableBodyCell>
-				<TableBodyCell class={cellClass}>{getPlayerName(rank.player, players)}</TableBodyCell>
-				<TableBodyCell class={cellClass} tdClass="text-right font-mono">{rank.score}</TableBodyCell>
-			</TableBodyRow>
+			{@const active = tournament.players.includes(rank.player)}
+			<div class="grid grid-cols-[3rem_1fr_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">{i + 1}</div>
+				<div class="px-3 py-2 text-sm {active ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}">{getPlayerName(rank.player, players)}</div>
+				<div class="px-3 py-2 text-sm text-right font-mono {active ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}">{rank.score}</div>
+			</div>
 		{/each}
-	</TableBody>
-</Table></div>
+	</div>
+</div>
