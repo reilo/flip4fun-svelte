@@ -1,13 +1,10 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
-	import { Heading, Button, Spinner } from 'flowbite-svelte';
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+	import { Spinner } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { mapTourStatus } from '$lib/TourUtil';
-
-	let buttonSize = $derived(innerWidth.current <= 1024 ? 'xs' : 'sm');
 
 	let { data, children } = $props();
 
@@ -44,20 +41,28 @@
 </script>
 
 {#snippet headerLink(d)}
-	<NavLi>
+	{@const isActive = page.url.pathname.startsWith(d.link)}
+	<li class="flex items-center">
 		{#if loading === d.link}
-			<Button size={buttonSize} class="rounded-full">
-				<Spinner class="me-2" size="4" color="white" />Laden ...
-			</Button>
+			<span class="flex items-center gap-1.5 text-sm px-3 py-2 text-gray-400 dark:text-gray-500">
+				<Spinner size="3" />Laden ...
+			</span>
 		{:else}
-			<Button
-				size={buttonSize}
-				color={page.url.pathname.startsWith(d.link) ? 'primary' : 'alternative'}
-				class="rounded-full"
-				on:click={() => loadPage(d)}
-			>{d.name}</Button>
+			<button
+				class="text-sm font-medium px-3 py-2 border-b-2 transition-colors"
+				class:border-blue-600={isActive}
+				class:dark:border-blue-400={isActive}
+				class:text-blue-600={isActive}
+				class:dark:text-blue-400={isActive}
+				class:border-transparent={!isActive}
+				class:text-gray-500={!isActive}
+				class:dark:text-gray-400={!isActive}
+				class:hover:text-gray-800={!isActive}
+				class:dark:hover:text-gray-100={!isActive}
+				onclick={() => loadPage(d)}
+			>{d.name}</button>
 		{/if}
-	</NavLi>
+	</li>
 {/snippet}
 
 <div class="flex flex-col min-h-screen max-w-full md:max-w-7xl mx-auto">

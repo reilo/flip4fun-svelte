@@ -1,13 +1,11 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
-	import { Heading, Button, Spinner, Dropdown, DropdownItem } from 'flowbite-svelte';
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+	import { Spinner, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { innerWidth, outerWidth } from 'svelte/reactivity/window';
 	import { mapTourStatus } from '$lib/TourUtil';
 
-	let buttonSize = $derived(innerWidth.current <= 1024 ? 'xs' : 'sm');
 	let largeScreen = $derived(outerWidth.current >= 1920); // full hd
 	let isMatches = $derived(page.url.pathname.endsWith('matches'));
 
@@ -63,38 +61,52 @@
 </script>
 
 {#snippet headerLink(d)}
-	<NavLi>
-		{#if d.dropdown}
-			{#if d.dropdown.some((sub) => sub.link === loading)}
-				<Button size={buttonSize} class="rounded-full">
-					<Spinner class="me-2" size="4" color="white" />Laden ...
-				</Button>
-			{:else}
-				<Button
-					id="dd-{d.name}"
-					size={buttonSize}
-					color={d.dropdown.some((sub) => page.url.pathname.startsWith(sub.link)) ? 'primary' : 'alternative'}
-					class="rounded-full"
-				>{d.name} ▾</Button>
-				<Dropdown triggeredBy="#dd-{d.name}">
-					{#each d.dropdown as sub}
-						<DropdownItem onclick={() => loadPage(sub)}>{sub.name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{/if}
-		{:else if loading === d.link}
-			<Button size={buttonSize} class="rounded-full">
-				<Spinner class="me-2" size="4" color="white" />Laden ...
-			</Button>
+	{@const isActive = d.dropdown
+		? d.dropdown.some((sub) => page.url.pathname.startsWith(sub.link))
+		: page.url.pathname.startsWith(d.link)}
+	{@const isLoading = d.dropdown
+		? d.dropdown.some((sub) => sub.link === loading)
+		: loading === d.link}
+	<li class="flex items-center">
+		{#if isLoading}
+			<span class="flex items-center gap-1.5 text-sm px-3 py-2 text-gray-400 dark:text-gray-500">
+				<Spinner size="3" />Laden ...
+			</span>
+		{:else if d.dropdown}
+			<button
+				id="dd-{d.name}"
+				class="text-sm font-medium px-3 py-2 border-b-2 transition-colors"
+				class:border-blue-600={isActive}
+				class:dark:border-blue-400={isActive}
+				class:text-blue-600={isActive}
+				class:dark:text-blue-400={isActive}
+				class:border-transparent={!isActive}
+				class:text-gray-500={!isActive}
+				class:dark:text-gray-400={!isActive}
+				class:hover:text-gray-800={!isActive}
+				class:dark:hover:text-gray-100={!isActive}
+			>{d.name} ▾</button>
+			<Dropdown triggeredBy="#dd-{d.name}">
+				{#each d.dropdown as sub}
+					<DropdownItem onclick={() => loadPage(sub)}>{sub.name}</DropdownItem>
+				{/each}
+			</Dropdown>
 		{:else}
-			<Button
-				size={buttonSize}
-				color={page.url.pathname.startsWith(d.link) ? 'primary' : 'alternative'}
-				class="rounded-full"
-				on:click={() => loadPage(d)}
-			>{d.name}</Button>
+			<button
+				class="text-sm font-medium px-3 py-2 border-b-2 transition-colors"
+				class:border-blue-600={isActive}
+				class:dark:border-blue-400={isActive}
+				class:text-blue-600={isActive}
+				class:dark:text-blue-400={isActive}
+				class:border-transparent={!isActive}
+				class:text-gray-500={!isActive}
+				class:dark:text-gray-400={!isActive}
+				class:hover:text-gray-800={!isActive}
+				class:dark:hover:text-gray-100={!isActive}
+				onclick={() => loadPage(d)}
+			>{d.name}</button>
 		{/if}
-	</NavLi>
+	</li>
 {/snippet}
 
 <div

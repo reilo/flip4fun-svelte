@@ -1,5 +1,4 @@
 <script>
-	import { P } from 'flowbite-svelte';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	let { children } = $props();
 	let accessValue = $state(ReadAccess);
@@ -13,5 +12,5 @@
 		{@render children?.()}
 	</div>
 {:else}
-	<P>Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</P>
+	<p class="text-sm text-gray-500 dark:text-gray-400">Du hast keine Berechtigung. Logge dich bitte als Administrator ein.</p>
 {/if}
