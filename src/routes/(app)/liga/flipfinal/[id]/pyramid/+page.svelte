@@ -86,6 +86,7 @@
 		const colorDarkGreen  = isDark ? '#166534' : '#ccddcc';
 		const colorText       = isDark ? '#e5e7eb' : 'black';
 		const colorFrame      = isDark ? '#4ade80' : '#0a4f29';
+		const colorRowNum     = isDark ? '#6b7280' : '#aaaaaa';
 
 		let x = 0,
 			y = 0;
@@ -95,8 +96,8 @@
 				(player) =>
 					new Promise((resolve) => {
 						const img = new Image();
-						img.onload = () => resolve({ player, img });
-						img.onerror = () => resolve({ player, img });
+						img.onload = () => resolve({ player, img, loaded: true });
+						img.onerror = () => resolve({ player, img, loaded: false });
 						img.src = imageBaseUrl + player + imageExtension;
 					})
 			)
@@ -104,7 +105,8 @@
 
 		ctx.clearRect(0, 0, hsize, vsize);
 		let alternate = false;
-		ctx.font = imageHeight / 1.5 + 'px Georgia';
+		const rowNumFontSize = Math.round(imageHeight * 0.4);
+		ctx.font = rowNumFontSize + 'px Georgia';
 
 		for (let idx = 0; idx < totalRows; ++idx) {
 			ctx.globalAlpha = 1.0;
@@ -115,21 +117,87 @@
 			}
 			alternate = !alternate;
 			ctx.fillRect(0, rpos[idx], hsize, imageHeight);
-			ctx.fillStyle = colorText;
-			ctx.fillText((totalRows - idx).toString(), 3, rpos[idx] + imageHeight - 20);
+			ctx.fillStyle = colorRowNum;
+			ctx.textAlign = 'center';
+			ctx.textBaseline = 'middle';
+			ctx.fillText((totalRows - idx).toString(), hOffset / 2, rpos[idx] + imageHeight / 2);
+			ctx.textAlign = 'left';
+			ctx.textBaseline = 'alphabetic';
 		}
 
-		images.forEach(({ player, img }, i) => {
+		ctx.globalAlpha = 1.0;
+		ctx.strokeStyle = isDark ? '#4b5563' : '#d1d5db';
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(hOffset, 0);
+		ctx.lineTo(hOffset, vsize);
+		ctx.stroke();
+
+		const radius = Math.max(3, imageWidth * 0.08);
+		const roundedClipPath = (x, y, w, h, r) => {
+			ctx.beginPath();
+			ctx.moveTo(x + r, y);
+			ctx.lineTo(x + w - r, y);
+			ctx.arcTo(x + w, y, x + w, y + r, r);
+			ctx.lineTo(x + w, y + h - r);
+			ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+			ctx.lineTo(x + r, y + h);
+			ctx.arcTo(x, y + h, x, y + h - r, r);
+			ctx.lineTo(x, y + r);
+			ctx.arcTo(x, y, x + r, y, r);
+			ctx.closePath();
+			ctx.clip();
+		};
+
+		images.forEach(({ player, img, loaded }, i) => {
 			x = hOffset + xpos[i];
 			y = ypos[i];
 			const delta = 6;
 			ctx.globalAlpha = activePlayers.includes(player) ? 1.0 : 0.2;
-			ctx.drawImage(img, x, y, imageWidth, imageHeight);
+			ctx.save();
+			roundedClipPath(x, y, imageWidth, imageHeight, radius);
+			if (loaded) {
+				ctx.drawImage(img, x, y, imageWidth, imageHeight);
+			} else {
+				ctx.fillStyle = isDark ? '#4b5563' : '#cccccc';
+				ctx.fillRect(x, y, imageWidth, imageHeight);
+				ctx.fillStyle = colorText;
+				const fontSize = Math.max(8, imageWidth / 6);
+				ctx.font = fontSize + 'px Georgia';
+				const label = player.toString();
+				const textWidth = ctx.measureText(label).width;
+				ctx.fillText(label, x + (imageWidth - textWidth) / 2, y + imageHeight / 2 + fontSize / 3);
+				ctx.font = rowNumFontSize + 'px Georgia';
+			}
+			ctx.restore();
+			ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.10)';
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(x + radius, y);
+			ctx.lineTo(x + imageWidth - radius, y);
+			ctx.arcTo(x + imageWidth, y, x + imageWidth, y + radius, radius);
+			ctx.lineTo(x + imageWidth, y + imageHeight - radius);
+			ctx.arcTo(x + imageWidth, y + imageHeight, x + imageWidth - radius, y + imageHeight, radius);
+			ctx.lineTo(x + radius, y + imageHeight);
+			ctx.arcTo(x, y + imageHeight, x, y + imageHeight - radius, radius);
+			ctx.lineTo(x, y + radius);
+			ctx.arcTo(x, y, x + radius, y, radius);
+			ctx.closePath();
+			ctx.stroke();
 			if (tournament.status === 'Active' && winners.includes(player)) {
 				ctx.strokeStyle = colorFrame;
 				ctx.lineWidth = delta;
 				ctx.beginPath();
-				ctx.rect(x + delta / 2, y + delta / 2, imageWidth - delta, imageHeight - delta);
+				ctx.moveTo(x + radius + delta / 2, y + delta / 2);
+				ctx.lineTo(x + imageWidth - radius - delta / 2, y + delta / 2);
+				ctx.arcTo(x + imageWidth - delta / 2, y + delta / 2, x + imageWidth - delta / 2, y + radius + delta / 2, radius);
+				ctx.lineTo(x + imageWidth - delta / 2, y + imageHeight - radius - delta / 2);
+				ctx.arcTo(x + imageWidth - delta / 2, y + imageHeight - delta / 2, x + imageWidth - radius - delta / 2, y + imageHeight - delta / 2, radius);
+				ctx.lineTo(x + radius + delta / 2, y + imageHeight - delta / 2);
+				ctx.arcTo(x + delta / 2, y + imageHeight - delta / 2, x + delta / 2, y + imageHeight - radius - delta / 2, radius);
+				ctx.lineTo(x + delta / 2, y + radius + delta / 2);
+				ctx.arcTo(x + delta / 2, y + delta / 2, x + radius + delta / 2, y + delta / 2, radius);
+				ctx.closePath();
 				ctx.stroke();
 			}
 		});
@@ -158,6 +226,7 @@
 	</Card>
 
 	<div>
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">Spielstärken</p>
 		<canvas id="myCanvas" width={hsize} height={vsize}></canvas>
 	</div>
 </div>
