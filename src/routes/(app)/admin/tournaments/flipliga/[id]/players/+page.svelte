@@ -56,7 +56,7 @@
 		tournament={data.tournament}
 		allPlayers={data.players}
 		{description}
-		addEnabled={data.tournament.status !== 'Completed'}
+		addEnabled={data.tournament.status !== 'Completed' && data.round?.status !== 'Active'}
 		delEnabled={data.tournament.status === 'Planned'}
 		update={updatePlayers}
 	/>
