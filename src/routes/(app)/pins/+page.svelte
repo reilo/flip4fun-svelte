@@ -126,7 +126,11 @@
 
 		<!-- Rows -->
 		{#each items as pin, i}
-			<div class="grid {isPhone ? 'grid-cols-[1fr_9rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+			<div
+				class="grid {isPhone ? 'grid-cols-[1fr_9rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class:bg-gray-50={i % 2 === 1}
+				class:dark:bg-gray-700={i % 2 === 1}
+			>
 				<!-- Name -->
 				<div class="px-4 py-2 flex items-center gap-2 min-w-0">
 					<div class="w-2 h-2 rounded-full flex-shrink-0 {pin.active ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}"></div>

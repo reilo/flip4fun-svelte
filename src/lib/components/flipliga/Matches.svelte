@@ -349,7 +349,11 @@
 			{/if}
 		</div>
 		{#each [...matches].reverse() as match, i}
-			<div class="grid {isPhone ? 'grid-cols-[1fr_1fr_5rem]' : 'grid-cols-[1fr_1fr_5rem_7rem_10rem_6rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+			<div
+				class="grid {isPhone ? 'grid-cols-[1fr_1fr_5rem]' : 'grid-cols-[1fr_1fr_5rem_7rem_10rem_6rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class:bg-gray-50={i % 2 === 1}
+				class:dark:bg-gray-700={i % 2 === 1}
+			>
 				<div class="px-4 py-2 text-sm {match.score1 > match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
 					<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player1} class="hover:underline">
 						{isPhone ? getPlayerName(match.player1, true) : getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}

@@ -55,7 +55,11 @@
 			{#each level.players as player, j}
 				{@const active = round && round.players.includes(player.id)}
 				{@const pos = ranking.length - 1 - i}
-				<div class="grid grid-cols-[3rem_1fr_8rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div
+					class="grid grid-cols-[3rem_1fr_8rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+					class:bg-gray-50={i % 2 === 1}
+					class:dark:bg-gray-700={i % 2 === 1}
+				>
 					<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">{pos + 1}</div>
 					<div class="px-3 py-2 text-sm {active ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}">{getPlayerName(player.id, players)}</div>
 					<div class="px-3 py-2 text-sm text-center font-mono {active ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}">{player.fine.toFixed(2)}</div>

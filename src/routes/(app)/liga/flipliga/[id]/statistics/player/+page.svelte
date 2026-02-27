@@ -131,7 +131,11 @@
 			<div class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Noch keine Matches</div>
 		{:else}
 			{#each matches as match, i}
-				<div class="grid {isPhone ? 'grid-cols-[3rem_1fr_1fr_5rem]' : 'grid-cols-[4rem_8rem_1fr_1fr_5rem_10rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div
+					class="grid {isPhone ? 'grid-cols-[3rem_1fr_1fr_5rem]' : 'grid-cols-[4rem_8rem_1fr_1fr_5rem_10rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+					class:bg-gray-50={i % 2 === 1}
+					class:dark:bg-gray-700={i % 2 === 1}
+				>
 					<div class="px-3 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">{match.round}</div>
 					{#if !isPhone}
 						<div class="px-3 py-2 text-sm text-center text-gray-500 dark:text-gray-400">{mapDate(match.created)}</div>
@@ -163,7 +167,11 @@
 			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Als Herausgeforderter</div>
 		</div>
 		{#each tourPlayers.filter(p => p !== selected) as player, i}
-			<div class="grid grid-cols-2 items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+			<div
+				class="grid grid-cols-2 items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class:bg-gray-50={i % 2 === 1}
+				class:dark:bg-gray-700={i % 2 === 1}
+			>
 				<div class="px-4 py-2 text-sm text-center {opponents1.includes(player) ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}">
 					{getPlayerName(player)}
 				</div>

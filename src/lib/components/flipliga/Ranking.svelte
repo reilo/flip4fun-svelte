@@ -118,7 +118,11 @@
 		</div>
 		<!-- Rows -->
 		{#each ranking as rank, i}
-			<div class="grid {cols} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+			<div
+				class="grid {cols} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class:bg-gray-50={i % 2 === 1}
+				class:dark:bg-gray-700={i % 2 === 1}
+			>
 				<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">{i + 1}</div>
 				{#if !tourCompleted && !isPhone}
 					<div class="px-3 py-2 text-xs text-center font-semibold {rank.rankChange < 0 ? 'text-red-500' : rank.rankChange > 0 ? 'text-green-500' : 'text-gray-400'}">

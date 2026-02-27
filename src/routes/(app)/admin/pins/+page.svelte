@@ -369,7 +369,11 @@
 			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"></div>
 		</div>
 		{#each data.pins as pin, i}
-			<div class="grid grid-cols-[1fr_5rem_5rem_8rem_7rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+			<div
+				class="grid grid-cols-[1fr_5rem_5rem_8rem_7rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class:bg-gray-50={i % 2 === 1}
+				class:dark:bg-gray-700={i % 2 === 1}
+			>
 				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white">
 					{#if i > 0 && pin.name == data.pins[i - 1].name}
 						<span class={pin.deleted ? 'line-through text-gray-400' : pin.active ? '' : 'italic text-gray-500'}>{pin.name} ({pin.manu != data.pins[i - 1].manu ? pin.manu : pin.owner})</span>
