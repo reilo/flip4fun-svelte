@@ -66,14 +66,6 @@
 
 	<main class="flex flex-1 flex-col md:flex-row p-4">
 		<div>
-			{#if tournament.status === 'Active' && data.round}
-				<Heading tag="h4" class="mb-3"
-					>{tournament.name} / {data.round.rid}. Runde ({roundstatus})</Heading
-				>
-			{:else}
-				<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
-			{/if}
-
 			{@render children?.()}
 		</div>
 	</main>

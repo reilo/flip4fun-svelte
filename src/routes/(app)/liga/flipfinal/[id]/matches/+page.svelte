@@ -1,16 +1,18 @@
 <script>
 	import { Table, TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
 	import { TableHead, TableHeadCell } from 'flowbite-svelte';
-	import { Modal, Label, Input, Button, Select } from 'flowbite-svelte';
+	import { Modal, Label, Input, Button, Select, Card, Badge } from 'flowbite-svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { hasFrameResult } from '$lib/FrameUtil';
+	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data } = $props();
 
 	let frames = $derived(data.frames);
 	let round = $derived(data.round);
+	let tournament = $derived(data.tournament);
 
 	let showForm = $state(false);
 	let frameToUpdate = $state(null);
@@ -91,6 +93,23 @@
 	};
 </script>
 
+<div class="space-y-4">
+	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700 w-full !p-3">
+		<div class="space-y-2">
+			<div class="flex items-center gap-3">
+				<span class="text-lg font-bold text-gray-800 dark:text-white">{tournament.name}</span>
+				<Badge color={tournament.status === 'Planned' ? 'yellow' : tournament.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(tournament.status)}</Badge>
+			</div>
+			{#if round}
+				<hr class="border-blue-200 dark:border-blue-700" />
+				<div class="flex items-center gap-3">
+					<span class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold">Runde</span> {round.rid}</span>
+					<Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
+				</div>
+			{/if}
+		</div>
+	</Card>
+
 <Table>
 	<TableHead>
 		<TableHeadCell>Match</TableHeadCell>
@@ -157,3 +176,4 @@
 		<Button color="primary" on:click={cancelUpdateForm}>Abbrechen</Button>
 	</form>
 </Modal>
+</div>

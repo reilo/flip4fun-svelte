@@ -1,7 +1,8 @@
 <script>
 	import { Table, TableHead, TableBody } from 'flowbite-svelte';
 	import { TableHeadCell, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
-	import { P, Checkbox } from 'flowbite-svelte';
+	import { P, Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { mapTourStatus } from '$lib/TourUtil';
 	import { invalidateAll } from '$app/navigation';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import Players from '$lib/components/Players.svelte';
@@ -76,6 +77,24 @@
 	}
 </script>
 
+<div class="space-y-6">
+	<!-- Status Summary -->
+	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700 w-full !p-3">
+		<div class="space-y-2">
+			<div class="flex items-center gap-3">
+				<span class="text-lg font-bold text-gray-800 dark:text-white">{tournament.name}</span>
+				<Badge color={tournament.status === 'Planned' ? 'yellow' : tournament.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(tournament.status)}</Badge>
+			</div>
+			{#if round}
+				<hr class="border-blue-200 dark:border-blue-700" />
+				<div class="flex items-center gap-3">
+					<span class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold">Runde</span> {round.rid}</span>
+					<Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
+				</div>
+			{/if}
+		</div>
+	</Card>
+
 {#if tournament.status === 'Planned'}
 	<Players
 		tournament={data.tournament}
@@ -121,3 +140,4 @@
 		</Table>
 	</div>
 {/if}
+</div>

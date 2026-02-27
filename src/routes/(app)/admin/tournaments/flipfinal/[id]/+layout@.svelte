@@ -65,9 +65,6 @@
 
 	<main class="flex flex-1 flex-col md:flex-row p-4">
 		<div>
-			<Heading tag="h3" class="mb-3"
-				>{tournament.name + ' (' + mapTourStatus(tournament.status) + ')'}</Heading
-			>
 			{#if accessValue >= AdminAccess}
 				<div class="flex flex-col md:flex-row gap-3 mx-auto">
 					{@render children?.()}

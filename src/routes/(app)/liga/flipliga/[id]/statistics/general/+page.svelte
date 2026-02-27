@@ -1,6 +1,10 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, Card, Badge } from 'flowbite-svelte';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
+	import { mapTourStatus } from '$lib/TourUtil';
+
+	let tournament = $derived(data.tournament);
+	let round = $derived(data.round);
 
 	let { data } = $props();
 
@@ -57,9 +61,26 @@
 	const getRowY = (i) => psvgPadT + i * rowH;
 </script>
 
-<Heading tag="h5" class="mb-3"
-	>Bisher wurden {countMatches} Matches in {countSets} Sätzen gespielt!</Heading
->
+<div class="space-y-4">
+	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700 w-full !p-3">
+		<div class="space-y-2">
+			<div class="flex items-center gap-3">
+				<span class="text-lg font-bold text-gray-800 dark:text-white">{tournament.name}</span>
+				<Badge color={tournament.status === 'Planned' ? 'yellow' : tournament.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(tournament.status)}</Badge>
+			</div>
+			{#if round}
+				<hr class="border-blue-200 dark:border-blue-700" />
+				<div class="flex items-center gap-3">
+					<span class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold">Runde</span> {round.rid}</span>
+					<Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
+				</div>
+			{/if}
+		</div>
+	</Card>
+
+	<Heading tag="h5" class="mb-3"
+		>Bisher wurden {countMatches} Matches in {countSets} Sätzen gespielt!</Heading
+	>
 
 {#if roundChartData.length > 0}
 	<div class="mt-2">
@@ -119,3 +140,5 @@
 		</svg>
 	</div>
 {/if}
+
+</div>

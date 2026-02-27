@@ -106,13 +106,6 @@
 
 	<main class="flex flex-1 flex-col md:flex-row p-4">
 		<div>
-			{#if tournament.status === 'Active'}
-				<Heading tag="h4" class="mb-3"
-					>{tournament.name} / {data.round.rid}. Spieltag ({roundStatus})</Heading
-				>
-			{:else}
-				<Heading tag="h4" class="mb-3">{tournament.name} ({tournamentStatus})</Heading>
-			{/if}
 			<div
 				class={largeScreen && isMatches
 					? 'grid grid-cols-2 max-w-full gap-3'
