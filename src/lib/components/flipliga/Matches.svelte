@@ -1,8 +1,6 @@
 <script>
 	import { Heading } from 'flowbite-svelte';
-	import { Modal, Button, Label, Select } from 'flowbite-svelte';
-	import { Table, TableHead, TableBody } from 'flowbite-svelte';
-	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
+	import { Modal, Button, Badge, Label, Select } from 'flowbite-svelte';
 	import { ExclamationCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
@@ -236,11 +234,9 @@
 </script>
 
 <div>
-	<Heading tag="h5" class="mb-3"
-		>{tourCompleted
-			? 'Letzter Spieltag'
-			: 'Aktueller Spieltag' + ' - ' + matches.length + ' Matches'}</Heading
-	>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+		{tourCompleted ? 'Letzter Spieltag' : 'Aktueller Spieltag'} &middot; {matches.length} Matches
+	</p>
 
 	{#if addMatchEnabled}
 		<div>
@@ -341,69 +337,52 @@
 		</div>
 	{/if}
 
-	<Table shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell>Spieler 1</TableHeadCell>
-			<TableHeadCell>Spieler 2</TableHeadCell>
-			<TableHeadCell>Sätze</TableHeadCell>
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid {isPhone ? 'grid-cols-[1fr_1fr_5rem]' : 'grid-cols-[1fr_1fr_5rem_7rem_10rem_6rem]'} bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler 1</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler 2</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Sätze</div>
 			{#if !isPhone}
-				<TableHeadCell>Punkte</TableHeadCell>
-				<TableHeadCell>Flipper</TableHeadCell>
-				<TableHeadCell></TableHeadCell>
+				<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Punkte</div>
+				<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Flipper</div>
+				<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"></div>
 			{/if}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each [...matches].reverse() as match, i}
-				<TableBodyRow>
-					<TableBodyCell class={py}>
-						<div style={getPlayer1ColorStyle(match)}>
-						<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player1}>
-							{#if isPhone}
-								{getPlayerName(match.player1, true)}
-							{:else}
-								{getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}
-							{/if}
-						</a>
+		</div>
+		{#each [...matches].reverse() as match, i}
+			<div class="grid {isPhone ? 'grid-cols-[1fr_1fr_5rem]' : 'grid-cols-[1fr_1fr_5rem_7rem_10rem_6rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm {match.score1 > match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
+					<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player1} class="hover:underline">
+						{isPhone ? getPlayerName(match.player1, true) : getPlayerName(match.player1) + ' (' + getStrength(match.player1) + ')'}
+					</a>
+				</div>
+				<div class="px-4 py-2 text-sm {match.score1 < match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
+					<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player2} class="hover:underline">
+						{isPhone ? getPlayerName(match.player2, true) : getPlayerName(match.player2) + ' (' + getStrength(match.player2) + ')'}
+					</a>
+				</div>
+				<div class="px-4 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">
+					{formatResultString(match.score1, match.score2)}
+				</div>
+				{#if !isPhone}
+					<div class="px-4 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">
+						{formatResultString(roundNumberToStrg(getPoints(match, 1)), roundNumberToStrg(getPoints(match, 2)))}
 					</div>
-				</TableBodyCell>
-				<TableBodyCell class={py}>
-					<div style={getPlayer2ColorStyle(match)}>
-						<a href={'/liga/flipliga/' + page.params.id + '/statistics/player?player=' + match.player2}>
-							{#if isPhone}
-								{getPlayerName(match.player2, true)}
+					<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
+						{getPinName(match.pin, data.pins)}
+					</div>
+					<div class="px-4 py-2">
+						{#if accessValue >= AdminAccess}
+							{#if data.round.status === 'Active'}
+								<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
 							{:else}
-								{getPlayerName(match.player2) + ' (' + getStrength(match.player2) + ')'}
+								<Button disabled size="xs">Löschen</Button>
 							{/if}
-						</a>
-						</div>
-					</TableBodyCell>
-					<TableBodyCell class={py} align="left">
-						{formatResultString(match.score1, match.score2)}
-					</TableBodyCell>
-					{#if !isPhone}
-						<TableBodyCell class={py} align="left">
-							{formatResultString(
-								roundNumberToStrg(getPoints(match, 1)),
-								roundNumberToStrg(getPoints(match, 2))
-							)}
-						</TableBodyCell>
-						<TableBodyCell class={py}>
-							{getPinName(match.pin, data.pins)}
-						</TableBodyCell>
-						<TableBodyCell class={py}>
-							{#if accessValue >= AdminAccess}
-								{#if data.round.status === 'Active'}
-									<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
-								{:else}
-									<Button disabled size="xs">Löschen</Button>
-								{/if}
-							{/if}
-						</TableBodyCell>
-					{/if}
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+						{/if}
+					</div>
+				{/if}
+			</div>
+		{/each}
+	</div>
 
 	<div>
 		<Modal bind:open={showSureDelete} size="xs" autoclose>

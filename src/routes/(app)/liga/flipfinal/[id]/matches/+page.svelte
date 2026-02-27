@@ -1,6 +1,4 @@
 <script>
-	import { Table, TableBody, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { TableHead, TableHeadCell } from 'flowbite-svelte';
 	import { Modal, Label, Input, Button, Select, Card, Badge } from 'flowbite-svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
@@ -110,50 +108,48 @@
 		</div>
 	</Card>
 
-<Table>
-	<TableHead>
-		<TableHeadCell>Match</TableHeadCell>
-		<TableHeadCell>Spieler</TableHeadCell>
-		<TableHeadCell>Score</TableHeadCell>
-		<TableHeadCell>Flipper</TableHeadCell>
-		<TableHeadCell>Status</TableHeadCell>
-		<TableHeadCell></TableHeadCell>
-	</TableHead>
-	<TableBody tableBodyClass="divide-y">
-		{#each frames as frame}
-			<TableBodyRow>
-				<TableBodyCell class="py-2">
-					{getFrameName(frame)}
-				</TableBodyCell>
-				<TableBodyCell>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Matches</p>
+
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-[8rem_1fr_7rem_10rem_6rem_7rem] bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Match</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Spieler</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-right">Score</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Flipper</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Status</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"></div>
+		</div>
+		{#each frames as frame, i}
+			<div class="grid grid-cols-[8rem_1fr_7rem_10rem_6rem_7rem] items-start border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{getFrameName(frame)}</div>
+				<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300 flex flex-col gap-0.5">
 					{#each sortFrameByResult(frame) as item}
-						{getPlayerName(item.player, data.players)}<br />
+						<span>{getPlayerName(item.player, data.players)}</span>
 					{/each}
-				</TableBodyCell>
-				<TableBodyCell tdClass="text-right">
+				</div>
+				<div class="px-4 py-2 text-sm font-mono text-right text-gray-700 dark:text-gray-300 flex flex-col gap-0.5">
 					{#if frame.scores.length === frame.players.length}
 						{#each sortFrameByResult(frame) as item}
-							{frame.players.length > 1 ? item.score.toLocaleString() : ''}<br />
+							<span>{frame.players.length > 1 ? item.score.toLocaleString() : ''}</span>
 						{/each}
 					{/if}
-				</TableBodyCell>
-				<TableBodyCell class="py-0">
+				</div>
+				<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
 					{frame.players.length > 1 ? getPinName(frame.pin, data.pins) : '(Freirunde)'}
-				</TableBodyCell>
-				<TableBodyCell>
-					{hasFrameResult(frame) ? 'Fertig' : 'Offen'}
-				</TableBodyCell>
-				<TableBodyCell>
+				</div>
+				<div class="px-4 py-2 flex items-start justify-center pt-3">
+					<Badge color={hasFrameResult(frame) ? 'green' : 'yellow'}>{hasFrameResult(frame) ? 'Fertig' : 'Offen'}</Badge>
+				</div>
+				<div class="px-4 py-2">
 					{#if round && round.status === 'Active' && frame.players.length > 1}
-						<Button on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
+						<Button size="xs" on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
 					{:else}
-						<Button disabled>Bearbeiten</Button>
+						<Button size="xs" disabled>Bearbeiten</Button>
 					{/if}
-				</TableBodyCell>
-			</TableBodyRow>
+				</div>
+			</div>
 		{/each}
-	</TableBody>
-</Table>
+	</div>
 
 <Modal title={getFrameName(frameToUpdate)} bind:open={showForm} autoclose={false} class="max-w-sm">
 	<form class="flex flex-col space-y-2" action="#">

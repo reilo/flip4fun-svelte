@@ -1,6 +1,5 @@
 <script>
-	import { Table, TableHead, TableBody, TableHeadCell, TableBodyRow, TableBodyCell, Button, Input } from 'flowbite-svelte';
-	import { Heading, P, Card, Badge } from 'flowbite-svelte';
+	import { Button, Input, Card, Badge } from 'flowbite-svelte';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
@@ -120,13 +119,13 @@
 		</div>
 	</Card>
 
-	<Heading tag="h5">{title}</Heading>
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">{title}</p>
 
 {#if currentMatches && currentMatches.length > 0}
 	<div class="space-y-4 mt-4">
 		{#each currentMatches as match, matchIdx}
-			<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-				<div class="grid grid-cols-4 gap-4 items-start">
+			<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+				<div class="grid grid-cols-[4rem_1fr_1fr] gap-4 items-start">
 					<!-- Left column: Match number -->
 					<div class="flex flex-col items-center justify-center">
 						<div class="text-2xl font-bold text-gray-400">{matchIdx + 1}</div>
@@ -134,7 +133,7 @@
 					</div>
 
 					<!-- Team 1 -->
-					<div class="border rounded p-3">
+					<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-3">
 						<p class="text-sm font-medium mb-2 text-gray-900 dark:text-gray-100">{formatTeamNames(match.team1)}</p>
 						<div class="flex gap-2 items-center">
 							<span class="text-lg font-mono w-8 text-center text-gray-900 dark:text-gray-100">{matchStates[matchIdx]?.score1 ?? match.score1}</span>
@@ -150,7 +149,7 @@
 					</div>
 
 					<!-- Team 2 -->
-					<div class="border rounded p-3">
+					<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-3">
 						<p class="text-sm font-medium mb-2 text-gray-900 dark:text-gray-100">{formatTeamNames(match.team2)}</p>
 						<div class="flex gap-2 items-center">
 							<span class="text-lg font-mono w-8 text-center text-gray-900 dark:text-gray-100">{matchStates[matchIdx]?.score2 ?? match.score2}</span>
@@ -169,6 +168,6 @@
 		{/each}
 	</div>
 {:else}
-	<P class="mt-4 text-gray-500">Keine Matches für diese Runde vorhanden.</P>
+	<p class="mt-4 text-sm text-gray-500 dark:text-gray-400">Keine Matches für diese Runde vorhanden.</p>
 {/if}
 </div>
