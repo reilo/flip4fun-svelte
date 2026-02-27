@@ -1,5 +1,5 @@
 <script>
-	import { Button, NumberInput, Label, Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { Button, NumberInput, Checkbox, Card, Badge } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { mapTourStatus } from '$lib/TourUtil';
 
@@ -87,51 +87,44 @@
 	</Card>
 
 <form>
-	<div>
-		<Label class="mb-3">
-			<span>Basispunkte für jeden Spieler zu Saisonbeginn</span>
-			<NumberInput disabled={!isEditable('baseline')} min="30" max="60" bind:value={settings.baseline} />
-		</Label>
-
-		<Label class="mb-3">
-			<span>Wie oft darf der gleiche Gegner je Saison gefordert werden</span>
-			<NumberInput
-				disabled={!isEditable('challengeSame')}
-				min="1"
-				max="3"
-				bind:value={settings.challengeSame}
-			/>
-		</Label>
-
-		<Label class="mb-3">
-			<span>Bonuspunkt(e) für jedes absolvierte Match</span>
-			<NumberInput disabled={!isEditable('matchBonus')} min="0" max="3" bind:value={settings.matchBonus} />
-		</Label>
-
-		<Label class="mb-3">
-			<span>Strafpunkt(e) für Fehlmatches pro Spieltag</span>
-			<NumberInput disabled={!isEditable('matchPenalty')} min="-1" max="3" bind:value={settings.matchPenalty} />
-		</Label>
-
-		<Label class="mb-3">
-			<span>Wie viele Matches muss ein Spieler pro Spieltag spielen?</span>
-			<NumberInput disabled={!isEditable('minMatchesRound')} min="1" max="5" bind:value={settings.minMatchesRound} />
-		</Label>
-
-		<Label class="mb-3">
-			<span>Ab welcher Runde erfolgen Punktabzüge?</span>
-			<NumberInput disabled={!isEditable('penaltyFirstRound')} min="3" max="8" bind:value={settings.penaltyFirstRound} />
-		</Label>
-
-		<Label class="mb-3 flex items-center gap-2">
-			<Checkbox disabled={!isEditable('showToast')} bind:checked={settings.showToast} />
-			<span>Toast-Benachrichtigungen anzeigen</span>
-		</Label>
-		
+	<Card class="!p-3">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Einstellungen</p>
+		<div class="divide-y divide-gray-100 dark:divide-gray-700">
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="baseline" class="text-sm text-gray-700 dark:text-gray-300">Basispunkte für jeden Spieler zu Saisonbeginn</label>
+				<NumberInput id="baseline" disabled={!isEditable('baseline')} min="30" max="60" bind:value={settings.baseline} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="challengeSame" class="text-sm text-gray-700 dark:text-gray-300">Wie oft darf der gleiche Gegner je Saison gefordert werden</label>
+				<NumberInput id="challengeSame" disabled={!isEditable('challengeSame')} min="1" max="3" bind:value={settings.challengeSame} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="matchBonus" class="text-sm text-gray-700 dark:text-gray-300">Bonuspunkt(e) für jedes absolvierte Match</label>
+				<NumberInput id="matchBonus" disabled={!isEditable('matchBonus')} min="0" max="3" bind:value={settings.matchBonus} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="matchPenalty" class="text-sm text-gray-700 dark:text-gray-300">Strafpunkt(e) für Fehlmatches pro Spieltag</label>
+				<NumberInput id="matchPenalty" disabled={!isEditable('matchPenalty')} min="-1" max="3" bind:value={settings.matchPenalty} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="minMatchesRound" class="text-sm text-gray-700 dark:text-gray-300">Wie viele Matches muss ein Spieler pro Spieltag spielen?</label>
+				<NumberInput id="minMatchesRound" disabled={!isEditable('minMatchesRound')} min="1" max="5" bind:value={settings.minMatchesRound} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="penaltyFirstRound" class="text-sm text-gray-700 dark:text-gray-300">Ab welcher Runde erfolgen Punktabzüge?</label>
+				<NumberInput id="penaltyFirstRound" disabled={!isEditable('penaltyFirstRound')} min="3" max="8" bind:value={settings.penaltyFirstRound} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center gap-3 py-2.5">
+				<Checkbox id="showToast" disabled={!isEditable('showToast')} bind:checked={settings.showToast} />
+				<label for="showToast" class="text-sm text-gray-700 dark:text-gray-300">Toast-Benachrichtigungen anzeigen</label>
+			</div>
+		</div>
 		{#if anyEditable}
-			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
-			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+				<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
+				<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			</div>
 		{/if}
-	</div>
+	</Card>
 </form>
 </div>

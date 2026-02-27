@@ -1,5 +1,5 @@
 <script>
-	import { Button, Label, Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { Button, Checkbox, Card, Badge } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { mapTourStatus } from '$lib/TourUtil';
 
@@ -71,17 +71,20 @@
 	</Card>
 
 <form>
-	<div>
-		<Label class="mb-3">
-			<Checkbox disabled={!isEditable('allowBye')} bind:checked={settings.allowBye}
-				>Freilos erlauben bei 4n+1 Teilnehmern</Checkbox
-			>
-		</Label>
-
+	<Card class="!p-3">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Einstellungen</p>
+		<div class="divide-y divide-gray-100 dark:divide-gray-700">
+			<div class="flex items-center gap-3 py-2.5">
+				<Checkbox id="allowBye" disabled={!isEditable('allowBye')} bind:checked={settings.allowBye} />
+				<label for="allowBye" class="text-sm text-gray-700 dark:text-gray-300">Freilos erlauben bei 4n+1 Teilnehmern</label>
+			</div>
+		</div>
 		{#if anyEditable}
-			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
-			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+				<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
+				<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			</div>
 		{/if}
-	</div>
+	</Card>
 </form>
 </div>

@@ -1,5 +1,5 @@
 <script>
-	import { Button, NumberInput, Label, Select, Card, Badge } from 'flowbite-svelte';
+	import { Button, NumberInput, Select, Card, Badge } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { mapTourStatus } from '$lib/TourUtil';
 
@@ -90,26 +90,28 @@
 	</Card>
 
 <form>
-	<div>
-		<Label class="mb-3">
-			<span>Wieviele Spieler sollen in die oberste Ebene aufsteigen?</span>
-			<NumberInput disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} />
-		</Label>
-
-		<Label class="mb-3">
-			Welche Flipper-Kombination soll für jedes Double-Match gelost werden?
-			<Select disabled={!isEditable('pinTypes')} class="mt-2" items={pinTypeOptions} bind:value={settings.pinTypes} />
-		</Label>
-
-		<Label class="mb-3">
-			<span>Wie hoch soll der maximale Start-Bonus sein?</span>
-			<NumberInput disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} />
-		</Label>
-
+	<Card class="!p-3">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Einstellungen</p>
+		<div class="divide-y divide-gray-100 dark:divide-gray-700">
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="numFinalists" class="text-sm text-gray-700 dark:text-gray-300">Wieviele Spieler sollen in die oberste Ebene aufsteigen?</label>
+				<NumberInput id="numFinalists" disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} class="w-20 text-center" />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="pinTypes" class="text-sm text-gray-700 dark:text-gray-300">Welche Flipper-Kombination soll für jedes Double-Match gelost werden?</label>
+				<Select id="pinTypes" disabled={!isEditable('pinTypes')} class="w-56" items={pinTypeOptions} bind:value={settings.pinTypes} />
+			</div>
+			<div class="flex items-center justify-between gap-4 py-2.5">
+				<label for="maxStartBonus" class="text-sm text-gray-700 dark:text-gray-300">Wie hoch soll der maximale Start-Bonus sein?</label>
+				<NumberInput id="maxStartBonus" disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} class="w-20 text-center" />
+			</div>
+		</div>
 		{#if anyEditable}
-			<Button disabled={!changed} on:click={updateSettings}>Speichern</Button>
-			<Button disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+				<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
+				<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+			</div>
 		{/if}
-	</div>
+	</Card>
 </form>
 </div>
