@@ -1,8 +1,5 @@
 <script>
-	import { Heading, Card, Badge } from 'flowbite-svelte';
-	import { Table, TableHead, TableBody } from 'flowbite-svelte';
-	import { TableHeadCell, TableBodyCell, TableBodyRow } from 'flowbite-svelte';
-	import { Select } from 'flowbite-svelte';
+	import { Card, Badge, Select } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { mapDate } from '$lib/TypeUtil';
@@ -103,116 +100,79 @@
 		</div>
 	</Card>
 
-	<Heading tag="h5">Spieler-Statistiken für:</Heading>
-
-<div>
-	<Select
-		class="mt-2 w-fit mb-3"
-		placeholder="Auswählen ..."
-		items={playerMap}
-		bind:value={selected}
-		on:change={playerChanged}
-	/>
-</div>
-
-{#if selected}
-	<Table shadow hoverable={true}>
-		<TableHead>
-			{#if isPhone}
-				<TableHeadCell class="text-center">Spiel<br />tag</TableHeadCell>
-			{:else}
-				<TableHeadCell class="text-center">Spieltag</TableHeadCell>
-			{/if}
-			{#if !isPhone}
-				<TableHeadCell class="text-center">Datum</TableHeadCell>
-			{/if}
-			<TableHeadCell class="text-right">{isPhone ? 'Sp. 1' : 'Spieler 1'}</TableHeadCell>
-			<TableHeadCell class="text-center"></TableHeadCell>
-			<TableHeadCell class="text-left">{isPhone ? 'Sp. 2' : 'Spieler 2'}</TableHeadCell>
-			<TableHeadCell class="text-center">Sätze</TableHeadCell>
-			{#if !isPhone}
-				<TableHeadCell class="text-center">Flipper</TableHeadCell>
-			{/if}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#if !matches.length}
-				noch keine Matches
-			{:else}
-				{#each matches as match, i}
-					<TableBodyRow>
-						<TableBodyCell tdClass="text-center">
-							{match.round}
-						</TableBodyCell>
-						{#if !isPhone}
-							<TableBodyCell tdClass="text-center">
-								{mapDate(match.created)}
-							</TableBodyCell>
-						{/if}
-						<TableBodyCell tdClass="text-right">
-							<div
-								style={match.score1 > match.score2
-									? 'color:green; text-decoration:underline;'
-									: 'color:default;'}
-							>
-								{getPlayerName(match.player1, isPhone)}
-							</div>
-						</TableBodyCell>
-						<TableBodyCell></TableBodyCell>
-						<TableBodyCell tdClass="text-left">
-							<div
-								style={match.score1 < match.score2
-									? 'color:green; text-decoration:underline;'
-									: 'color:default;'}
-							>
-								{getPlayerName(match.player2, isPhone)}
-							</div>
-						</TableBodyCell>
-						<TableBodyCell tdClass="text-center">
-							{match.score1 + ' - ' + match.score2}
-						</TableBodyCell>
-						{#if !isPhone}
-							<TableBodyCell tdClass="text-center">
-								{getPinName(match.pin, data.pins)}
-							</TableBodyCell>
-						{/if}
-					</TableBodyRow>
-				{/each}
-			{/if}
-		</TableBody>
-	</Table>
-
-	<div>
-		<Heading tag="h6" class="mt-3 mb-3">Verfügbare Gegner</Heading>
+	<div class="flex flex-wrap items-center gap-3">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Spieler-Statistiken für:</p>
+		<Select
+			class="w-fit"
+			placeholder="Auswählen ..."
+			items={playerMap}
+			bind:value={selected}
+			on:change={playerChanged}
+		/>
 	</div>
 
-	<Table shadow hoverable={true}>
-		<TableHead>
-			<TableHeadCell class="text-center">Als Herausforderer</TableHeadCell>
-			<TableHeadCell class="text-center">Als Herausgeforderter</TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each tourPlayers as player}
-				{#if player !== selected}
-					<TableBodyRow>
-						<TableBodyCell tdClass="text-center">
-							{#if opponents1.includes(player)}
-								<del>{getPlayerName(player)}</del>
-							{:else}
-								{getPlayerName(player)}
-							{/if}
-						</TableBodyCell>
-						<TableBodyCell tdClass="text-center">
-							{#if opponents2.includes(player)}
-								<del>{getPlayerName(player)}</del>
-							{:else}
-								{getPlayerName(player)}
-							{/if}
-						</TableBodyCell>
-					</TableBodyRow>
-				{/if}
+{#if selected}
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Matches</p>
+
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid {isPhone ? 'grid-cols-[3rem_1fr_1fr_5rem]' : 'grid-cols-[4rem_8rem_1fr_1fr_5rem_10rem]'} bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">{isPhone ? 'Runde' : 'Spieltag'}</div>
+			{#if !isPhone}
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Datum</div>
+			{/if}
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-right">{isPhone ? 'Sp. 1' : 'Spieler 1'}</div>
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-left">{isPhone ? 'Sp. 2' : 'Spieler 2'}</div>
+			<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Sätze</div>
+			{#if !isPhone}
+				<div class="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Flipper</div>
+			{/if}
+		</div>
+		{#if !matches.length}
+			<div class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Noch keine Matches</div>
+		{:else}
+			{#each matches as match, i}
+				<div class="grid {isPhone ? 'grid-cols-[3rem_1fr_1fr_5rem]' : 'grid-cols-[4rem_8rem_1fr_1fr_5rem_10rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+					<div class="px-3 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">{match.round}</div>
+					{#if !isPhone}
+						<div class="px-3 py-2 text-sm text-center text-gray-500 dark:text-gray-400">{mapDate(match.created)}</div>
+					{/if}
+					<div class="px-3 py-2 text-sm text-right {match.score1 > match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
+						{getPlayerName(match.player1, isPhone)}
+					</div>
+					<div class="px-3 py-2 text-sm text-left {match.score1 < match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
+						{getPlayerName(match.player2, isPhone)}
+					</div>
+					<div class="px-3 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">
+						{match.score1 + ' - ' + match.score2}
+					</div>
+					{#if !isPhone}
+						<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">
+							{getPinName(match.pin, data.pins)}
+						</div>
+					{/if}
+				</div>
 			{/each}
-		</TableBody>
-	</Table>
+		{/if}
+	</div>
+
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Verfügbare Gegner</p>
+
+	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+		<div class="grid grid-cols-2 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Als Herausforderer</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Als Herausgeforderter</div>
+		</div>
+		{#each tourPlayers.filter(p => p !== selected) as player, i}
+			<div class="grid grid-cols-2 items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 {i % 2 === 1 ? 'bg-gray-50 dark:bg-gray-700/50' : ''}">
+				<div class="px-4 py-2 text-sm text-center {opponents1.includes(player) ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}">
+					{getPlayerName(player)}
+				</div>
+				<div class="px-4 py-2 text-sm text-center {opponents2.includes(player) ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}">
+					{getPlayerName(player)}
+				</div>
+			</div>
+		{/each}
+	</div>
 {/if}
 
 </div>
