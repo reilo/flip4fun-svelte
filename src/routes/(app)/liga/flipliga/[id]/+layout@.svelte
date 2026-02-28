@@ -1,10 +1,9 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
 	import { Spinner, Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { outerWidth } from 'svelte/reactivity/window';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
-	import { innerWidth, outerWidth } from 'svelte/reactivity/window';
-	import { mapTourStatus } from '$lib/TourUtil';
 
 	let largeScreen = $derived(outerWidth.current >= 1920); // full hd
 	let isMatches = $derived(page.url.pathname.endsWith('matches'));
@@ -13,10 +12,6 @@
 
 	let tournament = data.tournament;
 	let id = page.params.id;
-
-	const roundStatus = data.round ? mapTourStatus(data.round.status) : null;
-	const tournamentStatus = mapTourStatus(data.tournament.status);
-	const roundStatusInternal = data.round ? data.round.status : null;
 
 	const links = import.meta.env.VITE_APP_FULL
 		? [

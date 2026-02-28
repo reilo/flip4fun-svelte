@@ -1,7 +1,6 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
 	import { Spinner } from 'flowbite-svelte';
-	import { mapTourStatus } from '$lib/TourUtil';
 	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';

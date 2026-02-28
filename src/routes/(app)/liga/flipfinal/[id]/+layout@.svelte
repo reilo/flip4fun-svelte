@@ -3,8 +3,6 @@
 	import { Spinner } from 'flowbite-svelte';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
-	import { innerWidth } from 'svelte/reactivity/window';
-	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data, children } = $props();
 
@@ -25,9 +23,6 @@
 				{ link: '/liga/flipfinal/' + id + '/draw', name: 'Lostrommel' },
 				{ link: '/liga/flipfinal/' + id + '/extended', name: 'Export' }
 			];
-
-	const roundstatus = data.round ? mapTourStatus(data.round.status) : null;
-	const tournamentStatus = mapTourStatus(data.tournament.status);
 
 	let loading = $state('');
 
