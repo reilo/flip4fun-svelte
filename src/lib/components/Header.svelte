@@ -6,22 +6,18 @@
 	import { tick } from 'svelte';
 
 	import { page } from '$app/state';
-	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
+	import { accessState, ReadAccess, AdminAccess } from '/src/state.svelte.js';
 
 	let { headerLinks, headerLink } = $props();
 
-	let accessValue = $state(ReadAccess);
-	access.subscribe((value) => {
-		accessValue = value;
-	});
 
 	let formModal = $state(false);
 	let password = $state('');
 	let passwordRef;
 
 	async function accessClicked() {
-		if (accessValue === AdminAccess) {
-			access.set(ReadAccess);
+		if (accessState.value === AdminAccess) {
+			accessState.value = ReadAccess;
 		} else {
 			formModal = true;
 			password = '';
@@ -32,8 +28,8 @@
 
 	function adminClicked(event) {
 		event?.preventDefault();
-		if (accessValue >= AdminAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
-			access.set(AdminAccess);
+		if (accessState.value >= AdminAccess || password === import.meta.env.VITE_ADMIN_PASSWORD) {
+			accessState.value = AdminAccess;
 			formModal = false;
 		} else {
 			alert('Bitte gültiges Password eingeben!');
@@ -63,9 +59,9 @@
 				<button
 					class="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
 					onclick={accessClicked}
-					title={accessValue === AdminAccess ? 'Admin-Zugang beenden' : 'Als Administrator anmelden'}
+					title={accessState.value === AdminAccess ? 'Admin-Zugang beenden' : 'Als Administrator anmelden'}
 				>
-					{#if accessValue === AdminAccess}
+					{#if accessState.value === AdminAccess}
 						<LockOpenSolid class="w-5 h-5 text-green-500" />
 					{:else}
 						<LockSolid class="w-5 h-5" />

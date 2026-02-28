@@ -1,13 +1,9 @@
 <script>
-	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
+	import { accessState, ReadAccess, AdminAccess } from '/src/state.svelte.js';
 	let { children } = $props();
-	let accessValue = $state(ReadAccess);
-	access.subscribe((value) => {
-		accessValue = value;
-	});
 </script>
 
-{#if accessValue >= AdminAccess}
+{#if accessState.value >= AdminAccess}
 	<div class="flex flex-col md:flex-row gap-3">
 		{@render children?.()}
 	</div>

@@ -1,16 +1,11 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
 	import { Spinner } from 'flowbite-svelte';
-	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
+	import { accessState, ReadAccess, AdminAccess } from '/src/state.svelte.js';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
-
-	let accessValue = $state(ReadAccess);
-	access.subscribe((value) => {
-		accessValue = value;
-	});
 
 	let tournament = data.tournament;
 	let id = page.params.id;
@@ -28,7 +23,7 @@
 	const loadPage = (item) => {
 		loading = item.link;
 		if (!import.meta.env.VITE_KEEP_ADMIN && !item.link.startsWith('/admin')) {
-			access.set(ReadAccess);
+			accessState.value = ReadAccess;
 		}
 		goto(item.link);
 	};
@@ -68,7 +63,7 @@
 
 	<main class="flex flex-1 flex-col md:flex-row p-4">
 		<div>
-			{#if accessValue >= AdminAccess}
+			{#if accessState.value >= AdminAccess}
 				<div class="flex flex-col md:flex-row gap-3 mx-auto">
 					{@render children?.()}
 				</div>

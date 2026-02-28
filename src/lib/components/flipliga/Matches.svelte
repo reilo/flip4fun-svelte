@@ -5,7 +5,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import { innerWidth } from 'svelte/reactivity/window';
-	import { access, ReadAccess, AdminAccess } from '/src/stores.js';
+	import { accessState, ReadAccess, AdminAccess } from '/src/state.svelte.js';
 	import { calcPoints, getMatchToastMessage } from '$lib/MatchUtil';
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
@@ -18,10 +18,6 @@
 
 	const py = 'py-1';
 
-	let accessValue = $state(ReadAccess);
-	access.subscribe((value) => {
-		accessValue = value;
-	});
 
 	let newForm = $state(false);
 	let showAlert = $state(false);
@@ -375,7 +371,7 @@
 						{getPinName(match.pin, data.pins)}
 					</div>
 					<div class="px-4 py-2">
-						{#if accessValue >= AdminAccess}
+						{#if accessState.value >= AdminAccess}
 							{#if data.round.status === 'Active'}
 								<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
 							{:else}
