@@ -1,10 +1,12 @@
 <script>
-	import { Heading, Card, Badge } from 'flowbite-svelte';
+	import { Card, Badge } from 'flowbite-svelte';
+	import { innerWidth } from 'svelte/reactivity/window';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
+	let isPhone = $derived(innerWidth.current <= 480);
 
 	let { data } = $props();
 
@@ -78,14 +80,12 @@
 		</div>
 	</Card>
 
-	<Heading tag="h5" class="mb-3"
-		>Bisher wurden {countMatches} Matches in {countSets} Sätzen gespielt!</Heading
-	>
+	<p class="text-sm text-gray-600 dark:text-gray-400">Bisher wurden <span class="font-semibold text-gray-800 dark:text-gray-200">{countMatches}</span> Matches in <span class="font-semibold text-gray-800 dark:text-gray-200">{countSets}</span> Sätzen gespielt.</p>
 
 {#if roundChartData.length > 0}
 	<div class="mt-2">
-		<h5 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Matches pro Spieltag</h5>
-		<svg viewBox="0 0 {svgW} {svgH}" class="w-full" style="min-height: 600px; height: auto;">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Matches pro Spieltag</p>
+		<svg viewBox="0 0 {svgW} {svgH}" class="w-full h-auto" style={isPhone ? '' : 'min-height:600px'}>
 			<!-- grid + Y labels -->
 			{#each yTicks as tick}
 				{@const yp = padT + chartH - (tick / yMax) * chartH}
@@ -114,8 +114,8 @@
 
 {#if playerChartData.length > 0}
 	<div class="mt-6">
-		<h5 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Matches pro Spieler</h5>
-		<svg viewBox="0 0 {psvgW} {psvgH}" class="w-full" style="min-height: 600px; height: auto;">
+		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Matches pro Spieler</p>
+		<svg viewBox="0 0 {psvgW} {psvgH}" class="w-full h-auto" style={isPhone ? '' : 'min-height:600px'}>
 			<!-- grid + X labels -->
 			{#each pxTicks as tick}
 				{@const xp = psvgPadL + (tick / pxMax) * pchartW}
