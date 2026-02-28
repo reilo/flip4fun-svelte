@@ -3,11 +3,13 @@ DELETE FROM player;
 DELETE FROM tourney;
 DELETE FROM round;
 DELETE FROM match;
+DELETE FROM matchn;
 DELETE FROM frame;
 
-\copy pin FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\pin.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
-\copy player FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\player.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy pin     FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\pin.csv'     DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy player  FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\player.csv'  DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
 \copy tourney FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\tourney.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
-\copy round FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\round.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
-\copy match FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\match.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
-\copy frame FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\frame.csv' DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy round   FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\round.csv'   DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy match   FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\match.csv'   DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy matchn  FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\matchn.csv'  DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
+\copy frame   FROM 'C:\Users\rl\OneDrive\Hobby\Pinball Lounge\flip4fun-svelte\frame.csv'   DELIMITER '|' QUOTE '^' CSV HEADER ENCODING 'UTF8'
