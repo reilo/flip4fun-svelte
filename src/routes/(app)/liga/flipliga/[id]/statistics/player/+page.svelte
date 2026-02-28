@@ -133,7 +133,7 @@
 			{#each matches as match, i}
 				<div
 					class="grid {isPhone ? 'grid-cols-[3rem_1fr_1fr_5rem]' : 'grid-cols-[4rem_8rem_1fr_1fr_5rem_10rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-					class:bg-gray-50={i % 2 === 1}
+					class:bg-gray-100={i % 2 === 1}
 					class:dark:bg-gray-700={i % 2 === 1}
 				>
 					<div class="px-3 py-2 text-sm font-mono text-center text-gray-700 dark:text-gray-300">{match.round}</div>
@@ -169,7 +169,7 @@
 		{#each tourPlayers.filter(p => p !== selected) as player, i}
 			<div
 				class="grid grid-cols-2 items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<div class="px-4 py-2 text-sm text-center {opponents1.includes(player) ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-700 dark:text-gray-300'}">

@@ -50,7 +50,7 @@
 			{@const active = tournament.players.includes(rank.player)}
 			<div
 				class="grid grid-cols-[3rem_1fr_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">{i + 1}</div>

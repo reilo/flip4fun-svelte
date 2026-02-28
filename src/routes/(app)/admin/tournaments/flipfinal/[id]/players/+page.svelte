@@ -115,7 +115,7 @@
 					class="grid grid-cols-[1fr_auto] items-center px-3 py-1.5 text-sm"
 					class:bg-white={i % 2 === 0}
 					class:dark:bg-gray-900={i % 2 === 0}
-					class:bg-gray-50={i % 2 !== 0}
+					class:bg-gray-100={i % 2 !== 0}
 					class:dark:bg-gray-800={i % 2 !== 0}
 				>
 					<span class="text-gray-800 dark:text-gray-200">{getPlayerName(player, allPlayers)}</span>

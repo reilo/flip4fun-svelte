@@ -249,7 +249,7 @@
 		{#each tournaments as tournament, i}
 			<div
 				class="grid grid-cols-[1fr_8rem_8rem_8rem_6rem_6rem] items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white truncate">{tournament.name}</div>

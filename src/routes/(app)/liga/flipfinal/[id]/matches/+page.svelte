@@ -122,7 +122,7 @@
 		{#each frames as frame, i}
 			<div
 				class="grid grid-cols-[8rem_1fr_7rem_10rem_6rem_7rem] items-start border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{getFrameName(frame)}</div>

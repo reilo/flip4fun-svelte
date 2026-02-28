@@ -128,7 +128,7 @@
 		{#each items as pin, i}
 			<div
 				class="grid {isPhone ? 'grid-cols-[1fr_9rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<!-- Name -->

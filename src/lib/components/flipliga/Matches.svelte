@@ -351,7 +351,7 @@
 		{#each [...matches].reverse() as match, i}
 			<div
 				class="grid {isPhone ? 'grid-cols-[1fr_1fr_5rem]' : 'grid-cols-[1fr_1fr_5rem_7rem_10rem_6rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
-				class:bg-gray-50={i % 2 === 1}
+				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
 				<div class="px-4 py-2 text-sm {match.score1 > match.score2 ? 'font-semibold text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300'}">
