@@ -1,5 +1,6 @@
 <script>
 	import { Card, Badge } from 'flowbite-svelte';
+	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
@@ -64,21 +65,7 @@
 </script>
 
 <div class="space-y-4">
-	<Card class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border-blue-200 dark:border-blue-700 w-full !p-3">
-		<div class="space-y-2">
-			<div class="flex items-center gap-3">
-				<span class="text-lg font-bold text-gray-800 dark:text-white">{tournament.name}</span>
-				<Badge color={tournament.status === 'Planned' ? 'yellow' : tournament.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(tournament.status)}</Badge>
-			</div>
-			{#if round}
-				<hr class="border-blue-200 dark:border-blue-700" />
-				<div class="flex items-center gap-3">
-					<span class="text-sm text-gray-600 dark:text-gray-300"><span class="font-semibold">Runde</span> {round.rid}</span>
-					<Badge color={round.status === 'Active' ? 'green' : 'blue'}>{mapTourStatus(round.status)}</Badge>
-				</div>
-			{/if}
-		</div>
-	</Card>
+	<TourBreadcrumb {tournament} {round} />
 
 	<p class="text-sm text-gray-600 dark:text-gray-400">Bisher wurden <span class="font-semibold text-gray-800 dark:text-gray-200">{countMatches}</span> Matches in <span class="font-semibold text-gray-800 dark:text-gray-200">{countSets}</span> Sätzen gespielt.</p>
 
