@@ -1,7 +1,7 @@
 <script>
 	import { Input, Badge } from 'flowbite-svelte';
 	import { Alert, P } from 'flowbite-svelte';
-	import { InfoCircleSolid, SearchOutline, ChevronUpOutline, ChevronDownOutline } from 'flowbite-svelte-icons';
+	import { InfoCircleSolid, SearchOutline, ChevronUpOutline, ChevronDownOutline, GlobeOutline } from 'flowbite-svelte-icons';
 	import { innerWidth } from 'svelte/reactivity/window';
 
 	let { data } = $props();
@@ -50,6 +50,8 @@
 			default:          return 'dark';
 		}
 	};
+
+	const ipdbUrl = (name) => `https://www.ipdb.org/search.pl?any=${encodeURIComponent(name)}&searchtype=quick`;
 
 	let items = $derived((() => {
 		const filtered = visiblePins.filter(
@@ -106,7 +108,7 @@
 	<!-- Table -->
 	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
 		<!-- Header -->
-		<div class="grid {isPhone ? 'grid-cols-[1fr_9rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem]'} bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+		<div class="grid {isPhone ? 'grid-cols-[1fr_9rem_2.5rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem_3rem]'} bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
 			{#each (isPhone ? [['name','Name'],['manu','Hersteller']] : [['name','Name'],['manu','Hersteller'],['year','Jahr'],['type','Typ']]) as [key, label]}
 				<button
 					class="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex items-center gap-1 transition-colors"
@@ -122,12 +124,13 @@
 					{/if}
 				</button>
 			{/each}
+			<div class="px-2 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">IPDB</div>
 		</div>
 
 		<!-- Rows -->
 		{#each items as pin, i}
 			<div
-				class="grid {isPhone ? 'grid-cols-[1fr_9rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
+				class="grid {isPhone ? 'grid-cols-[1fr_9rem_2.5rem]' : 'grid-cols-[1fr_12rem_4.5rem_5rem_3rem]'} items-center border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors hover:bg-blue-50 dark:hover:bg-blue-950"
 				class:bg-gray-100={i % 2 === 1}
 				class:dark:bg-gray-700={i % 2 === 1}
 			>
@@ -148,6 +151,18 @@
 						<Badge color={pin.active ? typeColor(pin.type) : 'dark'} class="text-xs {pin.active ? '' : 'opacity-40'}">{pin.type}</Badge>
 					</div>
 				{/if}
+				<!-- IPDB -->
+				<div class="px-2 py-2 flex justify-center">
+					<a
+						href={ipdbUrl(pin.name)}
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Auf IPDB suchen"
+						class="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+					>
+						<GlobeOutline class="w-4 h-4" />
+					</a>
+				</div>
 			</div>
 		{/each}
 
