@@ -5,6 +5,7 @@
 	import { page } from '$app/state';
 
 	let { children } = $props();
+	const version = __APP_VERSION__;
 
 	const links = import.meta.env.VITE_APP_FULL
 		? [
@@ -64,6 +65,6 @@
 	</main>
 
 	<footer class="px-4 py-3 text-center text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
-		<span>&copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
+		<span>flip4fun v{version} &mdash; &copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
 	</footer>
 </div>

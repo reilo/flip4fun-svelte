@@ -9,6 +9,7 @@
 	let isMatches = $derived(page.url.pathname.endsWith('matches'));
 
 	let { data, children } = $props();
+	const version = __APP_VERSION__;
 
 	let tournament = $derived(data.tournament);
 	let id = page.params.id;
@@ -125,6 +126,6 @@
 	</main>
 
 	<footer class="px-4 py-3 text-center text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
-		<span>&copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
+		<span>flip4fun v{version} &mdash; &copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
 	</footer>
 </div>
