@@ -82,16 +82,16 @@
 		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Einstellungen</p>
 		<div class="divide-y divide-gray-100 dark:divide-gray-700">
 			<div class="flex items-center justify-between gap-4 py-2.5">
-				<label for="numFinalists" class="text-sm text-gray-700 dark:text-gray-300">Wieviele Spieler sollen in die oberste Ebene aufsteigen?</label>
-				<Input type="number" id="numFinalists" disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} class="w-20 text-center" />
+				<label for="numFinalists" class="text-sm text-gray-700 dark:text-gray-300 min-w-0 flex-1">Wieviele Spieler sollen in die oberste Ebene aufsteigen?</label>
+				<Input type="number" id="numFinalists" disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} class="!w-16 text-center shrink-0" />
 			</div>
 			<div class="flex items-center justify-between gap-4 py-2.5">
-				<label for="pinTypes" class="text-sm text-gray-700 dark:text-gray-300">Welche Flipper-Kombination soll für jedes Double-Match gelost werden?</label>
-				<Select id="pinTypes" disabled={!isEditable('pinTypes')} class="w-56" items={pinTypeOptions} bind:value={settings.pinTypes} />
+				<label for="pinTypes" class="text-sm text-gray-700 dark:text-gray-300 min-w-0 flex-1">Welche Flipper-Kombination soll für jedes Double-Match gelost werden?</label>
+				<Select id="pinTypes" disabled={!isEditable('pinTypes')} class="w-48 shrink-0" items={pinTypeOptions} bind:value={settings.pinTypes} />
 			</div>
 			<div class="flex items-center justify-between gap-4 py-2.5">
-				<label for="maxStartBonus" class="text-sm text-gray-700 dark:text-gray-300">Wie hoch soll der maximale Start-Bonus sein?</label>
-				<Input type="number" id="maxStartBonus" disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} class="w-20 text-center" />
+				<label for="maxStartBonus" class="text-sm text-gray-700 dark:text-gray-300 min-w-0 flex-1">Wie hoch soll der maximale Start-Bonus sein?</label>
+				<Input type="number" id="maxStartBonus" disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} class="!w-16 text-center shrink-0" />
 			</div>
 		</div>
 		{#if anyEditable}
