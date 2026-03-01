@@ -235,7 +235,7 @@
 	<!-- Action Cards Grid -->
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 		<!-- Start Tour Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -249,7 +249,7 @@
 					Nicht teilnehmende Spieler deaktivieren. Erste Runde starten.
 				</p>
 				{#if !startTourEnabled}
-					<Badge color="gray" class="mb-3">Nicht verfügbar</Badge>
+					<Badge color="indigo" class="w-fit mb-3">Nicht verfügbar</Badge>
 				{/if}
 				<button 
 					disabled={!startTourEnabled}
@@ -263,7 +263,7 @@
 		</Card>
 
 		<!-- Start Round Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
@@ -277,7 +277,7 @@
 					Matches auslosen und Runde starten.
 				</p>
 				{#if !startRoundEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						{#if tournament.status !== 'Active'}
 							Warte auf Turnier-Start
 						{:else if round && round.status === 'Active'}
@@ -299,7 +299,7 @@
 		</Card>
 
 		<!-- End Round Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
@@ -313,7 +313,7 @@
 					Ebenen neu berechnen. Alle Matches müssen komplett sein.
 				</p>
 				{#if !endRoundEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						{#if !round}
 							Keine aktive Runde
 						{:else}
@@ -333,7 +333,7 @@
 		</Card>
 
 		<!-- End Tour Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
@@ -347,7 +347,7 @@
 					Finalturnier abschließen. Alle Runden müssen komplett sein.
 				</p>
 				{#if !endTourEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						Warte auf Rundenabschluss
 					</Badge>
 				{/if}

@@ -5,40 +5,40 @@
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
 
+	let { data } = $props();
+
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
 	let isPhone = $derived(innerWidth.current <= 480);
 
-	let { data } = $props();
+	const rounds = $derived(data.rounds);
+	const allPlayers = $derived(data.players);
 
-	const rounds = data.rounds;
-	const allPlayers = data.players;
-
-	const countMatches = rounds.reduce((s, r) => s + r.matches.length, 0);
-	const countSets = rounds.reduce((s, r) => r.matches.reduce((s2, m) => s2 + m.score1 + m.score2, s), 0);
+	const countMatches = $derived(rounds.reduce((s, r) => s + r.matches.length, 0));
+	const countSets = $derived(rounds.reduce((s, r) => r.matches.reduce((s2, m) => s2 + m.score1 + m.score2, s), 0));
 
 	// chronological chart data (all rounds, unsorted)
-	const roundChartData = [...rounds]
-		.sort((a, b) => a.rid - b.rid)
-		.map((r) => ({ num: r.rid, count: r.matches.length }));
-	const maxChartCount = Math.max(...roundChartData.map((r) => r.count), 1);
-	const yMax = Math.ceil(maxChartCount / 10) * 10 || 10;
+	const roundChartData = $derived(
+		[...rounds].sort((a, b) => a.rid - b.rid).map((r) => ({ num: r.rid, count: r.matches.length }))
+	);
+	const maxChartCount = $derived(Math.max(...roundChartData.map((r) => r.count), 1));
+	const yMax = $derived(Math.ceil(maxChartCount / 10) * 10 || 10);
 
 	// SVG layout for rounds chart
 	const svgW = 1200, svgH = 420;
 	const padL = 60, padR = 24, padT = 24, padB = 70;
 	const chartW = svgW - padL - padR;
 	const chartH = svgH - padT - padB;
-	const slotW = roundChartData.length > 0 ? chartW / roundChartData.length : chartW;
-	const barGap = Math.max(3, slotW * 0.15);
-	const barW = slotW - barGap;
+	const slotW = $derived(roundChartData.length > 0 ? chartW / roundChartData.length : chartW);
+	const barGap = $derived(Math.max(3, slotW * 0.15));
+	const barW = $derived(slotW - barGap);
 	const getBarX = (i) => padL + i * slotW + barGap / 2;
 	const getBarH = (c) => (c / yMax) * chartH;
 	const getBarY = (c) => padT + chartH - getBarH(c);
-	const yTicks = Array.from({ length: yMax / 10 + 1 }, (_, i) => i * 10);
+	const yTicks = $derived(Array.from({ length: yMax / 10 + 1 }, (_, i) => i * 10));
 
 	// player chart data (all players, sorted by match count desc)
-	const playerChartData = (() => {
+	const playerChartData = $derived.by(() => {
 		const map = {};
 		data.tournament.players.forEach((p) => (map[p] = 0));
 		rounds.forEach((round) => {
@@ -50,15 +50,15 @@
 		return Object.entries(map)
 			.map(([id, count]) => ({ id, count, name: _getPlayerName(id, allPlayers, true) }))
 			.sort((a, b) => b.count - a.count);
-	})();
-	const pxMax = Math.ceil(Math.max(...playerChartData.map((p) => p.count), 1) / 10) * 10 || 10;
-	const pxTicks = Array.from({ length: pxMax / 10 + 1 }, (_, i) => i * 10);
+	});
+	const pxMax = $derived(Math.ceil(Math.max(...playerChartData.map((p) => p.count), 1) / 10) * 10 || 10);
+	const pxTicks = $derived(Array.from({ length: pxMax / 10 + 1 }, (_, i) => i * 10));
 
 	// SVG layout for player chart
 	const psvgPadL = 150, psvgPadR = 60, psvgPadT = 24, psvgPadB = 40;
 	const psvgW = 1200;
 	const rowH = 38;
-	const psvgH = psvgPadT + playerChartData.length * rowH + psvgPadB;
+	const psvgH = $derived(psvgPadT + playerChartData.length * rowH + psvgPadB);
 	const pchartW = psvgW - psvgPadL - psvgPadR;
 	const getBarLen = (c) => (c / pxMax) * pchartW;
 	const getRowY = (i) => psvgPadT + i * rowH;

@@ -226,7 +226,7 @@
 <div class="space-y-4">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<P>{data.message}</P>
 			<P>{data.error}</P>
@@ -235,14 +235,14 @@
 
 	<div class="grid grid-cols-2 gap-3">
 		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Gesamt</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPlayers.length}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
 			<div>
 				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Ligaspieler</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPlayers.filter(p => p.active).length}</p>
@@ -251,9 +251,9 @@
 	</div>
 
 	<div class="flex gap-2 flex-wrap">
-		<Button on:click={() => prepareFormForNew()}>Neuer Spieler...</Button>
+		<Button onclick={() => prepareFormForNew()}>Neuer Spieler...</Button>
 	<Button
-		on:click={() =>
+		onclick={() =>
 			generatePlayersPDF(
 				'Gästeliste',
 				allPlayers.map((item) => {
@@ -290,10 +290,10 @@
 				<span>E-Mail-Adresse</span>
 				<Input bind:value={formPlayerEmail} placeholder="E-Mail-Adresse (optional)" />
 			</Label>
-			<Button color="alternative" on:click={verifyPlayer}
+			<Button color="alternative" onclick={verifyPlayer}
 				>{!playerToUpdate ? 'Anlegen' : 'Speichern'}</Button
 			>
-			<Button color="primary" on:click={cancelNewPlayer}>Abbrechen</Button>
+			<Button color="primary" onclick={cancelNewPlayer}>Abbrechen</Button>
 		</form>
 	</Modal>
 
@@ -321,7 +321,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage}
 				</Heading>
-				<Button color="red" class="me-2" on:click={createOrUpdatePlayer}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={createOrUpdatePlayer}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -339,7 +339,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage}
 				</Heading>
-				<Button color="red" class="me-2" on:click={deletePlayer}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={deletePlayer}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -364,14 +364,14 @@
 				<div class="px-4 py-2 text-sm font-medium text-gray-900 dark:text-white">{formatPlayerName(player)}</div>
 				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300 truncate">{player.email ?? ''}</div>
 				<div class="px-4 py-2 flex justify-center">
-					<Checkbox checked={player.active == true} on:change={() => updatePlayerStatus(player.id, !player.active)} />
+					<Checkbox checked={player.active == true} onchange={() => updatePlayerStatus(player.id, !player.active)} />
 				</div>
 				<div class="px-4 py-2 text-xs font-mono text-gray-500 dark:text-gray-400">{player.id}</div>
 				<div class="px-4 py-2">
-					<Button on:click={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
+					<Button onclick={() => prepareFormForUpdate(player)} size="xs">Bearbeiten</Button>
 				</div>
 				<div class="px-4 py-2">
-					<Button on:click={() => prepareFormForDelete(player)} size="xs" color="red">Löschen</Button>
+					<Button onclick={() => prepareFormForDelete(player)} size="xs" color="red">Löschen</Button>
 				</div>
 			</div>
 		{/each}

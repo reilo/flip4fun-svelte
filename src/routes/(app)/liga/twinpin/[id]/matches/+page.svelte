@@ -128,7 +128,7 @@
 								size="sm"
 								color={getWinner(matchStates[matchIdx]?.score1, matchStates[matchIdx]?.score2) === 1 ? 'green' : 'light'}
 								disabled={round?.status === 'Completed'}
-								on:click={() => setWinner(matchIdx, 1)}
+								onclick={() => setWinner(matchIdx, 1)}
 							>
 								Winner
 							</Button>
@@ -144,7 +144,7 @@
 								size="sm"
 								color={getWinner(matchStates[matchIdx]?.score1, matchStates[matchIdx]?.score2) === 2 ? 'green' : 'light'}
 								disabled={round?.status === 'Completed'}
-								on:click={() => setWinner(matchIdx, 2)}
+								onclick={() => setWinner(matchIdx, 2)}
 							>
 								Winner
 							</Button>

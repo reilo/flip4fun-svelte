@@ -31,16 +31,19 @@
 		generateCertificatePDF(title, [version], lines, [playerName]);
 	};
 
-	let playerMap = [];
-	data.players.forEach((player) => {
-		if (player.active) {
-			const name = player.forename + ' ' + player.surname;
-			playerMap.push({ name: name, value: player.id });
-		}
-	});
-	playerMap.sort((a, b) => {
-		const val = a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
-		return val;
+	const playerMap = $derived.by(() => {
+		const map = [];
+		data.players.forEach((player) => {
+			if (player.active) {
+				const name = player.forename + ' ' + player.surname;
+				map.push({ name: name, value: player.id });
+			}
+		});
+		map.sort((a, b) => {
+			const val = a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+			return val;
+		});
+		return map;
 	});
 </script>
 
@@ -83,7 +86,7 @@
 		</Label>
 	</div>
 
-	<Button on:click={() => generateCertificates()}>
+	<Button onclick={() => generateCertificates()}>
 		Generiere PDF <ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 	</Button>
 

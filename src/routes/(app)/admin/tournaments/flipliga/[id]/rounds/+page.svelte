@@ -23,16 +23,16 @@
 	let endSuccess = $state(false);
 	let endLigaSuccess = $state(false);
 
-	let startEnabled = $state(
+	let startEnabled = $derived(
 		(!data.round && data.tournament.status == 'Planned' && data.tournament.players.length >= 4) ||
 			(data.round && data.round.status === 'Completed' && data.tournament.status === 'Active')
 	);
-	let endEnabled = $state(data.round && data.round.status === 'Active');
-	let endLigaEnabled = $state(
+	let endEnabled = $derived(data.round && data.round.status === 'Active');
+	let endLigaEnabled = $derived(
 		data.round && data.round.status === 'Completed' && data.tournament.status === 'Active'
 	);
 
-	const baseline = data.tournament.settings.baseline;
+	const baseline = $derived(data.tournament.settings.baseline);
 
 	async function startRound() {
 		// create first or next round
@@ -245,7 +245,7 @@
 	<!-- Action Cards Grid -->
 	<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 		<!-- Start Round Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -259,7 +259,7 @@
 					Sobald der Spieltag gestartet wurde, können keine neuen Spieler hinzugefügt werden.
 				</p>
 				{#if !startEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						{#if data.round && data.round.status !== 'Completed'}
 							Warte auf Rundenende
 						{:else if !data.round && data.tournament.players.length < 4}
@@ -269,7 +269,7 @@
 						{/if}
 					</Badge>
 				{/if}
-			<Button disabled={!startEnabled} on:click={() => (startForm = true)} class="w-full mt-auto text-base">
+			<Button disabled={!startEnabled} onclick={() => (startForm = true)} class="w-full mt-auto text-base">
 					<PlayOutline class="w-4 h-4 mr-2" />
 					Starten
 				</Button>
@@ -277,7 +277,7 @@
 		</Card>
 
 		<!-- End Round Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
@@ -291,11 +291,11 @@
 					Sobald beendet, können keine Matches mehr nachgetragen oder korrigiert werden.
 				</p>
 				{#if !endEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						Kein aktiver Spieltag
 					</Badge>
 				{/if}
-			<Button disabled={!endEnabled} on:click={() => (endForm = true)} class="w-full mt-auto text-base">
+			<Button disabled={!endEnabled} onclick={() => (endForm = true)} class="w-full mt-auto text-base">
 					<CheckCircleOutline class="w-4 h-4 mr-2" />
 					Beenden
 				</Button>
@@ -303,7 +303,7 @@
 		</Card>
 
 		<!-- End Liga Card -->
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
@@ -317,11 +317,11 @@
 					Die Liga wird endgültig abgeschlossen. Keine weiteren Spieltage möglich.
 				</p>
 				{#if !endLigaEnabled}
-					<Badge color="gray" class="mb-3">
+					<Badge color="indigo" class="w-fit mb-3">
 						Warte auf Rundenende
 					</Badge>
 				{/if}
-				<Button disabled={!endLigaEnabled} on:click={() => (endLigaForm = true)} class="w-full mt-auto bg-purple-600 hover:bg-purple-700 text-base">
+				<Button disabled={!endLigaEnabled} onclick={() => (endLigaForm = true)} class="w-full mt-auto bg-purple-600 hover:bg-purple-700 text-base">
 				<FlagOutline class="w-4 h-4 mr-2" />
 				Abschließen
 			</Button>

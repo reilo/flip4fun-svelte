@@ -83,7 +83,7 @@
 <div class="max-w-xl mx-auto space-y-8">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<p>{data.message}</p>
 			<p>{data.error}</p>
@@ -108,7 +108,7 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
 				{em ? 'border-blue-400 bg-blue-50 dark:border-blue-500 dark:bg-blue-900/30' : 'border-gray-200 dark:border-gray-700'}">
-				<Toggle checked={em} on:change={() => (em = !em)} />
+				<Toggle checked={em} onchange={() => (em = !em)} />
 				<div class="min-w-0">
 					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Elektromechanisch</p>
 					<p class="text-xs text-gray-400">bis Ende 70er</p>
@@ -116,7 +116,7 @@
 			</div>
 			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
 				{ee ? 'border-purple-400 bg-purple-50 dark:border-purple-500 dark:bg-purple-900/30' : 'border-gray-200 dark:border-gray-700'}">
-				<Toggle checked={ee} on:change={() => (ee = !ee)} />
+				<Toggle checked={ee} onchange={() => (ee = !ee)} />
 				<div class="min-w-0">
 					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Early Electronic</p>
 					<p class="text-xs text-gray-400">bis Ende 80er</p>
@@ -124,7 +124,7 @@
 			</div>
 			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
 				{dmd ? 'border-amber-400 bg-amber-50 dark:border-amber-500 dark:bg-amber-900/30' : 'border-gray-200 dark:border-gray-700'}">
-				<Toggle checked={dmd} on:change={() => (dmd = !dmd)} />
+				<Toggle checked={dmd} onchange={() => (dmd = !dmd)} />
 				<div class="min-w-0">
 					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">DMD-Flipper</p>
 					<p class="text-xs text-gray-400">bis 2005, WPC</p>
@@ -132,7 +132,7 @@
 			</div>
 			<div class="flex items-center gap-3 p-3 rounded-xl border-2 transition-all
 				{lcd ? 'border-green-400 bg-green-50 dark:border-green-500 dark:bg-green-900/30' : 'border-gray-200 dark:border-gray-700'}">
-				<Toggle checked={lcd} on:change={() => (lcd = !lcd)} />
+				<Toggle checked={lcd} onchange={() => (lcd = !lcd)} />
 				<div class="min-w-0">
 					<p class="text-sm font-medium text-gray-800 dark:text-gray-100 leading-tight">Moderne Flipper</p>
 					<p class="text-xs text-gray-400">SAM, Spike</p>
@@ -146,7 +146,7 @@
 		<Button
 			size="xl"
 			disabled={showError}
-			on:click={selectPin}
+			onclick={selectPin}
 			class="px-12 text-lg font-bold shadow-lg hover:shadow-xl transition-all"
 		>
 			{#if progress}
@@ -161,7 +161,7 @@
 
 	<!-- Result -->
 	{#if progress || selectedPin}
-		<div class="rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-blue-600 to-purple-700 p-8 text-center select-none">
+		<div class="rounded-2xl overflow-hidden shadow-2xl bg-linear-to-br from-blue-600 to-purple-700 p-8 text-center select-none">
 			<p class="text-white/60 text-xs font-semibold uppercase tracking-widest mb-3">
 				{progress ? 'Auslosung läuft ...' : 'Dein Flipper'}
 			</p>

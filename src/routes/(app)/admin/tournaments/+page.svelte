@@ -128,7 +128,7 @@
 <div class="space-y-4">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<P>{data.message}</P>
 			<P>{data.error}</P>
@@ -137,21 +137,21 @@
 
 	<div class="grid grid-cols-3 gap-3">
 		<div class="bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-yellow-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-yellow-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-yellow-600 dark:text-yellow-400 uppercase tracking-wide font-semibold">In Planung</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Planned').length}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
 			<div>
 				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Aktiv</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Active').length}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Beendet</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{tournaments.filter(t => t.status === 'Completed').length}</p>
@@ -160,7 +160,7 @@
 	</div>
 
 	<div>
-		<Button class="mb-3" on:click={() => prepareFormForNew()}>Neues Turnier...</Button>
+		<Button class="mb-3" onclick={() => prepareFormForNew()}>Neues Turnier...</Button>
 		<Modal title="Neues Turnier anlegen" bind:open={newForm} autoclose={false} class="max-w-sm">
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">
@@ -173,8 +173,8 @@
 					bind:value={newTourType}
 					placeholder="Turnier-Typ"
 				></Select>
-				<Button color="alternative" on:click={verifyTour}>Anlegen</Button>
-				<Button color="primary" on:click={() => (newForm = false)}>Abbrechen</Button>
+				<Button color="alternative" onclick={verifyTour}>Anlegen</Button>
+				<Button color="primary" onclick={() => (newForm = false)}>Abbrechen</Button>
 			</form>
 		</Modal>
 	</div>
@@ -200,7 +200,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{newTourName + ' (' + mapTourType(newTourType) + ')'}
 				</Heading>
-				<Button color="red" class="me-2" on:click={createTour}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={createTour}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -224,7 +224,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage2}
 				</Heading>
-				<Button color="red" class="me-2" on:click={deleteTour}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={deleteTour}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -257,7 +257,7 @@
 					<Badge color={tournament.type === 'twinpin' ? 'blue' : tournament.type === 'flipliga' ? 'purple' : 'green'} class="text-xs">{mapTourType(tournament.type)}</Badge>
 				</div>
 				<div class="px-4 py-2">
-					<Badge color={tournament.status === 'Active' ? 'green' : tournament.status === 'Planned' ? 'yellow' : 'dark'} class="text-xs">{mapTourStatus(tournament.status)}</Badge>
+					<Badge color={tournament.status === 'Active' ? 'green' : tournament.status === 'Planned' ? 'yellow' : 'blue'} class="text-xs">{mapTourStatus(tournament.status)}</Badge>
 				</div>
 				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{mapDate(tournament.created)}</div>
 				<div class="px-4 py-2">
@@ -265,7 +265,7 @@
 				</div>
 				<div class="px-4 py-2">
 					{#if tournament.name.toLowerCase().includes('test')}
-						<Button size="xs" color="red" on:click={() => prepareTourForDelete(tournament)}>Löschen</Button>
+						<Button size="xs" color="red" onclick={() => prepareTourForDelete(tournament)}>Löschen</Button>
 					{:else}
 						<Button size="xs" disabled>Löschen</Button>
 					{/if}

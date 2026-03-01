@@ -1,15 +1,16 @@
 <script>
-	import { Button, NumberInput, Select, Card, Badge } from 'flowbite-svelte';
+	import { Button, Input, Select, Card, Badge } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { page } from '$app/state';
 	import { mapTourStatus } from '$lib/TourUtil';
+	import { untrack } from 'svelte';
 
 	let { data } = $props();
 
-	let tournament = data.tournament;
-	let round = data.round ?? null;
-	const tourStatus = tournament.status;
-	const roundStatus = round?.status ?? null;
+	let tournament = $derived(data.tournament);
+	let round = $derived(data.round ?? null);
+	const tourStatus = $derived(tournament.status);
+	const roundStatus = $derived(round?.status ?? null);
 
 	/**
 	 * Per-setting editability rules.
@@ -35,10 +36,10 @@
 		return true;
 	}
 
-	const anyEditable = Object.keys(settingsRules).some(isEditable);
+	const anyEditable = $derived(Object.keys(settingsRules).some(isEditable));
 
-	let originalSettings = $state(data.tournament.settings);
-	let settings = $state(data.tournament.settings);
+	let originalSettings = $state(untrack(() => data.tournament.settings));
+	let settings = $state(untrack(() => data.tournament.settings));
 	let changed = $derived(JSON.stringify(settings) !== JSON.stringify(originalSettings));
 	let id = page.params.id;
 
@@ -77,12 +78,12 @@
 	<TourBreadcrumb {tournament} {round} />
 
 <form>
-	<Card class="!p-3">
+	<Card class="p-3!">
 		<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1">Einstellungen</p>
 		<div class="divide-y divide-gray-100 dark:divide-gray-700">
 			<div class="flex items-center justify-between gap-4 py-2.5">
 				<label for="numFinalists" class="text-sm text-gray-700 dark:text-gray-300">Wieviele Spieler sollen in die oberste Ebene aufsteigen?</label>
-				<NumberInput id="numFinalists" disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} class="w-20 text-center" />
+				<Input type="number" id="numFinalists" disabled={!isEditable('numFinalists')} min="3" max="4" bind:value={settings.numFinalists} class="w-20 text-center" />
 			</div>
 			<div class="flex items-center justify-between gap-4 py-2.5">
 				<label for="pinTypes" class="text-sm text-gray-700 dark:text-gray-300">Welche Flipper-Kombination soll für jedes Double-Match gelost werden?</label>
@@ -90,13 +91,13 @@
 			</div>
 			<div class="flex items-center justify-between gap-4 py-2.5">
 				<label for="maxStartBonus" class="text-sm text-gray-700 dark:text-gray-300">Wie hoch soll der maximale Start-Bonus sein?</label>
-				<NumberInput id="maxStartBonus" disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} class="w-20 text-center" />
+				<Input type="number" id="maxStartBonus" disabled={!isEditable('maxStartBonus')} min="0" max="5" bind:value={settings.maxStartBonus} class="w-20 text-center" />
 			</div>
 		</div>
 		{#if anyEditable}
 			<div class="flex gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-				<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
-				<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
+				<Button size="sm" disabled={!changed} onclick={updateSettings}>Speichern</Button>
+				<Button size="sm" color="alternative" disabled={!changed} onclick={restoreSettings}>Zurücksetzen</Button>
 			</div>
 		{/if}
 	</Card>

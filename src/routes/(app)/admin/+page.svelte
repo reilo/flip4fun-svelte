@@ -30,7 +30,7 @@
 </script>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
-	<Card class="hover:shadow-lg transition-shadow">
+	<Card class="p-6 hover:shadow-lg transition-shadow">
 		<div class="flex flex-col">
 			<div class="flex items-center gap-3 mb-3">
 				<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -43,7 +43,7 @@
 			<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
 				Flipper hinzufügen oder aktiv bzw. inaktiv schalten.
 			</p>
-			<Button on:click={loadPins} disabled={loadingPins} class="w-full text-base">
+			<Button onclick={loadPins} disabled={loadingPins} class="w-full text-base">
 				{#if loadingPins}
 					<Spinner class="me-3" size="4" color="white" />Laden ...
 				{:else}
@@ -53,7 +53,7 @@
 		</div>
 	</Card>
 
-	<Card class="hover:shadow-lg transition-shadow">
+	<Card class="p-6 hover:shadow-lg transition-shadow">
 		<div class="flex flex-col">
 			<div class="flex items-center gap-3 mb-3">
 				<div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
@@ -66,7 +66,7 @@
 			<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
 				Spieler hinzufügen oder aktiv bzw. inaktiv schalten.
 			</p>
-			<Button on:click={loadPlayers} disabled={loadingPlayers} class="w-full text-base">
+			<Button onclick={loadPlayers} disabled={loadingPlayers} class="w-full text-base">
 				{#if loadingPlayers}
 					<Spinner class="me-3" size="4" color="white" />Laden ...
 				{:else}
@@ -76,7 +76,7 @@
 		</div>
 	</Card>
 
-	<Card class="hover:shadow-lg transition-shadow">
+	<Card class="p-6 hover:shadow-lg transition-shadow">
 		<div class="flex flex-col">
 			<div class="flex items-center gap-3 mb-3">
 				<div class="p-2 bg-amber-100 dark:bg-amber-900 rounded-lg">
@@ -89,7 +89,7 @@
 			<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
 				Turniere bearbeiten, starten oder beenden.
 			</p>
-			<Button on:click={loadTournaments} disabled={loadingTournaments} class="w-full text-base">
+			<Button onclick={loadTournaments} disabled={loadingTournaments} class="w-full text-base">
 				{#if loadingTournaments}
 					<Spinner class="me-3" size="4" color="white" />Laden ...
 				{:else}
@@ -99,7 +99,7 @@
 		</div>
 	</Card>
 
-	<Card class="hover:shadow-lg transition-shadow">
+	<Card class="p-6 hover:shadow-lg transition-shadow">
 		<div class="flex flex-col">
 			<div class="flex items-center gap-3 mb-3">
 				<div class="p-2 bg-red-100 dark:bg-red-900 rounded-lg">
@@ -112,7 +112,7 @@
 			<p class="text-base text-gray-600 dark:text-gray-400 mb-4">
 				Urkunden-PDFs generieren.
 			</p>
-			<Button on:click={loadCertificates} disabled={loadingCertificates} class="w-full text-base">
+			<Button onclick={loadCertificates} disabled={loadingCertificates} class="w-full text-base">
 				{#if loadingCertificates}
 					<Spinner class="me-3" size="4" color="white" />Laden ...
 				{:else}

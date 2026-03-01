@@ -112,7 +112,9 @@
 		usedPlayers = usedPlayers2;
 		unusedPlayers = unusedPlayers2;
 	};
-	initPlayers(tournament.players);
+	$effect.pre(() => {
+		initPlayers(tournament.players);
+	});
 </script>
 
 <div class="flex-1 flex-col md:flex-row justify-center content-center gap-3">
@@ -125,7 +127,7 @@
 	<form>
 		<div class="flex gap-3 mt-3">
 			<div>
-				<Card class="!p-3 min-w-[160px]">
+				<Card class="p-3! min-w-40">
 					<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Teilnehmende Spieler</p>
 					<div class="flex flex-col gap-0.5">
 						{#each usedPlayers as player}
@@ -146,7 +148,7 @@
 				</Card>
 			</div>
 			<div>
-				<Card class="!p-3 min-w-[160px]">
+				<Card class="p-3! min-w-40">
 					<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">Verfügbare Spieler</p>
 					<div class="flex flex-col gap-0.5">
 						{#each unusedPlayers as player}
@@ -167,16 +169,16 @@
 				</Card>
 			</div>
 			<div>
-				<Card class="!p-3">
+				<Card class="p-3!">
 					<div class="flex flex-col gap-2">
-						<Button size="sm" disabled={!changed} on:click={updateSettings}>Speichern</Button>
-						<Button size="sm" color="alternative" disabled={!changed} on:click={restoreSettings}>Zurücksetzen</Button>
-						<Button size="sm" color="alternative" disabled={!addEnabled || !importFrom} on:click={prepareImport}>Importieren</Button>
+						<Button size="sm" disabled={!changed} onclick={updateSettings}>Speichern</Button>
+						<Button size="sm" color="alternative" disabled={!changed} onclick={restoreSettings}>Zurücksetzen</Button>
+						<Button size="sm" color="alternative" disabled={!addEnabled || !importFrom} onclick={prepareImport}>Importieren</Button>
 						<Button
 							size="sm"
 							color="alternative"
 							disabled={changed}
-							on:click={() => generatePlayersPDF(tournament.name + ' - Spieler', tournament.players, allPlayers)}
+							onclick={() => generatePlayersPDF(tournament.name + ' - Spieler', tournament.players, allPlayers)}
 						>PDF Export</Button>
 					</div>
 				</Card>
@@ -202,8 +204,8 @@
 					placeholder="Turnier"
 				></Select>
 			</Label>
-			<Button color="alternative" on:click={executeImport}>Importieren</Button>
-			<Button color="primary" on:click={cancelImport}>Abbrechen</Button>
+			<Button color="alternative" onclick={executeImport}>Importieren</Button>
+			<Button color="primary" onclick={cancelImport}>Abbrechen</Button>
 		</form>
 	</Modal>
 

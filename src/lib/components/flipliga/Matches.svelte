@@ -30,15 +30,16 @@
 
 	let matches = $derived(data.round ? data.round.matches : []);
 
-	let cache = data.round ? data.round.cache : {};
-	let rankInit = data.round ? data.round.settings.rankInit : [];
+	let cache = $derived(data.round ? data.round.cache : {});
+	let rankInit = $derived(data.round ? data.round.settings.rankInit : []);
 
 	let matchToDelete;
 
-	const addMatchEnabled =
-		import.meta.env.VITE_APP_FULL && data.round && data.round.status === 'Active';
-	const tourCompleted = data.tournament.status === 'Completed';
-	const settings = data.tournament.settings;
+	const addMatchEnabled = $derived(
+		import.meta.env.VITE_APP_FULL && data.round && data.round.status === 'Active'
+	);
+	const tourCompleted = $derived(data.tournament.status === 'Completed');
+	const settings = $derived(data.tournament.settings);
 
 	const getPlayerName = (id, short = false) => {
 		return _getPlayerName(id, data.players, short);
@@ -199,22 +200,28 @@
 		showSureDelete = false;
 	}
 
-	const pinMap = [];
-	data.pins.forEach((item) => {
-		if (item.active) {
-			pinMap.push({ name: item.name, value: item.id });
-		}
+	const pinMap = $derived.by(() => {
+		const map = [];
+		data.pins.forEach((item) => {
+			if (item.active) {
+				map.push({ name: item.name, value: item.id });
+			}
+		});
+		return map;
 	});
 
-	let playerMap = [];
-	data.tournament.players.forEach((item) => {
-		const player = data.players.find((item2) => item2.id === item);
-		const name = player ? player.forename + ' ' + player.surname : `Unbekannt (${item})`;
-		playerMap.push({ name: name, value: item });
-	});
-	playerMap.sort((a, b) => {
-		const val = a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
-		return val;
+	const playerMap = $derived.by(() => {
+		const map = [];
+		data.tournament.players.forEach((item) => {
+			const player = data.players.find((item2) => item2.id === item);
+			const name = player ? player.forename + ' ' + player.surname : `Unbekannt (${item})`;
+			map.push({ name: name, value: item });
+		});
+		map.sort((a, b) => {
+			const val = a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
+			return val;
+		});
+		return map;
 	});
 
 	const pointsMap = [];
@@ -236,7 +243,7 @@
 
 	{#if addMatchEnabled}
 		<div>
-			<Button class="mb-3" on:click={() => (newForm = true)}>Spieleingabe...</Button>
+			<Button class="mb-3" onclick={() => (newForm = true)}>Spieleingabe...</Button>
 
 			<Modal title="Spieleingabe" bind:open={newForm} autoclose={false} class="max-w-sm">
 				<form class="flex flex-col space-y-6" action="#">
@@ -287,8 +294,8 @@
 							placeholder="Flipper"
 						></Select>
 					</Label>
-					<Button color="primary" on:click={checkMatch}>Speichern</Button>
-					<Button color="alternative" on:click={cancelAddMatch}>Abbrechen</Button>
+					<Button color="primary" onclick={checkMatch}>Speichern</Button>
+					<Button color="alternative" onclick={cancelAddMatch}>Abbrechen</Button>
 				</form>
 			</Modal>
 		</div>
@@ -326,7 +333,7 @@
 							' : ' +
 							selPoints2}
 					</Heading>
-					<Button color="red" class="me-2" on:click={storeMatch}>Ja, ich bin sicher</Button>
+					<Button color="red" class="me-2" onclick={storeMatch}>Ja, ich bin sicher</Button>
 					<Button color="alternative">Nein, abbrechen</Button>
 				</div>
 			</Modal>
@@ -373,7 +380,7 @@
 					<div class="px-4 py-2">
 						{#if accessState.value >= AdminAccess}
 							{#if data.round.status === 'Active'}
-								<Button on:click={() => verifyDelete(match)} size="xs">Löschen</Button>
+								<Button onclick={() => verifyDelete(match)} size="xs">Löschen</Button>
 							{:else}
 								<Button disabled size="xs">Löschen</Button>
 							{/if}
@@ -393,7 +400,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessageDelete}
 				</Heading>
-				<Button color="red" class="me-2" on:click={deleteMatch}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={deleteMatch}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>

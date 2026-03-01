@@ -10,7 +10,7 @@
 
 	let { data, children } = $props();
 
-	let tournament = data.tournament;
+	let tournament = $derived(data.tournament);
 	let id = page.params.id;
 
 	const links = import.meta.env.VITE_APP_FULL

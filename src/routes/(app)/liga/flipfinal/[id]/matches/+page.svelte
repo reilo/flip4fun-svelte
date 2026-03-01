@@ -32,11 +32,14 @@
 		event.target.value = scoreDisplays[i];
 	};
 
-	const pinMap = [];
-	data.pins.forEach((item) => {
-		if (item.active) {
-			pinMap.push({ name: item.name, value: item.id });
-		}
+	const pinMap = $derived.by(() => {
+		const map = [];
+		data.pins.forEach((item) => {
+			if (item.active) {
+				map.push({ name: item.name, value: item.id });
+			}
+		});
+		return map;
 	});
 
 	const getFrameName = (frame) => {
@@ -133,7 +136,7 @@
 				</div>
 				<div class="px-4 py-2">
 					{#if round && round.status === 'Active' && frame.players.length > 1}
-						<Button size="xs" on:click={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
+						<Button size="xs" onclick={() => prepareUpdateForm(frame)}>Bearbeiten</Button>
 					{:else}
 						<Button size="xs" disabled>Bearbeiten</Button>
 					{/if}
@@ -159,8 +162,8 @@
 			Gespielter Flipper
 			<Select class="mt-4 mb-4 p-3 space-y-3 text-sm" items={pinMap} bind:value={playedPin}></Select>
 		</Label>
-		<Button color="alternative" on:click={performUpdate}>Speichern</Button>
-		<Button color="primary" on:click={cancelUpdateForm}>Abbrechen</Button>
+		<Button color="alternative" onclick={performUpdate}>Speichern</Button>
+		<Button color="primary" onclick={cancelUpdateForm}>Abbrechen</Button>
 	</form>
 </Modal>
 </div>

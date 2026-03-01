@@ -37,7 +37,7 @@
 <div class="space-y-5">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<P>{data.message}</P>
 			<P>{data.error}</P>
@@ -47,14 +47,14 @@
 	<!-- Summary bar -->
 	<div class="grid grid-cols-2 gap-3">
 		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
 			<div>
 				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Aktiv</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{activeTournaments.length}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Beendet</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{completedTournaments.length}</p>
@@ -68,7 +68,7 @@
 			<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Aktive Turniere</p>
 			{#each activeTournaments as tournament}
 				<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-4 flex items-center gap-3 shadow-sm">
-					<AwardOutline class="w-5 h-5 text-green-500 flex-shrink-0" />
+					<AwardOutline class="w-5 h-5 text-green-500 shrink-0" />
 					<div class="flex-1 min-w-0">
 						<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{tournament.name}</p>
 						{#if import.meta.env.VITE_APP_FULL}
@@ -76,11 +76,11 @@
 						{/if}
 					</div>
 					{#if loadingTournamentID === tournament.id}
-						<Button size="sm" class="flex-shrink-0">
+						<Button size="sm" class="shrink-0">
 							<Spinner class="me-2" size="4" color="white" />Laden ...
 						</Button>
 					{:else}
-						<Button size="sm" color="green" class="flex-shrink-0" on:click={() => loadTournament(tournament)}>
+						<Button size="sm" color="green" class="shrink-0" onclick={() => loadTournament(tournament)}>
 							Öffnen <ChevronRightOutline class="w-4 h-4 ml-1" />
 						</Button>
 					{/if}
@@ -121,7 +121,7 @@
 									<Spinner class="me-2" size="4" color="white" />Laden ...
 								</Button>
 							{:else}
-								<Button size="sm" color="light" on:click={() => loadTournament(tournament)}>Öffnen</Button>
+								<Button size="sm" color="light" onclick={() => loadTournament(tournament)}>Öffnen</Button>
 							{/if}
 						</div>
 					</div>

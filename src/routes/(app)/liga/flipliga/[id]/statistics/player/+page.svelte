@@ -22,18 +22,18 @@
 
 	let selected = $state('');
 
-	const rounds = data.rounds;
-	const allPlayers = data.players;
-	const tourPlayers = data.tournament.players;
-	sortPlayerIDs(tourPlayers, allPlayers);
+	const rounds = $derived(data.rounds);
+	const allPlayers = $derived(data.players);
+	const tourPlayers = $derived(data.tournament.players);
 
 	const getPlayerName = (player, short) => {
 		return _getPlayerName(player, allPlayers, short);
 	};
 
-	let playerMap = [];
-	tourPlayers.forEach((player) => {
-		playerMap.push({ value: player, name: getPlayerName(player) });
+	const playerMap = $derived.by(() => {
+		const sorted = [...tourPlayers];
+		sortPlayerIDs(sorted, allPlayers);
+		return sorted.map((player) => ({ value: player, name: getPlayerName(player) }));
 	});
 
 	let matches = $state([]);
@@ -94,7 +94,7 @@
 			placeholder="Auswählen ..."
 			items={playerMap}
 			bind:value={selected}
-			on:change={playerChanged}
+			onchange={playerChanged}
 		/>
 	</div>
 

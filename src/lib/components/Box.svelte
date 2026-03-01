@@ -18,7 +18,7 @@
 				<Spinner class="me-3" size="4" color="white" />Laden ...
 			</Button>
 		{:else}
-			<Button disabled={!enabled} on:click={action} class="w-fit">
+			<Button disabled={!enabled} onclick={action} class="w-fit">
 				{buttonOk}<ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
 			</Button>
 		{/if}

@@ -31,7 +31,7 @@
 			case 'WPC':       return 'indigo';
 			case 'WPC95':     return 'indigo';
 			case 'Pin2000':   return 'red';
-			case 'Whitestar': return 'dark';
+			case 'Whitestar': return 'green';
 			case 'SAM':       return 'green';
 			case 'Spike':     return 'red';
 			default:          return 'dark';
@@ -70,7 +70,7 @@
 <div class="space-y-4">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<P>{data.message}</P>
 			<P>{data.error}</P>
@@ -80,14 +80,14 @@
 	<!-- Summary bar -->
 	<div class="grid grid-cols-2 gap-3">
 		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Gesamt</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{totalCount}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
 			<div>
 				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Spielbereit</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{activeCount}</p>
@@ -136,7 +136,7 @@
 			>
 				<!-- Name -->
 				<div class="px-4 py-2 flex items-center gap-2 min-w-0">
-					<div class="w-2 h-2 rounded-full flex-shrink-0 {pin.active ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}"></div>
+					<div class="w-2 h-2 rounded-full shrink-0 {pin.active ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}"></div>
 					<span class="text-sm font-medium text-gray-900 dark:text-white truncate {pin.active ? '' : 'line-through text-gray-400 dark:text-gray-500'}">{pin.name}</span>
 				</div>
 				<!-- Manufacturer -->
