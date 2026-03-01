@@ -1,13 +1,12 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
-	import { Spinner } from 'flowbite-svelte';
 	import { accessState, ReadAccess, AdminAccess } from '/src/state.svelte.js';
 	import { page } from '$app/state';
 	import { goto, afterNavigate } from '$app/navigation';
 
 	let { data, children } = $props();
 
-	let tournament = data.tournament;
+	let tournament = $derived(data.tournament);
 	let id = page.params.id;
 
 	const links = [
@@ -35,26 +34,24 @@
 
 {#snippet headerLink(d)}
 	{@const isActive = page.url.pathname.startsWith(d.link)}
+	{@const isLoading = loading === d.link}
 	<li class="flex items-center">
-		{#if loading === d.link}
-			<span class="flex items-center gap-1.5 text-sm px-3 py-2 text-gray-400 dark:text-gray-500">
-				<Spinner size="3" />Laden ...
-			</span>
-		{:else}
-			<button
-				class="text-sm font-medium px-3 py-2 border-b-2 transition-colors"
-				class:border-blue-600={isActive}
-				class:dark:border-blue-400={isActive}
-				class:text-blue-600={isActive}
-				class:dark:text-blue-400={isActive}
-				class:border-transparent={!isActive}
-				class:text-gray-500={!isActive}
-				class:dark:text-gray-400={!isActive}
-				class:hover:text-gray-800={!isActive}
-				class:dark:hover:text-gray-100={!isActive}
-				onclick={() => loadPage(d)}
-			>{d.name}</button>
-		{/if}
+		<button
+			class="text-sm font-medium px-3 py-2 border-b-2 transition-colors"
+			class:border-blue-600={isActive && !isLoading}
+			class:dark:border-blue-400={isActive && !isLoading}
+			class:text-blue-600={isActive && !isLoading}
+			class:dark:text-blue-400={isActive && !isLoading}
+			class:border-transparent={!isActive || isLoading}
+			class:text-gray-400={isLoading}
+			class:dark:text-gray-500={isLoading}
+			class:text-gray-500={!isLoading && !isActive}
+			class:dark:text-gray-400={!isLoading && !isActive}
+			class:hover:text-gray-800={!isLoading && !isActive}
+			class:dark:hover:text-gray-100={!isLoading && !isActive}
+			disabled={isLoading}
+			onclick={() => loadPage(d)}
+		>{d.name}</button>
 	</li>
 {/snippet}
 

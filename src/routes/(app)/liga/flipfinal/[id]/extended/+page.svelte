@@ -19,7 +19,7 @@
 
 	<!-- Action Cards -->
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -33,16 +33,16 @@
 					Generiere das PDF mit Ergebnissen aller Runden und Spiele.
 				</p>
 				{#if !tourCompleted}
-					<Badge color="gray" class="mb-3">Turnier nicht abgeschlossen</Badge>
+					<Badge color="indigo" class="w-fit mb-3">Turnier nicht abgeschlossen</Badge>
 				{/if}
-				<Button disabled={!tourCompleted} on:click={() => generateFinalResultsPDF(data, true)} class="w-full mt-auto text-base">
+				<Button disabled={!tourCompleted} onclick={() => generateFinalResultsPDF(data, true)} class="w-full mt-auto text-base">
 					<FilePdfOutline class="w-4 h-4 mr-2" />
 					Generiere PDF
 				</Button>
 			</div>
 		</Card>
 
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
@@ -56,9 +56,9 @@
 					Generiere das Ergebnis-PDF in Graustufendarstellung für die Druckausgabe.
 				</p>
 				{#if !tourCompleted}
-					<Badge color="gray" class="mb-3">Turnier nicht abgeschlossen</Badge>
+					<Badge color="indigo" class="w-fit mb-3">Turnier nicht abgeschlossen</Badge>
 				{/if}
-				<Button disabled={!tourCompleted} on:click={() => generateFinalResultsPDF(data, false)} class="w-full mt-auto text-base">
+				<Button disabled={!tourCompleted} onclick={() => generateFinalResultsPDF(data, false)} class="w-full mt-auto text-base">
 					<FilePdfOutline class="w-4 h-4 mr-2" />
 					Generiere PDF
 				</Button>

@@ -1,5 +1,4 @@
 <script>
-	import { Button, Input, Card, Badge } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
@@ -109,46 +108,57 @@
 	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">{title}</p>
 
 {#if currentMatches && currentMatches.length > 0}
-	<div class="space-y-4 mt-4">
+	<div class="space-y-3 mt-4">
 		{#each currentMatches as match, matchIdx}
-			<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
-				<div class="grid grid-cols-[4rem_1fr_1fr] gap-4 items-start">
-					<!-- Left column: Match number -->
-					<div class="flex flex-col items-center justify-center">
-						<div class="text-2xl font-bold text-gray-400">{matchIdx + 1}</div>
-						<p class="text-sm text-gray-500 mt-2 text-center">{match.pin ? getPinName(match.pin, pins) : 'Freilos'}</p>
-					</div>
-
+			{@const winner = getWinner(matchStates[matchIdx]?.score1 ?? match.score1, matchStates[matchIdx]?.score2 ?? match.score2)}
+			{@const isCompleted = round?.status === 'Completed'}
+			<div class="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+				<!-- Header: match number + pin -->
+				<div class="flex items-center justify-between px-3 py-1.5 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+					<span class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Match {matchIdx + 1}</span>
+					<span class="text-xs text-gray-500 dark:text-gray-400">{match.pin ? getPinName(match.pin, pins) : '—'}</span>
+				</div>
+				<!-- Teams side by side -->
+				<div class="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700">
 					<!-- Team 1 -->
-					<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-3">
-						<p class="text-sm font-medium mb-2 text-gray-900 dark:text-gray-100">{formatTeamNames(match.team1)}</p>
-						<div class="flex gap-2 items-center">
-							<span class="text-lg font-mono w-8 text-center text-gray-900 dark:text-gray-100">{matchStates[matchIdx]?.score1 ?? match.score1}</span>
-							<Button
-								size="sm"
-								color={getWinner(matchStates[matchIdx]?.score1, matchStates[matchIdx]?.score2) === 1 ? 'green' : 'light'}
-								disabled={round?.status === 'Completed'}
-								on:click={() => setWinner(matchIdx, 1)}
-							>
-								Winner
-							</Button>
-						</div>
+					<div class="p-3 flex flex-col gap-2 transition-colors {winner === 1 ? 'bg-green-50 dark:bg-green-900/20' : ''}">
+						<p class="text-sm font-medium leading-snug text-gray-900 dark:text-gray-100">{formatTeamNames(match.team1)}</p>
+						<button
+							class="self-start text-xs font-medium px-2.5 py-1 rounded border transition-colors"
+							class:bg-green-500={winner === 1}
+							class:border-green-500={winner === 1}
+							class:text-white={winner === 1}
+							class:bg-white={winner !== 1}
+							class:dark:bg-gray-800={winner !== 1}
+							class:border-gray-300={winner !== 1}
+							class:dark:border-gray-600={winner !== 1}
+							class:text-gray-600={winner !== 1}
+							class:dark:text-gray-400={winner !== 1}
+							class:opacity-50={isCompleted}
+							class:cursor-default={isCompleted}
+							disabled={isCompleted}
+							onclick={() => setWinner(matchIdx, 1)}
+						>{winner === 1 ? '✓ Sieger' : 'Sieger'}</button>
 					</div>
-
 					<!-- Team 2 -->
-					<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-3">
-						<p class="text-sm font-medium mb-2 text-gray-900 dark:text-gray-100">{formatTeamNames(match.team2)}</p>
-						<div class="flex gap-2 items-center">
-							<span class="text-lg font-mono w-8 text-center text-gray-900 dark:text-gray-100">{matchStates[matchIdx]?.score2 ?? match.score2}</span>
-							<Button
-								size="sm"
-								color={getWinner(matchStates[matchIdx]?.score1, matchStates[matchIdx]?.score2) === 2 ? 'green' : 'light'}
-								disabled={round?.status === 'Completed'}
-								on:click={() => setWinner(matchIdx, 2)}
-							>
-								Winner
-							</Button>
-						</div>
+					<div class="p-3 flex flex-col gap-2 transition-colors {winner === 2 ? 'bg-green-50 dark:bg-green-900/20' : ''}">
+						<p class="text-sm font-medium leading-snug text-gray-900 dark:text-gray-100">{formatTeamNames(match.team2)}</p>
+						<button
+							class="self-start text-xs font-medium px-2.5 py-1 rounded border transition-colors"
+							class:bg-green-500={winner === 2}
+							class:border-green-500={winner === 2}
+							class:text-white={winner === 2}
+							class:bg-white={winner !== 2}
+							class:dark:bg-gray-800={winner !== 2}
+							class:border-gray-300={winner !== 2}
+							class:dark:border-gray-600={winner !== 2}
+							class:text-gray-600={winner !== 2}
+							class:dark:text-gray-400={winner !== 2}
+							class:opacity-50={isCompleted}
+							class:cursor-default={isCompleted}
+							disabled={isCompleted}
+							onclick={() => setWinner(matchIdx, 2)}
+						>{winner === 2 ? '✓ Sieger' : 'Sieger'}</button>
 					</div>
 				</div>
 			</div>

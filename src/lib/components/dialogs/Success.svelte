@@ -12,7 +12,7 @@
 			<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 				{message}
 			</Heading>
-			<Button color="alternative" on:click={onClose}>Schließen</Button>
+			<Button color="alternative" onclick={onClose}>Schließen</Button>
 		</div>
 	</Modal>
 </div>

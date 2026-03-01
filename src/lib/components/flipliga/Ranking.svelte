@@ -18,9 +18,9 @@
 
 	const py = 'py-1.5';
 
-	const players = data.players;
-	const tournament = data.tournament;
-	const tourCompleted = data.tournament.status === 'Completed';
+	const players = $derived(data.players);
+	const tournament = $derived(data.tournament);
+	const tourCompleted = $derived(data.tournament.status === 'Completed');
 
 	const getOldStrength = (id) => {
 		const player = round.settings.rankInit.find((item) => item.player === id);

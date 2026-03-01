@@ -44,17 +44,11 @@
 </script>
 
 <header class="w-full max-w-full md:max-w-7xl">
-	<Navbar let:hidden let:toggle class="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-3">
+	<Navbar class="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 px-4 py-3">
 		<NavBrand href="/">
 			<HomeSolid class="w-5 h-5 text-gray-500 dark:text-gray-400" />
 		</NavBrand>
-		<NavHamburger on:click={toggle} />
-		<NavUl {hidden} {activeUrl}>
-			{#each headerLinks as h}
-				{@render headerLink(h)}
-			{/each}
-		</NavUl>
-		<div class="flex items-center gap-4">
+		<div class="flex items-center gap-4 md:order-2">
 			{#if import.meta.env.VITE_APP_FULL}
 				<button
 					class="p-2 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
@@ -69,8 +63,14 @@
 				</button>
 			{/if}
 			<DarkMode />
+			<img src="/pinlounge_trans.gif" width="96" alt="Logo" class="dark:invert ml-2" />
+			<NavHamburger />
 		</div>
-		<img src="/pinlounge_trans.gif" width="96" alt="Logo" class="dark:invert ml-2" />
+		<NavUl {activeUrl}>
+			{#each headerLinks as h}
+				{@render headerLink(h)}
+			{/each}
+		</NavUl>
 	</Navbar>
 
 	<Modal
@@ -91,8 +91,8 @@
 					placeholder=""
 				/>
 			</Label>
-			<Button color="primary" on:click={adminClicked}>Ok</Button>
-			<Button color="alternative" on:click={cancelClicked}>Abbrechen</Button>
+			<Button color="primary" onclick={adminClicked}>Ok</Button>
+			<Button color="alternative" onclick={cancelClicked}>Abbrechen</Button>
 		</form>
 	</Modal>
 </header>

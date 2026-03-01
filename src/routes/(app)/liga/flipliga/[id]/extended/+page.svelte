@@ -7,7 +7,7 @@
 	let { data } = $props();
 	let tournament = $derived(data.tournament);
 	let round = $derived(data.round);
-	let pdfEnabled = data.round && data.round.status === 'Completed';
+	let pdfEnabled = $derived(data.round && data.round.status === 'Completed');
 </script>
 
 <div class="space-y-6">
@@ -16,7 +16,7 @@
 
 	<!-- Action Cards -->
 	<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -30,16 +30,16 @@
 					Generiere das PDF mit Ergebnissen und Statistiken für alle Spieltage.
 				</p>
 				{#if !pdfEnabled}
-					<Badge color="gray" class="mb-3">Liga nicht abgeschlossen</Badge>
+					<Badge color="indigo" class="w-fit mb-3">Liga nicht abgeschlossen</Badge>
 				{/if}
-				<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, true)} class="w-full mt-auto text-base">
+				<Button disabled={!pdfEnabled} onclick={() => generateLigaResultsPDF(data, true)} class="w-full mt-auto text-base">
 					<FilePdfOutline class="w-4 h-4 mr-2" />
 					Generiere PDF
 				</Button>
 			</div>
 		</Card>
 
-		<Card class="hover:shadow-lg transition-shadow">
+		<Card class="p-6 hover:shadow-lg transition-shadow">
 			<div class="flex flex-col h-full">
 				<div class="flex items-center gap-3 mb-3">
 					<div class="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
@@ -53,9 +53,9 @@
 					Generiere das Ergebnis-PDF in Graustufendarstellung für die Druckausgabe.
 				</p>
 				{#if !pdfEnabled}
-					<Badge color="gray" class="mb-3">Liga nicht abgeschlossen</Badge>
+					<Badge color="indigo" class="w-fit mb-3">Liga nicht abgeschlossen</Badge>
 				{/if}
-				<Button disabled={!pdfEnabled} on:click={() => generateLigaResultsPDF(data, false)} class="w-full mt-auto text-base">
+				<Button disabled={!pdfEnabled} onclick={() => generateLigaResultsPDF(data, false)} class="w-full mt-auto text-base">
 					<FilePdfOutline class="w-4 h-4 mr-2" />
 					Generiere PDF
 				</Button>

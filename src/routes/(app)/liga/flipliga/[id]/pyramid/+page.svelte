@@ -14,8 +14,8 @@
 	let hsize = $derived(Math.min(1280, innerWidth.current));
 	let vsize = $derived(innerHeight.current * 0.8);
 
-	const round = $state(data.round);
-	const tournament = $state(data.tournament);
+	const round = $derived(data.round);
+	const tournament = $derived(data.tournament);
 
 	const clickAreas = [];
 

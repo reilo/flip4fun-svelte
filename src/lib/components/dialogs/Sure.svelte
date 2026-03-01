@@ -11,8 +11,8 @@
 			<QuestionCircleOutline class="mx-auto mb-4 text-red-700 w-12 h-12 dark:text-red-700" />
 			<form class="flex flex-col space-y-6" action="#">
 				<Label class="space-y-2">{message}</Label>
-				<Button color="alternative" on:click={actionOk}>{buttonOk ? buttonOk : 'Ok'}</Button>
-				<Button color="primary" on:click={actionCancel}
+				<Button color="alternative" onclick={actionOk}>{buttonOk ? buttonOk : 'Ok'}</Button>
+				<Button color="primary" onclick={actionCancel}
 					>{buttonCancel ? buttonCancel : 'Nein, abbrechen!'}</Button
 				>
 			</form>

@@ -109,7 +109,7 @@
 					<Checkbox
 						checked={!settings.inactivePlayers.includes(player)}
 						disabled={!playersEnabled}
-						on:change={(e) => updatePlayerStatus(player, e.target.checked)}
+						onchange={(e) => updatePlayerStatus(player, e.target.checked)}
 					/>
 				</div>
 			{/each}

@@ -229,7 +229,7 @@
 <div class="space-y-4">
 	{#if showError}
 		<Alert border color="red">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
+			{#snippet icon()}<InfoCircleSolid class="w-5 h-5" />{/snippet}
 			<span class="font-bold">Interner Fehler!</span>
 			<P>{data.message}</P>
 			<P>{data.error}</P>
@@ -238,14 +238,14 @@
 
 	<div class="grid grid-cols-2 gap-3">
 		<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-gray-400 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-gray-400 shrink-0"></div>
 			<div>
 				<p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">Gesamt</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPins.filter(p => !p.deleted).length}</p>
 			</div>
 		</div>
 		<div class="bg-white dark:bg-gray-800 border border-green-200 dark:border-green-700 rounded-lg p-3 flex items-center gap-3">
-			<div class="w-3 h-3 rounded-full bg-green-500 flex-shrink-0"></div>
+			<div class="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
 			<div>
 				<p class="text-xs text-green-600 dark:text-green-400 uppercase tracking-wide font-semibold">Spielbereit</p>
 				<p class="text-2xl font-bold text-gray-900 dark:text-white">{allPins.filter(p => p.active && !p.deleted).length}</p>
@@ -254,8 +254,8 @@
 	</div>
 
 	<div class="flex gap-2 flex-wrap">
-		<Button on:click={() => prepareFormForNew()}>Neuer Flipper...</Button>
-		<Button on:click={() => generatePinsPDF(data.pins)} class="w-fit">
+		<Button onclick={() => prepareFormForNew()}>Neuer Flipper...</Button>
+		<Button onclick={() => generatePinsPDF(data.pins)} class="w-fit">
 		<FilePdfOutline class="w-3.5 h-3.5 mr-2" />PDF Export
 	</Button>
 	</div>
@@ -303,10 +303,10 @@
 				<span>Besitzer</span>
 				<Input bind:value={formPinOwner} placeholder="Besitzer" />
 			</Label>
-			<Button color="alternative" on:click={verifyPin}
+			<Button color="alternative" onclick={verifyPin}
 				>{!pinToUpdate ? 'Anlegen' : 'Speichern'}</Button
 			>
-			<Button color="primary" on:click={cancelNewPin}>Abbrechen</Button>
+			<Button color="primary" onclick={cancelNewPin}>Abbrechen</Button>
 		</form>
 	</Modal>
 
@@ -334,7 +334,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage}
 				</Heading>
-				<Button color="red" class="me-2" on:click={createOrUpdatePin}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={createOrUpdatePin}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -352,7 +352,7 @@
 				<Heading tag="h3" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
 					{alertMessage}
 				</Heading>
-				<Button color="red" class="me-2" on:click={deletePin}>Ja, ich bin sicher</Button>
+				<Button color="red" class="me-2" onclick={deletePin}>Ja, ich bin sicher</Button>
 				<Button color="alternative">Nein, abbrechen</Button>
 			</div>
 		</Modal>
@@ -384,17 +384,17 @@
 					{/if}
 				</div>
 				<div class="px-4 py-2 flex justify-center">
-					<Checkbox checked={pin.active == true} on:change={() => updatePinStatus(pin.id, !pin.active)} />
+					<Checkbox checked={pin.active == true} onchange={() => updatePinStatus(pin.id, !pin.active)} />
 				</div>
 				<div class="px-4 py-2 flex justify-center">
-					<Checkbox checked={pin.deleted == false} on:change={() => updatePinDeleted(pin.id, !pin.deleted)} />
+					<Checkbox checked={pin.deleted == false} onchange={() => updatePinDeleted(pin.id, !pin.deleted)} />
 				</div>
 				<div class="px-4 py-2 text-sm text-gray-600 dark:text-gray-300">{pin.owner ?? ''}</div>
 				<div class="px-4 py-2">
-					<Button on:click={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>
+					<Button onclick={() => prepareFormForUpdate(pin)} size="xs">Bearbeiten</Button>
 				</div>
 				<div class="px-4 py-2">
-					<Button on:click={() => prepareFormForDelete(pin)} size="xs" color="red">Löschen</Button>
+					<Button onclick={() => prepareFormForDelete(pin)} size="xs" color="red">Löschen</Button>
 				</div>
 			</div>
 		{/each}
