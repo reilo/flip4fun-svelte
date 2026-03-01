@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>flip4fun</title>
 	<meta name="description" content="Flipper-App" />
 </svelte:head>
 

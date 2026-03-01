@@ -9,10 +9,12 @@
 	} from 'flowbite-svelte-icons';
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
 	import { devicePixelRatio } from 'svelte/reactivity/window';
+
+	const version = __APP_VERSION__;
 </script>
 
 <svelte:head>
-	<title>Über flip4fun</title>
+	<title>flip4fun</title>
 </svelte:head>
 
 <div class="flex max-w-3xl flex-col gap-8 m-0">
@@ -20,13 +22,16 @@
 	<!-- Hero -->
 	<div class="flex flex-col gap-3">
 		<div>
-			<Heading tag="h2">flip4fun</Heading>
+			<div class="flex items-baseline gap-3">
+				<Heading tag="h2">flip4fun</Heading>
+				<span class="text-xl font-mono text-gray-400 dark:text-gray-500">v{version}</span>
+			</div>
 			<P class="text-gray-500 dark:text-gray-400 mt-1">
 				Turnierverwaltung für Flipper-Ligen &amp; Turniere
 			</P>
 		</div>
 		<P>
-			flip4fun unterstützt die Planung und Durchführung von Flipper-Ligen und TwinPin-Turnieren — 
+			flip4fun unterstützt die Planung und Durchführung von Flipper-Ligen und TwinPin-Turnieren, 
 			von der Flipper-Auslosung über die Ergebniserfassung bis hin zur
 			automatischen Rangliste und Urkundengenerierung.
 		</P>
@@ -35,7 +40,7 @@
 			<Badge color="green">FLIP-Finale</Badge>
 			<Badge color="purple">Twin Pin</Badge>
 			<Badge color="yellow">PDF-Export</Badge>
-			<Badge color="dark">Open Source</Badge>
+			<Badge color="cyan">Open Source</Badge>
 		</div>
 	</div>
 
