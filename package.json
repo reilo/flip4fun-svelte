@@ -30,6 +30,7 @@
 		"vite": "^7.3.1"
 	},
 	"type": "module",
+	"license": "AGPL-3.0-or-later",
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
 		"@prisma/client": "^6.19.2",
