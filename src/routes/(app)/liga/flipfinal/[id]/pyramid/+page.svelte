@@ -2,7 +2,6 @@
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
 	import { calcStrength, calcInitialLevels, calcFinalResults, mapTourStatus } from '$lib/TourUtil';
 	import { getPyramidLayout, getPyramidLayoutEx } from '$lib/PlayerUtil';
-	import { Card, Badge } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 
 	let { data } = $props();

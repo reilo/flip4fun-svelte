@@ -1,5 +1,4 @@
 <script>
-	import { Card, Badge } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { innerWidth, innerHeight } from 'svelte/reactivity/window';
 	import { goto } from '$app/navigation';

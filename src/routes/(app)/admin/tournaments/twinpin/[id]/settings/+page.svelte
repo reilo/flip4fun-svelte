@@ -1,5 +1,5 @@
 <script>
-	import { Button, Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { Button, Checkbox, Card } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { page } from '$app/state';
 	import { untrack } from 'svelte';

@@ -1,5 +1,5 @@
 <script>
-	import { Checkbox, Card, Badge } from 'flowbite-svelte';
+	import { Checkbox } from 'flowbite-svelte';
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
 	import { invalidateAll } from '$app/navigation';
