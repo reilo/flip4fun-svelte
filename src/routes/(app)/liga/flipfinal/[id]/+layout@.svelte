@@ -69,6 +69,6 @@
 	</main>
 
 	<footer class="px-4 py-3 text-center text-xs text-gray-400 dark:text-gray-500 border-t border-gray-100 dark:border-gray-800">
-		<span>flip4fun v{version} &mdash; &copy; 2023–{new Date().getFullYear()} reilo &mdash; MIT License</span>
+		<span>flip4fun v{version} &mdash; &copy; 2023–{new Date().getFullYear()} reilo &mdash; <a href="https://github.com/reilo/flip4fun-svelte" class="underline hover:text-gray-600 dark:hover:text-gray-300" target="_blank" rel="noopener noreferrer">GNU AGPL-3.0</a></span>
 	</footer>
 </div>
