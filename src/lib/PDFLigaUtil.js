@@ -486,8 +486,103 @@ export function generateLigaResultsPDF(data, color = true) {
         }
     })
 
-    // Seite n+2 bis 2n+1
-    // Verfügbare Gegner
+    // Seite n+2 bis 2n+1 - Verfügbare Gegner
+
+    const challengeSame = data.tournament.settings.challengeSame || 1;
+
+    players.forEach((player) => {
+
+        // Gegner-Zähler aufbauen
+        let opps1 = {}; // player ist Herausforderer (player1)
+        let opps2 = {}; // player ist Herausgeforderter (player2)
+        data.tournament.players.forEach((p) => {
+            if (p !== player) {
+                opps1[p] = 0;
+                opps2[p] = 0;
+            }
+        });
+        data.rounds.forEach((round) => {
+            round.matches.forEach((match) => {
+                if (match.player1 === player && opps1[match.player2] !== undefined) {
+                    opps1[match.player2]++;
+                }
+                if (match.player2 === player && opps2[match.player1] !== undefined) {
+                    opps2[match.player1]++;
+                }
+            });
+        });
+
+        const otherPlayers = players.filter((p) => p !== player);
+
+        doc.addPage();
+
+        drawTitleSquare(doc, color ? darkblue : ["0.80"]);
+        writeTitle(doc, data.tournament.name);
+        writeSubtitle(doc, "Verfügbare Gegner nach Spieltag " + roundNum + " (" + roundDate + ")");
+
+        writePlayerSquare(doc, color);
+
+        // Spielername
+        x = 10;
+        y = 45;
+        doc.setFontSize(16);
+        doc.text(x, y, getPlayerName(player, data.players));
+
+        // Titelzeile
+        y += 10;
+        doc.setFontSize(10);
+        doc.text(x, y, "Als Herausforderer");
+        doc.text(x + 95, y, "Als Herausgeforderter");
+
+        // Trennungslinie
+        y += 2;
+        doc.setLineWidth(0.1);
+        doc.line(x, y, 200, y);
+
+        doc.setFontSize(11);
+        y += 6;
+        dy = 5.5;
+
+        alternate = false;
+        otherPlayers.forEach((opp) => {
+            if (alternate) {
+                if (color) {
+                    drawSquare(doc, x, y - 4, 190, dy, ...liteblue);
+                } else {
+                    drawSquare(doc, x, y - 4, 190, dy, "0.95");
+                }
+            }
+            alternate = !alternate;
+
+            const oppName = getPlayerName(opp, data.players);
+
+            // Als Herausforderer
+            const used1 = opps1[opp] >= challengeSame;
+            if (used1) {
+                const tw1 = doc.getTextWidth(oppName);
+                doc.setTextColor(160);
+                doc.text(x, y, oppName);
+                doc.line(x, y - 1.5, x + tw1, y - 1.5);
+                doc.setTextColor(0);
+            } else {
+                doc.text(x, y, oppName);
+            }
+
+            // Als Herausgeforderter
+            const used2 = opps2[opp] >= challengeSame;
+            if (used2) {
+                const tw2 = doc.getTextWidth(oppName);
+                doc.setTextColor(160);
+                doc.text(x + 95, y, oppName);
+                doc.line(x + 95, y - 1.5, x + 95 + tw2, y - 1.5);
+                doc.setTextColor(0);
+            } else {
+                doc.text(x + 95, y, oppName);
+            }
+
+            y += dy;
+        });
+    })
 
     // Seitenzahlen
     const totalPages = doc.getNumberOfPages();
