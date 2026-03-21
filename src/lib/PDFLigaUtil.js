@@ -3,7 +3,7 @@ import { sortPlayerIDs, getPlayerName, getPyramidLayout } from "./PlayerUtil";
 import { getPinName } from "./PinUtil";
 import { mapDate, roundNumberToStrg } from "./TypeUtil";
 import { calcPoints } from "./MatchUtil";
-import { drawSquare, drawTitleSquare, writeTitle, writeSubtitle } from "./PDFUtil";
+import { drawSquare, drawTitleSquare, writeTitle, writeSubtitle, writePinText } from "./PDFUtil";
 
 const darkblue = [153, 181, 199];
 const midblue = [204, 217, 227];
@@ -276,7 +276,7 @@ export function generateLigaResultsPDF(data, color = true) {
         doc.text(x + 123 - doc.getTextWidth(result1), y, result1);
         doc.text(x + 125 - doc.getTextWidth(":") / 2, y, ":");
         doc.text(x + 127, y, result2);
-        doc.text(200 - doc.getTextWidth(pinText), y, pinText);
+        writePinText(doc, 200, y, pinText, "right");
 
         y += dy;
 
@@ -444,7 +444,7 @@ export function generateLigaResultsPDF(data, color = true) {
                 doc.text(x + xpos + 7 - doc.getTextWidth(result2), y, result2);
                 // Flipper
                 const pinText = getPinName(match.pin, data.pins);
-                doc.text(200 - doc.getTextWidth(pinText), y, pinText);
+                writePinText(doc, 200, y, pinText, "right");
 
                 y += 5.5;
 

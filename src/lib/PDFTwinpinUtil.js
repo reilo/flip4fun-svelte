@@ -1,5 +1,5 @@
 import { jsPDF } from "jspdf";
-import { drawSquare, drawTitleSquare, writeTitle, writeSubtitle } from "./PDFUtil.js";
+import { drawSquare, drawTitleSquare, writeTitle, writeSubtitle, writePinText } from "./PDFUtil.js";
 import { mapDate } from "./TypeUtil.js";
 import { getPinName } from "./PinUtil.js";
 import { getPlayerName } from "./PlayerUtil.js";
@@ -171,7 +171,7 @@ export function generateTwinpinResultsPDF(data, color = true) {
 
                 // Pin (right-aligned)
                 if (pinText) {
-                    doc.text(200 - doc.getTextWidth(pinText), y, pinText);
+                    writePinText(doc, 200, y, pinText, "right");
                 }
 
                 y += rowHeight;

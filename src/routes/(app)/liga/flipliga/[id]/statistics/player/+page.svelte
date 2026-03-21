@@ -5,6 +5,7 @@
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { mapDate } from '$lib/TypeUtil';
 	import { getPinName } from '$lib/PinUtil';
+	import PinName from '$lib/components/PinName.svelte';
 	import { sortPlayerIDs } from '$lib/PlayerUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
@@ -138,7 +139,7 @@
 					</div>
 					{#if !isPhone}
 						<div class="px-3 py-2 text-sm text-center text-gray-700 dark:text-gray-300">
-							{getPinName(match.pin, data.pins)}
+							<PinName name={getPinName(match.pin, data.pins)} />
 						</div>
 					{/if}
 				</div>

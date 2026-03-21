@@ -2,6 +2,7 @@
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
+	import PinName from '$lib/components/PinName.svelte';
 	import { mapTourStatus } from '$lib/TourUtil';
 
 	let { data } = $props();
@@ -116,7 +117,7 @@
 				<!-- Header: match number + pin -->
 				<div class="flex items-center justify-between px-3 py-1.5 bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
 					<span class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">Match {matchIdx + 1}</span>
-					<span class="text-xs text-gray-500 dark:text-gray-400">{match.pin ? getPinName(match.pin, pins) : '—'}</span>
+					<span class="text-xs text-gray-500 dark:text-gray-400">{#if match.pin}<PinName name={getPinName(match.pin, pins)} />{:else}—{/if}</span>
 				</div>
 				<!-- Teams side by side -->
 				<div class="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700">

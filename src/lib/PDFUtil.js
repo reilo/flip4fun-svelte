@@ -28,3 +28,36 @@ export function writeSubtitle(doc, strg1, strg2 = "") {
         doc.text(150 - doc.getTextWidth(strg2), 30, strg2);
     }
 }
+
+// Draw pin name with multi-match icon (two overlapping squares) if name starts with *
+export function writePinText(doc, x, y, pinText, align = "left") {
+    const isMulti = pinText.startsWith('*');
+    const displayText = isMulti ? pinText.slice(1) : pinText;
+    const textWidth = doc.getTextWidth(displayText);
+    const iconSize = 2.5;
+    const iconGap = 1;
+    const totalWidth = isMulti ? iconSize + iconGap + textWidth : textWidth;
+
+    let tx;
+    if (align === "right") {
+        tx = x - totalWidth;
+    } else if (align === "center") {
+        tx = x - totalWidth / 2;
+    } else {
+        tx = x;
+    }
+
+    if (isMulti) {
+        const savedLineWidth = doc.getLineWidth();
+        doc.setLineWidth(0.3);
+        doc.setDrawColor(100);
+        const iy = y - iconSize - 0.3;
+        doc.rect(tx, iy, iconSize * 0.7, iconSize * 0.7, 'S');
+        doc.rect(tx + iconSize * 0.3, iy + iconSize * 0.3, iconSize * 0.7, iconSize * 0.7, 'S');
+        doc.setDrawColor(0);
+        doc.setLineWidth(savedLineWidth);
+        doc.text(tx + iconSize + iconGap, y, displayText);
+    } else {
+        doc.text(tx, y, displayText);
+    }
+}

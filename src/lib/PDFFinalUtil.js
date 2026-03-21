@@ -1,5 +1,5 @@
 import jsPDF from "jspdf";
-import { drawTitleSquare, writeTitle, writeSubtitle, drawSquare } from "./PDFUtil.js";
+import { drawTitleSquare, writeTitle, writeSubtitle, drawSquare, writePinText } from "./PDFUtil.js";
 import { formatDate, mapDate } from "./TypeUtil.js";
 import { getPinName } from "./PinUtil.js";
 import { getPlayerName } from "./PlayerUtil.js";
@@ -40,9 +40,9 @@ export function generateMatchCardsPDF(tourName, round, matches, pins) {
             const txtSpieler = "Spieler";
             doc.text(xmin + (xmax - xmin) / 6 - doc.getTextWidth(txtSpieler) / 2, y, txtSpieler);
             const txtPin1 = getPinName(match.pin1, pins);
-            doc.text(xmin + (xmax - xmin) / 2 - doc.getTextWidth(txtPin1) / 2, y, txtPin1);
+            writePinText(doc, xmin + (xmax - xmin) / 2, y, txtPin1, "center");
             const txtPin2 = getPinName(match.pin2, pins);
-            doc.text(xmin + 5 * (xmax - xmin) / 6 - doc.getTextWidth(txtPin2) / 2, y, txtPin2);
+            writePinText(doc, xmin + 5 * (xmax - xmin) / 6, y, txtPin2, "center");
             doc.line(xmin, y - 8, xmax, y - 8);
             doc.line(xmin, y + 4, xmax, y + 4);
 
@@ -212,7 +212,7 @@ export function generateFinalResultsPDF(data, color = true) {
 
                     doc.setFontSize(10);
                     doc.text(x, y, frameName);
-                    doc.text(x + 140, y, pinText);
+                    writePinText(doc, x + 140, y, pinText);
 
                     sorted.forEach((item, idx) => {
                         const playerName = getPlayerName(item.player, data.players);

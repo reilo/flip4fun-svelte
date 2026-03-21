@@ -3,6 +3,7 @@
 	import TourBreadcrumb from '$lib/components/TourBreadcrumb.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { getPinName } from '$lib/PinUtil';
+	import PinName from '$lib/components/PinName.svelte';
 	import { getPlayerName } from '$lib/PlayerUtil';
 	import { hasFrameResult } from '$lib/FrameUtil';
 	import { mapTourStatus } from '$lib/TourUtil';
@@ -129,7 +130,7 @@
 					{/if}
 				</div>
 				<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
-					{frame.players.length > 1 ? getPinName(frame.pin, data.pins) : '(Freirunde)'}
+					{#if frame.players.length > 1}<PinName name={getPinName(frame.pin, data.pins)} />{:else}(Freirunde){/if}
 				</div>
 				<div class="px-4 py-2 flex items-start justify-center pt-3">
 					<Badge color={hasFrameResult(frame) ? 'green' : 'yellow'}>{hasFrameResult(frame) ? 'Fertig' : 'Offen'}</Badge>

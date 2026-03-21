@@ -10,6 +10,7 @@
 	import { roundNumberToStrg } from '$lib/TypeUtil';
 	import { getPlayerName as _getPlayerName } from '$lib/PlayerUtil';
 	import { getPinName } from '$lib/PinUtil';
+	import PinName from '$lib/components/PinName.svelte';
 	import { logInfo } from '$lib/LogUtil';
 
 	let { data } = $props();
@@ -376,7 +377,7 @@
 						{formatResultString(roundNumberToStrg(getPoints(match, 1)), roundNumberToStrg(getPoints(match, 2)))}
 					</div>
 					<div class="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">
-						{getPinName(match.pin, data.pins)}
+						<PinName name={getPinName(match.pin, data.pins)} />
 					</div>
 					<div class="px-4 py-2">
 						{#if accessState.value >= AdminAccess}
