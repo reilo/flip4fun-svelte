@@ -139,7 +139,7 @@ export function generateLigaResultsPDF(data, color = true) {
     y += 7;
     // numbers for alternating background color depending on player strength
     const highlight = [2, 3, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 29, 30, 31, 32, 33, 34, 35, 36];
-    let dy = 7;
+    let dy = 6.4;
     rankFinal.forEach((item, i) => {
 
         let initItem;
@@ -231,8 +231,12 @@ export function generateLigaResultsPDF(data, color = true) {
     dy = 6;
 
     alternate = false;
+    let roundMatchCount = 0;
+    let roundMatchPageCount = 0;
 
     data.round.matches.forEach((match) => {
+        roundMatchCount++;
+
         const strength1 = getStrength(match.player1, data.round);
         const strength2 = getStrength(match.player2, data.round);
         const player1 = getPlayerName(match.player1, data.players) + " (" + strength1.toString() + ")";
@@ -275,6 +279,35 @@ export function generateLigaResultsPDF(data, color = true) {
         doc.text(200 - doc.getTextWidth(pinText), y, pinText);
 
         y += dy;
+
+        if (roundMatchCount % 38 === 0) {
+            roundMatchPageCount++;
+
+            doc.addPage();
+
+            drawTitleSquare(doc, color ? darkblue : ["0.80"]);
+            writeTitle(doc, data.tournament.name);
+            const roundPageString = "Seite " + (roundMatchPageCount + 1).toString();
+            writeSubtitle(doc, subTitle1 + " - " + subTitle2 + " (" + roundPageString + ")");
+
+            x = 10;
+            y = 45;
+
+            doc.setFontSize(10);
+            doc.text(x + 0, y, "Sätze");
+            doc.text(x + 60 - doc.getTextWidth("Duell") / 2, y, "Duell");
+            doc.text(x + 125 - doc.getTextWidth("Punkte") / 2, y, "Punkte");
+            doc.text(200 - doc.getTextWidth("Flipper"), y, "Flipper");
+
+            y += 3;
+            doc.setLineWidth(0.1);
+            doc.line(x, y, 200, y);
+
+            doc.setFontSize(12);
+            y += 7;
+
+            alternate = false;
+        }
     })
 
     // Seite 3 bis n+1 - Spieler-Statistiken
@@ -455,6 +488,15 @@ export function generateLigaResultsPDF(data, color = true) {
 
     // Seite n+2 bis 2n+1
     // Verfügbare Gegner
+
+    // Seitenzahlen
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+        doc.setFontSize(9);
+        const pageText = "Seite " + i + " / " + totalPages;
+        doc.text(200 - doc.getTextWidth(pageText), 290, pageText);
+    }
 
     doc.save(data.tournament.name + " Spieltag " + data.round.rid + (color ? "" : " Print") + '.pdf');
 }
