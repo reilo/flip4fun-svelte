@@ -13,10 +13,12 @@
 <div class="space-y-4">
 	<TourBreadcrumb {tournament} {round} />
 
-	<Matches {data} />
-
-	<!-- in full hd view show ranking too -->
 	{#if outerWidth.current >= 1920}
-		<Ranking {data} />
+		<div class="flex gap-4">
+			<div class="flex-1"><Matches {data} /></div>
+			<div class="flex-1"><Ranking {data} /></div>
+		</div>
+	{:else}
+		<Matches {data} />
 	{/if}
 </div>

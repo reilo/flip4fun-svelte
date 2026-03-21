@@ -236,10 +236,11 @@
 	let selPoints2 = $state(0);
 </script>
 
-<div>
-	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+<div class="space-y-2">
+	<p class="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500">
 		{tourCompleted ? 'Letzter Spieltag' : 'Aktueller Spieltag'} &middot; {matches.length} Matches
 	</p>
+	<p class="text-xs text-gray-400 dark:text-gray-500">Spielername anklicken für Statistiken.</p>
 
 	{#if addMatchEnabled}
 		<div>
