@@ -151,8 +151,14 @@
 
 	<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
 		<div class="grid grid-cols-2 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
-			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Als Herausforderer</div>
-			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center">Als Herausgeforderter</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center flex items-center justify-center gap-1.5">
+				<svg class="w-4 h-4 text-red-500 dark:text-red-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6 2 2-6 6-2-2z" fill="currentColor" stroke="none"/><path d="M9.5 17.5L21 6V3h-3L6.5 14.5"/><path d="M11 19l-6-6-2 2 6 6 2-2z" fill="currentColor" stroke="none"/></svg>
+				Als Herausforderer
+			</div>
+			<div class="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 text-center flex items-center justify-center gap-1.5">
+				<svg class="w-4 h-4 text-blue-500 dark:text-blue-400 shrink-0" viewBox="0 0 512 512" fill="currentColor"><path d="M256 0C114.6 0 64 64 64 64v224c0 141.4 150 224 192 224s192-82.6 192-224V64S397.4 0 256 0zm0 480c-26.5 0-160-70.4-160-192V83.2C121.6 67.2 166.4 32 256 32s134.4 35.2 160 51.2V288c0 121.6-133.5 192-160 192z"/><path d="M256 64c-70.7 0-128 21.3-128 32v192c0 106 96 160 128 160s128-54 128-160V96c0-10.7-57.3-32-128-32z" opacity=".2"/></svg>
+				Als Herausgeforderter
+			</div>
 		</div>
 		{#each tourPlayers.filter(p => p !== selected) as player, i}
 			<div

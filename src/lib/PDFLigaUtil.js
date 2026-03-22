@@ -531,8 +531,43 @@ export function generateLigaResultsPDF(data, color = true) {
         // Titelzeile
         y += 10;
         doc.setFontSize(10);
-        doc.text(x, y, "Als Herausforderer");
-        doc.text(x + 95, y, "Als Herausgeforderter");
+
+        // Gekreuzte Schwerter Icon (3mm breit)
+        const sX = x;
+        const sY = y - 2.5;
+        doc.setLineWidth(0.3);
+        doc.line(sX + 0.3, sY + 3, sX + 2.7, sY);       // Klinge 1
+        doc.line(sX + 0.3, sY, sX + 2.7, sY + 3);       // Klinge 2
+        doc.line(sX + 0.5, sY + 2, sX + 0.1, sY + 2.6); // Griff 1a
+        doc.line(sX + 2.5, sY + 0.4, sX + 2.9, sY + 1); // Griff 1b
+        doc.line(sX + 0.1, sY + 0.4, sX + 0.5, sY + 1); // Griff 2a
+        doc.line(sX + 2.5, sY + 2, sX + 2.9, sY + 2.6); // Griff 2b
+        doc.setLineWidth(0.1);
+        doc.text(x + 5, y, "Als Herausforderer");
+
+        // Schild Icon (2.5mm breit, 3mm hoch)
+        const shX = x + 95;
+        const shY = y - 2.2;
+        const sw = 2.5;    // Breite
+        const sh = 3;      // Höhe
+        const top = shY - 0.2;
+        doc.setLineWidth(0.25);
+        // Schild als geschlossener Pfad mit gerundeter Spitze
+        // Startpunkt: oben links
+        doc.lines(
+            [
+                [sw, 0],                                    // obere Kante nach rechts
+                [0, sh * 0.55],                             // rechte Seite gerade runter
+                [-sw * 0.15, sh * 0.15],                    // Schulter rechts
+                [-sw * 0.35, sh * 0.3],                     // Spitze rechts -> Mitte
+                [-sw * 0.35, -sh * 0.3],                    // Spitze links <- Mitte
+                [-sw * 0.15, -sh * 0.15],                   // Schulter links
+                [0, -sh * 0.55]                             // linke Seite gerade hoch
+            ],
+            shX, top, [1, 1], 'S', true
+        );
+        doc.setLineWidth(0.1);
+        doc.text(shX + 5, y, "Als Herausgeforderter");
 
         // Trennungslinie
         y += 2;
