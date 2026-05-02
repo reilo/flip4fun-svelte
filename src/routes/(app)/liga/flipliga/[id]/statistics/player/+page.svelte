@@ -32,8 +32,8 @@
 	};
 
 	const playerMap = $derived.by(() => {
+		sortPlayerIDs(tourPlayers, allPlayers);
 		const sorted = [...tourPlayers];
-		sortPlayerIDs(sorted, allPlayers);
 		return sorted.map((player) => ({ value: player, name: getPlayerName(player) }));
 	});
 
